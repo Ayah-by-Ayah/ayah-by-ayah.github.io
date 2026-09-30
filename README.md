@@ -1,6 +1,6 @@
 # Ayah by Ayah
 
-Qur'an study, one ayah at a time: the Arabic text (IndoPak and Madani script), a revised English translation, explanations, questions and answers, full grammar and iʿrāb, and practical lessons — with write-ups in English, Bangla, Arabic and Urdu.
+Qur'an study, one ayah at a time: the Arabic text (IndoPak and Madani script), a revised English translation, notes, lessons, word analysis, and full grammar and iʿrāb — with write-ups in English, Bangla, Arabic and Urdu.
 
 This repository holds the public, read-only edition. Content is written in the private editing platform and published here as `data/content.json`.
 
