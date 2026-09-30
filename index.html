@@ -140,6 +140,10 @@ html.script-indopak .ar .end{font-family:"Scheherazade New",serif}
 .ar .end{font-size:.8em;color:var(--muted);white-space:nowrap}
 .tr{font:16.5px/1.65 var(--f-text);margin:0;max-width:68ch}
 .tr.revised{border-left:3px solid var(--rev);padding-left:12px}
+.tr[lang="bn"],.orig[lang="bn"]{font-family:var(--f-bn)}
+.tr[lang="ur"],.orig[lang="ur"]{font-family:var(--f-ur);line-height:2.3;font-size:17px}
+.tr[dir="rtl"]{margin-left:auto}
+.tr[dir="rtl"].revised{border-left:0;border-right:3px solid var(--rev);padding-left:0;padding-right:12px}
 .revline{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
 .orig{margin:8px 0 0;padding:8px 12px;background:var(--sunk);border-radius:7px;font:14.5px/1.6 var(--f-text);color:var(--muted);max-width:68ch}
 .orig b{font:600 11px/1 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
@@ -257,6 +261,26 @@ h3[lang="ur"],h3[lang="ar"]{font-family:inherit}
 .gstrip{display:flex;flex-wrap:wrap;gap:6px;padding:10px;background:var(--sunk);border-radius:8px}
 .gchip{font:25px/1.7 var(--f-quran);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:0 10px;cursor:pointer}
 .gchip[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.usage{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface);display:flex;flex-direction:column;gap:8px}
+.usage .uhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.usage .ustats{font-size:13.5px;color:var(--muted)}
+.usage .uforms{display:flex;flex-wrap:wrap;gap:6px}
+.usage .uform{font:17px/1.6 var(--f-ar);background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:0 8px;cursor:pointer}
+.usage .uform[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.usage .uform small{font:12px var(--f-ui);color:var(--muted);margin-inline-start:4px}
+.usage .ulist{max-height:420px;overflow:auto;border-top:1px solid var(--line)}
+.usage .urow{padding:8px 2px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:64px 1fr;gap:4px 10px}
+.usage .urow.cur{background:var(--sunk)}
+.usage .uref{font:600 12.5px/1.8 var(--f-ui);color:var(--muted)}
+.usage .uref em{display:block;font-style:normal;font-weight:400;font-size:11px}
+.usage .uar{font:21px/1.9 var(--f-quran);margin:0;grid-column:2}
+.usage .uar mark{background:color-mix(in srgb, var(--accent) 22%, transparent);color:inherit;border-radius:4px;padding:0 2px}
+.usage .utr{margin:0;grid-column:2;font-size:14px;max-width:none}
+.usage .uask{display:flex;flex-direction:column;gap:6px;background:var(--sunk);border-radius:8px;padding:8px 10px}
+.usage .uask textarea{min-height:58px}
+.usage .uans{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;max-height:420px;overflow:auto}
+.usage .ugloss{grid-column:2;font-size:12.5px;color:var(--muted)}
+@media (max-width:560px){.usage .urow{grid-template-columns:1fr}.usage .uar,.usage .utr,.usage .ugloss{grid-column:1}}
 .glegend{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 12px}
 .ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;direction:rtl}
 .gword{direction:ltr;border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:var(--surface);scroll-margin:80px}
@@ -313,6 +337,9 @@ h3[lang="ur"],h3[lang="ar"]{font-family:inherit}
 :root{--read-scale:1}
 .focusbar{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:6px 8px 6px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.14);max-width:calc(100% - 24px);opacity:.35;transition:opacity .2s}
 .focusbar:hover,.focusbar:focus-within{opacity:1}
+.backpill{position:fixed;z-index:41;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:2px;background:var(--accent);color:var(--accent-ink);border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.22);max-width:calc(100% - 32px)}
+.backpill button{border:0;background:none;color:inherit;font:600 14px/1.2 var(--f-ui);padding:10px 6px 10px 16px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70vw}
+.backpill button.x{padding:10px 14px 10px 8px;font-weight:400;opacity:.8}
 @media (hover:none){.focusbar{opacity:.92}}
 .fb-title{font:600 14px/1.2 var(--f-text);max-width:34ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 html.reading .top,html.reading .toolbar,html.reading .admin-bar,html.reading .art-actions,html.reading .statusbar,html.reading .shead > div:first-child,html.reading .shead > div:last-child{display:none}
@@ -368,6 +395,12 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
         <button type="button" data-lang="ar" class="l-ar">العربية</button>
         <button type="button" data-lang="ur" class="l-ur">اردو</button>
       </div>
+      <span class="lbl">Translation</span>
+      <div class="seg" role="group" aria-label="Ayah translation language">
+        <button type="button" data-trlang="en" title="Saheeh International">English</button>
+        <button type="button" data-trlang="bn" class="l-bn" title="Taisirul Quran">বাংলা</button>
+        <button type="button" data-trlang="ur" class="l-ur" title="Maududi, Tafheem-ul-Quran">اردو</button>
+      </div>
       <span class="modepill" id="modepill">Reader</span>
     </div>
   </div>
@@ -375,6 +408,7 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
 <main class="wrap" id="app"><p class="muted">Loading the Qur'an text…</p></main>
 <div id="modal-root"></div>
 <div id="focus-root"></div>
+<div id="back-root"></div>
 <div id="toast-root"></div>
 
 <script>
@@ -384,6 +418,8 @@ const LANGS = ["en","bn","ar","ur"];
 const LNAME = {en:"English", bn:"বাংলা", ar:"العربية", ur:"اردو"};
 const LNAME_EN = {en:"English", bn:"Bangla", ar:"Arabic", ur:"Urdu"};
 const RTL = {ar:true, ur:true};
+const TR_LANGS = ["en","bn","ur"];
+const TR_NAME = {en:"Saheeh International", bn:"Taisirul Quran", ur:"Maududi (Tafheem-ul-Quran)"};
 const $ = (s, r=document) => r.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const arDigits = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
@@ -398,6 +434,8 @@ const S = {
   script: store.get("aba.script") === "madani" ? "madani" : "indopak", IP: null, ipState: "idle",
   qfont: ["sch","naskh","amiri"].includes(store.get("aba.qfont")) ? store.get("aba.qfont") : "sch",
   qscale: Math.min(1.6, Math.max(0.8, parseFloat(store.get("aba.qscale")) || 1)),
+  trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
+  trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
   tr: {}, notes: [], lessons: [],
   admin: false, db: null, dbState: "loading", sample: null, downloads: null,
   open: new Set(), compare: new Set(), onlyMarked: false,
@@ -408,6 +446,31 @@ const S = {
 const key = (s,a) => s + ":" + a;
 const surahOf = n => S.Q && S.Q[n-1];
 const validRef = (s,a) => !!(S.Q && s>=1 && s<=114 && a>=1 && a<=S.Q[s-1].v.length);
+/* ---------- ayah translations (English: Saheeh International; Bangla: Taisirul Quran; Urdu: Maududi) ---------- */
+function loadTrx(l){
+  if (l === "en" || S.TRX[l]) return Promise.resolve(S.TRX[l]);
+  if (S.trxState[l] && S.trxState[l].then) return S.trxState[l];
+  const pr = fetch(`tr-${l}.json`).then(r => { if (!r.ok) throw 0; return r.json(); })
+    .then(j => { S.TRX[l] = j; S.trxState[l] = "ok"; render(); return j; })
+    .catch(() => { S.trxState[l] = "failed"; render(); return null; });
+  S.trxState[l] = pr; return pr;
+}
+function baseTr(s, a, l){
+  l = l || S.trLang;
+  if (l === "en") return S.Q[s-1].v[a-1][1];
+  const t = S.TRX[l];
+  if (!t) { loadTrx(l); return S.trxState[l] === "failed" ? "(This translation didn't load. Reload the page.)" : "…"; }
+  return t[s-1][a-1];
+}
+function trRev(s, a, l){ return (S.trAll[l || S.trLang] || {})[key(s,a)] || null; }
+function trText(s, a, l){ const r = trRev(s, a, l); return r ? r.text : baseTr(s, a, l); }
+const trDocId = (s, a, l) => l === "en" ? `${s}-${a}` : `${s}-${a}-${l}`;
+const trAttrs = (l) => { l = l || S.trLang; return `lang="${l}" dir="${RTL[l]?"rtl":"ltr"}"`; };
+function setTrDocs(list){
+  const all = {en:{}, bn:{}, ur:{}};
+  for (const v of list) { const l = v.lang || "en"; if (all[l] && validRefSafe(v.s, v.a)) all[l][key(v.s,v.a)] = v; }
+  S.trAll = all; S.tr = all[S.trLang];
+}
 function parseRefs(str){
   // "2:255", "2:250-260", "2 255", "3:10-12, 4:1"
   const out = [];
@@ -529,6 +592,7 @@ function reindex(){
 /* ---------- navigation ---------- */
 function setHash(h){ try { if (S.static && location.hash !== "#" + h) history.pushState(null, "", "#" + h); else history.replaceState(null, "", "#" + h); } catch {} }
 function go(view, opts={}){
+  if (S.keepRet) S.keepRet = false; else S.ret = null;
   const prev = S.view, prevSurah = S.surah;
   S.view = view;
   if (view === "surah") {
@@ -550,7 +614,20 @@ function go(view, opts={}){
 }
 function goRef(ref){
   const [s,a] = ref.split(":").map(Number);
-  if (validRef(s,a)) { if (S.onlyMarked && !hasMarks(s,a)) S.onlyMarked = false; S.open.add(key(s,a)); go("surah",{s,a}); }
+  if (validRef(s,a)) {
+    // Remember the exact place we left, so one click brings the reader back.
+    const y = window.scrollY;
+    if (S.view === "article" && S.art) {
+      const it = itemOf(S.art.kind, S.art.id);
+      const t = it ? (pick(it.title, S.lang, it.src).text || (S.art.kind === "w" ? it.word : "") || "") : "";
+      const kindL = S.art.kind === "l" ? "lesson" : S.art.kind === "w" ? "word analysis" : "note";
+      S.ret = {view: "article", art: Object.assign({}, S.art), y, label: t ? `Back to “${t.length > 48 ? t.slice(0, 46) + "…" : t}”` : `Back to the ${kindL}`};
+    } else if (S.view === "surah") {
+      if (!S.ret || S.ret.view !== "surah" || S.ret.surah !== S.surah || Math.abs(S.ret.y - y) > 40) S.ret = {view: "surah", surah: S.surah, y, label: `Back to where you were in ${surahOf(S.surah).tl}`};
+    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words") {
+      S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view[0].toUpperCase() + S.view.slice(1)}`};
+    }
+    S.keepRet = true; if (S.onlyMarked && !hasMarks(s,a)) S.onlyMarked = false; S.open.add(key(s,a)); go("surah",{s,a}); }
 }
 function fromHash(){
   const h = (location.hash||"").slice(1);
@@ -559,6 +636,22 @@ function fromHash(){
   else if (h === "notes" || h === "lessons" || h === "words") S.view = h;
   else if ((m = h.match(/^([nlw])-([A-Za-z0-9_.~-]+)$/))) { S.view = "article"; S.art = {kind: m[1], id: m[2], from: m[1]==="n" ? "notes" : m[1]==="w" ? "words" : "lessons"}; }
   else if ((m = h.match(/^s(\d{1,3})(?:-(\d{1,3}))?$/)) && +m[1]>=1 && +m[1]<=114) { S.view = "surah"; S.surah = +m[1]; if (m[2]) { S.pendingAyah = +m[2]; S.open.add(key(+m[1],+m[2])); } }
+}
+
+function drawBackPill(){
+  const r = $("#back-root"); if (!r) return;
+  const R0 = S.ret;
+  if (!R0 || S.view !== "surah" || (R0.view === "surah" && R0.surah === S.surah && Math.abs(window.scrollY - R0.y) < 40 && !S.flashKey)) { r.innerHTML = ""; return; }
+  r.innerHTML = `<div class="backpill" role="navigation" aria-label="Return"><button type="button" data-goback title="${esc(R0.label)}">← ${esc(R0.label)}</button><button type="button" class="x" data-goback-x aria-label="Dismiss">✕</button></div>`;
+}
+function goBack(){
+  const R0 = S.ret; if (!R0) return;
+  S.ret = null; S.flashKey = null;
+  if (R0.view === "article") { S.view = "article"; S.art = R0.art; setHash(`${R0.art.kind}-${R0.art.id}`); }
+  else if (R0.view === "surah") { S.view = "surah"; S.surah = R0.surah; setHash(`s${R0.surah}`); }
+  else { S.view = R0.view; setHash(R0.view); }
+  render();
+  requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, R0.y)));
 }
 
 /* ---------- Qur'an font ---------- */
@@ -635,12 +728,14 @@ function render(){
   applyQFont();
   if (S.focus && S.view !== "surah" && S.view !== "article") { S.focus = false; document.documentElement.classList.remove("reading"); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
   setTimeout(drawFocusBar, 0);
+  drawBackPill();
   document.querySelectorAll("nav.tabs button").forEach(b => {
     const cur = b.dataset.nav === S.view || (b.dataset.nav==="surahs" && S.view==="surah")
       || (S.view==="article" && ((S.art?.kind==="l" && b.dataset.nav==="lessons") || (S.art?.kind==="n" && b.dataset.nav==="notes") || (S.art?.kind==="w" && b.dataset.nav==="words")));
     if (cur) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current");
   });
   document.querySelectorAll(".seg button[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === S.lang)));
+  document.querySelectorAll(".seg button[data-trlang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.trlang === S.trLang)));
   const pill = $("#modepill");
   pill.textContent = S.admin ? "Editor mode" : "Reader";
   pill.className = "modepill" + (S.admin ? " admin" : "");
@@ -686,9 +781,8 @@ function viewSurahs(){
   <div class="row small muted" style="margin-bottom:14px">
     <span>Across the Qur'an:</span>
     <span class="legend">
-      <span class="chip rev">${tot.rev} revised translation${tot.rev===1?"":"s"}</span>
-      <span class="chip exp">${tot.exp} explanation${tot.exp===1?"":"s"}</span>
-      <span class="chip qa">${tot.qa} question${tot.qa===1?"":"s"}</span>
+      <span class="chip rev">${tot.rev} revised ${S.trLang==="en"?"":LNAME_EN[S.trLang]+" "}translation${tot.rev===1?"":"s"}</span>
+      <span class="chip exp">${tot.exp} note${tot.exp===1?"":"s"}</span>
       <span class="chip les">${tot.les} lesson${tot.les===1?"":"s"}</span>
       <span class="chip wa">${S.words.length} word analys${S.words.length===1?"is":"es"}</span>
     </span>
@@ -700,7 +794,7 @@ function viewSurahs(){
       <span class="marks">${marksFor(s.n)}</span>
     </button>`).join("") || `<div class="empty">No surah matches “${esc(S.sq)}”.</div>`}
   </div>
-  <footer class="src">Arabic text: IndoPak script as published by quran.com, set in the Al Qalam IndoPak Qur'an font; Madani (Uthmani) script from the Noble Qur'an Encyclopedia (quranenc.com). Base English translation: Saheeh International (via tanzil.net).</footer>`;
+  <footer class="src">Arabic text: IndoPak script as published by quran.com, set in the Al Qalam IndoPak Qur'an font; Madani (Uthmani) script from the Noble Qur'an Encyclopedia (quranenc.com). Translations: English, Saheeh International (via tanzil.net); Bangla, Taisirul Quran (via the Quranic Universal Library); Urdu, Sayyid Abul Aʿla Maududi, Tafheem-ul-Quran (via tanzil.net).</footer>`;
 }
 
 function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] || IDX.lessons[k]); }
@@ -709,7 +803,7 @@ function viewSurah(){
   const su = surahOf(S.surah);
   const bism = arText(1,1);
   const showBism = su.n !== 1 && su.n !== 9;
-  const ayahs = su.v.map((v,i) => ({a:i+1, ar:arText(su.n,i+1), en:v[1]})).filter(x => !S.onlyMarked || hasMarks(su.n, x.a));
+  const ayahs = su.v.map((v,i) => ({a:i+1, ar:arText(su.n,i+1), en:baseTr(su.n,i+1)})).filter(x => !S.onlyMarked || hasMarks(su.n, x.a));
   const prev = su.n > 1 ? surahOf(su.n-1) : null, next = su.n < 114 ? surahOf(su.n+1) : null;
   return `${statusBar()}
   <div class="shead">
@@ -746,10 +840,10 @@ function ayahHTML(s, x){
     <div class="anum">${s}:${x.a}${dots.length?`<div class="dots" aria-hidden="true">${dots.map(d=>`<span class="dot ${d}"></span>`).join("")}</div>`:""}</div>
     <div class="abody">
       <p class="ar" lang="ar" dir="rtl">${esc(x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span></p>
-      <p class="tr${rev?" revised":""}">${esc(rev ? rev.text : x.en)}</p>
-      ${rev ? `<div class="revline"><span class="chip rev" title="This translation has been revised from Saheeh International">Translation revised</span>
+      <p class="tr${rev?" revised":""}" ${trAttrs()}>${esc(rev ? rev.text : x.en)}</p>
+      ${rev ? `<div class="revline"><span class="chip rev" title="This translation has been revised from ${TR_NAME[S.trLang]}">Translation revised</span>
         <button type="button" class="btn ghost small" data-compare="${k}">${S.compare.has(k)?"Hide original":"Compare with original"}</button></div>
-        ${S.compare.has(k) ? `<div class="orig"><b>Saheeh International</b>${esc(x.en)}${rev.note?`<div style="margin-top:8px;color:var(--ink)"><b>Reason for revision</b>${esc(rev.note)}</div>`:""}</div>` : ""}` : ""}
+        ${S.compare.has(k) ? `<div class="orig" ${trAttrs()}><b>${TR_NAME[S.trLang]}</b>${esc(x.en)}${rev.note?`<div style="margin-top:8px;color:var(--ink)"><b>Reason for revision</b>${esc(rev.note)}</div>`:""}</div>` : ""}` : ""}
       ${(notes.length || lessons.length || wlist.length) ? `<div class="marks">
         ${nExp ? `<button type="button" class="chip exp" data-toggle="${k}" aria-expanded="${open}">${nExp} note${nExp>1?"s":""}</button>` : ""}
         ${wlist.map(w => `<button type="button" class="chip wa" data-article="w:${esc(w.id)}" title="Word analysis">Word: <span lang="ar" class="wa-ar">${esc(w.word||"")}</span></button>`).join("")}
@@ -808,7 +902,7 @@ function noteCard(n, withRef){
 function ayahBlock(s, a){
   const v = surahOf(s).v[a-1], rv = S.tr[key(s,a)];
   return `<div class="la"><div class="small muted"><button type="button" class="reflink" data-go="${s}:${a}">${s}:${a} · ${esc(surahOf(s).tl)}</button>${rv?' · <span class="chip rev">Translation revised</span>':""} · <button type="button" class="reflink" data-grammar="${s}:${a}">Grammar</button></div>
-    <p class="ar" lang="ar" dir="rtl">${esc(arText(s,a))} <span class="end">﴿${arDigits(a)}﴾</span></p><p class="tr">${esc(rv?rv.text:v[1])}</p></div>`;
+    <p class="ar" lang="ar" dir="rtl">${esc(arText(s,a))} <span class="end">﴿${arDigits(a)}﴾</span></p><p class="tr" ${trAttrs()}>${esc(trText(s,a))}</p></div>`;
 }
 function viewArticle(){
   const A = S.art || {};
@@ -966,8 +1060,8 @@ function viewNotes(){
       <div class="whead"><span class="chip rev">Translation revised</span>
       <button type="button" class="reflink" data-go="${r.s}:${r.a}">${r.s}:${r.a} · ${esc(surahOf(r.s).tl)}</button><span class="spacer"></span>
       ${S.admin ? `<button type="button" class="btn ghost small" data-edit-tr="${r.s}:${r.a}">Edit</button>` : ""}</div>
-      <p class="tr" style="font-size:15.5px">${esc(r.text)}</p>
-      <div class="orig"><b>Saheeh International</b>${esc(surahOf(r.s).v[r.a-1][1])}${r.note?`<div style="margin-top:8px;color:var(--ink)"><b>Reason for revision</b>${esc(r.note)}</div>`:""}</div>
+      <p class="tr" style="font-size:15.5px" ${trAttrs()}>${esc(r.text)}</p>
+      <div class="orig" ${trAttrs()}><b>${TR_NAME[S.trLang]}</b>${esc(baseTr(r.s, r.a))}${r.note?`<div style="margin-top:8px;color:var(--ink)"><b>Reason for revision</b>${esc(r.note)}</div>`:""}</div>
     </div>`)
   ];
   const any = S.notes.length || Object.keys(S.tr).length;
@@ -1174,7 +1268,7 @@ function drawGrammar(){
   }
   modal(`<div class="row"><h2>Grammar · ${s}:${a} <span class="muted" style="font-weight:400">${esc(surahOf(s).tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
     <p class="ar" lang="ar" dir="rtl" style="margin:0">${esc(arText(s,a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
-    <p class="tr" style="margin:0">${esc(rv?rv.text:v[1])}</p>
+    <p class="tr" style="margin:0" ${trAttrs()}>${esc(trText(s,a))}</p>
     <section><h3 class="gh">Sentence structure <span lang="ar" class="gar">تركيب الجملة والإعراب</span></h3>
       ${M.synErr ? `<p class="muted small">The sentence analysis didn't load. Close this and try again.</p>`
         : !M.syn ? `<p class="muted small">Loading sentence analysis…</p>`
@@ -1601,7 +1695,8 @@ function shareText(kind, it){
   if (isL) for (const r of (it.ranges||[])) for (let a = r.from; a <= r.to && ayahs.length < 5; a++) ayahs.push([r.s, a]);
   else ayahs.push([it.s, it.a]);
   const total = isL ? (it.ranges||[]).reduce((c,r)=>c + r.to - r.from + 1, 0) : 1;
-  const ay = ayahs.map(([s,a]) => { const rv = S.tr[key(s,a)]; return `﴿${S.Q[s-1].v[a-1][0]}﴾ (${s}:${a})\n“${rv ? rv.text : S.Q[s-1].v[a-1][1]}”`; }).join("\n\n");
+  const tl = TR_LANGS.includes(b.lang) && (b.lang === "en" || S.TRX[b.lang]) ? b.lang : S.trLang;
+  const ay = ayahs.map(([s,a]) => `﴿${S.Q[s-1].v[a-1][0]}﴾ (${s}:${a})\n“${trText(s, a, tl)}”`).join("\n\n");
   const refs = isL ? (it.ranges||[]).map(rangeLabel).join(", ") : `${it.s}:${it.a}`;
   const head = isQ ? `❓ ${t.text}` : `*${t.text || "Untitled"}*`;
   return [
@@ -1646,11 +1741,11 @@ function modal(html, cls){ const sc = $(".backdrop")?.scrollTop || 0; $("#modal-
 function openTrEditor(k){
   const [s,a] = k.split(":").map(Number);
   const v = surahOf(s).v[a-1], rev = S.tr[k];
-  M = {type:"tr", s, a};
-  modal(`<h2>${rev?"Edit revised translation":"Revise translation"} · ${s}:${a}</h2>
+  M = {type:"tr", s, a, l: S.trLang};
+  modal(`<h2>${rev?"Edit revised translation":"Revise translation"} · ${s}:${a} · ${LNAME_EN[M.l]}</h2>
     <p class="ref-ar" lang="ar" dir="rtl">${esc(arText(s,a))}</p>
-    <div class="orig" style="max-width:none"><b>Saheeh International (original)</b>${esc(v[1])}</div>
-    <div class="field"><label for="tr-text">Your translation</label><textarea id="tr-text" rows="4">${esc(rev?rev.text:v[1])}</textarea></div>
+    <div class="orig" style="max-width:none" ${trAttrs(M.l)}><b>${TR_NAME[M.l]} (original)</b>${esc(baseTr(s,a,M.l))}</div>
+    <div class="field"><label for="tr-text">Your ${LNAME_EN[M.l]} translation</label><textarea id="tr-text" rows="4" ${trAttrs(M.l)}>${esc(rev?rev.text:baseTr(s,a,M.l))}</textarea></div>
     <div class="field"><label for="tr-note">Reason for the revision (optional, shown to readers)</label><textarea id="tr-note" rows="2" style="min-height:60px">${esc(rev?.note||"")}</textarea></div>
     <div id="m-confirm"></div><div class="err" id="m-err"></div>
     <div class="foot">
@@ -1690,6 +1785,241 @@ const FMT = [
   ["q","Quote","> ","line"], ["ar","Arabic / Qur'an quote",">> ","line"], ["ul","• List","- ","line"], ["ol","1. List","1. ","line"],
   ["fn","Footnote","","fn"], ["link","Link","","link"], ["hr","Divider","\n---\n","insert"]
 ];
+/* ---------- word usage across the Qur'an (concordance by lemma or root, from the Quranic Arabic Corpus data) ---------- */
+let CONC = null; const GD = {};
+function loadConc(){ if (!CONC) CONC = fetch("conc.json").then(r => { if (!r.ok) throw 0; return r.json(); }).catch(e => { CONC = null; throw e; }); return CONC; }
+const decCode = c => [Math.floor(c/1e6), Math.floor(c/1000) % 1000, c % 1000];
+const stripHarakat = t => t.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, "").replace(/[ٱأإآ]/g, "ا");
+function usageKey(){ const it = M.it; return (M.useScope || "lemma") + "|" + (M.useScope === "root" ? it.root : it.lemma); }
+async function usagePrepare(){
+  const it = M.it, k = usageKey();
+  if (!it.lemma || (M.use && M.use.key === k)) return;
+  const U = M.use = {key: k, scope: M.useScope || "lemma", state: "loading", rows: [], form: null, shown: 40, loaded: 0, need: 0};
+  try {
+    const C = await loadConc();
+    const lemmas = U.scope === "root" && it.root ? (C.R[it.root] || [it.lemma]) : [it.lemma];
+    const codes = [].concat(...lemmas.map(l => C.L[l] || [])).sort((x, y) => x - y);
+    const surahs = [...new Set(codes.map(c => decCode(c)[0]))];
+    U.need = surahs.length;
+    await Promise.all(surahs.map(sn => loadGrammar(sn).then(d => { GD[sn] = d; U.loaded++; if (M && M.use === U && U.loaded % 10 === 0) redrawUsage(); })));
+    if (!M || M.use !== U) return;
+    U.rows = codes.map(c => {
+      const [s0, a0, w0] = decCode(c), wd = GD[s0][a0-1][w0-1];
+      const surf = wd[2].map(x => x[0]).join("");
+      return {s: s0, a: a0, w: w0, surf, form: stripHarakat(surf), gloss: wd[1], mk: surahOf(s0).t === "meccan"};
+    });
+    const f = {}; U.rows.forEach(r => f[r.form] = (f[r.form] || 0) + 1);
+    U.forms = Object.entries(f).sort((x, y) => y[1] - x[1]);
+    U.state = "ok";
+  } catch { if (M && M.use === U) U.state = "failed"; }
+  redrawUsage();
+}
+function redrawUsage(){ if (M && M.type === "word") { captureFields(); drawWriteEditor(); } }
+function markWord(s, a, w){
+  const toks = arText(s, a).split(/\s+/), wc = (GD[s] && GD[s][a-1]) ? GD[s][a-1].length : 0;
+  const isWordTok = t => t && !/^[\u06D6-\u06ED\u06DE\u06E9]+$/.test(t);
+  let n = 0; const out = toks.map(t => { if (!isWordTok(t)) return esc(t); n++; return n === w ? `<mark>${esc(t)}</mark>` : esc(t); });
+  if (n === wc) return out.join(" ");
+  // The script's word division differs from the corpus here: find the word by its letters instead.
+  const sk = t => t.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640\u08D3-\u08FFاٱأإآءىئؤۦيیوۥ]/g, "").replace(/ک/g, "ك").replace(/[ۃة]/g, "ه").replace(/[^\u0621-\u064A\u0671-\u06D3]/g, "");
+  const want = sk(GD[s][a-1][w-1][2].map(x => x[0]).join(""));
+  const hits = toks.map((t, i) => sk(t) === want ? i : -1).filter(i => i >= 0);
+  if (!hits.length || !want) return esc(toks.join(" "));
+  const best = hits.reduce((x, y) => Math.abs(y - (w-1)) < Math.abs(x - (w-1)) ? y : x);
+  return toks.map((t, i) => i === best ? `<mark>${esc(t)}</mark>` : esc(t)).join(" ");
+}
+function usagePanel(){
+  const it = M.it;
+  if (!it.lemma) return "";
+  const scope = M.useScope || "lemma";
+  const head = `<button type="button" class="btn small" data-m="use-open" aria-expanded="${!!M.useOpen}">${M.useOpen ? "Hide" : "Show"} where this word occurs in the Qur'an</button>`;
+  if (!M.useOpen) return `<div style="margin-top:8px">${head}</div>`;
+  const U = M.use;
+  let body;
+  if (!U || U.state === "loading") body = `<p class="small muted" style="margin:0">Finding every occurrence…${U && U.need ? ` (${U.loaded} of ${U.need} surahs read)` : ""}</p>`;
+  else if (U.state === "failed") body = `<p class="small muted" style="margin:0">The word data didn't load. Close the editor and try again.</p>`;
+  else {
+    const rows = U.form ? U.rows.filter(r => r.form === U.form) : U.rows;
+    const ns = new Set(rows.map(r => r.s)).size, mk = rows.filter(r => r.mk).length;
+    body = `<div class="ustats">${rows.length.toLocaleString()} occurrence${rows.length===1?"":"s"} in ${ns} surah${ns===1?"":"s"} · ${mk} in Makki surahs, ${rows.length - mk} in Madani${U.form ? " · filtered to one form" : ""}</div>
+      ${U.forms.length > 1 ? `<div class="uforms" aria-label="Forms">${U.forms.slice(0, 24).map(([f, c]) => `<button type="button" class="uform" lang="ar" dir="rtl" data-m="use-form" data-v="${esc(f)}" aria-pressed="${U.form === f}">${esc(f)}<small>×${c}</small></button>`).join("")}${U.forms.length > 24 ? `<span class="small muted">+${U.forms.length - 24} more forms</span>` : ""}</div>` : ""}
+      ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="use-ai" ${U.busy||M.busy?"disabled":""}>Analyse usage with AI</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}
+        <span class="small muted">${esc(U.status || `Groups ${U.form ? "these" : "all"} ${rows.length.toLocaleString()} occurrences by sense and context, and adds the result to the ${LNAME_EN[it.src]} text for you to review.${rows.length > 1200 ? " That is too many for one analysis: choose one form above first." : ""}`)}</span></div>
+        <div class="uask"><label class="flabel" for="use-q">Ask something specific about this word's usage</label>
+          <textarea id="use-q" rows="2" placeholder="e.g. Where is it used for prophets and where for ordinary people? Is it ever used in a negative sense? Write a paragraph comparing its use in 2:124 and 14:40.">${esc(U.q || "")}</textarea>
+          <div class="row"><button type="button" class="btn" data-m="use-ask" ${U.busy||M.busy?"disabled":""}>Ask</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}<span class="small muted" id="use-ask-status">${esc(U.askStatus || `Answers from the ${rows.length.toLocaleString()} occurrences shown${(it.body[it.src]||"").trim() ? ", with your current text as context" : ""}.`)}</span></div>
+          ${U.answer != null ? `<div class="uans prose w" lang="${it.src}" dir="${RTL[it.src]?"rtl":"ltr"}" id="use-ans">${renderDoc(U.answer, it.src, "ua").html}</div>
+            ${!U.busy ? `<div class="row"><button type="button" class="btn primary small" data-m="use-add">Add to the ${LNAME_EN[it.src]} text</button><button type="button" class="btn small" data-m="use-discard">Discard</button></div>` : ""}` : ""}
+        </div>` : ""}
+      <div class="ulist">${rows.slice(0, U.shown).map(r => `<div class="urow${r.s===it.s&&r.a===it.a?" cur":""}"><span class="uref">${r.s}:${r.a}<em>${r.mk?"Makki":"Madani"}${r.s===it.s&&r.a===it.a?" · this ayah":""}</em></span>
+          <p class="uar" lang="ar" dir="rtl">${markWord(r.s, r.a, r.w)}</p>
+          <span class="ugloss"><b lang="ar" class="gar">${esc(r.surf)}</b> · ${esc(r.gloss)}</span>
+          <p class="tr utr" ${trAttrs()}>${esc(trText(r.s, r.a))}</p></div>`).join("")}
+        ${rows.length > U.shown ? `<p style="margin:8px 0"><button type="button" class="btn small" data-m="use-more">Show more (${(rows.length - U.shown).toLocaleString()} left)</button></p>` : ""}</div>`;
+  }
+  return `<div class="usage" style="margin-top:8px"><div class="uhead">${head}
+    <div class="seg" role="group" aria-label="Search by"><button type="button" data-m="use-scope" data-v="lemma" aria-pressed="${scope==="lemma"}">Same lemma <span lang="ar" class="gar">${esc(it.lemma)}</span></button>${it.root ? `<button type="button" data-m="use-scope" data-v="root" aria-pressed="${scope==="root"}">Whole root <span lang="ar" class="gar">${esc(spaced(it.root))}</span></button>` : ""}</div></div>
+    ${body}</div>`;
+}
+async function usageAI(){
+  const U = M.use, it = M.it;
+  if (!U || U.state !== "ok" || U.busy || !S.sample) return;
+  const rows = U.form ? U.rows.filter(r => r.form === U.form) : U.rows;
+  if (rows.length > 1200) { U.status = "Too many occurrences for one analysis. Choose one form above first."; redrawUsage(); return; }
+  const L = it.src, tl = TR_LANGS.includes(L) ? L : "en";
+  if (tl !== "en") await loadTrx(tl);
+  const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
+  const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
+  const ns = new Set(rows.map(r => r.s)).size, mk = rows.filter(r => r.mk).length;
+  const forms = {}; rows.forEach(r => forms[r.form] = (forms[r.form]||0) + 1);
+  const what = `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`;
+  const scopeTxt = U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`;
+  const stats = `${rows.length} places in ${ns} surahs; ${mk} in Makki surahs and ${rows.length - mk} in Madani surahs.${U.form ? ` (Only the form ${U.form} is included.)` : ""} Forms and counts: ${Object.entries(forms).sort((x,y)=>y[1]-x[1]).map(([f,c]) => `${f} ×${c}`).join(", ")}.`;
+  const task = `Write a section for a word analysis, in ${guide[L]}, beginning with the heading "## ${L==="en"?"Usage across the Qur'an":L==="bn"?"কুরআনে শব্দটির ব্যবহার":L==="ar"?"استعمال الكلمة في القرآن":"قرآن میں لفظ کا استعمال"}".
+1. A short overview: how often and where the word occurs, and the forms it takes.
+2. Group the occurrences by the sense or context in which the word is used. For each group: a "### " heading naming the sense; two to four sentences on what the word conveys there, what it is paired or contrasted with, and who or what it describes; then the references of that group, written like 2:255, all of them.
+3. Patterns worth a researcher's attention: forms or constructions limited to certain contexts, Makki and Madani differences, recurring collocations.
+4. Close with how the use in ${it.s}:${it.a} relates to these groups.
+
+Rules:
+- Use only the occurrences given. Do not cite any ayah that is not in the data.
+- When you quote Arabic from an ayah, copy it exactly from the data, on its own line starting with ">> ".
+- When you give the meaning of an ayah, use the ${LNAME_EN[tl]} translation given in the data, word for word.
+- Base every observation on the texts given. Where a sense is uncertain, say so. Do not attribute views to scholars or commentators.
+- Use "## ", "### ", "- " and **bold** only. Reply with the section only.`;
+  U.busy = true; U.ctl = []; U.status = "Reading the occurrences…"; redrawUsage();
+  const run = async (prompt) => { const ctl = new AbortController(); U.ctl.push(ctl); const r = await S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex"}); return r; };
+  try {
+    let out;
+    if (rows.length <= 140) {
+      const r = await run(`You are helping a researcher of the Qur'an write a linguistic analysis of ${what}. Below is ${scopeTxt} in the Qur'an: ${stats}
+Each line gives the reference, Makki or Madani, the word as it appears there, its word-by-word gloss, the ayah in Arabic, and a translation.
+
+${task}
+
+Data:
+${rows.map(line).join("\n")}`);
+      out = r.text; if (r.truncated) U.warn = "The analysis was cut short. Check its ending.";
+    } else {
+      const chunks = []; for (let i = 0; i < rows.length; i += 80) chunks.push(rows.slice(i, i + 80));
+      let done = 0, next = 0;
+      const notes = new Array(chunks.length);
+      const one = async (ch, i) => {
+        const r = await run(`You are helping a researcher of the Qur'an study ${what}. Below is part ${i+1} of ${chunks.length} of ${scopeTxt} in the Qur'an. Each line gives the reference, Makki or Madani, the word, its gloss, the ayah in Arabic and a translation.
+
+Group these occurrences by the sense or context in which the word is used. For each group write: a short label; one or two sentences on what the word conveys there and what it is paired or contrasted with; and every reference in the group, written like 2:255. Then list any notable collocations or constructions. Use only the data given. Write in English, as plain notes.
+
+Data:
+${ch.map(line).join("\n")}`);
+        done++; U.status = `Read ${done} of ${chunks.length} parts…`; redrawUsage();
+        notes[i] = r.text;
+      };
+      await Promise.all([0,1,2].map(async () => { while (next < chunks.length) { const i = next++; await one(chunks[i], i); } }));
+      U.status = "Combining the parts…"; redrawUsage();
+      const cur = rows.find(r => r.s === it.s && r.a === it.a);
+      const r = await run(`You are helping a researcher of the Qur'an write a linguistic analysis of ${what}. The ${rows.length} occurrences (${scopeTxt}) were read in ${chunks.length} parts, and each part was grouped by sense. Merge the groups that describe the same sense, keeping every reference. ${stats}
+
+${task}
+- The Arabic of an ayah is not repeated here; quote Arabic only from the line for ${it.s}:${it.a} below.
+
+The ayah being analysed:
+${cur ? line(cur) : `${it.s}:${it.a}`}
+
+Grouped notes from the parts:
+${notes.map((n, i) => `--- Part ${i+1} ---\n${n}`).join("\n\n")}`);
+      out = r.text; if (r.truncated) U.warn = "The analysis was cut short. Check its ending.";
+    }
+    if (!M || M.use !== U) return;
+    captureFields();
+    const body = (it.body[L] || "").trim();
+    it.body[L] = (body ? body + "\n\n" : "") + out.trim();
+    M.tab = L; M.preview = false;
+    U.status = (U.warn ? U.warn + " " : "") + `Added at the end of the ${LNAME_EN[L]} text. Review it before saving.`;
+    U.added = true;
+  } catch (e) {
+    if (!M || M.use !== U) return;
+    U.status = e?.code === "cancelled" ? "Stopped." : e?.code === "prompt_too_large" ? "Too much text for one analysis. Choose one form above and try again." : aiErr(e?.code, L).replace(/ draft/g, " analysis");
+  }
+  U.busy = false; U.ctl = [];
+  drawWriteEditor();
+  if (U.added) { U.added = false; saveLocalDraft(); }
+}
+async function usageAsk(){
+  const U = M.use, it = M.it;
+  if (!U || U.state !== "ok" || U.busy || !S.sample) return;
+  const q = (U.q || "").trim();
+  if (!q) { U.askStatus = "Type your request first."; drawWriteEditor(); return; }
+  const rows = U.form ? U.rows.filter(r => r.form === U.form) : U.rows;
+  if (rows.length > 1200) { U.askStatus = "Too many occurrences to read at once. Choose one form above first."; drawWriteEditor(); return; }
+  const L = it.src, tl = TR_LANGS.includes(L) ? L : "en";
+  if (tl !== "en") await loadTrx(tl);
+  const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
+  const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
+  const what = `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`;
+  const scopeTxt = (U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`) + (U.form ? ` (only the form ${U.form})` : "");
+  const draft = (it.body[L] || "").trim();
+  const ctxDraft = draft ? `\n\nThe researcher's current text of the analysis, for context (do not repeat it):\n"""\n${draft.length > 20000 ? draft.slice(0, 20000) + "\n[…]" : draft}\n"""` : "";
+  const rules = `Answer the request in ${guide[L]}.
+- If the request asks you to write something, write it ready to paste into the analysis. Use "## " or "### " headings, "- " lists and **bold** only where they help. Quote Arabic only by copying it exactly from the data, on its own line starting with ">> ".
+- Use only the occurrences given. Do not cite any ayah that is not in the data; give references like 2:255.
+- When you give the meaning of an ayah, use the ${LNAME_EN[tl]} translation given in the data, word for word.
+- Base everything on the texts given. If the data does not answer the request, say so plainly. Do not attribute views to scholars or commentators.
+- Reply with the answer only.`;
+  U.busy = true; U.ctl = []; U.answer = ""; U.askStatus = "Working on it…"; drawWriteEditor();
+  const run = (prompt, onText) => { const ctl = new AbortController(); U.ctl.push(ctl); return S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex", onText}); };
+  const stream = ({text}) => { if (M && M.use === U) { U.answer = text; const el = $("#use-ans"); if (el) el.innerHTML = renderDoc(text, L, "ua").html; } };
+  const setSt = t => { U.askStatus = t; const st = $("#use-ask-status"); if (st) st.textContent = t; };
+  try {
+    let r;
+    if (rows.length <= 140) {
+      r = await run(`You are helping a researcher of the Qur'an with ${what}. Below is ${scopeTxt} in the Qur'an (${rows.length} places). Each line gives the reference, Makki or Madani, the word as it appears there, its word-by-word gloss, the ayah in Arabic, and a translation.${ctxDraft}
+
+The researcher's request:
+"""
+${q}
+"""
+
+${rules}
+
+Data:
+${rows.map(line).join("\n")}`, stream);
+    } else {
+      const chunks = []; for (let i = 0; i < rows.length; i += 80) chunks.push(rows.slice(i, i + 80));
+      const notes = new Array(chunks.length); let next = 0, done = 0;
+      await Promise.all([0,1,2].map(async () => { while (next < chunks.length) { const i = next++;
+        const x = await run(`A researcher of the Qur'an is studying ${what} and asks:
+"""
+${q}
+"""
+Below is part ${i+1} of ${chunks.length} of ${scopeTxt}. From this part only, extract everything relevant to the request: the relevant references (written like 2:255), what each shows, and short Arabic phrases copied exactly where they matter. If nothing in this part is relevant, reply "Nothing relevant." Write in English, as plain notes. Use only the data given.
+
+Data:
+${chunks[i].map(line).join("\n")}`);
+        notes[i] = x.text; done++; setSt(`Read ${done} of ${chunks.length} parts…`); } }));
+      setSt("Writing the answer…");
+      r = await run(`You are helping a researcher of the Qur'an with ${what}. All ${rows.length} places (${scopeTxt}) were read in ${chunks.length} parts, and what is relevant to the request was extracted from each part.${ctxDraft}
+
+The researcher's request:
+"""
+${q}
+"""
+
+${rules}
+- The Arabic of the ayahs is not repeated here; quote Arabic only where the notes copy it.
+
+Notes from the parts:
+${notes.map((n, i) => `--- Part ${i+1} ---\n${n}`).join("\n\n")}`, stream);
+    }
+    if (!M || M.use !== U) return;
+    U.answer = r.text; U.askStatus = (r.truncated ? "The answer was cut short. " : "") + "Review the answer, then add it to your text or discard it.";
+  } catch (e) {
+    if (!M || M.use !== U) return;
+    if (!U.answer) U.answer = null;
+    U.askStatus = e?.code === "cancelled" ? "Stopped." : e?.code === "prompt_too_large" ? "Too much text to read at once. Choose one form above and try again." : aiErr(e?.code, L).replace(/ draft/g, " answer");
+  }
+  U.busy = false; U.ctl = [];
+  captureFields(); drawWriteEditor();
+}
 function drawWriteEditor(){
   const it = M.it, isLesson = M.type === "lesson", isWord = M.type === "word", isQ = false;
   const [s,a] = (!isLesson && M.ref && parseRefs(M.ref)?.length===1) ? [parseRefs(M.ref)[0].s, parseRefs(M.ref)[0].from] : [0,0];
@@ -1715,7 +2045,7 @@ function drawWriteEditor(){
       ${!s ? `<p class="small muted" style="margin:0">Enter the ayah first.</p>`
         : !M.wordList?.words ? `<p class="small muted" style="margin:0">Loading the words of ${s}:${a}…</p>`
         : `<div class="gstrip" lang="ar" dir="rtl">${M.wordList.words.map((w, i) => `<button type="button" class="gchip" data-m="pick-word" data-v="${i+1}" aria-pressed="${it.w === i+1 && it.s === s && it.a === a}">${esc(w[2].map(x=>x[0]).join(""))}</button>`).join("")}</div>
-           ${it.w && it.s === s && it.a === a ? `<p class="small" style="margin:4px 0 0">Selected: <b lang="ar" class="gar" style="font-size:18px">${esc(it.word)}</b>${it.root?` · root <b lang="ar" class="gar">${esc(spaced(it.root))}</b>`:""}${it.lemma?` · lemma <b lang="ar" class="gar">${esc(it.lemma)}</b>`:""}${it.pos?` · ${esc(it.pos)}`:""}</p>` : ""}`}
+           ${it.w && it.s === s && it.a === a ? `<p class="small" style="margin:4px 0 0">Selected: <b lang="ar" class="gar" style="font-size:18px">${esc(it.word)}</b>${it.root?` · root <b lang="ar" class="gar">${esc(spaced(it.root))}</b>`:""}${it.lemma?` · lemma <b lang="ar" class="gar">${esc(it.lemma)}</b>`:""}${it.pos?` · ${esc(it.pos)}`:""}</p>${usagePanel()}` : ""}`}
     </div>` : ""}
     <div class="row"><label class="flabel" for="w-src">I am writing in</label>
       <select id="w-src" style="width:auto">${LANGS.map(l=>`<option value="${l}" ${it.src===l?"selected":""}>${LNAME_EN[l]}</option>`).join("")}</select></div>
@@ -1754,6 +2084,7 @@ function captureFields(){
   if (r) M.ref = r.value;
   if (g) it.tags = g.value.split(/[,،]/).map(x=>x.trim().replace(/^#/,"")).filter(Boolean);
   if (src) it.src = src.value;
+  const uq = $("#use-q"); if (uq && M.use) M.use.q = uq.value;
   const cs = $("#w-cat"), nc = $("#w-newcat");
   if (cs) it.cat = cs.value;
   if (nc) M.catNew = nc.value;
@@ -1814,6 +2145,28 @@ async function aiDraft(force){
   };
   const done = [];
   M.ctl = [];
+  // Ayahs this write-up touches: its own ayah or ranges, plus every reference such as 2:255 or 2:83-84 in the source text.
+  const refAyahs = [], seenRef = new Set();
+  const addRef = (s, a) => { const k = key(s,a); if (refAyahs.length < 80 && validRef(s,a) && !seenRef.has(k)) { seenRef.add(k); refAyahs.push([s,a]); } };
+  if (it.s && it.a) addRef(+it.s, +it.a);
+  if (M.s && M.a) addRef(+M.s, +M.a);
+  for (const r of (it.ranges||[])) for (let a = r.from; a <= r.to; a++) addRef(r.s, a);
+  const srcAll = [it.title[src], it.summary[src], it.body[src]].join("\n");
+  for (const m of srcAll.matchAll(/(?<![\d:])(\d{1,3}):(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?(?![\d:])/g)) {
+    const s0 = +m[1], a0 = +m[2], a1 = m[3] ? Math.min(+m[3], a0 + 30) : a0;
+    for (let a = a0; a <= a1; a++) addRef(s0, a);
+  }
+  await Promise.all(targets.filter(l => TR_LANGS.includes(l)).map(loadTrx));
+  const trBlock = l => {
+    if (!TR_LANGS.includes(l) || !refAyahs.length || (l !== "en" && !S.TRX[l])) return "";
+    const lines = refAyahs.map(([s,a]) => `${s}:${a} — ${trText(s, a, l)}`).join("\n");
+    return `
+- Wherever the text gives the meaning of an ayah (for example the rendering that follows an Arabic quotation, or a quoted phrase of an ayah), do not translate the source's rendering yourself. Use the ${LNAME_EN[l]} translation of that ayah given in the list below (${TR_NAME[l]}${Object.keys(S.trAll[l]||{}).length ? ", including the platform's own revisions" : ""}), word for word. If the source renders only part of an ayah, use the matching part of that wording. Keep the ayah reference that follows it.
+
+${LNAME_EN[l]} translation of the ayahs referred to:
+${lines}
+`;
+  };
   await Promise.all(targets.map(async l => {
     const ctl = new AbortController(); M.ctl.push(ctl);
     const prompt = `Translate ${kindWord} from ${LNAME_EN[src]} into ${guide[l]}.
@@ -1824,7 +2177,7 @@ Rules:
 - Keep ayah references such as 2:255 exactly as written.
 - Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links.
 - Keep footnote markers such as [^1] exactly where they are, and translate the footnote lines that start with "[^1]: " while keeping that marker at the start.
-- Transliterated Arabic terms may be kept where a writer in that language would keep them.
+- Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}
 
 Reply in exactly this form and nothing else:
 TITLE: <the translated title on one line>
@@ -1933,9 +2286,12 @@ document.addEventListener("click", async (ev) => {
   const d = t.dataset;
   if (t.id === "brand") return go("surahs");
   if (d.nav) return go(d.nav);
+  if ("goback" in d) return goBack();
+  if ("gobackX" in d) { S.ret = null; return drawBackPill(); }
   if (d.script) { S.script = d.script; store.set("aba.script", d.script); if (d.script === "indopak" && S.ipState === "failed") S.ipState = "idle"; return render(); }
   if (d.qsize) { S.qscale = Math.round(Math.min(1.6, Math.max(0.8, S.qscale + (+d.qsize) * 0.1)) * 10) / 10; store.set("aba.qscale", String(S.qscale)); applyQFont(); return; }
   if (d.lang) { S.lang = d.lang; store.set("aba.lang", d.lang); return render(); }
+  if (d.trlang) { S.trLang = d.trlang; store.set("aba.trlang", d.trlang); S.tr = S.trAll[d.trlang]; S.compare.clear(); loadTrx(d.trlang); reindex(); return render(); }
   if (d.surah) return go("surah", {s:+d.surah});
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.compare) { S.compare.has(d.compare) ? S.compare.delete(d.compare) : S.compare.add(d.compare); return render(); }
@@ -2034,17 +2390,17 @@ document.addEventListener("click", async (ev) => {
   if (M.type === "tr") {
     if (act === "tr-save") {
       const text = $("#tr-text").value.trim(), note = $("#tr-note").value.trim();
-      const orig = surahOf(M.s).v[M.a-1][1];
-      const ref = S.db.collection("translations").doc(`${M.s}-${M.a}`);
+      const orig = baseTr(M.s, M.a, M.l);
+      const ref = S.db.collection("translations").doc(trDocId(M.s, M.a, M.l));
       try {
         if (!text || text === orig) { await ref.delete(); }
-        else await ref.set({s:M.s, a:M.a, text, note, updatedAt: Date.now()});
+        else await ref.set(Object.assign({s:M.s, a:M.a, text, note, updatedAt: Date.now()}, M.l === "en" ? {} : {lang: M.l}));
         const k = key(M.s,M.a); closeModal(); toast(text && text!==orig ? "Translation saved" : "Original translation restored"); S.compare.delete(k); render();
       } catch(e){ $("#m-err").textContent = dbErr(e); }
       return;
     }
-    if (act === "tr-revert") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Remove your revision and show Saheeh International again?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="tr-revert-yes">Restore original</button></div>`; return; }
-    if (act === "tr-revert-yes") { try { await S.db.collection("translations").doc(`${M.s}-${M.a}`).delete(); closeModal(); toast("Original translation restored"); } catch(e){ $("#m-err").textContent = dbErr(e); } return; }
+    if (act === "tr-revert") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Remove your revision and show ${TR_NAME[M.l]} again?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="tr-revert-yes">Restore original</button></div>`; return; }
+    if (act === "tr-revert-yes") { try { await S.db.collection("translations").doc(trDocId(M.s, M.a, M.l)).delete(); closeModal(); toast("Original translation restored"); } catch(e){ $("#m-err").textContent = dbErr(e); } return; }
     if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
     return;
   }
@@ -2053,8 +2409,18 @@ document.addEventListener("click", async (ev) => {
     const i = +d.v, w = M.wordList.words[i-1], segs = w[2].map(decodeSeg);
     const stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0];
     Object.assign(M.it, {s: M.wordList.s, a: M.wordList.a, w: i, word: w[2].map(x=>x[0]).join(""), root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""});
+    if (M.use && !M.use.busy) M.use = null;
     drawWriteEditor(); return;
   }
+  if (act === "use-open") { captureFields(); M.useOpen = !M.useOpen; if (M.useOpen) usagePrepare(); drawWriteEditor(); return; }
+  if (act === "use-scope") { captureFields(); if (M.use?.busy) return; M.useScope = d.v; M.use = null; usagePrepare(); drawWriteEditor(); return; }
+  if (act === "use-form") { captureFields(); if (M.use && !M.use.busy) { M.use.form = M.use.form === d.v ? null : d.v; M.use.shown = 40; } drawWriteEditor(); return; }
+  if (act === "use-more") { captureFields(); if (M.use) M.use.shown += 60; drawWriteEditor(); return; }
+  if (act === "use-ai") { captureFields(); usageAI(); return; }
+  if (act === "use-ask") { captureFields(); usageAsk(); return; }
+  if (act === "use-add") { captureFields(); const U = M.use, L = M.it.src; if (U && U.answer) { const b = (M.it.body[L] || "").trim(); M.it.body[L] = (b ? b + "\n\n" : "") + U.answer.trim(); U.answer = null; U.askStatus = `Added at the end of the ${LNAME_EN[L]} text.`; M.tab = L; M.preview = false; drawWriteEditor(); saveLocalDraft(); } return; }
+  if (act === "use-discard") { captureFields(); if (M.use) { M.use.answer = null; M.use.askStatus = ""; } drawWriteEditor(); return; }
+  if (act === "use-stop") { (M.use?.ctl || []).forEach(c => c.abort()); return; }
   if (act === "tab") { captureFields(); M.tab = d.v; M.err=""; drawWriteEditor(); ($("#w-body")||$("#w-title")).focus(); return; }
   if (act === "view") { captureFields(); M.preview = d.v === "preview"; drawWriteEditor(); return; }
   if (act === "fmt") { applyFmt(d.v); saveLocalDraft(); return; }
@@ -2121,6 +2487,7 @@ async function exportData(){
 /* ---------- boot ---------- */
 fromHash();
 render();
+loadTrx(S.trLang);
 fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q => { S.Q = q; render(); })
   .catch(() => { $("#app").innerHTML = `<div class="empty"><b>The Qur'an text didn't load</b>Reload the page to try again.</div>`; });
 
@@ -2137,8 +2504,7 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
   const fail = () => { S.dbState = "none"; render(); };
   let first = {tr:true, notes:true, lessons:true};
   db.collection("translations").onSnapshot(snap => {
-    const m = {}; snap.docs.forEach(d => { const v = d.data(); if (v && validRefSafe(v.s, v.a)) m[key(v.s,v.a)] = v; });
-    S.tr = m; if (first.tr) { first.tr=false; ready(); } reindex(); render();
+    setTrDocs(snap.docs.map(d => d.data()).filter(Boolean)); if (first.tr) { first.tr=false; ready(); } reindex(); render();
   }, fail);
   db.collection("notes").onSnapshot(snap => {
     S.notes = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(n => validRefSafe(n.s, n.a));
@@ -2171,8 +2537,7 @@ async function loadStatic(){
     if (!r.ok) throw 0;
     const d = await r.json();
     S.static = true;
-    const tr = {}; (d.translations || []).forEach(v => { if (validRefSafe(v.s, v.a)) tr[key(v.s, v.a)] = v; });
-    S.tr = tr;
+    setTrDocs(d.translations || []);
     S.notes = (d.notes || []).filter(n => validRefSafe(n.s, n.a));
     S.lessons = d.lessons || [];
     S.words = (d.words || []).filter(w => validRefSafe(w.s, w.a));
