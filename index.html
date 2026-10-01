@@ -494,6 +494,13 @@ function pick(obj, lang, src){
   for (const l of order) if (obj[l] && obj[l].trim()) return {text: obj[l], lang: l, fallback: true};
   return {text:"", lang, fallback:false};
 }
+// Titles fall back only to the language the piece was written in. If the author left the title empty there,
+// no other language's title is used (a word analysis then shows the word itself).
+function pickTitle(obj, lang, src){
+  obj = obj || {};
+  if (src && !(obj[src] || "").trim()) return {text:"", lang, fallback:false};
+  return pick(obj, lang, src);
+}
 /* Article format:
    ## Section  ### Sub-section  #### Minor heading
    >> Qur'an / Arabic quotation block (Quranic script, right-to-left)
@@ -619,7 +626,7 @@ function goRef(ref){
     const y = window.scrollY;
     if (S.view === "article" && S.art) {
       const it = itemOf(S.art.kind, S.art.id);
-      const t = it ? (pick(it.title, S.lang, it.src).text || (S.art.kind === "w" ? it.word : "") || "") : "";
+      const t = it ? (pickTitle(it.title, S.lang, it.src).text || (S.art.kind === "w" ? it.word : "") || "") : "";
       const kindL = S.art.kind === "l" ? "lesson" : S.art.kind === "w" ? "word analysis" : "note";
       S.ret = {view: "article", art: Object.assign({}, S.art), y, label: t ? `Back to “${t.length > 48 ? t.slice(0, 46) + "…" : t}”` : `Back to the ${kindL}`};
     } else if (S.view === "surah") {
@@ -693,7 +700,7 @@ function qfontControls(){
 /* ---------- full screen reading ---------- */
 function focusTitle(){
   if (S.view === "surah") { const su = surahOf(S.surah); return `${su.n}. ${su.tl}`; }
-  if (S.view === "article") { const A = S.art || {}; const it = itemOf(A.kind, A.id); return it ? ((A.kind === "w" && !pick(it.title, S.lang, it.src).text) ? it.word : pick(it.title, S.lang, it.src).text || "Untitled") : ""; }
+  if (S.view === "article") { const A = S.art || {}; const it = itemOf(A.kind, A.id); return it ? ((A.kind === "w" && !pickTitle(it.title, S.lang, it.src).text) ? it.word : pickTitle(it.title, S.lang, it.src).text || "Untitled") : ""; }
   return "";
 }
 function drawFocusBar(){
@@ -847,7 +854,7 @@ function ayahHTML(s, x){
       ${(notes.length || lessons.length || wlist.length) ? `<div class="marks">
         ${nExp ? `<button type="button" class="chip exp" data-toggle="${k}" aria-expanded="${open}">${nExp} note${nExp>1?"s":""}</button>` : ""}
         ${wlist.map(w => `<button type="button" class="chip wa" data-article="w:${esc(w.id)}" title="Word analysis">Word: <span lang="ar" class="wa-ar">${esc(w.word||"")}</span></button>`).join("")}
-        ${lessons.map(l => `<button type="button" class="chip les" data-lesson="${esc(l.id)}">Lesson: ${esc(pick(l.title,S.lang,l.src).text || "Untitled")}</button>`).join("")}
+        ${lessons.map(l => `<button type="button" class="chip les" data-lesson="${esc(l.id)}">Lesson: ${esc(pickTitle(l.title,S.lang,l.src).text || "Untitled")}</button>`).join("")}
       </div>` : ""}
       ${open && notes.length ? `<div class="wlist">${notes.map(n => noteCard(n, false)).join("")}</div>` : ""}
       <div class="admin-bar">
@@ -911,7 +918,7 @@ function viewArticle(){
   if (!it) return `${statusBar()}<p><button type="button" class="btn ghost" data-back>${backLabel}</button></p>` +
     (S.dbState === "loading" ? `<p class="muted">Loading…</p>` : `<div class="empty"><b>This article isn't available</b>It may have been deleted.</div>`);
   const isL = A.kind === "l", isW = A.kind === "w";
-  const t0 = pick(it.title, S.lang, it.src), t = t0.text ? t0 : {text: isW ? (it.word || "") : "", lang: isW ? "ar" : t0.lang}, sm = pick(it.summary, S.lang, it.src), b = pick(it.body, S.lang, it.src);
+  const t0 = pickTitle(it.title, S.lang, it.src), t = t0.text ? t0 : {text: isW ? (it.word || "") : "", lang: isW ? "ar" : t0.lang}, sm = pick(it.summary, S.lang, it.src), b = pick(it.body, S.lang, it.src);
   const doc = renderDoc(b.text, b.lang, "art");
   const dir = RTL[b.lang] ? "rtl" : "ltr";
   const ayahs = [];
@@ -952,7 +959,7 @@ function viewArticle(){
 /* ---------- word analysis ---------- */
 function itemOf(kind, id){ return (kind === "l" ? S.lessons : kind === "w" ? S.words : S.notes).find(x => x.id === id); }
 function wordCardList(w){
-  const t = pick(w.title, S.lang, w.src), sn = snippet(w, 260);
+  const t = pickTitle(w.title, S.lang, w.src), sn = snippet(w, 260);
   return `<div class="wcard">
     <div class="whead"><span class="chip wa">Word analysis</span>
       <button type="button" class="reflink" data-go="${w.s}:${w.a}">${w.s}:${w.a} · ${esc(surahOf(w.s).tl)}</button><span class="spacer"></span>
@@ -1043,7 +1050,7 @@ function viewNotes(){
   const kinds = [["all","Notes and revised translations"],["notes","Notes only"],["revised","Revised translations"]];
   const results = [
     ...items.map(n => {
-      const t = pick(n.title, S.lang, n.src), sn = snippet(n), isQ = n.kind==="question";
+      const t = pickTitle(n.title, S.lang, n.src), sn = snippet(n), isQ = n.kind==="question";
       const long = isLong(pick(n.body, S.lang, n.src).text);
       if (!long && S.openNote.has(n.id)) return noteCard(n, true).replace('<div class="whead">', `<div class="whead"><button type="button" class="btn ghost small" data-open-note="${esc(n.id)}">Collapse</button>`);
       return `<div class="wcard">
@@ -1690,7 +1697,7 @@ function plainFromMd(src){
 }
 function shareText(kind, it){
   const isL = kind === "l", isW = kind === "w", isQ = false;
-  const t0 = pick(it.title, S.lang, it.src), t = t0.text ? t0 : {text: isW ? (it.word || "") : "", lang: "ar"}, sm = pick(it.summary, S.lang, it.src), b = pick(it.body, S.lang, it.src);
+  const t0 = pickTitle(it.title, S.lang, it.src), t = t0.text ? t0 : {text: isW ? (it.word || "") : "", lang: "ar"}, sm = pick(it.summary, S.lang, it.src), b = pick(it.body, S.lang, it.src);
   const ayahs = [];
   if (isL) for (const r of (it.ranges||[])) for (let a = r.from; a <= r.to && ayahs.length < 5; a++) ayahs.push([r.s, a]);
   else ayahs.push([it.s, it.a]);
@@ -1716,7 +1723,7 @@ function openShare(ref){
   const it = itemOf(kind, id);
   if (!it) return;
   const link = shareLink(kind, id), text = shareText(kind, it);
-  const t0 = pick(it.title, S.lang, it.src), t = t0.text ? t0 : {text: it.word || "", lang: "ar"};
+  const t0 = pickTitle(it.title, S.lang, it.src), t = t0.text ? t0 : {text: it.word || "", lang: "ar"};
   M = {type:"share", link, text};
   modal(`<div class="row"><h2>Share</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
     <p class="w" lang="${t.lang}" dir="${RTL[t.lang]?"rtl":"ltr"}" style="margin:0;font:600 17px/1.5 var(--f-text)">${esc(t.text || "Untitled")}</p>
@@ -2179,8 +2186,10 @@ Rules:
 - Keep footnote markers such as [^1] exactly where they are, and translate the footnote lines that start with "[^1]: " while keeping that marker at the start.
 - Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}
 
+- If the source title is "(none)", leave the title empty: write "TITLE:" with nothing after it. Never make up a title.
+
 Reply in exactly this form and nothing else:
-TITLE: <the translated title on one line>
+TITLE: <the translated title on one line, or nothing if the source has none>
 SUMMARY: <the translated summary on one line, or leave empty if the source has none>
 BODY:
 <the translated body>
@@ -2199,6 +2208,7 @@ ${it.body[src] || "(none)"}`;
       }});
       if (!M) return;
       const p = parseDraft(text);
+      if (!(it.title[src] || "").trim()) p.title = "";
       it.title[l] = p.title; it.summary[l] = p.summary; it.body[l] = p.body; it.ai[l] = true; done.push(l);
       if (truncated) M.err = `The ${LNAME_EN[l]} draft was cut short. Check its ending.`;
     } catch (e) {
