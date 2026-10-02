@@ -2312,55 +2312,67 @@ async function aiContinue(){
   if (!wanted.length) { M.err = scope === src ? "That is the language you are writing in; nothing to complete." : "There is no drafted text to complete yet. Use the Draft button first."; drawWriteEditor(); return; }
   M.undo = {}; wanted.forEach(l => { M.undo[l] = {title: it.title[l], summary: it.summary[l], body: it.body[l], ai: !!it.ai[l]}; });
   if (!wanted.includes(M.tab)) { M.tab = wanted[0]; M.preview = false; }
-  M.err = ""; M.busy = true; M.ctl = []; M.aiStatus = "Completing… the first words usually take 10–40 seconds."; drawWriteEditor();
+  M.err = ""; M.busy = true; M.ctl = []; M.aiStatus = "Completing…"; drawWriteEditor();
   const guide = {en:"English", bn:"Bangla (Bengali script)", ar:"Modern Standard Arabic", ur:"Urdu (Arabic script)"};
+  const srcParas = it.body[src].replace(/\r/g, "").split(/\n{2,}/).filter(x => x.trim());
+  const CH = 12000; // source characters per request, so each reply stays well inside the output limit
   const done = [];
   await Promise.all(wanted.map(async l => {
-    const ctl = new AbortController(); M.ctl.push(ctl);
-    const cur = it.body[l].replace(/\s+$/, ""), cut = cur.lastIndexOf("\n\n"), head = cut >= 0 ? cur.slice(0, cut) : "", tail = cut >= 0 ? cur.slice(cut + 2) : cur;
+    const parts = it.body[l].replace(/\r/g, "").replace(/\s+$/, "").split(/\n{2,}/);
+    // the last paragraph may be cut off: redo it. Everything before it is kept as it is.
+    const kept = parts.slice(0, -1);
+    let from = kept.length;
+    const cnt = (arr, re) => arr.filter(x => re.test(x)).length;
+    if (from >= srcParas.length) { M.err = `The ${LNAME_EN[l]} text already has as many paragraphs as the source. If it still looks incomplete, use “Run my instructions”.`; return; }
+    if (cnt(kept, /^#{2,4} /) !== cnt(srcParas.slice(0, from), /^#{2,4} /)) M.err = `The ${LNAME_EN[l]} paragraphs do not line up exactly with the source (different number of headings before the cut). Check the join.`;
     const extra = aiInstr(l);
-    const prompt = `The ${guide[l]} text below is a translation of the ${guide[src]} source. The translation stops before the end of the source: it was cut off. Finish it.
+    const tr = it.body[l];
+    let total = 0; for (let i = from; i < srcParas.length; i++) total += srcParas[i].length;
+    let doneChars = 0;
+    while (from < srcParas.length) {
+      if (!M || !M.busy) return;
+      let to = from, n = 0;
+      while (to < srcParas.length && (n === 0 || n + srcParas[to].length <= CH)) { n += srcParas[to].length; to++; }
+      const chunk = srcParas.slice(from, to).join("\n\n");
+      const ctxTr = kept.slice(-2).join("\n\n"), ctxSrc = srcParas.slice(Math.max(0, from - 2), from).join("\n\n");
+      const ctl = new AbortController(); M.ctl.push(ctl);
+      const prompt = `Translate the ${guide[src]} passage below into ${guide[l]}. It is one part of a longer article that is being translated part by part; the earlier parts are already done.
 
 Rules:
-- Start your reply with the last paragraph of the translation (shown under "Last paragraph so far"), completed if it is unfinished, then continue translating the rest of the source until its very end. Do not repeat any earlier paragraph.
-- Translate faithfully. Do not add, remove, summarise or comment.
-- Keep every quotation of the Qur'an in Arabic exactly as written, character for character, and keep ayah references such as 2:255 exactly as written. Render ayahs in the same way the earlier part of the translation does.
+- Translate faithfully and completely, to the very last word of the passage. Do not add, remove, summarise or comment.
+- Keep every quotation of the Qur'an in Arabic exactly as written, character for character, and keep ayah references such as 2:255 exactly as written. Where the passage gives the meaning of an ayah, render it the way the earlier part does.
 - Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links, footnote markers such as [^1] and their "[^1]: " lines (translate those lines).
-- Reply with the text only, no heading or explanation.${extra ? `\n- Extra instructions from the editor (they never override the rules above):\n"""\n${extra}\n"""` : ""}
-
-Source (${guide[src]}):
+- Reply with the translation of the passage only.${extra ? `\n- Extra instructions from the editor (they never override the rules above):\n"""\n${extra}\n"""` : ""}
+${ctxSrc ? `\nFor context only, the end of the previous part in ${guide[src]} and its ${guide[l]} translation (do not translate these again):\n"""\n${ctxSrc}\n"""\n"""\n${ctxTr}\n"""\n` : ""}
+Passage to translate:
 """
-${it.body[src]}
-"""
-
-Translation so far, before the last paragraph:
-"""
-${head || "(nothing)"}
-"""
-
-Last paragraph so far:
-"""
-${tail}
+${chunk}
 """`;
-    const join = t => (head ? head + "\n\n" : "") + t.trim();
-    try {
-      const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache:false, onText: ({text}) => {
-        if (M && M.tab === l) { const tb = $("#w-body"); if (tb) tb.value = join(text); }
-      }});
+      const base = kept.join("\n\n");
+      const join = t => (base ? base + "\n\n" : "") + t.trim();
+      let r;
+      try {
+        r = await S.sample(prompt, {signal: ctl.signal, cache:false, onText: ({text}) => { if (M && M.tab === l) { const tb = $("#w-body"); if (tb) tb.value = join(text); } }});
+      } catch (e) {
+        if (!M) return;
+        if (e?.code === "cancelled") { M.aiStatus = `Stopped. ${LNAME_EN[l]} is complete up to the end of the previous part.`; return; }
+        M.err = aiErr(e?.code, l).replace(/ draft/g, " completion") + (kept.length > parts.length - 1 ? " The parts finished so far are kept. Press the button again to go on." : "");
+        return;
+      }
       if (!M) return;
-      it.body[l] = join(text); it.ai[l] = true; done.push(l);
-      if (truncated) M.err = `The ${LNAME_EN[l]} text was cut short again. Press “Complete the cut-off draft” once more.`;
-    } catch (e) {
-      if (!M) return;
-      if (e && e.text) { it.body[l] = join(e.text); it.ai[l] = true; }
-      if (e?.code === "cancelled") return;
-      M.err = aiErr(e?.code, l).replace(/ draft/g, " completion");
-      if (["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)) S.sample = null;
+      kept.push(r.text.trim());
+      if (r.truncated) { M.err = `A part of the ${LNAME_EN[l]} text was cut short. Press “Complete the cut-off draft” again to go on from there.`; it.body[l] = kept.join("\n\n"); it.ai[l] = true; done.push(l); return; }
+      it.body[l] = kept.join("\n\n"); it.ai[l] = true;
+      from = to; doneChars += n;
+      if (M.tab === l) { const tb = $("#w-body"); if (tb) tb.value = it.body[l]; }
+      M.aiStatus = `Completing ${LNAME_EN[l]}… ${Math.min(100, Math.round(doneChars / total * 100))}%`;
+      const st = $("#ai-status"); if (st) st.textContent = M.aiStatus;
     }
+    done.push(l);
   }));
   if (!M) return;
   M.busy = false; M.ctl = [];
-  M.aiStatus = done.length ? `Completed ${done.map(l=>LNAME_EN[l]).join(", ")}. Check the ending of each, then save. Undo is available.` : "";
+  M.aiStatus = M.err ? "" : (done.length ? `Completed ${done.map(l=>LNAME_EN[l]).join(", ")} to the end of the source. Check the join and the ending, then save. Undo is available.` : "");
   drawWriteEditor(); saveLocalDraft();
 }
 function aiUndo(){
