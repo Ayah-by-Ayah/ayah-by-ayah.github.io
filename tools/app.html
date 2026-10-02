@@ -1861,7 +1861,7 @@ async function usageAI(){
   if (rows.length > 1200) { U.status = "Too many occurrences for one analysis. Choose one form above first."; redrawUsage(); return; }
   const L = it.src, tl = TR_LANGS.includes(L) ? L : "en";
   if (tl !== "en") await loadTrx(tl);
-  const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
+  const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register, fully vowelled with all harakat (tashkeel) on every word", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
   const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
   const ns = new Set(rows.map(r => r.s)).size, mk = rows.filter(r => r.mk).length;
   const forms = {}; rows.forEach(r => forms[r.form] = (forms[r.form]||0) + 1);
@@ -1946,7 +1946,7 @@ async function usageAsk(){
   if (rows.length > 1200) { U.askStatus = "Too many occurrences to read at once. Choose one form above first."; drawWriteEditor(); return; }
   const L = it.src, tl = TR_LANGS.includes(L) ? L : "en";
   if (tl !== "en") await loadTrx(tl);
-  const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
+  const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register, fully vowelled with all harakat (tashkeel) on every word", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
   const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
   const what = `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`;
   const scopeTxt = (U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`) + (U.form ? ` (only the form ${U.form})` : "");
@@ -2151,7 +2151,7 @@ async function aiDraft(force, only){
   const guide = {
     en: "English in a clear scholarly register used in English Islamic studies writing",
     bn: "Bangla (Bengali script) in the standard register of Bangladeshi Islamic literature, using the Islamic terms customary there (e.g. আল্লাহ, সালাত, তাকওয়া)",
-    ar: "Modern Standard Arabic in a classical scholarly register, as in Arabic tafsir and Islamic studies writing",
+    ar: "Modern Standard Arabic in a classical scholarly register, as in Arabic tafsir and Islamic studies writing, fully vowelled with all harakat (tashkeel) on every word",
     ur: "Urdu (Arabic script) in the register of standard Urdu Islamic scholarly prose"
   };
   const done = [];
@@ -2251,7 +2251,7 @@ async function aiRevise(){
   if (!langs.includes(M.tab)) { M.tab = langs[0]; M.preview = false; }
   M.err = ""; M.busy = true; M.ctl = []; M.aiStatus = "Revising… the first words usually take 10–40 seconds."; drawWriteEditor();
   const kindWord = M.type==="lesson" ? "a practical lesson (with implementation steps) drawn from Qur'anic ayahs" : M.type==="word" ? "a linguistic analysis of a word of the Qur'an" : (it.kind==="question" ? "a question about a Qur'anic ayah and its answer" : "an explanation of a Qur'anic ayah");
-  const guide = {en:"English", bn:"Bangla (Bengali script)", ar:"Arabic", ur:"Urdu (Arabic script)"};
+  const guide = {en:"English", bn:"Bangla (Bengali script)", ar:"Arabic (fully vowelled with all harakat on every word)", ur:"Urdu (Arabic script)"};
   const done = [];
   await Promise.all(langs.map(async l => {
     const ctl = new AbortController(); M.ctl.push(ctl);
@@ -2313,7 +2313,7 @@ async function aiContinue(){
   M.undo = {}; wanted.forEach(l => { M.undo[l] = {title: it.title[l], summary: it.summary[l], body: it.body[l], ai: !!it.ai[l]}; });
   if (!wanted.includes(M.tab)) { M.tab = wanted[0]; M.preview = false; }
   M.err = ""; M.busy = true; M.ctl = []; M.aiStatus = "Completing…"; drawWriteEditor();
-  const guide = {en:"English", bn:"Bangla (Bengali script)", ar:"Modern Standard Arabic", ur:"Urdu (Arabic script)"};
+  const guide = {en:"English", bn:"Bangla (Bengali script)", ar:"Modern Standard Arabic, fully vowelled with all harakat on every word", ur:"Urdu (Arabic script)"};
   const srcParas = it.body[src].replace(/\r/g, "").split(/\n{2,}/).filter(x => x.trim());
   const CH = 12000; // source characters per request, so each reply stays well inside the output limit
   const done = [];

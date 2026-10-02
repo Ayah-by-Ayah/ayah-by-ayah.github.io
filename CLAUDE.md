@@ -23,6 +23,7 @@ To work on it in a new session: attach the repo (add_repo **Ayah-by-Ayah/ayah-by
 - **Keep his wording.** When turning his document into a note, change only the layout. Never add, soften or rephrase content without saying so.
 - **Articles speak in their own voice.** Never "the lecturer says / the speaker argues / the transcript…". If a source document is framed around a lecture, rewrite it as a direct article (and say you did).
 - **Verify every Qur'an quotation** against `quran.json` (`tools/verify_quotes.py`) and the quran.ai tools; **every hadith** with the Hadith tools (and sunnah.com for the public reference number); tafsir quotes with `fetch_tafsir`. Report the check result. Don't state unverifiable claims as fact.
+- **All Arabic writing (articles, titles, summaries, drafts) is fully voweled** (harakat on every word), not only Qur'an quotations. Tanveer asked for this on 2 Oct 2026; the in-app AI prompts require it.
 - Qur'an Arabic: fully voweled; when several ayahs are shown together, each ends with its ayah-number sign (۝٥ or ﴿٥﴾). He finds Amiri hard to read; IndoPak is the default script.
 - **Bangla translation = Taisirul Quran.** Urdu = Maududi (chosen by Claude; he may change it). English = Saheeh International (his base, which he revises ayah by ayah).
 - Category names are **English only**; the category filter is always a dropdown.
