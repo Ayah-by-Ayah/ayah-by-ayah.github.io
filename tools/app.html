@@ -309,6 +309,9 @@ h3[lang="ur"],h3[lang="ar"]{font-family:inherit}
 .gf-r .gar{font:17px/1.7 var(--f-ar)}
 .gf-p{margin-inline-end:6px;opacity:.6}.gf-p.q{opacity:1}.gf-p.q::after{content:" ●";font-size:8px;color:var(--accent)}
 .gf-n{font-size:11.5px;color:var(--muted);margin-top:2px}
+.wtok{cursor:pointer;border-radius:5px}.wtok:hover,.wtok:focus-visible{background:var(--sunk)}
+.dialog.flash{max-width:440px}
+.flash-word{border:0;background:var(--sunk);border-radius:10px;font:46px/1.9 var(--f-quran);cursor:pointer;padding:4px 10px;text-align:center}
 .gseg-rel{font:14px/1.6 var(--f-ar);color:var(--accent);margin-top:2px}
 @media (max-width:640px){.syn-row{grid-template-columns:1fr 1fr}.syn-h{grid-column:1/-1}}
 
@@ -801,6 +804,7 @@ function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] ||
 
 function viewSurah(){
   const su = surahOf(S.surah);
+  ensureFW(su.n);
   const bism = arText(1,1);
   const showBism = su.n !== 1 && su.n !== 9;
   const ayahs = su.v.map((v,i) => ({a:i+1, ar:arText(su.n,i+1), en:baseTr(su.n,i+1)})).filter(x => !S.onlyMarked || hasMarks(su.n, x.a));
@@ -839,7 +843,7 @@ function ayahHTML(s, x){
   return `<article class="ayah${S.flashKey===k?" flash":""}" id="a-${s}-${x.a}">
     <div class="anum">${s}:${x.a}${dots.length?`<div class="dots" aria-hidden="true">${dots.map(d=>`<span class="dot ${d}"></span>`).join("")}</div>`:""}</div>
     <div class="abody">
-      <p class="ar" lang="ar" dir="rtl">${esc(x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span></p>
+      <p class="ar" lang="ar" dir="rtl">${arTokHTML(s, x.a, x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span></p>
       <p class="tr${rev?" revised":""}" ${trAttrs()}>${esc(rev ? rev.text : x.en)}</p>
       ${rev ? `<div class="revline"><span class="chip rev" title="This translation has been revised from ${TR_NAME[S.trLang]}">Translation revised</span>
         <button type="button" class="btn ghost small" data-compare="${k}">${S.compare.has(k)?"Hide original":"Compare with original"}</button></div>
@@ -1240,12 +1244,63 @@ function watchIrab(s){
 }
 const irabOf = (s,a) => (S.irab.s === s ? S.irab.map[a] : null);
 
+
+/* ---------- tap a word in the ayah: flash card (meaning, root, forms), kept apart from the grammar panel ---------- */
+const FW = {}, FWP = {};
+function ensureFW(s){
+  if (FW[s] || FWP[s]) return;
+  FWP[s] = loadGrammar(s).then(d => { FW[s] = d; if (S.view === "surah" && S.surah === s) render(); }).catch(() => { delete FWP[s]; });
+}
+const skel = t => String(t||"").replace(/[ؐ-ًؚ-ٰٟۖ-ۭـ࣓-ࣿاٱأإآءىئؤۦيیوۥ]/g, "").replace(/ک/g, "ك").replace(/[ۃة]/g, "ه").replace(/[^ء-يٱ-ۓ]/g, "");
+const isWordTok = t => t && !/^[ۖ-ۭ۞۩]+$/.test(t);
+function arTokHTML(s, a, text){
+  const words = FW[s] && FW[s][a-1];
+  if (!words) return esc(text);
+  const parts = text.split(/(\s+)/), idx = [];
+  parts.forEach((t, i) => { if (isWordTok(t) && !/^\s+$/.test(t)) idx.push(i); });
+  const map = new Map();
+  if (idx.length === words.length) idx.forEach((pi, n) => map.set(pi, n));
+  else {
+    const ws = words.map(w => skel(w[2].map(x => x[0]).join(""))); let ptr = 0;
+    for (const pi of idx) { const k = skel(parts[pi]); for (let j = ptr; j < ws.length; j++) if (ws[j] === k && k) { map.set(pi, j); ptr = j + 1; break; } }
+    // tokens the letters could not place: fill a gap between two placed words when the counts agree
+    let i0 = 0;
+    while (i0 < idx.length) {
+      if (map.has(idx[i0])) { i0++; continue; }
+      let i1 = i0; while (i1 < idx.length && !map.has(idx[i1])) i1++;
+      const lo = i0 > 0 ? map.get(idx[i0-1]) : -1, hi = i1 < idx.length ? map.get(idx[i1]) : ws.length;
+      if (hi - lo - 1 === i1 - i0) for (let k = i0; k < i1; k++) map.set(idx[k], lo + 1 + (k - i0));
+      i0 = i1;
+    }
+  }
+  return parts.map((t, i) => map.has(i) ? `<span class="wtok" role="button" tabindex="0" data-wtok="${s}:${a}:${map.get(i)}">${esc(t)}</span>` : esc(t)).join("");
+}
+function openWordCard(s, a, j){
+  M = {type:"flash", s, a, j};
+  if (!FORMS) loadForms().then(() => { if (M && M.type === "flash") drawWordCard(); }).catch(() => {});
+  drawWordCard();
+}
+function drawWordCard(){
+  const {s, a, j} = M, ws = FW[s] && FW[s][a-1];
+  if (!ws || !ws[j]) { closeModal(); return; }
+  const w = ws[j], ds = w[2].map(decodeSeg);
+  const stem = ds.find(o => o.role === "stem" && o.cls !== "p") || ds.find(o => o.role === "stem") || ds[0];
+  const forms = formsCard(ds);
+  modal(`<div class="row"><span class="small muted">${s}:${a} · word ${j+1} of ${ws.length}</span><span class="spacer"></span>
+      <button type="button" class="btn ghost small" data-m="flash-go" data-v="-1" aria-label="Previous word" ${j===0?"disabled":""}>‹</button>
+      <button type="button" class="btn ghost small" data-m="flash-go" data-v="1" aria-label="Next word" ${j===ws.length-1?"disabled":""}>›</button></div>
+    <button type="button" class="flash-word" data-m="close" lang="ar" dir="rtl" title="Tap to return to the ayah">${ds.map(segHTML).join("")}</button>
+    <div class="gw-mean" style="text-align:center;margin:0"><i>${esc(w[0])}</i> · <b>${esc(w[1])}</b></div>
+    ${stem ? `<div class="gseg-d" style="text-align:center">${stem.en}${stem.enDesc ? " · " + esc(stem.enDesc) : ""}${stem.root ? ` · Root <span class="gar" lang="ar" dir="rtl">${esc(spaced(stem.root))}</span>` : ""}${stem.lem ? ` · Lemma <span class="gar" lang="ar" dir="rtl">${esc(stem.lem)}</span>` : ""}</div>` : ""}
+    ${forms || (FORMS ? `<p class="small muted" style="margin:0;text-align:center">No forms table for this word (particles, pronouns and names have none).</p>` : `<p class="small muted" style="margin:0;text-align:center">Loading forms…</p>`)}
+    ${FORMS ? `<p class="small muted" style="margin:0">● = occurs in the Qur’an. Forms: Arramooz dictionary (GPL-3) and the corpus; gaps filled by AI, not yet reviewed.</p>` : ""}
+    <div class="foot"><button type="button" class="btn" data-grammar="${s}:${a}">Full grammar</button><span class="spacer"></span><button type="button" class="btn primary" data-m="close">Back to the ayah</button></div>`, "flash");
+}
 function openGrammar(k){
   const [s,a] = k.split(":").map(Number);
   M = {type:"gram", s, a, sel:null, edit:false, tab:S.lang, ctl:[]};
   watchIrab(s);
   drawGrammar();
-  if (!FORMS) loadForms().then(() => { if (M && M.type==="gram" && M.s===s && M.a===a && M.words) drawGrammar(); }).catch(() => {});
   loadGrammar(s).then(d => { if (M && M.type==="gram" && M.s===s && M.a===a) { M.words = d[a-1]; drawGrammar(); } })
     .catch(() => { if (M && M.type==="gram") { M.loadErr = true; drawGrammar(); } });
   loadSyntax(s).then(d => { if (M && M.type==="gram" && M.s===s && M.a===a) { M.syn = d; drawGrammar(); } })
@@ -1262,7 +1317,6 @@ function wordCard(w, i, links){
     <div class="gw-top"><span class="gw-n">${i+1}</span>
       <span class="gw-ar" lang="ar" dir="rtl">${ds.map(segHTML).join("")}</span></div>
     <div class="gw-mean"><i>${esc(tl)}</i> · ${esc(gl)}</div>
-    ${formsCard(ds)}
     <div class="gw-segs">${ds.map(o => `<div class="gseg">
       <div class="gseg-h"><span class="gseg-t g-${o.cls}" lang="ar" dir="rtl">${esc(o.text)}</span><b class="g-${o.cls}">${esc(o.en)}</b><span class="gar" lang="ar" dir="rtl">${esc(o.ar)}</span>${o.role!=="stem"?`<span class="gtag">${o.role}</span>`:""}</div>
       ${o.enDesc ? `<div class="gseg-d">${esc(o.enDesc)}</div>` : ""}
@@ -1280,7 +1334,7 @@ function drawGrammar(){
   if (M.loadErr) body = `<div class="empty"><b>The grammar data didn't load</b>Close this and try again.</div>`;
   else if (!M.words) body = `<p class="muted">Loading word analysis…</p>`;
   else body = `<div class="gstrip" lang="ar" dir="rtl">${M.words.map((w,i)=>`<button type="button" class="gchip" data-gword="${i}" aria-pressed="${M.sel===i}">${w[2].map(sg=>segHTML(decodeSeg(sg))).join("")}</button>`).join("")}</div>
-    <div class="glegend small"><span class="g-n">■ Noun / pronoun</span><span class="g-v">■ Verb</span><span class="g-p">■ Particle</span><span class="muted">Tap a word to jump to it.</span>${FORMS ? `<span class="muted">Forms: ● = occurs in the Qur’an · from the Arramooz dictionary (GPL-3) and the corpus; gaps filled by AI, not yet reviewed.</span>` : ""}</div>
+    <div class="glegend small"><span class="g-n">■ Noun / pronoun</span><span class="g-v">■ Verb</span><span class="g-p">■ Particle</span><span class="muted">Tap a word to jump to it.</span></div>
     <div class="ggrid">${(() => { const L = syntaxLinks(); return M.words.map((w,i) => wordCard(w,i,L)).join(""); })()}</div>`;
   let irab;
   if (M.edit) irab = irabEditor();
@@ -2539,9 +2593,11 @@ function dbErr(e){
 
 /* ---------- events ---------- */
 document.addEventListener("click", async (ev) => {
+  const wt = ev.target.closest && ev.target.closest(".wtok");
+  if (wt && !M) { const [s0, a0, j0] = wt.dataset.wtok.split(":").map(Number); return openWordCard(s0, a0, j0); }
   const t = ev.target.closest("button, .backdrop");
   if (!t) return;
-  if (t.id === "backdrop") { if (ev.target === t && !M?.busy && (M?.type === "tr" || M?.type === "share" || (M?.type === "gram" && !M.edit))) closeModal(); return; }
+  if (t.id === "backdrop") { if (ev.target === t && !M?.busy && (M?.type === "tr" || M?.type === "share" || M?.type === "flash" || (M?.type === "gram" && !M.edit))) closeModal(); return; }
   const d = t.dataset;
   if (t.id === "brand") return go("surahs");
   if (d.nav) return go(d.nav);
@@ -2600,6 +2656,7 @@ document.addEventListener("click", async (ev) => {
     closeModal(); return;
   }
   if (act === "close-yes") { closeModal(); return; }
+  if (M.type === "flash") { if (act === "flash-go") { M.j += +d.v; drawWordCard(); } return; }
   if (M.type === "cats") {
     captureCats();
     const i = +d.v;
@@ -2733,8 +2790,9 @@ document.addEventListener("submit", (ev) => {
     else toast(`Enter an ayah from 1 to ${surahOf(S.surah).v.length}.`);
   }
 });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && ev.target.classList && ev.target.classList.contains("wtok") && !M) { ev.preventDefault(); ev.target.click(); } });
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && S.focus && !M && !document.fullscreenElement) { exitFocus(); return; } });
-document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && M && !M.busy && (M.type === "tr" || M.type === "share" || (M.type === "gram" && !M.edit))) closeModal(); });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && M && !M.busy && (M.type === "tr" || M.type === "share" || M.type === "flash" || (M.type === "gram" && !M.edit))) closeModal(); });
 function rerenderKeepingInput(id){
   const el = document.getElementById(id); const pos = el ? el.selectionStart : null;
   render();
