@@ -1,0 +1,2550 @@
+<title>Ayah by Ayah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Scheherazade+New:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&family=Noto+Naskh+Arabic:wght@400;600&family=Noto+Nastaliq+Urdu:wght@400;600&family=Noto+Serif+Bengali:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#F2F4F1; --surface:#FFFFFF; --sunk:#E9ECE8; --ink:#1B2427; --muted:#5B6669; --line:#D6DCD7;
+  --accent:#1E4E79; --accent-ink:#FFFFFF; --focus:#1E4E79;
+  --rev:#9A5A12; --rev-bg:#F7EBDB; --exp:#1E4E79; --exp-bg:#E1EAF3; --qa:#23685C; --qa-bg:#DCEEEA; --les:#723867; --les-bg:#F1E2EE;
+  --danger:#A3322A; --flash:#FFF3C4;
+  --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-text:"Literata",Georgia,"Times New Roman",serif;
+  --f-quran:"Scheherazade New","Noto Naskh Arabic","Traditional Arabic",serif;
+  --q-scale:1;
+  --f-ar:"Noto Naskh Arabic","Amiri Quran","Traditional Arabic",serif;
+  --f-ur:"Noto Nastaliq Urdu","Noto Naskh Arabic","Jameel Noori Nastaleeq",serif;
+  --f-bn:"Noto Serif Bengali","Kalpurush","SolaimanLipi",serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#111719; --surface:#182023; --sunk:#131a1c; --ink:#E4E9E7; --muted:#98A4A6; --line:#2B3538;
+  --accent:#86B5DE; --accent-ink:#0E1B26; --focus:#86B5DE;
+  --rev:#E3A75E; --rev-bg:#3A2A17; --exp:#86B5DE; --exp-bg:#1B2C3B; --qa:#73C3B3; --qa-bg:#16312C; --les:#D69BC8; --les-bg:#35202F;
+  --danger:#F08A80; --flash:#3B3514;
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111719; --surface:#182023; --sunk:#131a1c; --ink:#E4E9E7; --muted:#98A4A6; --line:#2B3538;
+  --accent:#86B5DE; --accent-ink:#0E1B26; --focus:#86B5DE;
+  --rev:#E3A75E; --rev-bg:#3A2A17; --exp:#86B5DE; --exp-bg:#1B2C3B; --qa:#73C3B3; --qa-bg:#16312C; --les:#D69BC8; --les-bg:#35202F;
+  --danger:#F08A80; --flash:#3B3514;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-ui);}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+a{color:var(--accent)}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px}
+
+/* Top bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;padding-block:10px}
+.brand{display:flex;align-items:baseline;gap:8px;margin-right:auto;cursor:pointer;background:none;border:0;padding:0}
+.brand b{font:600 19px/1 var(--f-text);letter-spacing:-.01em}
+.brand span{font:20px/1 var(--f-quran);color:var(--muted)}
+nav.tabs{display:flex;gap:4px;flex-wrap:wrap}
+nav.tabs button{border:0;background:none;padding:6px 10px;border-radius:6px;color:var(--muted);font-weight:500;cursor:pointer}
+nav.tabs button[aria-current="page"]{background:var(--sunk);color:var(--ink)}
+nav.tabs button:hover{color:var(--ink)}
+.langbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.langbar .lbl{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--surface)}
+.seg button{border:0;background:none;padding:5px 10px;cursor:pointer;color:var(--muted);border-right:1px solid var(--line)}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.seg .l-bn{font-family:var(--f-bn)} .seg .l-ar{font-family:var(--f-ar)} .seg .l-ur{font-family:var(--f-ur);font-size:13px}
+.modepill{font-size:12px;padding:3px 8px;border-radius:99px;background:var(--sunk);color:var(--muted);white-space:nowrap}
+.modepill.admin{background:var(--rev-bg);color:var(--rev)}
+
+main{padding-block:22px 80px}
+h1,h2,h3{font-family:var(--f-text);text-wrap:balance;margin:0}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spacer{flex:1}
+.btn{border:1px solid var(--line);background:var(--surface);padding:6px 12px;border-radius:7px;cursor:pointer;font-weight:500;font-size:14px}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.danger{color:var(--danger)}
+.btn.ghost{border-color:transparent;background:none;color:var(--accent);padding-inline:6px}
+.btn:disabled{opacity:.5;cursor:default}
+.field{display:flex;flex-direction:column;gap:4px}
+.field label,.flabel{font-size:12px;font-weight:600;color:var(--muted);letter-spacing:.02em}
+input[type=text],input[type=search],select,textarea{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:8px 10px;width:100%}
+textarea{resize:vertical;min-height:90px;line-height:1.6}
+.search{max-width:520px;flex:1 1 260px}
+
+/* Marks */
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;padding:2px 8px;border-radius:99px;border:0;cursor:default;white-space:nowrap}
+button.chip{cursor:pointer}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.rev{background:var(--rev-bg);color:var(--rev)}
+.chip.exp{background:var(--exp-bg);color:var(--exp)}
+.chip.qa{background:var(--qa-bg);color:var(--qa)}
+.chip.les{background:var(--les-bg);color:var(--les)}
+.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:5px;background:var(--sunk);color:var(--muted);border:1px solid transparent;cursor:pointer}
+.tag[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.legend{display:flex;gap:8px;flex-wrap:wrap}
+
+/* Surah index */
+.idx-head{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin-bottom:16px}
+.idx-head h1{font-size:26px;margin-right:auto}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:8px}
+.scard{display:grid;grid-template-columns:34px 1fr auto;gap:2px 10px;align-items:center;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:9px;padding:10px 12px;cursor:pointer}
+.scard:hover{border-color:var(--accent)}
+.scard .no{grid-row:span 2;font:600 13px/1 var(--f-ui);color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}
+.scard .tl{font-weight:600}
+.scard .arn{grid-row:span 2;font:22px/1.2 var(--f-quran)}
+.scard .meta{font-size:12px;color:var(--muted)}
+.scard .marks{grid-column:2/4;display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.scard .marks:empty{display:none}
+
+/* Surah reader */
+.shead{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;margin-bottom:10px}
+.shead .mid{text-align:center}
+.shead .arn{font:34px/1.4 var(--f-quran)}
+.shead h1{font-size:22px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;padding:10px 0 14px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.toolbar input[type=text]{width:90px}
+.qfont{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.qfont select{width:auto;padding:5px 8px}
+.qfont .seg button{min-width:34px;font-weight:600}
+.bism{text-align:center;font:calc(28px * var(--q-scale))/2 var(--f-quran);padding:12px 0 4px}
+html.script-indopak{--f-quran:"IndoPak Quran","Scheherazade New","Noto Naskh Arabic",serif}
+html.script-indopak .ar,html.script-indopak .ref-ar,html.script-indopak .bism{line-height:2.45;word-spacing:.08em}
+html.script-indopak .ar{font-size:calc(30px * var(--q-scale))}
+html.script-indopak .ar .end{font-family:"Scheherazade New",serif}
+.ayah{display:grid;grid-template-columns:52px 1fr;gap:0 14px;padding:18px 0;border-bottom:1px solid var(--line);scroll-margin-top:120px}
+.ayah.flash{animation:flash 2.2s ease-out}
+@keyframes flash{from{background:var(--flash)}to{background:transparent}}
+@media (prefers-reduced-motion:reduce){.ayah.flash{animation:none;background:var(--flash)}}
+.anum{font:600 13px/1 var(--f-ui);color:var(--muted);font-variant-numeric:tabular-nums;padding-top:12px}
+.anum .dots{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.anum .dot{width:8px;height:8px;border-radius:50%}
+.dot.rev{background:var(--rev)} .dot.exp{background:var(--exp)} .dot.qa{background:var(--qa)} .dot.les{background:var(--les)}
+.abody{min-width:0}
+.ar{font:calc(29px * var(--q-scale))/2.2 var(--f-quran);direction:rtl;text-align:right;margin:0 0 10px}
+.ar .end{font-size:.8em;color:var(--muted);white-space:nowrap}
+.tr{font:16.5px/1.65 var(--f-text);margin:0;max-width:68ch}
+.tr.revised{border-left:3px solid var(--rev);padding-left:12px}
+.tr[lang="bn"],.orig[lang="bn"]{font-family:var(--f-bn)}
+.tr[lang="ur"],.orig[lang="ur"]{font-family:var(--f-ur);line-height:2.3;font-size:17px}
+.tr[dir="rtl"]{margin-left:auto}
+.tr[dir="rtl"].revised{border-left:0;border-right:3px solid var(--rev);padding-left:0;padding-right:12px}
+.revline{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+.orig{margin:8px 0 0;padding:8px 12px;background:var(--sunk);border-radius:7px;font:14.5px/1.6 var(--f-text);color:var(--muted);max-width:68ch}
+.orig b{font:600 11px/1 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+.marks{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.admin-bar{display:flex;gap:2px;flex-wrap:wrap;margin-top:8px}
+.admin-bar .btn{font-size:13px}
+
+/* Write-ups */
+.wlist{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.wcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+.wcard .whead{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:6px}
+.wcard h3{font-size:17px;flex-basis:100%}
+.wcard .tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:10px}
+.notice{font-size:12px;color:var(--muted);background:var(--sunk);padding:4px 8px;border-radius:5px;display:inline-block;margin:4px 0}
+.prose{font:15.5px/1.7 var(--f-text);max-width:70ch}
+.prose p{margin:0 0 .8em} .prose p:last-child{margin-bottom:0}
+.prose h4{font:600 15px/1.4 var(--f-ui);margin:1em 0 .4em}
+.prose ul,.prose ol{margin:0 0 .8em;padding-inline-start:1.3em}
+.prose blockquote{margin:0 0 .8em;padding:4px 12px;border-inline-start:3px solid var(--line);color:var(--muted)}
+[lang="bn"] {font-family:var(--f-bn)}
+[lang="ar"].w{font-family:var(--f-ar);font-size:1.12em;line-height:1.9}
+[lang="ur"].w{font-family:var(--f-ur);line-height:2.3}
+h3[lang="ur"],h3[lang="ar"]{font-family:inherit}
+.wcard h3[lang="ar"]{font-family:var(--f-ar)} .wcard h3[lang="ur"]{font-family:var(--f-ur);line-height:2} .wcard h3[lang="bn"]{font-family:var(--f-bn)}
+.reflink{font-weight:600;font-variant-numeric:tabular-nums;background:none;border:0;padding:0;color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+
+/* Index pages */
+.phead{display:flex;flex-wrap:wrap;gap:12px;align-items:end;margin-bottom:6px}
+.phead h1{font-size:26px;margin-right:auto}
+.lede{max-width:70ch;color:var(--muted);margin:4px 0 16px}
+.filters{display:flex;flex-direction:column;gap:10px;margin-bottom:18px}
+.tagrow{display:flex;gap:5px;flex-wrap:wrap}
+.results{display:flex;flex-direction:column;gap:10px}
+.snip{color:var(--muted);font-size:14px;margin-top:4px;max-width:70ch}
+.empty{padding:26px 18px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);text-align:center}
+.empty b{color:var(--ink);display:block;margin-bottom:4px}
+.lesson-ayahs{margin-top:12px;border-top:1px solid var(--line)}
+.lesson-ayahs .la{padding:10px 0;border-bottom:1px solid var(--line)}
+.lesson-ayahs .ar{font-size:calc(25px * var(--q-scale));margin-bottom:4px}
+.lesson-ayahs .tr{font-size:15px}
+
+/* Modal */
+.backdrop{position:fixed;inset:0;background:rgba(10,16,18,.5);z-index:50;display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:max(24px,env(safe-area-inset-top,0px)) 12px 24px}
+.dialog{background:var(--surface);border-radius:12px;width:100%;max-width:760px;padding:18px 18px 16px;box-shadow:0 20px 50px rgba(0,0,0,.25);display:flex;flex-direction:column;gap:14px}
+.dialog h2{font-size:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:560px){.grid2{grid-template-columns:1fr}}
+.ltabs{display:flex;gap:4px;flex-wrap:wrap;border-bottom:1px solid var(--line)}
+.ltabs button{border:0;background:none;padding:7px 12px;border-bottom:2px solid transparent;cursor:pointer;color:var(--muted);font-weight:500;margin-bottom:-1px}
+.ltabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.ltabs .flag{font-size:10px;font-weight:600;color:var(--rev);margin-left:4px;letter-spacing:.03em}
+.ltabs .filled::after{content:" ●";color:var(--qa);font-size:9px}
+.aibox{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--sunk);border-radius:8px;padding:8px 10px}
+.confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--rev-bg);color:var(--ink);padding:8px 10px;border-radius:8px}
+.err{color:var(--danger);font-size:13px}
+.foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid var(--line);padding-top:12px}
+.ref-ar{font:22px/2 var(--f-quran);direction:rtl;text-align:right;margin:0}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;z-index:60;font-size:14px;max-width:calc(100% - 32px)}
+.statusbar{font-size:12.5px;color:var(--muted);padding:8px 12px;background:var(--sunk);border-radius:8px;margin-bottom:14px}
+
+/* Articles */
+.dialog.wide{max-width:1080px}
+.fmtbar{display:flex;flex-wrap:wrap;gap:4px;padding:6px;border:1px solid var(--line);border-bottom:0;border-radius:7px 7px 0 0;background:var(--sunk)}
+.fmtbar button{border:1px solid transparent;background:none;padding:3px 8px;border-radius:5px;font-size:12.5px;cursor:pointer;color:var(--ink)}
+.fmtbar button:hover{background:var(--surface);border-color:var(--line)}
+.editor-area{border-radius:0 0 7px 7px;min-height:420px;font-size:15px}
+.editor-area[lang="ur"]{font-family:var(--f-ur);line-height:2.3}
+.editor-area[lang="ar"]{font-family:var(--f-ar);font-size:17px;line-height:1.9}
+.editor-area[lang="bn"]{font-family:var(--f-bn)}
+.fmthelp{margin-top:6px} .fmthelp summary{cursor:pointer} .fmthelp div{margin-top:6px;line-height:1.7}
+.fmthelp code{background:var(--sunk);padding:1px 5px;border-radius:4px;font-size:12px;color:var(--ink)}
+.preview{border:1px solid var(--line);border-radius:7px;padding:18px;max-height:65vh;overflow:auto;background:var(--bg)}
+.article{max-width:1000px}
+.art-head{display:flex;flex-direction:column;gap:10px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.art-title{font:600 clamp(26px,4vw,36px)/1.2 var(--f-text);letter-spacing:-.01em;max-width:30ch}
+.art-title[lang="ar"]{font-family:var(--f-ar);line-height:1.6} .art-title[lang="ur"]{font-family:var(--f-ur);line-height:2} .art-title[lang="bn"]{font-family:var(--f-bn);line-height:1.5}
+.art-sum{font:italic 18px/1.6 var(--f-text);color:var(--muted);margin:0;max-width:65ch}
+.art-sum[lang="ar"],.art-sum[lang="ur"],.art-sum[lang="bn"]{font-style:normal}
+.art-sum[lang="ur"]{font-family:var(--f-ur);line-height:2.2} .art-sum[lang="ar"]{font-family:var(--f-ar)} .art-sum[lang="bn"]{font-family:var(--f-bn)}
+.art-ayahs{padding:6px 0 10px;border-bottom:1px solid var(--line);margin-bottom:26px}
+.art-ayahs .la{padding:12px 0;border-bottom:1px dashed var(--line)} .art-ayahs .la:last-of-type{border-bottom:0}
+.art-ayahs .ar{font-size:calc(27px * var(--q-scale));margin-bottom:6px}
+.art-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:26px}
+@media (min-width:900px){.art-grid:has(.toc){grid-template-columns:220px minmax(0,1fr)} .art-grid .toc{position:sticky;top:90px;align-self:start;max-height:calc(100vh - 110px);overflow:auto}}
+.toc{border-inline-start:2px solid var(--line);padding-inline-start:12px;font-size:13.5px}
+.toc ol{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.toc li.t3{padding-inline-start:12px;font-size:13px}
+.toc button{background:none;border:0;padding:0;text-align:start;color:var(--muted);cursor:pointer;line-height:1.4}
+.toc button:hover{color:var(--accent)}
+.toc[lang="ur"]{font-family:var(--f-ur);line-height:2} .toc[lang="ar"]{font-family:var(--f-ar)} .toc[lang="bn"]{font-family:var(--f-bn)}
+.article-body{font-size:17px;line-height:1.8;max-width:68ch}
+.article-body[lang="ar"]{font-size:19px;line-height:2} .article-body[lang="ur"]{font-size:18px;line-height:2.4}
+.prose h3.ah2{font:600 23px/1.3 var(--f-text);margin:1.6em 0 .5em;scroll-margin-top:100px}
+.prose h4.ah3{font:600 18px/1.4 var(--f-text);margin:1.3em 0 .4em;scroll-margin-top:100px}
+.prose h5.ah4{font:600 14px/1.4 var(--f-ui);letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin:1.2em 0 .4em}
+.prose[lang="ar"] :is(h3,h4,h5),.prose[lang="ur"] :is(h3,h4,h5),.prose[lang="bn"] :is(h3,h4,h5){font-family:inherit;text-transform:none;letter-spacing:0}
+.prose > :first-child{margin-top:0}
+.prose hr{border:0;border-top:1px solid var(--line);margin:1.8em auto;width:40%}
+.prose .ar-quote{font:calc(25px * var(--q-scale))/2.2 var(--f-quran);text-align:center;background:var(--sunk);border-radius:8px;padding:12px 16px;margin:1em 0}
+.prose a{text-underline-offset:2px}
+.fnref button{background:none;border:0;padding:0 1px;color:var(--accent);cursor:pointer;font:600 .72em/1 var(--f-ui);vertical-align:super}
+.footnotes{margin-top:2.2em;padding-top:12px;border-top:1px solid var(--line);font-size:14px;line-height:1.6;color:var(--muted)}
+.footnotes h4{font:600 12px/1 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px}
+.footnotes ol{padding-inline-start:1.4em;margin:0}
+.footnotes li{margin-bottom:6px;scroll-margin-top:100px}
+.fnback{background:none;border:0;color:var(--accent);cursor:pointer;padding:0 4px}
+.hl{background:var(--flash);transition:background .3s}
+
+/* Grammar */
+.gbtn{font-weight:600}
+.gdot{color:var(--qa);font-weight:600}
+.gh{font:600 16px/1.3 var(--f-ui);margin:4px 0 10px}
+.gar{font-family:var(--f-ar)}
+.g-n{color:var(--exp)} .g-v{color:var(--qa)} .g-p{color:var(--rev)}
+.gstrip{display:flex;flex-wrap:wrap;gap:6px;padding:10px;background:var(--sunk);border-radius:8px}
+.gchip{font:25px/1.7 var(--f-quran);background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:0 10px;cursor:pointer}
+.gchip[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.usage{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface);display:flex;flex-direction:column;gap:8px}
+.usage .uhead{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.usage .ustats{font-size:13.5px;color:var(--muted)}
+.usage .uforms{display:flex;flex-wrap:wrap;gap:6px}
+.usage .uform{font:17px/1.6 var(--f-ar);background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:0 8px;cursor:pointer}
+.usage .uform[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.usage .uform small{font:12px var(--f-ui);color:var(--muted);margin-inline-start:4px}
+.usage .ulist{max-height:420px;overflow:auto;border-top:1px solid var(--line)}
+.usage .urow{padding:8px 2px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:64px 1fr;gap:4px 10px}
+.usage .urow.cur{background:var(--sunk)}
+.usage .uref{font:600 12.5px/1.8 var(--f-ui);color:var(--muted)}
+.usage .uref em{display:block;font-style:normal;font-weight:400;font-size:11px}
+.usage .uar{font:21px/1.9 var(--f-quran);margin:0;grid-column:2}
+.usage .uar mark{background:color-mix(in srgb, var(--accent) 22%, transparent);color:inherit;border-radius:4px;padding:0 2px}
+.usage .utr{margin:0;grid-column:2;font-size:14px;max-width:none}
+.usage .uask{display:flex;flex-direction:column;gap:6px;background:var(--sunk);border-radius:8px;padding:8px 10px}
+.usage .uask textarea{min-height:58px}
+.usage .uans{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;max-height:420px;overflow:auto}
+.usage .ugloss{grid-column:2;font-size:12.5px;color:var(--muted)}
+@media (max-width:560px){.usage .urow{grid-template-columns:1fr}.usage .uar,.usage .utr,.usage .ugloss{grid-column:1}}
+.glegend{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0 12px}
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;direction:rtl}
+.gword{direction:ltr;border:1px solid var(--line);border-radius:9px;padding:10px 12px;background:var(--surface);scroll-margin:80px}
+.gword.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent) inset}
+.gw-top{display:flex;align-items:center;gap:10px;justify-content:space-between}
+.gw-n{font:600 12px/1 var(--f-ui);color:var(--muted);background:var(--sunk);border-radius:99px;padding:3px 7px}
+.gw-ar{font:30px/1.8 var(--f-quran)}
+.gw-mean{font-size:13.5px;color:var(--muted);margin-bottom:6px}
+.gw-segs{display:flex;flex-direction:column;gap:6px;border-top:1px dashed var(--line);padding-top:6px}
+.gseg-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font-size:13.5px}
+.gseg-t{font:21px/1.4 var(--f-quran)}
+.gseg-d{font-size:12.5px;color:var(--muted);line-height:1.5}
+.gtag{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px}
+.irab{font-size:16px}
+.irab[lang="ar"]{font-size:18px;line-height:2.1}
+
+/* Sentence structure */
+.syn-sent{border:1px solid var(--line);border-radius:9px;padding:6px 10px;margin-bottom:10px;background:var(--surface)}
+.syn-span{padding:6px 2px 8px;border-bottom:1px dashed var(--line);margin-bottom:4px;color:var(--muted)}
+.syn-rows{display:flex;flex-direction:column}
+.syn-row{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.2fr) minmax(0,1fr);gap:4px 12px;align-items:baseline;padding:6px 2px;border-bottom:1px solid var(--line);direction:rtl}
+.syn-row:last-child{border-bottom:0}
+.syn-row.away{opacity:.62}
+.syn-w{font:23px/1.7 var(--f-quran)}
+.syn-row.is-cons{background:var(--sunk);border-radius:6px;padding-inline:8px}
+.syn-cons{font-size:.9em}
+.syn-clab{font:600 12.5px/1 var(--f-ar);color:var(--les);background:var(--les-bg);padding:3px 6px;border-radius:5px;vertical-align:middle}
+.syn-elided{font:600 15px/1 var(--f-ar);color:var(--muted);border:1px dashed var(--line);border-radius:5px;padding:2px 6px}
+.syn-r{display:flex;flex-direction:column;gap:1px}
+.syn-r b{font:600 16px/1.5 var(--f-ar);color:var(--accent)}
+.syn-r span{font-size:12px;color:var(--muted);direction:ltr;text-align:right}
+.syn-h{font:18px/1.6 var(--f-quran);color:var(--muted)}
+.syn-ref{font:600 11.5px/1 var(--f-ui);margin-inline-start:4px}
+.gseg-rel{font:14px/1.6 var(--f-ar);color:var(--accent);margin-top:2px}
+@media (max-width:640px){.syn-row{grid-template-columns:1fr 1fr}.syn-h{grid-column:1/-1}}
+
+/* Categories */
+.chip.cat{background:var(--sunk);color:var(--ink);border:1px solid var(--line)}
+.chip.cat::before{background:var(--rev)}
+.catfilter{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.catfilter .flabel{margin-right:4px}
+.catpill{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:5px 12px;font-size:13.5px;font-weight:500;cursor:pointer}
+.catpill[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.catpill[aria-pressed="true"] .muted{color:inherit;opacity:.7}
+.catlist{display:flex;flex-direction:column;gap:8px}
+.catrow{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:9px;background:var(--surface)}
+.catord{display:flex;flex-direction:column}
+.catnames{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.catnames input[lang="ur"]{font-family:var(--f-ur)} .catnames input[lang="ar"]{font-family:var(--f-ar)} .catnames input[lang="bn"]{font-family:var(--f-bn)}
+.catmeta{white-space:nowrap;text-align:right}
+@media (max-width:700px){.catnames{grid-template-columns:1fr 1fr}.catrow{grid-template-columns:auto 1fr}.catmeta{grid-column:1/-1;text-align:left}}
+
+/* Full screen reading */
+:root{--read-scale:1}
+.focusbar{position:fixed;z-index:40;top:calc(10px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:6px 8px 6px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 24px rgba(0,0,0,.14);max-width:calc(100% - 24px);opacity:.35;transition:opacity .2s}
+.focusbar:hover,.focusbar:focus-within{opacity:1}
+.backpill{position:fixed;z-index:41;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;align-items:center;gap:2px;background:var(--accent);color:var(--accent-ink);border-radius:999px;box-shadow:0 6px 22px rgba(0,0,0,.22);max-width:calc(100% - 32px)}
+.backpill button{border:0;background:none;color:inherit;font:600 14px/1.2 var(--f-ui);padding:10px 6px 10px 16px;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70vw}
+.backpill button.x{padding:10px 14px 10px 8px;font-weight:400;opacity:.8}
+@media (hover:none){.focusbar{opacity:.92}}
+.fb-title{font:600 14px/1.2 var(--f-text);max-width:34ch;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+html.reading .top,html.reading .toolbar,html.reading .admin-bar,html.reading .art-actions,html.reading .statusbar,html.reading .shead > div:first-child,html.reading .shead > div:last-child{display:none}
+html.reading body{background:var(--surface)}
+html.reading main{padding-block:72px 96px;max-width:900px}
+html.reading .ayah{border-bottom-color:var(--sunk);padding:26px 0}
+html.reading .tr{font-size:calc(18px * var(--read-scale));max-width:none}
+html.reading .prose,html.reading .article-body{font-size:calc(18.5px * var(--read-scale))}
+html.reading .article{max-width:none}
+html.reading .art-title{font-size:calc(40px * var(--read-scale))}
+html.reading .shead{grid-template-columns:1fr}
+@media (min-width:1100px){html.reading main:has(.toc){max-width:1180px}}
+@media (max-width:640px){.fb-title{max-width:14ch}html.reading main{padding-block:64px 80px}}
+
+/* Word analysis */
+:root{--wa:#8A4B12;--wa-bg:#F6E7D6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--wa:#E9B27A;--wa-bg:#3A2616}}
+:root[data-theme="dark"]{--wa:#E9B27A;--wa-bg:#3A2616}
+.chip.wa{background:var(--wa-bg);color:var(--wa)}
+.dot.wa{background:var(--wa)}
+.wa-ar{font-family:var(--f-ar);font-size:14px}
+.wa-head,.wa-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px}
+.wa-word{font:44px/1.6 var(--f-quran);color:var(--ink)}
+.wa-word.sm{font-size:32px}
+.wa-meta{font-size:13.5px;color:var(--muted)}
+.wa-meta b{font:600 17px/1 var(--f-ar);color:var(--ink)}
+.gw-link{margin-bottom:4px}
+footer.src{font-size:12px;color:var(--muted);padding-top:30px}
+@media (max-width:640px){
+  .ayah{grid-template-columns:36px 1fr;gap:0 10px}
+  .ar{font-size:calc(25px * var(--q-scale))}
+  .shead .arn{font-size:28px}
+  .brand span{display:none}
+}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <button class="brand" id="brand" type="button" aria-label="Ayah by Ayah, surah list"><b>Ayah by Ayah</b><span>آية بعد آية</span></button>
+    <nav class="tabs" aria-label="Sections">
+      <button type="button" data-nav="surahs">Surahs</button>
+      <button type="button" data-nav="notes">Notes</button>
+      <button type="button" data-nav="lessons">Lessons</button>
+      <button type="button" data-nav="words">Word analysis</button>
+    </nav>
+    <div class="langbar">
+      <span class="lbl">Write-ups in</span>
+      <div class="seg" role="group" aria-label="Write-up language">
+        <button type="button" data-lang="en">English</button>
+        <button type="button" data-lang="bn" class="l-bn">বাংলা</button>
+        <button type="button" data-lang="ar" class="l-ar">العربية</button>
+        <button type="button" data-lang="ur" class="l-ur">اردو</button>
+      </div>
+      <span class="lbl">Translation</span>
+      <div class="seg" role="group" aria-label="Ayah translation language">
+        <button type="button" data-trlang="en" title="Saheeh International">English</button>
+        <button type="button" data-trlang="bn" class="l-bn" title="Taisirul Quran">বাংলা</button>
+        <button type="button" data-trlang="ur" class="l-ur" title="Maududi, Tafheem-ul-Quran">اردو</button>
+      </div>
+      <span class="modepill" id="modepill">Reader</span>
+    </div>
+  </div>
+</header>
+<main class="wrap" id="app"><p class="muted">Loading the Qur'an text…</p></main>
+<div id="modal-root"></div>
+<div id="focus-root"></div>
+<div id="back-root"></div>
+<div id="toast-root"></div>
+
+<script>
+(() => {
+"use strict";
+const LANGS = ["en","bn","ar","ur"];
+const LNAME = {en:"English", bn:"বাংলা", ar:"العربية", ur:"اردو"};
+const LNAME_EN = {en:"English", bn:"Bangla", ar:"Arabic", ur:"Urdu"};
+const RTL = {ar:true, ur:true};
+const TR_LANGS = ["en","bn","ur"];
+const TR_NAME = {en:"Saheeh International", bn:"Taisirul Quran", ur:"Maududi (Tafheem-ul-Quran)"};
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const arDigits = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch { return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch {} }
+};
+
+const S = {
+  Q: null, view: "surahs", surah: 1, flashKey: null,
+  lang: LANGS.includes(store.get("aba.lang")) ? store.get("aba.lang") : "en",
+  script: store.get("aba.script") === "madani" ? "madani" : "indopak", IP: null, ipState: "idle",
+  qfont: ["sch","naskh","amiri"].includes(store.get("aba.qfont")) ? store.get("aba.qfont") : "sch",
+  qscale: Math.min(1.6, Math.max(0.8, parseFloat(store.get("aba.qscale")) || 1)),
+  trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
+  trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
+  tr: {}, notes: [], lessons: [],
+  admin: false, db: null, dbState: "loading", sample: null, downloads: null,
+  open: new Set(), compare: new Set(), onlyMarked: false,
+  words: [], wq: "", wroot: "", cats: [], ncat: "", focus: false, readScale: Math.min(1.5, Math.max(0.85, parseFloat(store.get("aba.readscale")) || 1)), sq: "", nq: "", nkind: "all", ntag: null, lq: "", ltag: null, openLesson: new Set(), openNote: new Set()
+};
+
+/* ---------- helpers ---------- */
+const key = (s,a) => s + ":" + a;
+const surahOf = n => S.Q && S.Q[n-1];
+const validRef = (s,a) => !!(S.Q && s>=1 && s<=114 && a>=1 && a<=S.Q[s-1].v.length);
+/* ---------- ayah translations (English: Saheeh International; Bangla: Taisirul Quran; Urdu: Maududi) ---------- */
+function loadTrx(l){
+  if (l === "en" || S.TRX[l]) return Promise.resolve(S.TRX[l]);
+  if (S.trxState[l] && S.trxState[l].then) return S.trxState[l];
+  const pr = fetch(`tr-${l}.json`).then(r => { if (!r.ok) throw 0; return r.json(); })
+    .then(j => { S.TRX[l] = j; S.trxState[l] = "ok"; render(); return j; })
+    .catch(() => { S.trxState[l] = "failed"; render(); return null; });
+  S.trxState[l] = pr; return pr;
+}
+function baseTr(s, a, l){
+  l = l || S.trLang;
+  if (l === "en") return S.Q[s-1].v[a-1][1];
+  const t = S.TRX[l];
+  if (!t) { loadTrx(l); return S.trxState[l] === "failed" ? "(This translation didn't load. Reload the page.)" : "…"; }
+  return t[s-1][a-1];
+}
+function trRev(s, a, l){ return (S.trAll[l || S.trLang] || {})[key(s,a)] || null; }
+function trText(s, a, l){ const r = trRev(s, a, l); return r ? r.text : baseTr(s, a, l); }
+const trDocId = (s, a, l) => l === "en" ? `${s}-${a}` : `${s}-${a}-${l}`;
+const trAttrs = (l) => { l = l || S.trLang; return `lang="${l}" dir="${RTL[l]?"rtl":"ltr"}"`; };
+function setTrDocs(list){
+  const all = {en:{}, bn:{}, ur:{}};
+  for (const v of list) { const l = v.lang || "en"; if (all[l] && validRefSafe(v.s, v.a)) all[l][key(v.s,v.a)] = v; }
+  S.trAll = all; S.tr = all[S.trLang];
+}
+function parseRefs(str){
+  // "2:255", "2:250-260", "2 255", "3:10-12, 4:1"
+  const out = [];
+  for (const part of String(str).split(/[,;،]+/)) {
+    const p = part.trim(); if (!p) continue;
+    const m = p.match(/^(\d{1,3})\s*[:.\s]\s*(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?$/);
+    if (!m) return null;
+    const s = +m[1], a = +m[2], b = m[3] ? +m[3] : a;
+    if (!validRef(s,a) || !validRef(s,b) || b < a) return null;
+    out.push({s, from:a, to:b});
+  }
+  return out.length ? out : null;
+}
+const rangeLabel = r => r.from === r.to ? `${r.s}:${r.from}` : `${r.s}:${r.from}–${r.to}`;
+const normalize = s => String(s||"").toLowerCase().replace(/[ً-ٰٟۖ-ۭـ]/g,"").replace(/[إأآٱ]/g,"ا").replace(/ى/g,"ي");
+
+function pick(obj, lang, src){
+  obj = obj || {};
+  if (obj[lang] && obj[lang].trim()) return {text: obj[lang], lang, fallback:false};
+  const order = [src, "en", ...LANGS].filter(Boolean);
+  for (const l of order) if (obj[l] && obj[l].trim()) return {text: obj[l], lang: l, fallback: true};
+  return {text:"", lang, fallback:false};
+}
+// Titles fall back only to the language the piece was written in. If the author left the title empty there,
+// no other language's title is used (a word analysis then shows the word itself).
+function pickTitle(obj, lang, src){
+  obj = obj || {};
+  if (src && !(obj[src] || "").trim()) return {text:"", lang, fallback:false};
+  return pick(obj, lang, src);
+}
+/* Article format:
+   ## Section  ### Sub-section  #### Minor heading
+   >> Qur'an / Arabic quotation block (Quranic script, right-to-left)
+   > quotation       - bullet      1. numbered      --- divider
+   **bold**  *italic*  [link text](https://…)  2:255 ayah link
+   footnote marker [^1] with a line  [^1]: note text  anywhere in the article */
+const ARABIC_RE = /[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/g;
+const isArabicPara = t => { const letters = t.replace(/[\s\d\p{P}\p{S}]/gu,""); return letters.length > 0 && ((t.match(ARABIC_RE)||[]).length / letters.length) > 0.7; };
+function renderDoc(src, lang, uid){
+  uid = uid || "d";
+  const fnDefs = {}, fnOrder = [];
+  const bodyLines = [];
+  for (const raw of String(src||"").split(/\r?\n/)) {
+    const m = raw.match(/^\s*\[\^([^\]\s]+)\]:\s*(.*)$/);
+    if (m) fnDefs[m[1]] = m[2]; else bodyLines.push(raw);
+  }
+  const toc = [];
+  let words = 0;
+  const inline = t => esc(t)
+    .replace(/\[\^([^\]\s]+)\]/g, (m, id) => {
+      let n = fnOrder.indexOf(id); if (n < 0) { fnOrder.push(id); n = fnOrder.length - 1; }
+      return `<sup class="fnref"><button type="button" data-fn="${uid}-fn-${n+1}" id="${uid}-fr-${n+1}" aria-label="Note ${n+1}">${n+1}</button></sup>`;
+    })
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (m, txt, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${txt}</a>`)
+    .replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>")
+    .replace(/(^|[\s(])\*(?!\s)(.+?)\*(?=[\s).,;:!?،]|$)/g,"$1<em>$2</em>")
+    .replace(/(^|[^\w\/:])(\d{1,3}):(\d{1,3})(?![\w:])/g,(m,pre,s,a)=> validRef(+s,+a) ? `${pre}<button type="button" class="reflink" data-go="${s}:${a}">${s}:${a}</button>` : m);
+  const auto = !(lang === "ar" || lang === "ur");
+  let html = "", para = [], list = null, quote = [], arq = [];
+  const flushP = () => {
+    if (!para.length) return;
+    const joined = para.join("\n");
+    words += joined.split(/\s+/).filter(Boolean).length;
+    if (auto && isArabicPara(joined)) html += `<p class="ar-quote" lang="ar" dir="rtl">${para.map(inline).join("<br>")}</p>`;
+    else html += `<p>${para.map(inline).join("<br>")}</p>`;
+    para = [];
+  };
+  const flushL = () => { if (list){ html += `<${list.t}>${list.items.map(i=>`<li>${inline(i)}</li>`).join("")}</${list.t}>`; list = null; } };
+  const flushQ = () => { if (quote.length){ html += `<blockquote>${quote.map(inline).join("<br>")}</blockquote>`; quote = []; } };
+  const flushA = () => { if (arq.length){ html += `<p class="ar-quote" lang="ar" dir="rtl">${arq.map(inline).join("<br>")}</p>`; arq = []; } };
+  const flushAll = () => { flushP(); flushL(); flushQ(); flushA(); };
+  for (const raw of bodyLines) {
+    const l = raw.trimEnd();
+    let m;
+    if (!l.trim()) { flushAll(); continue; }
+    if ((m = l.match(/^(#{1,4})\s+(.*)$/))) {
+      flushAll();
+      const lvl = m[1].length <= 2 ? 2 : m[1].length; // # and ## = section, ### = sub-section, #### = minor
+      const id = `${uid}-h-${toc.length+1}`;
+      if (lvl <= 3) toc.push({id, lvl, text: m[2].replace(/\*\*|\*|\[\^[^\]]+\]/g,"")});
+      html += `<h${lvl+1} id="${id}" class="ah${lvl}">${inline(m[2])}</h${lvl+1}>`;
+      words += m[2].split(/\s+/).length;
+      continue;
+    }
+    if (/^\s*(-{3,}|\*{3,}|_{3,})\s*$/.test(l)) { flushAll(); html += `<hr>`; continue; }
+    if ((m = l.match(/^>>\s?(.*)$/))) { flushP(); flushL(); flushQ(); arq.push(m[1]); continue; }
+    if ((m = l.match(/^>\s?(.*)$/))) { flushP(); flushL(); flushA(); quote.push(m[1]); words += m[1].split(/\s+/).length; continue; }
+    if ((m = l.match(/^\s*[-•*]\s+(.*)$/))) { flushP(); flushQ(); flushA(); if (!list || list.t!=="ul"){ flushL(); list={t:"ul",items:[]}; } list.items.push(m[1]); words += m[1].split(/\s+/).length; continue; }
+    if ((m = l.match(/^\s*[\d٠-٩০-৯]+[.)]\s+(.*)$/))) { flushP(); flushQ(); flushA(); if (!list || list.t!=="ol"){ flushL(); list={t:"ol",items:[]}; } list.items.push(m[1]); words += m[1].split(/\s+/).length; continue; }
+    flushL(); flushQ(); flushA(); para.push(l);
+  }
+  flushAll();
+  if (fnOrder.length) {
+    html += `<section class="footnotes"><h4>Notes</h4><ol>${fnOrder.map((id,i)=>`<li id="${uid}-fn-${i+1}">${inline(fnDefs[id] || "")} <button type="button" class="fnback" data-fn="${uid}-fr-${i+1}" aria-label="Back to text">↩</button></li>`).join("")}</ol></section>`;
+  }
+  return {html, toc, words, notes: fnOrder.length};
+}
+const mdLite = (src, lang) => renderDoc(src, lang).html;
+const isLong = (src) => { const t = String(src||""); return t.length > 900 || /^#{1,4}\s/m.test(t) || /\[\^[^\]]+\]/.test(t); };
+function toast(msg){
+  const r = $("#toast-root");
+  r.innerHTML = `<div class="toast" role="status">${esc(msg)}</div>`;
+  clearTimeout(toast.t); toast.t = setTimeout(()=> r.innerHTML = "", 3200);
+}
+
+/* ---------- derived indexes ---------- */
+let IDX = {notes:{}, lessons:{}, words:{}, counts:{}};
+function reindex(){
+  const notes = {}, lessons = {}, words = {}, counts = {};
+  const bump = (s, k) => { (counts[s] ||= {rev:0,exp:0,les:0,wa:0})[k]++; };
+  for (const n of S.notes) { (notes[key(n.s,n.a)] ||= []).push(n); bump(n.s, "exp"); }
+  for (const w of S.words) { (words[key(w.s,w.a)] ||= []).push(w); bump(w.s, "wa"); }
+  for (const k in S.tr) bump(S.tr[k].s, "rev");
+  for (const l of S.lessons) {
+    const seen = new Set();
+    for (const r of (l.ranges||[])) {
+      for (let a=r.from; a<=r.to; a++) (lessons[key(r.s,a)] ||= []).push(l);
+      if (!seen.has(r.s)) { bump(r.s,"les"); seen.add(r.s); }
+    }
+  }
+  for (const k in notes) notes[k].sort((x,y)=> (x.createdAt||0)-(y.createdAt||0));
+  for (const k in words) words[k].sort((x,y)=> (x.w||0)-(y.w||0));
+  IDX = {notes, lessons, words, counts};
+}
+
+/* ---------- navigation ---------- */
+function setHash(h){ try { if (S.static && location.hash !== "#" + h) history.pushState(null, "", "#" + h); else history.replaceState(null, "", "#" + h); } catch {} }
+function go(view, opts={}){
+  if (S.keepRet) S.keepRet = false; else S.ret = null;
+  const prev = S.view, prevSurah = S.surah;
+  S.view = view;
+  if (view === "surah") {
+    S.surah = opts.s || S.surah;
+    S.flashKey = opts.a ? key(S.surah, opts.a) : null;
+    setHash(opts.a ? `s${S.surah}-${opts.a}` : `s${S.surah}`);
+  } else if (view === "article") {
+    const from = prev === "article" ? S.art?.from : (prev === "surah" ? {surah: prevSurah, y: window.scrollY} : prev);
+    S.art = {kind: opts.kind, id: opts.id, from};
+    if (/^[A-Za-z0-9_.~-]+$/.test(opts.id)) setHash(`${opts.kind}-${opts.id}`);
+  } else setHash(view);
+  render();
+  if (view === "surah" && opts.a) {
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`a-${S.surah}-${opts.a}`);
+      if (el) { el.scrollIntoView({block:"start"}); }
+    });
+  } else if (!opts.keepScroll) window.scrollTo(0,0);
+}
+function goRef(ref){
+  const [s,a] = ref.split(":").map(Number);
+  if (validRef(s,a)) {
+    // Remember the exact place we left, so one click brings the reader back.
+    const y = window.scrollY;
+    if (S.view === "article" && S.art) {
+      const it = itemOf(S.art.kind, S.art.id);
+      const t = it ? (pickTitle(it.title, S.lang, it.src).text || (S.art.kind === "w" ? it.word : "") || "") : "";
+      const kindL = S.art.kind === "l" ? "lesson" : S.art.kind === "w" ? "word analysis" : "note";
+      S.ret = {view: "article", art: Object.assign({}, S.art), y, label: t ? `Back to “${t.length > 48 ? t.slice(0, 46) + "…" : t}”` : `Back to the ${kindL}`};
+    } else if (S.view === "surah") {
+      if (!S.ret || S.ret.view !== "surah" || S.ret.surah !== S.surah || Math.abs(S.ret.y - y) > 40) S.ret = {view: "surah", surah: S.surah, y, label: `Back to where you were in ${surahOf(S.surah).tl}`};
+    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words") {
+      S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view[0].toUpperCase() + S.view.slice(1)}`};
+    }
+    S.keepRet = true; if (S.onlyMarked && !hasMarks(s,a)) S.onlyMarked = false; S.open.add(key(s,a)); go("surah",{s,a}); }
+}
+function fromHash(){
+  const h = (location.hash||"").slice(1);
+  let m;
+  if (h === "" || h === "surahs") S.view = "surahs";
+  else if (h === "notes" || h === "lessons" || h === "words") S.view = h;
+  else if ((m = h.match(/^([nlw])-([A-Za-z0-9_.~-]+)$/))) { S.view = "article"; S.art = {kind: m[1], id: m[2], from: m[1]==="n" ? "notes" : m[1]==="w" ? "words" : "lessons"}; }
+  else if ((m = h.match(/^s(\d{1,3})(?:-(\d{1,3}))?$/)) && +m[1]>=1 && +m[1]<=114) { S.view = "surah"; S.surah = +m[1]; if (m[2]) { S.pendingAyah = +m[2]; S.open.add(key(+m[1],+m[2])); } }
+}
+
+function drawBackPill(){
+  const r = $("#back-root"); if (!r) return;
+  const R0 = S.ret;
+  if (!R0 || S.view !== "surah" || (R0.view === "surah" && R0.surah === S.surah && Math.abs(window.scrollY - R0.y) < 40 && !S.flashKey)) { r.innerHTML = ""; return; }
+  r.innerHTML = `<div class="backpill" role="navigation" aria-label="Return"><button type="button" data-goback title="${esc(R0.label)}">← ${esc(R0.label)}</button><button type="button" class="x" data-goback-x aria-label="Dismiss">✕</button></div>`;
+}
+function goBack(){
+  const R0 = S.ret; if (!R0) return;
+  S.ret = null; S.flashKey = null;
+  if (R0.view === "article") { S.view = "article"; S.art = R0.art; setHash(`${R0.art.kind}-${R0.art.id}`); }
+  else if (R0.view === "surah") { S.view = "surah"; S.surah = R0.surah; setHash(`s${R0.surah}`); }
+  else { S.view = R0.view; setHash(R0.view); }
+  render();
+  requestAnimationFrame(() => requestAnimationFrame(() => window.scrollTo(0, R0.y)));
+}
+
+/* ---------- Qur'an font ---------- */
+const QFONTS = {
+  sch:   {label:"Scheherazade New (clear)", css:'"Scheherazade New","Noto Naskh Arabic","Traditional Arabic",serif'},
+  naskh: {label:"Noto Naskh (plain)",       css:'"Noto Naskh Arabic","Scheherazade New","Traditional Arabic",serif'},
+  amiri: {label:"Amiri Quran (calligraphic)", css:'"Amiri Quran","Scheherazade New","Traditional Arabic",serif'}
+};
+function applyQFont(){
+  const root = document.documentElement, r = root.style;
+  const ip = S.script === "indopak" && S.ipState === "ready";
+  root.classList.toggle("script-indopak", ip);
+  if (ip) r.removeProperty("--f-quran"); else r.setProperty("--f-quran", QFONTS[S.qfont].css);
+  r.setProperty("--q-scale", String(S.qscale));
+  if (S.script === "indopak" && S.ipState === "idle") loadIndoPak();
+}
+function arText(s, a){
+  if (S.script === "indopak" && S.ipState === "ready" && S.IP) return S.IP[s-1][a-1];
+  return S.Q[s-1].v[a-1][0];
+}
+function loadIndoPak(){
+  S.ipState = "loading";
+  const text = fetch("indopak.json").then(r => { if (!r.ok) throw 0; return r.json(); });
+  const font = fetch("indopak-font.woff2").then(r => { if (!r.ok) throw 0; return r.arrayBuffer(); })
+    .then(buf => { const ff = new FontFace("IndoPak Quran", buf); document.fonts.add(ff); return ff.load(); });
+  Promise.all([text, font]).then(([t]) => { S.IP = t; S.ipState = "ready"; render(); })
+    .catch(() => { S.ipState = "failed"; toast("The IndoPak script couldn't load. Showing the Madani script."); render(); });
+}
+function qfontControls(){
+  return `<div class="qfont"><span class="flabel">Script</span>
+    <div class="seg" role="group" aria-label="Qur'an script"><button type="button" data-script="indopak" aria-pressed="${S.script==="indopak"}">IndoPak</button><button type="button" data-script="madani" aria-pressed="${S.script==="madani"}">Madani</button></div>
+    ${S.script==="indopak" && S.ipState==="loading" ? `<span class="small muted">Loading…</span>` : ""}
+    ${S.script==="madani" ? `<label class="flabel" for="qfont">Font</label>
+    <select id="qfont">${Object.entries(QFONTS).map(([k,f])=>`<option value="${k}" ${S.qfont===k?"selected":""}>${f.label}</option>`).join("")}</select>` : ""}
+    <div class="seg" role="group" aria-label="Arabic text size"><button type="button" data-qsize="-1" aria-label="Smaller Arabic text">A−</button><button type="button" data-qsize="1" aria-label="Larger Arabic text">A+</button></div></div>`;
+}
+
+
+/* ---------- full screen reading ---------- */
+function focusTitle(){
+  if (S.view === "surah") { const su = surahOf(S.surah); return `${su.n}. ${su.tl}`; }
+  if (S.view === "article") { const A = S.art || {}; const it = itemOf(A.kind, A.id); return it ? ((A.kind === "w" && !pickTitle(it.title, S.lang, it.src).text) ? it.word : pickTitle(it.title, S.lang, it.src).text || "Untitled") : ""; }
+  return "";
+}
+function drawFocusBar(){
+  const r = $("#focus-root");
+  if (!S.focus) { r.innerHTML = ""; return; }
+  r.innerHTML = `<div class="focusbar" role="toolbar" aria-label="Reading controls">
+    <span class="fb-title">${esc(focusTitle())}</span>
+    ${S.view === "surah" ? `${S.surah > 1 ? `<button type="button" class="btn ghost small" data-surah="${S.surah-1}" aria-label="Previous surah">‹</button>` : ""}${S.surah < 114 ? `<button type="button" class="btn ghost small" data-surah="${S.surah+1}" aria-label="Next surah">›</button>` : ""}` : ""}
+    <span class="seg" role="group" aria-label="Text size"><button type="button" data-fsize="-1" aria-label="Smaller text">A−</button><button type="button" data-fsize="1" aria-label="Larger text">A+</button></span>
+    <button type="button" class="btn small" data-unfocus>Exit full screen</button>
+  </div>`;
+}
+function applyReadScale(){ document.documentElement.style.setProperty("--read-scale", String(S.readScale)); }
+async function enterFocus(){
+  S.focus = true;
+  document.documentElement.classList.add("reading");
+  applyReadScale();
+  try { if (document.documentElement.requestFullscreen && !document.fullscreenElement) { await document.documentElement.requestFullscreen(); S.fsNative = true; } } catch { S.fsNative = false; }
+  render();
+}
+function exitFocus(){
+  S.focus = false;
+  document.documentElement.classList.remove("reading");
+  if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(() => {});
+  S.fsNative = false;
+  render();
+}
+document.addEventListener("fullscreenchange", () => { if (!document.fullscreenElement && S.focus && S.fsNative) exitFocus(); });
+
+/* ---------- rendering ---------- */
+function render(){
+  applyQFont();
+  if (S.focus && S.view !== "surah" && S.view !== "article") { S.focus = false; document.documentElement.classList.remove("reading"); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
+  setTimeout(drawFocusBar, 0);
+  drawBackPill();
+  document.querySelectorAll("nav.tabs button").forEach(b => {
+    const cur = b.dataset.nav === S.view || (b.dataset.nav==="surahs" && S.view==="surah")
+      || (S.view==="article" && ((S.art?.kind==="l" && b.dataset.nav==="lessons") || (S.art?.kind==="n" && b.dataset.nav==="notes") || (S.art?.kind==="w" && b.dataset.nav==="words")));
+    if (cur) b.setAttribute("aria-current","page"); else b.removeAttribute("aria-current");
+  });
+  document.querySelectorAll(".seg button[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === S.lang)));
+  document.querySelectorAll(".seg button[data-trlang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.trlang === S.trLang)));
+  const pill = $("#modepill");
+  pill.textContent = S.admin ? "Editor mode" : "Reader";
+  pill.className = "modepill" + (S.admin ? " admin" : "");
+  if (!S.Q) return;
+  const app = $("#app");
+  const y = window.scrollY;
+  if (S.view === "surahs") app.innerHTML = viewSurahs();
+  else if (S.view === "surah") { watchIrab(S.surah); app.innerHTML = viewSurah(); }
+  else if (S.view === "notes") app.innerHTML = viewNotes();
+  else if (S.view === "lessons") app.innerHTML = viewLessons();
+  else if (S.view === "words") app.innerHTML = viewWords();
+  else if (S.view === "article") app.innerHTML = viewArticle();
+  window.scrollTo(0, y);
+  if (S.pendingAyah) { const a = S.pendingAyah; S.pendingAyah = null; S.flashKey = key(S.surah,a); render(); requestAnimationFrame(()=> document.getElementById(`a-${S.surah}-${a}`)?.scrollIntoView({block:"start"})); }
+}
+
+function statusBar(){
+  if (S.dbState === "ok") return "";
+  if (S.dbState === "loading") return `<div class="statusbar">Loading saved translations, explanations and lessons…</div>`;
+  return `<div class="statusbar">Saved write-ups can't be loaded in this view, so only the Qur'an text and the Saheeh International translation are shown. Open the page from claude.ai to see and edit the saved work.</div>`;
+}
+
+function marksFor(s, counts){
+  const c = counts || IDX.counts[s];
+  if (!c) return "";
+  return [
+    c.rev ? `<span class="chip rev">${c.rev} revised</span>` : "",
+    c.exp ? `<span class="chip exp">${c.exp} note${c.exp>1?"s":""}</span>` : "",
+    c.les ? `<span class="chip les">${c.les} lesson${c.les>1?"s":""}</span>` : "",
+    c.wa ? `<span class="chip wa">${c.wa} word${c.wa>1?"s":""}</span>` : ""
+  ].join("");
+}
+
+function viewSurahs(){
+  const q = normalize(S.sq.trim());
+  const list = S.Q.filter(s => !q || String(s.n) === q || normalize(s.tl).includes(q) || normalize(s.m).includes(q) || normalize(s.ar).includes(q));
+  const tot = {rev:Object.keys(S.tr).length, exp:S.notes.filter(n=>n.kind!=="question").length, qa:S.notes.filter(n=>n.kind==="question").length, les:S.lessons.length};
+  return `${statusBar()}
+  <div class="idx-head">
+    <h1>Surahs</h1>
+    <input type="search" id="sq" class="search" placeholder="Find a surah by name or number" value="${esc(S.sq)}" aria-label="Find a surah">
+  </div>
+  <div class="row small muted" style="margin-bottom:14px">
+    <span>Across the Qur'an:</span>
+    <span class="legend">
+      <span class="chip rev">${tot.rev} revised ${S.trLang==="en"?"":LNAME_EN[S.trLang]+" "}translation${tot.rev===1?"":"s"}</span>
+      <span class="chip exp">${tot.exp} note${tot.exp===1?"":"s"}</span>
+      <span class="chip les">${tot.les} lesson${tot.les===1?"":"s"}</span>
+      <span class="chip wa">${S.words.length} word analys${S.words.length===1?"is":"es"}</span>
+    </span>
+  </div>
+  <div class="sgrid">
+    ${list.map(s => `<button type="button" class="scard" data-surah="${s.n}">
+      <span class="no">${s.n}</span><span class="tl">${esc(s.tl)}</span><span class="arn" lang="ar">${esc(s.ar)}</span>
+      <span class="meta">${esc(s.m)} · ${s.v.length} ayahs · ${s.t === "meccan" ? "Makki" : "Madani"}</span>
+      <span class="marks">${marksFor(s.n)}</span>
+    </button>`).join("") || `<div class="empty">No surah matches “${esc(S.sq)}”.</div>`}
+  </div>
+  <footer class="src">Arabic text: IndoPak script as published by quran.com, set in the Al Qalam IndoPak Qur'an font; Madani (Uthmani) script from the Noble Qur'an Encyclopedia (quranenc.com). Translations: English, Saheeh International (via tanzil.net); Bangla, Taisirul Quran (via the Quranic Universal Library); Urdu, Sayyid Abul Aʿla Maududi, Tafheem-ul-Quran (via tanzil.net).</footer>`;
+}
+
+function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] || IDX.lessons[k]); }
+
+function viewSurah(){
+  const su = surahOf(S.surah);
+  const bism = arText(1,1);
+  const showBism = su.n !== 1 && su.n !== 9;
+  const ayahs = su.v.map((v,i) => ({a:i+1, ar:arText(su.n,i+1), en:baseTr(su.n,i+1)})).filter(x => !S.onlyMarked || hasMarks(su.n, x.a));
+  const prev = su.n > 1 ? surahOf(su.n-1) : null, next = su.n < 114 ? surahOf(su.n+1) : null;
+  return `${statusBar()}
+  <div class="shead">
+    <div>${prev ? `<button type="button" class="btn ghost" data-surah="${prev.n}">← ${esc(prev.tl)}</button>` : ""}</div>
+    <div class="mid">
+      <div class="arn" lang="ar" dir="rtl">${esc(su.ar)}</div>
+      <h1>${su.n}. ${esc(su.tl)}</h1>
+      <div class="muted small">${esc(su.m)} · ${su.v.length} ayahs · ${su.t === "meccan" ? "Makki" : "Madani"}</div>
+    </div>
+    <div style="text-align:right">${next ? `<button type="button" class="btn ghost" data-surah="${next.n}">${esc(next.tl)} →</button>` : ""}</div>
+  </div>
+  <div class="toolbar">
+    <button type="button" class="btn" data-focus aria-label="Read this surah in full screen">⛶ Full screen</button>
+    <form class="row" id="jump" autocomplete="off"><label class="flabel" for="jumpa">Go to ayah</label><input type="text" id="jumpa" inputmode="numeric" placeholder="1–${su.v.length}"><button class="btn" type="submit">Go</button></form>
+    <label class="row small"><input type="checkbox" id="onlymarked" ${S.onlyMarked?"checked":""}> Only ayahs with marks</label>
+    ${qfontControls()}
+    <span class="spacer"></span>
+    <span class="legend">${marksFor(su.n) || `<span class="small muted">No marks in this surah yet</span>`}</span>
+  </div>
+  ${showBism && !S.onlyMarked ? `<div class="bism" lang="ar" dir="rtl">${esc(bism)}</div>` : ""}
+  ${ayahs.map(x => ayahHTML(su.n, x)).join("") || `<div class="empty" style="margin-top:16px"><b>No marked ayahs in this surah</b>Turn off “Only ayahs with marks” to see every ayah.</div>`}`;
+}
+
+function ayahHTML(s, x){
+  const k = key(s, x.a);
+  const rev = S.tr[k];
+  const notes = IDX.notes[k] || [];
+  const lessons = IDX.lessons[k] || [];
+  const wlist = IDX.words[k] || [];
+  const nExp = notes.length;
+  const open = S.open.has(k);
+  const dots = [rev?"rev":"", nExp?"exp":"", lessons.length?"les":"", wlist.length?"wa":""].filter(Boolean);
+  return `<article class="ayah${S.flashKey===k?" flash":""}" id="a-${s}-${x.a}">
+    <div class="anum">${s}:${x.a}${dots.length?`<div class="dots" aria-hidden="true">${dots.map(d=>`<span class="dot ${d}"></span>`).join("")}</div>`:""}</div>
+    <div class="abody">
+      <p class="ar" lang="ar" dir="rtl">${esc(x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span></p>
+      <p class="tr${rev?" revised":""}" ${trAttrs()}>${esc(rev ? rev.text : x.en)}</p>
+      ${rev ? `<div class="revline"><span class="chip rev" title="This translation has been revised from ${TR_NAME[S.trLang]}">Translation revised</span>
+        <button type="button" class="btn ghost small" data-compare="${k}">${S.compare.has(k)?"Hide original":"Compare with original"}</button></div>
+        ${S.compare.has(k) ? `<div class="orig" ${trAttrs()}><b>${TR_NAME[S.trLang]}</b>${esc(x.en)}${rev.note?`<div style="margin-top:8px;color:var(--ink)"><b>Reason for revision</b>${esc(rev.note)}</div>`:""}</div>` : ""}` : ""}
+      ${(notes.length || lessons.length || wlist.length) ? `<div class="marks">
+        ${nExp ? `<button type="button" class="chip exp" data-toggle="${k}" aria-expanded="${open}">${nExp} note${nExp>1?"s":""}</button>` : ""}
+        ${wlist.map(w => `<button type="button" class="chip wa" data-article="w:${esc(w.id)}" title="Word analysis">Word: <span lang="ar" class="wa-ar">${esc(w.word||"")}</span></button>`).join("")}
+        ${lessons.map(l => `<button type="button" class="chip les" data-lesson="${esc(l.id)}">Lesson: ${esc(pickTitle(l.title,S.lang,l.src).text || "Untitled")}</button>`).join("")}
+      </div>` : ""}
+      ${open && notes.length ? `<div class="wlist">${notes.map(n => noteCard(n, false)).join("")}</div>` : ""}
+      <div class="admin-bar">
+        <button type="button" class="btn ghost gbtn" data-grammar="${k}">Grammar${irabOf(s,x.a)?' <span class="gdot" title="Iʿrāb written">· iʿrāb</span>':""}</button>
+      ${S.admin ? `
+        <button type="button" class="btn ghost" data-edit-tr="${k}">${rev?"Edit revised translation":"Revise translation"}</button>
+        <button type="button" class="btn ghost" data-new-note="explanation" data-ref="${k}">Add note</button>
+        <button type="button" class="btn ghost" data-new-word="${k}">Add word analysis</button>` : ""}
+      </div>
+    </div>
+  </article>`;
+}
+
+function langBlock(obj, src, cls){
+  const p = pick(obj, S.lang, src);
+  return {p, attrs:`lang="${p.lang}" dir="${RTL[p.lang]?"rtl":"ltr"}"`};
+}
+function fallbackNote(p, ai){
+  let s = "";
+  if (p.fallback) s += `<div class="notice">Not yet available in ${LNAME_EN[S.lang]}. Showing ${LNAME_EN[p.lang]}.</div> `;
+  else if (ai && ai[p.lang]) s += `<div class="notice">AI-assisted translation, not yet reviewed.</div> `;
+  return s;
+}
+const readMins = w => Math.max(1, Math.round(w / 200));
+function noteCard(n, withRef){
+  const t = langBlock(n.title, n.src), b = langBlock(n.body, n.src);
+  const isQ = n.kind === "question";
+  const long = isLong(b.p.text);
+  const sn = snippet(n, 320);
+  const doc = long ? renderDoc(b.p.text, b.p.lang) : null;
+  return `<div class="wcard">
+    <div class="whead">
+      <span class="chip exp">Note</span>
+      ${catChip(n.cat)}
+      ${withRef ? `<button type="button" class="reflink" data-go="${n.s}:${n.a}">${n.s}:${n.a} · ${esc(surahOf(n.s).tl)}</button>` : ""}
+      <span class="spacer"></span>
+      ${S.admin ? `<button type="button" class="btn ghost small" data-edit-note="${esc(n.id)}">Edit</button>` : ""}
+      ${t.p.text ? `<h3 class="${t.p.lang==="ar"||t.p.lang==="ur"?"w":""}" ${t.attrs}>${esc(t.p.text)}</h3>` : ""}
+    </div>
+    ${fallbackNote(b.p.text ? b.p : t.p, n.ai)}
+    ${long
+      ? `${sn.text ? `<div class="snip w" lang="${sn.lang}" dir="${RTL[sn.lang]?"rtl":"ltr"}">${esc(sn.text)}</div>` : ""}
+         <div class="row" style="margin-top:10px"><button type="button" class="btn small primary" data-article="n:${esc(n.id)}">Read full article</button>
+         <button type="button" class="btn small" data-share="n:${esc(n.id)}">Share</button>
+         <span class="small muted">${readMins(doc.words)} min read${doc.toc.length?` · ${doc.toc.filter(x=>x.lvl===2).length || doc.toc.length} sections`:""}${doc.notes?` · ${doc.notes} notes`:""}</span></div>`
+      : `<div class="prose w" ${b.attrs}>${mdLite(b.p.text, b.p.lang)}</div>
+         <div class="row" style="margin-top:8px"><button type="button" class="btn ghost small" data-article="n:${esc(n.id)}">Open as page</button><button type="button" class="btn ghost small" data-share="n:${esc(n.id)}">Share</button></div>`}
+    ${(n.tags||[]).length ? `<div class="tags">${n.tags.map(tg=>`<button type="button" class="tag" data-ntag="${esc(tg)}">#${esc(tg)}</button>`).join("")}</div>` : ""}
+  </div>`;
+}
+
+function ayahBlock(s, a){
+  const v = surahOf(s).v[a-1], rv = S.tr[key(s,a)];
+  return `<div class="la"><div class="small muted"><button type="button" class="reflink" data-go="${s}:${a}">${s}:${a} · ${esc(surahOf(s).tl)}</button>${rv?' · <span class="chip rev">Translation revised</span>':""} · <button type="button" class="reflink" data-grammar="${s}:${a}">Grammar</button></div>
+    <p class="ar" lang="ar" dir="rtl">${esc(arText(s,a))} <span class="end">﴿${arDigits(a)}﴾</span></p><p class="tr" ${trAttrs()}>${esc(trText(s,a))}</p></div>`;
+}
+function viewArticle(){
+  const A = S.art || {};
+  const it = itemOf(A.kind, A.id);
+  const backLabel = typeof A.from === "object" && A.from ? `← ${esc(surahOf(A.from.surah)?.tl || "Surah")}` : (A.kind==="l" ? "← Lessons" : A.kind==="w" ? "← Word analysis" : "← Notes");
+  if (!it) return `${statusBar()}<p><button type="button" class="btn ghost" data-back>${backLabel}</button></p>` +
+    (S.dbState === "loading" ? `<p class="muted">Loading…</p>` : `<div class="empty"><b>This article isn't available</b>It may have been deleted.</div>`);
+  const isL = A.kind === "l", isW = A.kind === "w";
+  const t0 = pickTitle(it.title, S.lang, it.src), t = t0.text ? t0 : {text: isW ? (it.word || "") : "", lang: isW ? "ar" : t0.lang}, sm = pick(it.summary, S.lang, it.src), b = pick(it.body, S.lang, it.src);
+  const doc = renderDoc(b.text, b.lang, "art");
+  const dir = RTL[b.lang] ? "rtl" : "ltr";
+  const ayahs = [];
+  if (isL) for (const r of (it.ranges||[])) for (let a=r.from; a<=r.to; a++) ayahs.push([r.s,a]);
+  else ayahs.push([it.s, it.a]);
+  const manyAyahs = ayahs.length > 3;
+  const date = new Date(it.updatedAt || it.createdAt || Date.now()).toLocaleDateString(S.lang==="en"?"en-GB":S.lang, {year:"numeric", month:"long", day:"numeric"});
+  const toc = doc.toc.length >= 2 ? `<nav class="toc" aria-label="Contents" lang="${b.lang}" dir="${dir}"><div class="flabel">Contents</div><ol>${doc.toc.map(h=>`<li class="t${h.lvl}"><button type="button" data-fn="${h.id}">${esc(h.text)}</button></li>`).join("")}</ol></nav>` : "";
+  return `${statusBar()}
+  <div class="row art-actions" style="margin-bottom:14px"><button type="button" class="btn ghost" data-back>${backLabel}</button><span class="spacer"></span>
+    <button type="button" class="btn" data-focus aria-label="Read in full screen">⛶ Full screen</button>
+    ${qfontControls()}
+    <button type="button" class="btn primary" data-share="${A.kind}:${esc(it.id)}">Share</button>
+    ${S.admin ? `<button type="button" class="btn" data-${isL?"edit-lesson":isW?"edit-word":"edit-note"}="${esc(it.id)}">Edit</button>` : ""}</div>
+  <article class="article">
+    <header class="art-head">
+      <div class="row"><span class="chip ${isL?"les":isW?"wa":"exp"}">${isL?"Lesson":isW?"Word analysis":"Note"}</span>${isL||isW ? "" : catChip(it.cat)}
+        ${isL ? (it.ranges||[]).map(r=>`<button type="button" class="reflink" data-go="${r.s}:${r.from}">${rangeLabel(r)}</button>`).join(" ") : `<button type="button" class="reflink" data-go="${it.s}:${it.a}">${it.s}:${it.a} · ${esc(surahOf(it.s).tl)}</button>`}</div>
+      ${isW ? `<div class="wa-head"><span class="wa-word" lang="ar" dir="rtl">${esc(it.word||"")}</span>${it.root?`<span class="wa-meta">Root <b lang="ar" dir="rtl">${esc(spaced(it.root))}</b></span>`:""}${it.lemma?`<span class="wa-meta">Lemma <b lang="ar" dir="rtl">${esc(it.lemma)}</b></span>`:""}${it.pos?`<span class="wa-meta">${esc(it.pos)}</span>`:""}</div>` : ""}
+      ${isW && t.text === it.word ? "" : `<h1 class="art-title w" lang="${t.lang}" dir="${RTL[t.lang]?"rtl":"ltr"}">${esc(t.text || "Untitled")}</h1>`}
+      ${sm.text ? `<p class="art-sum w" lang="${sm.lang}" dir="${RTL[sm.lang]?"rtl":"ltr"}">${esc(sm.text)}</p>` : ""}
+      <div class="art-meta small muted">${date} · ${readMins(doc.words)} min read · ${LNAME[b.lang]}</div>
+      ${fallbackNote(b, it.ai)}
+    </header>
+    <section class="art-ayahs">
+      ${manyAyahs && !S.showAyahs ? `${ayahs.slice(0,2).map(([s,a])=>ayahBlock(s,a)).join("")}<button type="button" class="btn small" data-show-ayahs style="margin-top:10px">Show all ${ayahs.length} ayahs</button>`
+        : ayahs.map(([s,a])=>ayahBlock(s,a)).join("")}
+    </section>
+    <div class="art-grid">
+      ${toc}
+      <div class="prose article-body w" lang="${b.lang}" dir="${dir}">${doc.html || `<p class="muted">No text yet in this language.</p>`}</div>
+    </div>
+    ${(it.tags||[]).length ? `<div class="tags" style="margin-top:22px">${it.tags.map(tg=>`<button type="button" class="tag" data-${isL?"ltag":"ntag"}="${esc(tg)}">#${esc(tg)}</button>`).join("")}</div>` : ""}
+  </article>`;
+}
+
+
+/* ---------- word analysis ---------- */
+function itemOf(kind, id){ return (kind === "l" ? S.lessons : kind === "w" ? S.words : S.notes).find(x => x.id === id); }
+function wordCardList(w){
+  const t = pickTitle(w.title, S.lang, w.src), sn = snippet(w, 260);
+  return `<div class="wcard">
+    <div class="whead"><span class="chip wa">Word analysis</span>
+      <button type="button" class="reflink" data-go="${w.s}:${w.a}">${w.s}:${w.a} · ${esc(surahOf(w.s).tl)}</button><span class="spacer"></span>
+      ${S.admin ? `<button type="button" class="btn ghost small" data-edit-word="${esc(w.id)}">Edit</button>` : ""}</div>
+    <div class="wa-row"><span class="wa-word sm" lang="ar" dir="rtl">${esc(w.word||"")}</span>
+      <span class="wa-meta">${w.root ? `Root <b lang="ar" dir="rtl">${esc(spaced(w.root))}</b>` : "No root"}</span>
+      ${w.lemma ? `<span class="wa-meta">Lemma <b lang="ar" dir="rtl">${esc(w.lemma)}</b></span>` : ""}</div>
+    ${t.text && t.text !== w.word ? `<h3 class="${t.lang==="ar"||t.lang==="ur"?"w":""}" lang="${t.lang}" dir="${RTL[t.lang]?"rtl":"ltr"}" style="font-size:17px;margin-top:6px">${esc(t.text)}</h3>` : ""}
+    ${sn.text ? `<div class="snip w" lang="${sn.lang}" dir="${RTL[sn.lang]?"rtl":"ltr"}">${esc(sn.text)}</div>` : ""}
+    <div class="row" style="margin-top:8px"><button type="button" class="btn small primary" data-article="w:${esc(w.id)}">Read</button><button type="button" class="btn small" data-share="w:${esc(w.id)}">Share</button>
+      ${(w.tags||[]).map(tg=>`<span class="tag">#${esc(tg)}</span>`).join("")}</div>
+  </div>`;
+}
+function viewWords(){
+  const q = S.wq.trim();
+  const refs = q ? refMatch(q) : null;
+  const nq = normalize(q.replace(/^#/, ""));
+  const items = S.words.filter(w => (!S.wroot || w.root === S.wroot)
+      && (refs ? inRanges(w.s, w.a, refs) : (!q || normalize([w.word, w.root, spaced(w.root||""), w.lemma].join(" ")).includes(nq) || textHit(w, q))))
+    .sort((a, b) => (a.s*1000+a.a) - (b.s*1000+b.a) || (a.w||0) - (b.w||0));
+  const roots = [...new Map(S.words.filter(w => w.root).map(w => [w.root, 0])).keys()].sort((a, b) => a.localeCompare(b, "ar"));
+  const count = r => S.words.filter(w => w.root === r).length;
+  return `${statusBar()}
+  <div class="phead"><h1>Word analysis</h1>
+    ${S.admin ? `<button type="button" class="btn primary" data-new-word="">New word analysis</button>` : ""}</div>
+  <p class="lede">Studies of individual words of the Qur'an: meaning, root, usage and why this word was chosen. Search by the Arabic word, its root, any text, or an ayah such as <b>2:255</b>.</p>
+  <div class="filters">
+    <div class="row">
+      <input type="search" id="wq" class="search" placeholder="Search a word, a root like رحم, or 2:255" value="${esc(S.wq)}" aria-label="Search word analyses">
+      <div class="catfilter"><label class="flabel" for="wroot">Root</label>
+        <select id="wroot" style="width:auto;min-width:160px"><option value="">All roots (${S.words.length})</option>
+          ${roots.map(r => `<option value="${esc(r)}" ${S.wroot===r?"selected":""}>${esc(spaced(r))} (${count(r)})</option>`).join("")}</select></div>
+    </div>
+    ${(q || S.wroot) ? `<div class="small muted">${items.length} result${items.length===1?"":"s"} · <button type="button" class="btn ghost small" data-clear="words">Clear</button></div>` : ""}
+  </div>
+  <div class="results">${items.map(wordCardList).join("") || (S.words.length
+    ? `<div class="empty"><b>Nothing matches</b>Try another word, root or ayah.</div>`
+    : `<div class="empty"><b>No word analyses yet</b>${S.admin ? "Open any surah and use “Add word analysis” under an ayah, or start one here." : "Word analyses will appear here as they are added."}</div>`)}</div>`;
+}
+
+/* ---------- search ---------- */
+function refMatch(q){
+  const refs = parseRefs(q);
+  if (refs) return refs;
+  const m = q.trim().match(/^(\d{1,3})$/);
+  if (m && +m[1]>=1 && +m[1]<=114) return [{s:+m[1], from:1, to:surahOf(+m[1]).v.length}];
+  return null;
+}
+const inRanges = (s,a,ranges) => ranges.some(r => r.s===s && a>=r.from && a<=r.to);
+const overlaps = (lr, ranges) => (lr||[]).some(x => ranges.some(r => r.s===x.s && x.from<=r.to && x.to>=r.from));
+function textHit(item, q){
+  if (!q) return true;
+  const hay = normalize([catName(item.cat), ...LANGS.map(l=>(item.title||{})[l]), ...LANGS.map(l=>(item.summary||{})[l]), ...LANGS.map(l=>(item.body||{})[l]), ...(item.tags||[])].join(" \n "));
+  return normalize(q).split(/\s+/).filter(Boolean).every(w => hay.includes(w.replace(/^#/,"")));
+}
+function snippet(item, max){
+  max = max || 220;
+  const s = pick(item.summary, S.lang, item.src);
+  if (s.text.trim() && !(s.fallback && pick(item.body, S.lang, item.src).lang === S.lang)) return {text: s.text.trim(), lang: s.lang};
+  const p = pick(item.body, S.lang, item.src);
+  const t = p.text.split(/\r?\n/).filter(l => !/^\s*\[\^[^\]]+\]:/.test(l) && !/^#{1,4}\s/.test(l)).join(" ")
+    .replace(/\[\^[^\]]+\]/g,"").replace(/\[([^\]]+)\]\([^)]+\)/g,"$1").replace(/[#*>]/g,"").replace(/\s+/g," ").trim();
+  return {text: t.length>max ? t.slice(0,max)+"…" : t, lang:p.lang};
+}
+function tagCounts(items){
+  const m = new Map();
+  for (const it of items) for (const t of (it.tags||[])) m.set(t, (m.get(t)||0)+1);
+  return [...m.entries()].sort((a,b)=> b[1]-a[1] || a[0].localeCompare(b[0]));
+}
+
+function viewNotes(){
+  const q = S.nq.trim();
+  const refs = q ? refMatch(q) : null;
+  let items = [];
+  if (S.nkind !== "revised") {
+    items = S.notes.filter(n => true
+      && (!S.ncat || (S.ncat === "none" ? !catById(n.cat) : n.cat === S.ncat))
+      && (!S.ntag || (n.tags||[]).includes(S.ntag))
+      && (refs ? inRanges(n.s,n.a,refs) : textHit(n,q)));
+    items.sort((a,b)=> (a.s*1000+a.a)-(b.s*1000+b.a) || (a.createdAt||0)-(b.createdAt||0));
+  }
+  let revs = [];
+  if (S.nkind !== "notes") {
+    revs = Object.values(S.tr).filter(r => !S.ntag && !S.ncat && (refs ? inRanges(r.s,r.a,refs) : (!q || normalize(r.text+" "+(r.note||"")).includes(normalize(q)))));
+    revs.sort((a,b)=> (a.s*1000+a.a)-(b.s*1000+b.a));
+  }
+  const tags = tagCounts(S.notes);
+  const kinds = [["all","Notes and revised translations"],["notes","Notes only"],["revised","Revised translations"]];
+  const results = [
+    ...items.map(n => {
+      const t = pickTitle(n.title, S.lang, n.src), sn = snippet(n), isQ = n.kind==="question";
+      const long = isLong(pick(n.body, S.lang, n.src).text);
+      if (!long && S.openNote.has(n.id)) return noteCard(n, true).replace('<div class="whead">', `<div class="whead"><button type="button" class="btn ghost small" data-open-note="${esc(n.id)}">Collapse</button>`);
+      return `<div class="wcard">
+        <div class="whead"><span class="chip exp">Note</span>${catChip(n.cat)}
+        <button type="button" class="reflink" data-go="${n.s}:${n.a}">${n.s}:${n.a} · ${esc(surahOf(n.s).tl)}</button><span class="spacer"></span>
+        ${S.admin ? `<button type="button" class="btn ghost small" data-edit-note="${esc(n.id)}">Edit</button>` : ""}</div>
+        <h3 class="${t.lang==="ar"||t.lang==="ur"?"w":""}" lang="${t.lang}" dir="${RTL[t.lang]?"rtl":"ltr"}" style="font-size:17px">${esc(t.text || "Untitled")}</h3>
+        ${sn.text ? `<div class="snip w" lang="${sn.lang}" dir="${RTL[sn.lang]?"rtl":"ltr"}">${esc(sn.text)}</div>` : ""}
+        <div class="row" style="margin-top:8px">${long ? `<button type="button" class="btn small" data-article="n:${esc(n.id)}">Read article</button>` : `<button type="button" class="btn small" data-open-note="${esc(n.id)}">Read</button><button type="button" class="btn small" data-article="n:${esc(n.id)}">Open as page</button>`}<button type="button" class="btn small" data-share="n:${esc(n.id)}">Share</button>
+        ${(n.tags||[]).map(tg=>`<button type="button" class="tag" data-ntag="${esc(tg)}" aria-pressed="${S.ntag===tg}">#${esc(tg)}</button>`).join("")}</div>
+      </div>`;
+    }),
+    ...revs.map(r => `<div class="wcard">
+      <div class="whead"><span class="chip rev">Translation revised</span>
+      <button type="button" class="reflink" data-go="${r.s}:${r.a}">${r.s}:${r.a} · ${esc(surahOf(r.s).tl)}</button><span class="spacer"></span>
+      ${S.admin ? `<button type="button" class="btn ghost small" data-edit-tr="${r.s}:${r.a}">Edit</button>` : ""}</div>
+      <p class="tr" style="font-size:15.5px" ${trAttrs()}>${esc(r.text)}</p>
+      <div class="orig" ${trAttrs()}><b>${TR_NAME[S.trLang]}</b>${esc(baseTr(r.s, r.a))}${r.note?`<div style="margin-top:8px;color:var(--ink)"><b>Reason for revision</b>${esc(r.note)}</div>`:""}</div>
+    </div>`)
+  ];
+  const any = S.notes.length || Object.keys(S.tr).length;
+  return `${statusBar()}
+  <div class="phead"><h1>Notes</h1>
+    ${S.admin ? `<button type="button" class="btn" data-cats>Manage categories</button><button type="button" class="btn primary" data-new-note="explanation" data-ref="">New note</button>` : ""}</div>
+  <p class="lede">Every note written under an ayah, plus every revised translation. Search by words in any of the four languages, by tag, or by ayah number such as <b>2:255</b>, a range such as <b>2:250-260</b>, or a surah number such as <b>18</b>.</p>
+  <div class="filters">
+    <div class="row">
+      <input type="search" id="nq" class="search" placeholder="Search words, #tag, or 2:255" value="${esc(S.nq)}" aria-label="Search notes">
+      <div class="seg" role="group" aria-label="Type">${kinds.map(([k,l])=>`<button type="button" data-nkind="${k}" aria-pressed="${S.nkind===k}">${l}</button>`).join("")}</div>
+    </div>
+    <div class="catfilter"><label class="flabel" for="ncat">Category</label>
+      <select id="ncat" style="width:auto;min-width:220px">
+        <option value="" ${!S.ncat?"selected":""}>All categories (${S.notes.length})</option>
+        ${S.cats.map(c => `<option value="${esc(c.id)}" ${S.ncat===c.id?"selected":""}>${esc(catName(c.id))} (${catUse(c.id)})</option>`).join("")}
+        ${S.notes.some(n => !catById(n.cat)) ? `<option value="none" ${S.ncat==="none"?"selected":""}>Uncategorised (${S.notes.filter(n => !catById(n.cat)).length})</option>` : ""}
+      </select></div>
+    ${tags.length ? `<div class="tagrow">${tags.map(([t,c])=>`<button type="button" class="tag" data-ntag="${esc(t)}" aria-pressed="${S.ntag===t}">#${esc(t)} <span class="muted">${c}</span></button>`).join("")}</div>` : ""}
+    ${(q||S.ntag||S.ncat) ? `<div class="small muted">${results.length} result${results.length===1?"":"s"}${S.ncat?` in ${S.ncat==="none" ? "Uncategorised" : "“" + esc(catName(S.ncat)) + "”"}`:""}${refs?` for ayah ${refs.map(rangeLabel).join(", ")}`:""}${S.ntag?` tagged #${esc(S.ntag)}`:""} · <button type="button" class="btn ghost small" data-clear="notes">Clear</button></div>` : ""}
+  </div>
+  <div class="results">${results.join("") || (any
+    ? `<div class="empty"><b>Nothing matches</b>Try another word, a different tag, or an ayah range.</div>`
+    : `<div class="empty"><b>No notes yet</b>${S.admin ? "Open any surah and use “Add note” under an ayah, or start one here with “New note”." : "Notes will appear here as they are added."}</div>`)}</div>`;
+}
+
+function viewLessons(){
+  const q = S.lq.trim();
+  const refs = q ? refMatch(q) : null;
+  const items = S.lessons.filter(l => (!S.ltag || (l.tags||[]).includes(S.ltag)) && (refs ? overlaps(l.ranges, refs) : textHit(l,q)))
+    .sort((a,b)=> ((a.ranges?.[0]?.s||0)*1000+(a.ranges?.[0]?.from||0)) - ((b.ranges?.[0]?.s||0)*1000+(b.ranges?.[0]?.from||0)));
+  const tags = tagCounts(S.lessons);
+  return `${statusBar()}
+  <div class="phead"><h1>Lessons</h1>
+    ${S.admin ? `<button type="button" class="btn primary" data-new-lesson>New lesson</button>` : ""}</div>
+  <p class="lede">Lessons drawn from a group of ayahs read together, with the steps for putting them into practice. Search by words, tag, or ayah such as <b>2:153</b> or <b>2:153-157</b>.</p>
+  <div class="filters">
+    <input type="search" id="lq" class="search" placeholder="Search words, #tag, or 2:153-157" value="${esc(S.lq)}" aria-label="Search lessons">
+    ${tags.length ? `<div class="tagrow">${tags.map(([t,c])=>`<button type="button" class="tag" data-ltag="${esc(t)}" aria-pressed="${S.ltag===t}">#${esc(t)} <span class="muted">${c}</span></button>`).join("")}</div>` : ""}
+    ${(q||S.ltag) ? `<div class="small muted">${items.length} result${items.length===1?"":"s"} · <button type="button" class="btn ghost small" data-clear="lessons">Clear</button></div>` : ""}
+  </div>
+  <div class="results">${items.map(lessonCard).join("") || (S.lessons.length
+    ? `<div class="empty"><b>Nothing matches</b>Try another word, tag or ayah range.</div>`
+    : `<div class="empty"><b>No lessons yet</b>${S.admin ? "Use “New lesson”, list the ayahs it covers (for example 2:153-157), and write the lesson and the steps to implement it." : "Lessons will appear here as they are added."}</div>`)}</div>`;
+}
+function lessonCard(l){
+  const t = langBlock(l.title, l.src);
+  const sn = snippet(l, 320);
+  const doc = renderDoc(pick(l.body, S.lang, l.src).text);
+  const n = (l.ranges||[]).reduce((c,r)=>c + r.to - r.from + 1, 0);
+  return `<div class="wcard" id="lesson-${esc(l.id)}">
+    <div class="whead"><span class="chip les">Lesson</span>
+      ${(l.ranges||[]).map(r=>`<button type="button" class="reflink" data-go="${r.s}:${r.from}">${rangeLabel(r)}</button>`).join(" ")}
+      <span class="spacer"></span>
+      ${S.admin ? `<button type="button" class="btn ghost small" data-edit-lesson="${esc(l.id)}">Edit</button>` : ""}
+      <h3 class="${t.p.lang==="ar"||t.p.lang==="ur"?"w":""}" ${t.attrs}>${esc(t.p.text || "Untitled")}</h3>
+    </div>
+    ${sn.text ? `<div class="snip w" lang="${sn.lang}" dir="${RTL[sn.lang]?"rtl":"ltr"}">${esc(sn.text)}</div>` : ""}
+    <div class="row" style="margin-top:10px"><button type="button" class="btn small primary" data-article="l:${esc(l.id)}">Read lesson</button><button type="button" class="btn small" data-share="l:${esc(l.id)}">Share</button>
+      <span class="small muted">${n} ayah${n===1?"":"s"} · ${readMins(doc.words)} min read</span>
+      ${(l.tags||[]).map(tg=>`<button type="button" class="tag" data-ltag="${esc(tg)}" aria-pressed="${S.ltag===tg}">#${esc(tg)}</button>`).join("")}</div>
+  </div>`;
+}
+/* ---------- grammar (morphology from the Quranic Arabic Corpus) ---------- */
+const GPOS = {
+  N:["Noun","اسم","n"], PN:["Proper noun","اسم علم","n"], ADJ:["Adjective","صفة","n"], VN:["Verbal noun","مصدر","n"],
+  ACT_PCPL:["Active participle","اسم فاعل","n"], PASS_PCPL:["Passive participle","اسم مفعول","n"], NV:["Verbal noun (ism fiʿl)","اسم فعل","n"], IMPN:["Imperative verbal noun","اسم فعل أمر","n"],
+  PRON:["Pronoun","ضمير","n"], DEM:["Demonstrative pronoun","اسم إشارة","n"], REL:["Relative pronoun","اسم موصول","n"],
+  T:["Time adverb","ظرف زمان","n"], LOC:["Location adverb","ظرف مكان","n"],
+  V:["Verb","فعل","v"], PERF:["Perfect verb","فعل ماضٍ","v"], IMPF:["Imperfect verb","فعل مضارع","v"], IMPV:["Imperative verb","فعل أمر","v"],
+  P:["Preposition","حرف جر","p"], DET:["Definite article","أل التعريف","p"], EMPH:["Emphatic lām","لام التوكيد","p"], PRP:["Lām of purpose","لام التعليل","p"],
+  CONJ:["Coordinating conjunction","حرف عطف","p"], SUB:["Subordinating conjunction","حرف مصدري","p"], ACC:["Accusative particle","حرف نصب","p"],
+  AMD:["Amendment particle","حرف استدراك","p"], ANS:["Answer particle","حرف جواب","p"], AVR:["Aversion particle","حرف ردع","p"], CAUS:["Particle of cause","حرف سببية","p"],
+  CERT:["Particle of certainty","حرف تحقيق","p"], CIRC:["Circumstantial particle","حرف حال","p"], COM:["Comitative particle","واو المعية","p"], COND:["Conditional particle","حرف شرط","p"],
+  EQ:["Equalization particle","حرف تسوية","p"], EXH:["Exhortation particle","حرف تحضيض","p"], EXL:["Explanation particle","حرف تفصيل","p"], EXP:["Exceptive particle","أداة استثناء","p"],
+  FUT:["Future particle","حرف استقبال","p"], INC:["Inceptive particle","حرف ابتداء","p"], INT:["Particle of interpretation","حرف تفسير","p"], INTG:["Interrogative particle","حرف استفهام","p"],
+  NEG:["Negative particle","حرف نفي","p"], PREV:["Preventive particle","كافّة","p"], PRO:["Prohibition particle","حرف نهي","p"], REM:["Resumption particle","حرف استئناف","p"],
+  RES:["Restriction particle","أداة حصر","p"], RET:["Retraction particle","حرف إضراب","p"], RSLT:["Result particle","حرف واقع في جواب الشرط","p"], SUP:["Supplemental particle","حرف زائد","p"],
+  SUR:["Surprise particle","حرف فجاءة","p"], VOC:["Vocative particle","حرف نداء","p"], INL:["Qur'anic initials","حروف مقطعة","p"], ADDR:["Address particle","حرف خطاب","p"],
+  DIST:["Lām of distance","لام البُعد","p"], ATT:["Attention particle","حرف تنبيه","p"]
+};
+const GFORM = ["","I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"];
+const GFORM_AR = ["","فَعَلَ","فَعَّلَ","فاعَلَ","أَفْعَلَ","تَفَعَّلَ","تَفاعَلَ","اِنْفَعَلَ","اِفْتَعَلَ","اِفْعَلَّ","اِسْتَفْعَلَ","اِفْعالَّ","اِفْعَوْعَلَ"];
+const GCASE = {NOM:["nominative","مرفوع"], ACC:["accusative","منصوب"], GEN:["genitive","مجرور"]};
+const GMOOD = {IND:["indicative","مرفوع"], SUBJ:["subjunctive","منصوب"], JUS:["jussive","مجزوم"]};
+const GPER = {"1":["1st person","متكلم"], "2":["2nd person","مخاطب"], "3":["3rd person","غائب"]};
+const GGEN = {M:["masculine","مذكر"], F:["feminine","مؤنث"]};
+const GNUM = {S:["singular","مفرد"], D:["dual","مثنى"], P:["plural","جمع"]};
+function decodeSeg(seg){
+  const [text, coarse, fstr] = seg;
+  const f = fstr.split("|").filter(Boolean);
+  let tag = coarse, i = 0;
+  if (f[0] && !f[0].includes(":") && GPOS[f[0]] && !["ROOT","LEM"].includes(f[0])) { tag = f[0]; i = 1; }
+  const o = {text, coarse, tag, pref:false, suff:false, root:"", lem:"", form:0, cas:"", mood:"", pgn:"", pass:false, indef:false, adj:false, fam:""};
+  for (const x of f.slice(i)) {
+    if (x === "PREF") o.pref = true; else if (x === "SUFF") o.suff = true;
+    else if (x.startsWith("ROOT:")) o.root = x.slice(5); else if (x.startsWith("LEM:")) o.lem = x.slice(4);
+    else if (x.startsWith("VF:")) o.form = +x.slice(3); else if (x.startsWith("MOOD:")) o.mood = x.slice(5);
+    else if (x.startsWith("FAM:")) o.fam = x.slice(4);
+    else if (GCASE[x]) o.cas = x; else if (x === "PASS") o.pass = true; else if (x === "INDEF") o.indef = true; else if (x === "ADJ") o.adj = true;
+    else if (/^[123]?[MF]?[SDP]?$/.test(x)) o.pgn = x;
+  }
+  let lab = GPOS[tag] || GPOS[coarse] || ["Word","كلمة","n"];
+  if (coarse === "P" && tag === "IMPV") lab = ["Imperative lām","لام الأمر","p"];
+  if (o.adj && (tag === "N" || coarse === "N" && !GPOS[tag])) lab = GPOS.ADJ;
+  o.en = lab[0]; o.ar = lab[1]; o.cls = lab[2];
+  if (o.adj && tag !== "N" && tag !== "ADJ") { o.en += " (adjective)"; o.ar += " (صفة)"; }
+  const m = o.pgn.match(/^([123])?([MF])?([SDP])?$/) || [];
+  const enBits = [], arBits = [];
+  if (m[1]) enBits.push(GPER[m[1]][0]);
+  if (m[2]) enBits.push(GGEN[m[2]][0]);
+  if (m[3]) enBits.push(GNUM[m[3]][0]);
+  if (o.cas) { enBits.push(GCASE[o.cas][0]); arBits.push(GCASE[o.cas][1]); }
+  if (o.mood) { enBits.push(GMOOD[o.mood]?.[0] || o.mood.toLowerCase() + " mood"); if (GMOOD[o.mood]) arBits.push(GMOOD[o.mood][1]); }
+  if (m[2]) arBits.push(GGEN[m[2]][1]);
+  if (m[3]) arBits.push(GNUM[m[3]][1]);
+  if (m[1]) arBits.push(GPER[m[1]][1]);
+  if (o.pass) { enBits.push("passive"); arBits.push("مبني للمجهول"); }
+  if (o.indef) { enBits.push("indefinite"); arBits.push("نكرة"); }
+  if (o.form && GFORM[o.form]) { enBits.push("form " + GFORM[o.form]); arBits.push("على وزن " + GFORM_AR[o.form]); }
+  if (o.fam) { enBits.push(`in the family of ${o.fam}`); arBits.push(`من أخوات ${o.fam}`); }
+  o.enDesc = enBits.join(", "); o.arDesc = arBits.join("، ");
+  o.role = o.pref ? "prefix" : o.suff ? "suffix" : "stem";
+  return o;
+}
+const GRAM = {};
+function loadGrammar(s){
+  if (GRAM[s]) return GRAM[s];
+  GRAM[s] = fetch(`grammar/${s}.json`).then(r => { if (!r.ok) throw 0; return r.json(); }).catch(e => { delete GRAM[s]; throw e; });
+  return GRAM[s];
+}
+const spaced = r => [...r].join(" ");
+
+/* i'rab store: documents irab/<surah>-<group of 5 ayahs>, field ayahs[<ayah>] = {text:{en,bn,ar,ur}, ai, src, updatedAt} */
+const irabDocId = (s,a) => `${s}-${Math.floor((a-1)/5)}`;
+S.irab = {s:0, map:{}, unsub:null};
+function watchIrab(s){
+  if (S.static) { if (S.irab.s !== s) S.irab = {s, map: (S.irabAll && S.irabAll[s]) || {}, unsub: null}; return; }
+  if (!S.db || S.irab.s === s) return;
+  if (S.irab.unsub) S.irab.unsub();
+  S.irab = {s, map:{}, unsub:null};
+  S.irab.unsub = S.db.collection("irab").where("s","==",s).onSnapshot(snap => {
+    const map = {};
+    snap.docs.forEach(d => { const v = d.data() || {}; for (const a in (v.ayahs||{})) map[a] = v.ayahs[a]; });
+    if (S.irab.s !== s) return;
+    S.irab.map = map;
+    if (S.view === "surah") render();
+    if (M && M.type === "gram" && M.s === s && !M.edit) drawGrammar();
+  }, () => {});
+}
+const irabOf = (s,a) => (S.irab.s === s ? S.irab.map[a] : null);
+
+function openGrammar(k){
+  const [s,a] = k.split(":").map(Number);
+  M = {type:"gram", s, a, sel:null, edit:false, tab:S.lang, ctl:[]};
+  watchIrab(s);
+  drawGrammar();
+  loadGrammar(s).then(d => { if (M && M.type==="gram" && M.s===s && M.a===a) { M.words = d[a-1]; drawGrammar(); } })
+    .catch(() => { if (M && M.type==="gram") { M.loadErr = true; drawGrammar(); } });
+  loadSyntax(s).then(d => { if (M && M.type==="gram" && M.s===s && M.a===a) { M.syn = d; drawGrammar(); } })
+    .catch(() => { if (M && M.type==="gram") { M.synErr = true; drawGrammar(); } });
+}
+function segHTML(o){ return `<span class="g-${o.cls}">${esc(o.text)}</span>`; }
+function wordCard(w, i, links){
+  const [tl, gl, segs] = w;
+  const ds = segs.map(decodeSeg);
+  ds.forEach((o, j) => { o.link = links[`${M.s}:${M.a}:${i+1}:${j+1}`]; });
+  const wa = S.words.find(x => x.s === M.s && x.a === M.a && x.w === i+1);
+  return `<div class="gword${M.sel===i?" sel":""}" id="gw-${i}">
+    ${wa ? `<button type="button" class="chip wa gw-link" data-article="w:${esc(wa.id)}">Word analysis →</button>` : ""}
+    <div class="gw-top"><span class="gw-n">${i+1}</span>
+      <span class="gw-ar" lang="ar" dir="rtl">${ds.map(segHTML).join("")}</span></div>
+    <div class="gw-mean"><i>${esc(tl)}</i> · ${esc(gl)}</div>
+    <div class="gw-segs">${ds.map(o => `<div class="gseg">
+      <div class="gseg-h"><span class="gseg-t g-${o.cls}" lang="ar" dir="rtl">${esc(o.text)}</span><b class="g-${o.cls}">${esc(o.en)}</b><span class="gar" lang="ar" dir="rtl">${esc(o.ar)}</span>${o.role!=="stem"?`<span class="gtag">${o.role}</span>`:""}</div>
+      ${o.enDesc ? `<div class="gseg-d">${esc(o.enDesc)}</div>` : ""}
+      ${o.arDesc ? `<div class="gseg-d gar" lang="ar" dir="rtl">${esc(o.arDesc)}</div>` : ""}
+      ${o.link ? `<div class="gseg-rel" lang="ar" dir="rtl"><b>${esc(o.link[0])}</b>${o.link[1] ? ` ← ${esc(o.link[1])}` : ""}${o.link[2] ? ` <span class="muted">(${o.link[2]})</span>` : ""}</div>` : ""}
+      ${(o.root||o.lem) ? `<div class="gseg-d">${o.root?`Root <span class="gar" lang="ar" dir="rtl">${esc(spaced(o.root))}</span>`:""}${o.root&&o.lem?" · ":""}${o.lem?`Lemma <span class="gar" lang="ar" dir="rtl">${esc(o.lem)}</span>`:""}</div>` : ""}
+    </div>`).join("")}</div>
+  </div>`;
+}
+function drawGrammar(){
+  const {s, a} = M;
+  const v = surahOf(s).v[a-1], rv = S.tr[key(s,a)];
+  const ir = irabOf(s,a);
+  let body;
+  if (M.loadErr) body = `<div class="empty"><b>The grammar data didn't load</b>Close this and try again.</div>`;
+  else if (!M.words) body = `<p class="muted">Loading word analysis…</p>`;
+  else body = `<div class="gstrip" lang="ar" dir="rtl">${M.words.map((w,i)=>`<button type="button" class="gchip" data-gword="${i}" aria-pressed="${M.sel===i}">${w[2].map(sg=>segHTML(decodeSeg(sg))).join("")}</button>`).join("")}</div>
+    <div class="glegend small"><span class="g-n">■ Noun / pronoun</span><span class="g-v">■ Verb</span><span class="g-p">■ Particle</span><span class="muted">Tap a word to jump to it.</span></div>
+    <div class="ggrid">${(() => { const L = syntaxLinks(); return M.words.map((w,i) => wordCard(w,i,L)).join(""); })()}</div>`;
+  let irab;
+  if (M.edit) irab = irabEditor();
+  else if (ir) {
+    const p = pick(ir.text, S.lang, ir.src);
+    irab = `${ir.ai && ir.ai[p.lang] ? "" : `<div class="notice" style="color:var(--qa)">Reviewed iʿrāb</div> `}${fallbackNote(p, ir.ai)}<div class="prose irab w" lang="${p.lang}" dir="${RTL[p.lang]?"rtl":"ltr"}">${renderDoc(p.text, p.lang, "ir").html}</div>`;
+  } else {
+    const auto = autoIrab();
+    irab = auto
+      ? `<div class="notice">Generated automatically from the treebank and the word analysis. Not yet reviewed.${S.admin ? " Use “Edit iʿrāb” to correct it and save your version." : ""}</div>
+         <div class="prose irab w" lang="ar" dir="rtl">${renderDoc(auto, "ar", "ir").html}</div>`
+      : `<p class="muted small">Loading iʿrāb…</p>`;
+  }
+  modal(`<div class="row"><h2>Grammar · ${s}:${a} <span class="muted" style="font-weight:400">${esc(surahOf(s).tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <p class="ar" lang="ar" dir="rtl" style="margin:0">${esc(arText(s,a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
+    <p class="tr" style="margin:0" ${trAttrs()}>${esc(trText(s,a))}</p>
+    <section><h3 class="gh">Sentence structure <span lang="ar" class="gar">تركيب الجملة والإعراب</span></h3>
+      ${M.synErr ? `<p class="muted small">The sentence analysis didn't load. Close this and try again.</p>`
+        : !M.syn ? `<p class="muted small">Loading sentence analysis…</p>`
+        : `<p class="small muted" style="margin:0 0 8px">Each row gives a word, phrase or clause, its grammatical function, and the word it depends on (←). Clauses are marked جملة فعلية / جملة اسمية / شبه جملة, and elided words (محذوف، مقدَّر) are shown where the analysis restores them.</p>
+           ${(M.syn.a[a] || []).map(sid => sentenceView(sid, M.syn.s[sid], s, a)).join("")}`}
+    </section>
+    <section><h3 class="gh">Word by word<span class="small muted" style="font-weight:400"> · ${M.words?M.words.length+" words":""}</span></h3>${body}</section>
+    <section><div class="row"><h3 class="gh">Iʿrāb <span lang="ar" class="gar">الإعراب</span></h3><span class="spacer"></span>
+      ${S.admin && !M.edit ? `<button type="button" class="btn small" data-m="irab-edit">Edit iʿrāb</button>` : ""}</div>${irab}</section>
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err||"")}</div>
+    <p class="small muted" style="margin:0">Sentence structure: the Quranic Treebank by NoorBayan (MIT licence), a research dataset. Where it differs from your own iʿrāb below, yours is the reviewed version. Word analysis: Quranic Arabic Corpus morphology (Kais Dukes, GNU GPL). Transliteration and word meanings: quran.com.${ir?` Iʿrāb: written for this platform${ir.ai&&ir.ai[pick(ir.text,S.lang,ir.src).lang]?" with AI assistance":""}.`:""}</p>`, "wide");
+}
+function irabEditor(){
+  const ir = M.draft;
+  const L = M.tab;
+  return `<div class="ltabs" role="tablist">${LANGS.map(l=>`<button type="button" role="tab" data-m="irab-tab" data-v="${l}" aria-selected="${L===l}" class="${ir.text[l]?"filled":""}">${LNAME[l]}${ir.ai[l]?'<span class="flag">AI DRAFT</span>':""}</button>`).join("")}</div>
+    <textarea id="irab-text" rows="16" lang="${L}" dir="${RTL[L]?"rtl":"ltr"}" class="w editor-area" style="border-radius:7px" placeholder="**word**: its iʿrāb …">${esc(ir.text[L])}</textarea>
+    <p class="small muted" style="margin:4px 0 0">One word per line as <code>**word**: analysis</code>. Use <code>## </code> for a section heading, for example the clauses (الجمل).</p>
+    ${ir.ai[L] ? `<div class="row small"><span class="notice">Drafted by AI. Readers see it marked as unreviewed.</span><button type="button" class="btn small" data-m="irab-reviewed">Mark as reviewed</button></div>` : ""}
+    ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="irab-ai" ${M.busy?"disabled":""}>Draft the iʿrāb in ${LNAME_EN[L]} with AI</button>
+      ${M.busy ? `<button type="button" class="btn" data-m="ai-stop">Stop</button>` : ""}
+      <span class="small muted">${esc(M.aiStatus || "Uses the word analysis above. Review before saving. Takes about a minute.")}</span></div>` : ""}
+    <div class="foot">
+      ${irabOf(M.s,M.a) ? `<button type="button" class="btn danger" data-m="irab-delete">Delete</button>` : ""}
+      <span class="spacer"></span>
+      <button type="button" class="btn" data-m="irab-cancel">Cancel</button>
+      <button type="button" class="btn primary" data-m="irab-save" ${M.busy?"disabled":""}>Save iʿrāb</button>
+    </div>`;
+}
+function captureIrab(){
+  const t = $("#irab-text");
+  if (!t || !M?.draft) return;
+  if (M.draft.text[M.tab] !== t.value && M.draft.ai[M.tab] && !M.busy) delete M.draft.ai[M.tab];
+  M.draft.text[M.tab] = t.value;
+}
+async function irabAI(){
+  captureIrab();
+  if (!M.words) { M.err = "Wait for the word analysis to load first."; drawGrammar(); return; }
+  const {s, a} = M, L = M.tab;
+  const table = M.words.map((w,i) => `${i+1}. ${w[2].map(sg=>sg[0]).join("")} — "${w[1]}"\n` + w[2].map(sg => { const o = decodeSeg(sg); return `   - ${o.text}: ${o.en} (${o.ar})${o.enDesc?", "+o.enDesc:""}${o.root?", root "+o.root:""}${o.lem?", lemma "+o.lem:""}`; }).join("\n")).join("\n");
+  const langGuide = {
+    ar: "Arabic, in the traditional style of iʿrāb books such as إعراب القرآن الكريم",
+    en: "English, keeping each Arabic technical term in Arabic in parentheses after its English name",
+    bn: "Bangla (Bengali script), keeping each Arabic technical term in Arabic in parentheses",
+    ur: "Urdu (Arabic script), using the Arabic technical terms of naḥw as Urdu grammar books do"
+  }[L];
+  const heading = {ar:"## محل الجمل من الإعراب", en:"## Clauses and their positions (محل الجمل من الإعراب)", bn:"## বাক্যাংশের অবস্থান (محل الجمل من الإعراب)", ur:"## جملوں کا محلِ اعراب (محل الجمل من الإعراب)"}[L];
+  const prompt = `Write the complete iʿrāb (grammatical parsing) of Qur'an ${s}:${a} for a Qur'an study platform, in ${langGuide}.
+
+Ayah text (Uthmani script):
+${S.Q[s-1].v[a-1][0]}
+
+Word-by-word morphology from the Quranic Arabic Corpus (word — English gloss, then each segment):
+${table}
+
+Dependency analysis from the Quranic Treebank (function ← head word, with ayah numbers; sentences may continue from or into neighbouring ayahs):
+${syntaxForPrompt() || "(not available)"}
+
+Neighbouring ayahs for context:
+${a > 1 ? `${s}:${a-1}: ${S.Q[s-1].v[a-2][0]}` : "(start of surah)"}
+${a < S.Q[s-1].v.length ? `${s}:${a+1}: ${S.Q[s-1].v[a][0]}` : "(end of surah)"}
+
+Requirements:
+- Go word by word in the order of the ayah. Where a word has attached particles or pronouns, give each part its own parsing on its own line.
+- For each item give: what it is, its grammatical function (e.g. مبتدأ، خبر، فاعل، مفعول به، حال، نعت، جار ومجرور متعلق بـ…), and its case or mood with the sign (علامة الإعراب), or that it is مبني and on what, and its مَحَلّ where it has one.
+- Then add a section with the heading "${heading}" giving the position of each clause.
+- Where the well-known grammarians differ, give the main view first and add the alternative briefly (وقيل / Alternatively).
+- Use the morphology data for parts of speech and case, and the treebank for functions. Where your parsing differs from the treebank, follow the well-known iʿrāb works and say so in one short line at that word.
+- Where the ayah continues a sentence from the previous ayah or into the next (for example بدل, نعت, معطوف, a صلة, or a جواب that sits in another ayah), say explicitly what the word is linked to and in which ayah.
+- Grammar only: do not explain the meaning of the ayah.
+
+Format: each item on its own line as **word**: parsing. No introduction and no closing remarks.`;
+  M.err = ""; M.busy = true; M.aiStatus = "Drafting… this usually takes 30–90 seconds."; drawGrammar();
+  const ctl = new AbortController(); M.ctl = [ctl];
+  try {
+    const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache:false, modelTier:"complex", onText: ({text}) => { const t = $("#irab-text"); if (t && M && M.tab === L) t.value = text; }});
+    if (!M || M.type !== "gram") return;
+    M.draft.text[L] = text.trim(); M.draft.ai[L] = true;
+    M.aiStatus = truncated ? "The draft was cut short. Check its ending." : "Draft ready. Review it, then save.";
+  } catch (e) {
+    if (!M || M.type !== "gram") return;
+    if (e?.text) { M.draft.text[L] = e.text; M.draft.ai[L] = true; }
+    if (e?.code !== "cancelled") M.err = aiErr(e?.code, L);
+    M.aiStatus = "";
+  }
+  M.busy = false; M.ctl = []; drawGrammar();
+}
+async function irabWrite(entry){
+  const {s, a} = M;
+  const ref = S.db.collection("irab").doc(irabDocId(s,a));
+  const snap = await ref.get();
+  const data = snap.exists ? JSON.parse(JSON.stringify(snap.data())) : {s, ayahs:{}};
+  data.s = s; data.ayahs = data.ayahs || {};
+  if (entry) data.ayahs[a] = entry; else delete data.ayahs[a];
+  if (!Object.keys(data.ayahs).length) await ref.delete(); else await ref.set(data);
+}
+
+/* ---------- sentence structure (Quranic Treebank, NoorBayan) ---------- */
+const SYN = {};
+function loadSyntax(s){
+  if (SYN[s]) return SYN[s];
+  SYN[s] = fetch(`syntax/${s}.json`).then(r => { if (!r.ok) throw 0; return r.json(); }).catch(e => { delete SYN[s]; throw e; });
+  return SYN[s];
+}
+const REL_EN = {"فاعل":"subject (fāʿil)","مفعول به":"direct object (mafʿūl bihi)","متعلق":"attached to (mutaʿalliq)","مجرور":"governed by the preposition","مضاف إليه":"possessive (muḍāf ilayh)","معطوف":"coordinated (maʿṭūf)","خبر":"predicate (khabar)","مبتدأ":"subject of the nominal sentence (mubtadaʾ)","صلة":"relative clause (ṣila)","صفة":"adjective (naʿt)","نفي":"negation","حال":"circumstantial (ḥāl)","توكيد":"emphasis (tawkīd)","شرط":"condition","جواب الشرط":"answer of the condition","نائب فاعل":"passive subject (nāʾib fāʿil)","بدل":"apposition (badal)","استفهام":"interrogative","منادى":"vocative (munādā)","تحقيق":"certainty","حصر":"restriction","مفعول مطلق":"cognate object (mafʿūl muṭlaq)","نهي":"prohibition","زائد":"extra particle (zāʾid)","تمييز":"specification (tamyīz)","مستثني":"excepted (mustathnā)","كاف":"preventive (kāffa)","استقبال":"future","المفعول لأجله":"object of purpose (mafʿūl li-ajlih)","سببية":"causal","أمر":"command","اضراب":"retraction","جواب أمر":"answer to a command","ابتداء":"inceptive","استدراك":"amendment","تفصيل":"explanation","تفسير":"interpretation","فجاءة":"surprise","تحضيض":"exhortation","ردع":"aversion","جواب":"answer","بيان":"clarification (bayān)","رأس الجملة":"head of the sentence","الفعل":"main verb"};
+const relEn = ar => REL_EN[ar] || (ar.startsWith("اسم ") ? `subject of ${ar.slice(4)}` : ar.startsWith("خبر ") ? `predicate of ${ar.slice(4)}` : "");
+const CONS = {PP:["شبه جملة (جار ومجرور)","prepositional phrase"], VS:["جملة فعلية","verbal sentence"], NS:["جملة اسمية","nominal sentence"], SC:["جملة تابعة / مصدر مؤول","subordinate clause"], CS:["جملة شرطية","conditional sentence"], S:["جملة","sentence"]};
+function sentenceView(sid, sent, s, a){
+  const toks = sent.t, byId = {};
+  toks.forEach(t => byId[t[0]] = t);
+  const predHeads = new Set(toks.filter(t => t[3] === "خبر").map(t => t[4]));
+  const here = `${s}:${a}`;
+  const others = sent.v.filter(v => v !== here);
+  const rows = toks.filter(t => t[3]).map(t => {
+    const [id, loc, text, rel0, head, cons, pos, va] = t;
+    let rel = rel0;
+    if (rel === "root") rel = predHeads.has(id) ? "مبتدأ" : (pos && pos.startsWith("فعل") ? "الفعل" : "رأس الجملة");
+    const elided = !loc;
+    const h = (rel0 !== "root" && head !== id) ? byId[head] : null;
+    const hText = h ? (h[1] ? h[2] : (h[2] === "(*)" ? "محذوف" : h[2] + " (مقدَّر)")) : "";
+    const away = va !== here;
+    const word = cons ? `<span class="syn-cons"><span class="syn-clab">${esc((CONS[cons[0]]||[cons[0]])[0])}</span> ${esc(cons[1])}</span>`
+      : elided ? `<span class="syn-elided">${text === "(*)" ? "محذوف" : esc(text) + " مقدَّر"}</span>` : esc(text);
+    return `<div class="syn-row${away?" away":""}${cons?" is-cons":""}">
+      <div class="syn-w" lang="ar" dir="rtl">${word}${away?` <button type="button" class="reflink syn-ref" data-grammar="${va}">${va}</button>`:""}</div>
+      <div class="syn-r"><b lang="ar" dir="rtl">${esc(rel)}</b>${relEn(rel)?`<span>${esc(relEn(rel))}</span>`:""}</div>
+      <div class="syn-h" lang="ar" dir="rtl">${h ? `← ${esc(hText)}${h[7] !== here ? ` <button type="button" class="reflink syn-ref" data-grammar="${h[7]}">${h[7]}</button>` : ""}` : ""}</div>
+    </div>`;
+  });
+  return `<div class="syn-sent">
+    ${others.length ? `<div class="syn-span small">This sentence runs across ${sent.v.length} ayahs: ${sent.v.map(v => v === here ? `<b>${v}</b>` : `<button type="button" class="reflink" data-grammar="${v}">${v}</button>`).join(" → ")}. Links to the other ayahs are marked with their number.</div>` : ""}
+    <div class="syn-rows">${rows.join("")}</div>
+  </div>`;
+}
+function syntaxLinks(){ // loc -> [rel, headText] for the word cards
+  const m = {};
+  if (!M.syn) return m;
+  for (const sid of (M.syn.a[M.a] || [])) {
+    const sent = M.syn.s[sid]; const byId = {}; sent.t.forEach(t => byId[t[0]] = t);
+    const predHeads = new Set(sent.t.filter(t => t[3] === "خبر").map(t => t[4]));
+    for (const t of sent.t) {
+      if (!t[1] || !t[3] || t[5]) continue;
+      let rel = t[3]; if (rel === "root") rel = predHeads.has(t[0]) ? "مبتدأ" : (t[6]?.startsWith("فعل") ? "الفعل" : "رأس الجملة");
+      const h = t[3] !== "root" && t[4] !== t[0] ? byId[t[4]] : null;
+      m[t[1]] = [rel, h ? (h[1] ? h[2] : (h[2] === "(*)" ? "محذوف" : h[2])) : "", h && h[7] !== `${M.s}:${M.a}` ? h[7] : ""];
+    }
+  }
+  return m;
+}
+function syntaxForPrompt(){
+  if (!M.syn) return "";
+  return (M.syn.a[M.a] || []).map(sid => {
+    const sent = M.syn.s[sid]; const byId = {}; sent.t.forEach(t => byId[t[0]] = t);
+    return `Sentence spanning ${sent.v.join(", ")}:\n` + sent.t.filter(t => t[3]).map(t => {
+      const h = t[3] !== "root" && t[4] !== t[0] ? byId[t[4]] : null;
+      return `- ${t[5] ? `[${t[5][0]}: ${t[5][1]}]` : (t[1] ? t[2] : "(elided " + t[2] + ")")} (${t[7]}): ${t[3]}${h ? " ← " + h[2] + " (" + h[7] + ")" : ""}`;
+    }).join("\n");
+  }).join("\n\n");
+}
+
+/* ---------- automatic traditional iʿrāb (treebank functions + corpus morphology) ---------- */
+const HARAKA_RE = /[ً-ْ]/;
+const MARKS_RE = /[ٓ-ٟۖ-ۭ]/g;
+const bare = t => String(t||"").replace(/[ً-ٰٟۖ-ۭـ]/g, "");
+const cleanW = t => String(t||"").replace(/[\u0653-\u065F\u06D6-\u06ED]/g, "").replace(/\u0670/g, "\u0627");
+function lastVowel(t){
+  const s = String(t||"").replace(MARKS_RE, "").replace(/ّ/g, "");
+  for (let i = s.length - 1; i >= 0; i--) {
+    const c = s[i];
+    if (HARAKA_RE.test(c)) return c;
+    if (/[ء-يٱ]/.test(c)) return ""; // reached a letter with no vowel after it
+  }
+  return "";
+}
+const MABNI_ON = v => ({"ُ":"الضم","ٌ":"الضم","َ":"الفتح","ً":"الفتح","ِ":"الكسر","ٍ":"الكسر"}[v] || "السكون");
+const INNA = ["إن","أن","لكن","لاكن","لعل","كأن","ليت"];
+function relCase(rel){
+  if (["فاعل","نائب فاعل","مبتدأ","خبر"].includes(rel)) return "رفع";
+  if (["مفعول به","مفعول مطلق","المفعول لأجله","حال","تمييز","مستثني","منادى"].includes(rel)) return "نصب";
+  if (["مجرور","مضاف إليه"].includes(rel)) return "جر";
+  if (rel.startsWith("اسم ")) { const x = rel.slice(4); return INNA.includes(x) || x === "لا" ? "نصب" : "رفع"; }
+  if (rel.startsWith("خبر ")) { const x = rel.slice(4); return INNA.includes(x) || x === "لا" ? "رفع" : "نصب"; }
+  return "";
+}
+const FOLLOWERS = ["صفة","بدل","معطوف","توكيد","بيان"];
+const CASE_WORD = {رفع:["مرفوع","رفعه"], نصب:["منصوب","نصبه"], جر:["مجرور","جره"]};
+const CASE_FROM_TAG = {NOM:"رفع", ACC:"نصب", GEN:"جر"};
+function autoIrab(){
+  if (!M.syn || !M.words) return "";
+  const {s, a} = M, here = `${s}:${a}`;
+  const morph = {};
+  M.words.forEach((w, i) => w[2].forEach((sg, j) => { morph[`${s}:${a}:${i+1}:${j+1}`] = decodeSeg(sg); }));
+  const lines = [], clauses = [], links = [];
+  for (const sid of (M.syn.a[a] || [])) {
+    const sent = M.syn.s[sid], byId = {};
+    sent.t.forEach(t => byId[t[0]] = t);
+    const predHeads = new Set(sent.t.filter(t => t[3] === "خبر").map(t => t[4]));
+    const mudafs = new Set(sent.t.filter(t => t[3] === "مضاف إليه").map(t => t[4]));
+    const roleOf = t => (t[3] === "root" || (t[5] && t[5][0] !== "PP")) ? (predHeads.has(t[0]) ? "مبتدأ" : "") : t[3];
+    const hText = h => !h ? "" : (h[1] ? (bare(morph[h[1]]?.lem) === "الله" ? "الله" : cleanW(h[2])) : (h[2] === "(*)" ? "محذوف" : bare(h[2])));
+    const caseOf = (t, depth = 0) => {
+      const o = morph[t[1]];
+      if (o && CASE_FROM_TAG[o.cas]) return CASE_FROM_TAG[o.cas];
+      const r = roleOf(t);
+      if (FOLLOWERS.includes(r) && depth < 6) { const h = byId[t[4]]; if (h && h !== t) return caseOf(h, depth + 1); }
+      return relCase(r);
+    };
+    const where = h => h && h[7] !== here ? ` (في الآية ${h[7]})` : "";
+    const roleText = (t, h) => {
+      const r = roleOf(t), hn = hText(h);
+      if (r === "صفة") return `نعت لـ«${hn}»${where(h)}`;
+      if (r === "بدل") return `بدل من «${hn}»${where(h)}`;
+      if (r === "معطوف") return `معطوف على «${hn}»${where(h)}`;
+      if (r === "توكيد") return `توكيد لـ«${hn}»${where(h)}`;
+      if (r === "بيان") return `عطف بيان لـ«${hn}»${where(h)}`;
+      if (r === "مجرور") return "";
+      if (r === "مفعول به" && h && h[1]) return `مفعول به لـ«${hn}»${where(h)}`;
+      return r;
+    };
+    const nounSign = (o, t, cas) => {
+      const tx = String(t[2]); const b = bare(tx); const v = lastVowel(tx);
+      const next = morph[t[1].replace(/:(\d+)$/, (m, g) => ":" + (+g + 1))];
+      if (next && next.suff && next.tag === "PRON" && next.pgn === "1S") return `المقدرة على ما قبل ياء المتكلم منع من ظهورها اشتغال المحل بالحركة المناسبة`;
+      const pg = o.pgn || "";
+      if (/D$/.test(pg) || (pg === "D")) return cas === "رفع" ? "الألف لأنه مثنى" : "الياء لأنه مثنى";
+      if (/MP$/.test(pg) && /(ون|ين|و|ي)$/.test(b)) return cas === "رفع" ? "الواو لأنه جمع مذكر سالم" : "الياء لأنه جمع مذكر سالم";
+      if (["أَب","أَخ","ذُو","حَم","فَم","فُو"].includes(o.lem) && /[وای]$/.test(b)) return (cas === "رفع" ? "الواو" : cas === "نصب" ? "الألف" : "الياء") + " لأنه من الأسماء الخمسة";
+      if (/FP$/.test(pg) && /ات$/.test(b) && cas === "نصب") return "الكسرة نيابة عن الفتحة لأنه جمع مؤنث سالم";
+      if (/[ىا]$/.test(b) && !v) return `${cas === "رفع" ? "الضمة" : cas === "نصب" ? "الفتحة" : "الكسرة"} المقدرة على الألف منع من ظهورها التعذر`;
+      if (/ي$/.test(b) && !v && cas !== "نصب") return `${cas === "رفع" ? "الضمة" : "الكسرة"} المقدرة على الياء منع من ظهورها الثقل`;
+      if (cas === "جر" && (v === "َ") && !o.lem?.startsWith("ال")) return "الفتحة نيابة عن الكسرة لأنه ممنوع من الصرف";
+      const nm = {"ُ":"الضمة","ٌ":"الضمة","َ":"الفتحة","ً":"الفتحة","ِ":"الكسرة","ٍ":"الكسرة"}[v];
+      return nm ? `${nm} الظاهرة${/[ً-ٍ]/.test(v) ? "" : " على آخره"}` : ({رفع:"الضمة",نصب:"الفتحة",جر:"الكسرة"}[cas]) + " المقدرة";
+    };
+    const subjSuffixName = o => ({"1S":"تاء الفاعل","2MS":"تاء الفاعل","2FS":"تاء الفاعل","1P":"«نا» الفاعلين","3MP":"واو الجماعة","2MP":"ضمير متصل","3FP":"نون النسوة","2FP":"نون النسوة","3MD":"ألف الاثنين","3FD":"ألف الاثنين","2D":"ألف الاثنين"})[o.pgn] || "ضمير متصل";
+    const verbText = (o, t, segs) => {
+      const suf = segs.filter(x => x.o && x.o.suff && x.t && x.t[3] === "فاعل").map(x => x.o)[0];
+      const nunEmph = segs.some(x => x.o && x.o.suff && x.o.tag === "EMPH");
+      const pas = o.pass ? " مبني للمجهول" : "";
+      if (o.tag === "PERF") {
+        let on = "مبني على الفتح";
+        if (suf && /^(1S|1P|2|3FP)/.test(suf.pgn)) on = "مبني على السكون لاتصاله بضمير رفع متحرك";
+        else if (suf && suf.pgn === "3MP") on = "مبني على الضم لاتصاله بواو الجماعة";
+        else if (/[ىا]$/.test(bare(t[2]))) on = "مبني على الفتح المقدر على الألف للتعذر";
+        return `فعل ماضٍ${pas} ${on}`;
+      }
+      if (o.tag === "IMPV") {
+        let on = "مبني على السكون";
+        if (suf && /^(2MP|2FS|2D|2MD|2FD)$/.test(suf.pgn)) on = "مبني على حذف النون";
+        else if (lastVowel(t[2]) && lastVowel(t[2]) !== "ْ" && /[ويى]$/.test(bare(o.lem||""))) on = "مبني على حذف حرف العلة";
+        return `فعل أمر ${on}`;
+      }
+      // imperfect
+      if (nunEmph) return `فعل مضارع${pas} مبني على الفتح لاتصاله بنون التوكيد`;
+      if (suf && /^(3FP|2FP)$/.test(suf.pgn)) return `فعل مضارع${pas} مبني على السكون لاتصاله بنون النسوة`;
+      const five = suf && /^(3MP|2MP|2FS|3MD|3FD|2D)$/.test(suf.pgn);
+      const mood = o.mood || "IND";
+      const mw = {IND:["مرفوع","رفعه"], SUBJ:["منصوب","نصبه"], JUS:["مجزوم","جزمه"]}[mood] || ["مرفوع","رفعه"];
+      let sg;
+      const b = bare(t[2]), v = lastVowel(t[2]);
+      if (five) sg = mood === "IND" ? "ثبوت النون لأنه من الأفعال الخمسة" : "حذف النون لأنه من الأفعال الخمسة";
+      else if (mood === "JUS") sg = (v && v !== "ْ" && /[ويى]$/.test(bare(o.lem||""))) ? "حذف حرف العلة" : "السكون";
+      else if (/[ىا]$/.test(b)) sg = (mood === "IND" ? "الضمة" : "الفتحة") + " المقدرة على الألف للتعذر";
+      else if (/[وي]$/.test(b) && mood === "IND") sg = "الضمة المقدرة للثقل";
+      else sg = mood === "IND" ? "الضمة الظاهرة" : "الفتحة الظاهرة";
+      return `فعل مضارع${pas} ${mw[0]} وعلامة ${mw[1]} ${sg}`;
+    };
+    // group this ayah's tokens by word
+    const words = new Map();
+    for (const t of sent.t) {
+      if (!t[1] || t[7] !== here) continue;
+      const w = t[1].split(":")[2];
+      if (!words.has(w)) words.set(w, []);
+      words.get(w).push({t, o: morph[t[1]]});
+    }
+    for (const [w, segs] of words) {
+      const full = M.words[w-1] ? M.words[w-1][2].map(x => x[0]).join("") : segs.map(x => x.t[2]).join("");
+      const parts = [];
+      for (const {t, o} of segs) {
+        if (!o) continue;
+        if (o.tag === "DET") continue;
+        const h = t[4] !== t[0] && t[3] !== "root" ? byId[t[4]] : null;
+        const clean = x => String(x||"").replace(MARKS_RE, "").replace(/\u0670/g, "ا");
+        const detTok = segs.find(x => x.o && x.o.tag === "DET" && +x.t[1].split(":")[3] === +t[1].split(":")[3] - 1);
+        let nm = o.cls === "p" && o.lem ? bare(o.lem) : clean((detTok ? (/^ل/.test(detTok.t[2]) ? "ٱ" : "") + detTok.t[2] : "") + t[2]);
+        if (bare(o.lem) === "الله") nm = "الله";
+        const letterName = {"و":"الواو","ف":"الفاء","ب":"الباء","ل":"اللام","ك":"الكاف","س":"السين","أ":"الهمزة","ت":"التاء"}[bare(nm)];
+        const label = letterName || `«${nm}»`;
+        let p;
+        if (o.cls === "p") {
+          const pr = t[3] && t[3] !== "متعلق" && !(t[5]) && !relCase(t[3]) ? ` (${t[3]})` : "";
+          p = `${label} ${o.ar}${pr} مبني على ${MABNI_ON(lastVowel(t[2]))} لا محل له من الإعراب`;
+          if (t[5] && t[5][0] === "PP") {
+            const hh = byId[t[4]];
+            const r = t[3];
+            if (r === "متعلق") p += `، والجار والمجرور «${bare(t[5][1])}» متعلقان ${!hh ? "بمحذوف" : hh[1] ? `بـ«${bare(hh[2])}»${where(hh)}` : `بمحذوف${roleOf(hh) ? " " + roleOf(hh) : ""}${hh[2] !== "(*)" ? " تقديره " + bare(hh[2]) : ""}`}`;
+            else if (r) { const c = relCase(r); p += `، وشبه الجملة «${bare(t[5][1])}» ${c ? `في محل ${c} ` : ""}${r}`; }
+          }
+        } else if (o.cls === "v") {
+          p = `«${nm}» ${verbText(o, t, segs)}`;
+        } else {
+          const role = roleText(t, h);
+          const cas = caseOf(t);
+          const isPron = o.tag === "PRON";
+          if (roleOf(t) === "اسم لا" && !/[\u064B-\u064D]/.test(t[2]) && !mudafs.has(t[0])) {
+            p = `«${nm}» اسم «لا» النافية للجنس مبني على ${/MP$|D$/.test(o.pgn||"") ? "الياء" : "الفتح"} في محل نصب`;
+          } else if (o.cas && CASE_FROM_TAG[o.cas]) {
+            const c = CASE_FROM_TAG[o.cas];
+            const lead = bare(o.lem) === "الله" ? "لفظ الجلالة " : "";
+            const byP = t[3] === "مجرور" && h ? ` بـ«${bare(h[2]).length === 1 ? ({"ب":"الباء","ل":"اللام","ك":"الكاف"}[bare(h[2])] || bare(h[2])) : bare(morph[h[1]]?.lem || h[2])}»` : "";
+            p = `«${nm}» ${lead}${role || "اسم"} ${CASE_WORD[c][0]}${byP} وعلامة ${CASE_WORD[c][1]} ${nounSign(o, t, c)}`;
+          } else {
+            const kind = isPron ? (o.suff ? (t[3] === "فاعل" ? subjSuffixName(o) + "، ضمير متصل" : "ضمير متصل") : "ضمير منفصل") : o.ar;
+            let vowel = MABNI_ON(lastVowel(t[2]));
+            const bt = bare(t[2]);
+            if (isPron && o.suff && /^(ون|ين|ان|وا|و|ا|ي)$/.test(bt) && (t[3] === "فاعل" || t[3] === "نائب فاعل")) { nm = bt[0] === "و" ? "و" : bt[0] === "ي" ? "ي" : "ا"; vowel = "السكون"; }
+            if (isPron && o.suff && o.pgn === "1P") { nm = "نا"; vowel = "السكون"; }
+            const byP = t[3] === "مجرور" && h ? ` بـ«${bare(morph[h[1]]?.lem || h[2])}»` : "";
+            p = `«${nm}» ${kind} مبني على ${vowel}${cas ? ` في محل ${cas}` : ""}${role ? " " + role : ""}${byP}`;
+          }
+          if (mudafs.has(t[0])) p += "، وهو مضاف";
+        }
+        parts.push(p);
+      }
+      // elided words attached to this word (hidden subject etc.)
+      for (const t of sent.t) {
+        if (t[1] || !t[3] || t[7] !== here) continue;
+        const h = byId[t[4]];
+        if (!h || !h[1] || h[1].split(":")[2] !== w) continue;
+        if (t[3] === "فاعل" || t[3] === "نائب فاعل") {
+          const pr = bare(t[2]).replace(/[()]/g, "");
+          parts.push(`و${t[3] === "فاعل" ? "الفاعل" : "نائب الفاعل"} ضمير مستتر ${/^(هو|هي)$/.test(pr) ? "جوازاً" : "وجوباً"} تقديره «${pr}»`);
+        } else if (t[2] === "(*)") parts.push(t[3] === "خبر" ? "والخبر محذوف تقديره: كائن أو ثابت" : t[3] === "صفة" ? "والنعت محذوف" : t[3].startsWith("خبر ") ? `وخبر «${t[3].slice(4)}» محذوف` : `و${t[3]} محذوف`);
+      }
+      if (parts.length) lines.push(`**${full}**: ${parts.join("؛ ")}.`);
+    }
+    // clauses and cross-ayah links
+    const first = sent.t.find(t => t[1]);
+    if (first && first[7] === here) {
+      const txt = sent.t.filter(t => t[1] && t[7] === here).slice(0, 6).map(t => t[2]).join("").replace(/\s+/g, " ");
+      clauses.push(`الجملة المبدوءة بـ«${bare(M.words[+first[1].split(":")[2]-1]?.[2].map(x=>x[0]).join("") || first[2])}» ابتدائية أو استئنافية لا محل لها من الإعراب.`);
+    } else if (first) clauses.push(`هذه الآية تتمّة لجملة بدأت في الآية ${first[7]}.`);
+    for (const t of sent.t) {
+      if (!t[5] || t[5][0] === "PP" || !t[3] || t[7] !== here) continue;
+      const kind = (CONS[t[5][0]] || [t[5][0]])[0];
+      const h = byId[t[4]], r = t[3], c = relCase(r);
+      const tx = `«${bare(t[5][1])}»`;
+      if (r === "صلة") clauses.push(`${kind} ${tx} صلة الموصول لا محل لها من الإعراب.`);
+      else if (r === "معطوف") clauses.push(`${kind} ${tx} معطوفة على «${hText(h)}»${where(h)} ولها حكمها.`);
+      else if (r === "جواب الشرط") clauses.push(`${kind} ${tx} جواب الشرط.`);
+      else if (r === "شرط") clauses.push(`${kind} ${tx} جملة الشرط.`);
+      else if (FOLLOWERS.includes(r)) clauses.push(`${kind} ${tx} في محل ${caseOf(h) || "…"} ${r === "صفة" ? "نعت" : r} لـ«${hText(h)}»${where(h)}.`);
+      else clauses.push(`${kind} ${tx} ${c ? `في محل ${c} ` : ""}${r}${h && h[1] ? ` لـ«${hText(h)}»${where(h)}` : ""}.`);
+    }
+    for (const t of sent.t) {
+      if (!t[3] || t[3] === "root" || !t[1]) continue;
+      const h = byId[t[4]];
+      if (!h || h === t || !h[1]) continue;
+      if (t[7] === here && h[7] !== here) links.push(`«${cleanW(t[2])}» في هذه الآية ${roleOf(t)} ← «${cleanW(h[2])}» في الآية ${h[7]}.`);
+      if (h[7] === here && t[7] !== here) links.push(`«${cleanW(t[2])}» في الآية ${t[7]} ${roleOf(t)} ← «${cleanW(h[2])}» في هذه الآية.`);
+    }
+  }
+  let out = lines.join("\n");
+  if (clauses.length) out += `\n\n## محل الجمل من الإعراب\n` + clauses.map(c => "- " + c).join("\n");
+  if (links.length) out += `\n\n## الارتباط بالآيات المجاورة\n` + [...new Set(links)].map(c => "- " + c).join("\n");
+  return out;
+}
+
+
+
+/* ---------- categories ---------- */
+const catById = id => S.cats.find(c => c.id === id);
+function catName(id){ const c = catById(id); return c ? (c.name?.en || "") : ""; }
+function catChip(id){ const n = catName(id); return n ? `<button type="button" class="chip cat" data-ncat="${esc(id)}" title="Show everything in this category">${esc(n)}</button>` : ""; }
+const catUse = id => S.notes.filter(n => n.cat === id).length;
+function openCats(){
+  M = {type:"cats", list: JSON.parse(JSON.stringify(S.cats)), err:""};
+  drawCats();
+}
+function drawCats(){
+  const L = M.list;
+  modal(`<div class="row"><h2>Categories</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <p class="small muted" style="margin:0">Every explanation and Q&amp;A must belong to one category, and readers can filter by category. Category names are in English and appear the same in every language.</p>
+    <div class="catlist">${L.map((c, i) => { const used = catUse(c.id); return `<div class="catrow">
+      <div class="catord"><button type="button" class="btn ghost small" data-m="cat-up" data-v="${i}" aria-label="Move up" ${i===0?"disabled":""}>↑</button><button type="button" class="btn ghost small" data-m="cat-down" data-v="${i}" aria-label="Move down" ${i===L.length-1?"disabled":""}>↓</button></div>
+      <div class="catnames"><input type="text" id="cat-${i}-en" data-cat="${i}" data-lang="en" placeholder="Category name" value="${esc(c.name?.en||"")}" aria-label="Category name"></div>
+      <div class="catmeta small muted">${used} write-up${used===1?"":"s"}${used ? "" : ` <button type="button" class="btn ghost small danger" data-m="cat-del" data-v="${i}">Delete</button>`}</div>
+    </div>`; }).join("") || `<div class="empty"><b>No categories yet</b>Add your first one below, for example “Scientific objections” or “Qur'anic miracles”.</div>`}</div>
+    <div class="row"><button type="button" class="btn" data-m="cat-add">Add category</button>
+      <span class="small muted" id="cat-status">${esc(M.status||"")}</span></div>
+    <div class="err" id="m-err">${esc(M.err||"")}</div>
+    <div class="foot"><span class="spacer"></span><button type="button" class="btn" data-m="close">Cancel</button><button type="button" class="btn primary" data-m="cat-save" ${M.busy?"disabled":""}>Save categories</button></div>`, "wide");
+}
+function captureCats(){
+  if (!M || M.type !== "cats") return;
+  document.querySelectorAll("input[data-cat]").forEach(el => { const c = M.list[+el.dataset.cat]; if (c) { c.name = c.name || {}; c.name[el.dataset.lang] = el.value.trim(); } });
+}
+async function saveCats(list){
+  await S.db.doc("settings/categories").set({list: list.map((c, i) => ({id: c.id, name: c.name, order: i})), updatedAt: Date.now()});
+}
+const newCatId = () => "c" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+
+/* ---------- sharing ---------- */
+const SHARE_BASE = "https://claude.ai/artifact/Dvrgy2h2wVJpAWz9397aoo";
+function shareLink(kind, id){ const base = S.static ? location.origin + location.pathname : SHARE_BASE; return /^[A-Za-z0-9_.~-]+$/.test(id) ? `${base}#${kind}-${id}` : base; }
+function plainFromMd(src){
+  const lines = String(src||"").split(/\r?\n/), notes = [], out = [];
+  for (const l of lines) { const m = l.match(/^\s*\[\^([^\]\s]+)\]:\s*(.*)$/); if (m) notes.push(`[${m[1]}] ${m[2]}`); else out.push(l); }
+  let t = out.join("\n")
+    .replace(/^#{1,4}\s+(.*)$/gm, (m, h) => `*${h.trim()}*`)
+    .replace(/^>>\s?/gm, "").replace(/^>\s?/gm, "")
+    .replace(/\*\*(.+?)\*\*/g, "*$1*")
+    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, "$1 ($2)")
+    .replace(/\[\^([^\]\s]+)\]/g, "[$1]")
+    .replace(/^\s*(-{3,}|\*{3,})\s*$/gm, "———")
+    .replace(/\n{3,}/g, "\n\n").trim();
+  if (notes.length) t += "\n\n" + notes.join("\n");
+  return t;
+}
+function shareText(kind, it){
+  const isL = kind === "l", isW = kind === "w", isQ = false;
+  const t0 = pickTitle(it.title, S.lang, it.src), t = t0.text ? t0 : {text: isW ? (it.word || "") : "", lang: "ar"}, sm = pick(it.summary, S.lang, it.src), b = pick(it.body, S.lang, it.src);
+  const ayahs = [];
+  if (isL) for (const r of (it.ranges||[])) for (let a = r.from; a <= r.to && ayahs.length < 5; a++) ayahs.push([r.s, a]);
+  else ayahs.push([it.s, it.a]);
+  const total = isL ? (it.ranges||[]).reduce((c,r)=>c + r.to - r.from + 1, 0) : 1;
+  const tl = TR_LANGS.includes(b.lang) && (b.lang === "en" || S.TRX[b.lang]) ? b.lang : S.trLang;
+  const ay = ayahs.map(([s,a]) => `﴿${S.Q[s-1].v[a-1][0]}﴾ (${s}:${a})\n“${trText(s, a, tl)}”`).join("\n\n");
+  const refs = isL ? (it.ranges||[]).map(rangeLabel).join(", ") : `${it.s}:${it.a}`;
+  const head = isQ ? `❓ ${t.text}` : `*${t.text || "Untitled"}*`;
+  return [
+    head,
+    `${isL ? "Lesson" : isW ? "Word analysis: " + (it.word || "") + (it.root ? " (root " + spaced(it.root) + ")" : "") : "Note"}${!isL && !isW && catName(it.cat) ? " · " + catName(it.cat) : ""} · ${refs}${isL ? "" : " · " + surahOf(it.s).tl}`,
+    "",
+    ay + (total > ayahs.length ? `\n(+${total - ayahs.length} more ayahs)` : ""),
+    "",
+    sm.text ? sm.text + "\n" : "",
+    plainFromMd(b.text),
+    "",
+    `Read on Ayah by Ayah: ${shareLink(kind, it.id)}`
+  ].filter((x, i, arr) => !(x === "" && arr[i-1] === "")).join("\n").trim();
+}
+function openShare(ref){
+  const [kind, id] = ref.split(":");
+  const it = itemOf(kind, id);
+  if (!it) return;
+  const link = shareLink(kind, id), text = shareText(kind, it);
+  const t0 = pickTitle(it.title, S.lang, it.src), t = t0.text ? t0 : {text: it.word || "", lang: "ar"};
+  M = {type:"share", link, text};
+  modal(`<div class="row"><h2>Share</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <p class="w" lang="${t.lang}" dir="${RTL[t.lang]?"rtl":"ltr"}" style="margin:0;font:600 17px/1.5 var(--f-text)">${esc(t.text || "Untitled")}</p>
+    <div class="field"><label for="share-link">Link to this page</label>
+      <div class="row" style="flex-wrap:nowrap"><input type="text" id="share-link" readonly value="${esc(link)}" style="flex:1;min-width:0"><button type="button" class="btn primary" data-m="copy-link">Copy link</button></div>
+      <span class="small muted">${S.static ? "Anyone can open this link." : "The link opens this page directly for anyone who has access to this platform."}</span></div>
+    <div class="field"><label for="share-text">Ready-to-paste text in ${LNAME_EN[pick(it.body, S.lang, it.src).lang]} · for WhatsApp, Facebook, Telegram or email</label>
+      <textarea id="share-text" rows="12" readonly dir="auto">${esc(text)}</textarea>
+      <div class="row"><button type="button" class="btn primary" data-m="copy-text">Copy text</button><span class="small muted">Includes the ayah in Arabic, its translation, the full write-up and the link. Switch the write-up language at the top to share it in another language.</span></div></div>
+    <div class="err" id="m-err"></div>`);
+}
+async function copyFrom(id, value, done){
+  try { await navigator.clipboard.writeText(value); toast(done); }
+  catch { const el = document.getElementById(id); if (el) { el.focus(); el.select(); } toast("Press Ctrl+C (or long-press → Copy) to copy the selected text."); }
+}
+
+/* ---------- editors ---------- */
+let M = null; // modal state
+function closeModal(){ if (M?.ctl) M.ctl.forEach(c=>c.abort()); M = null; $("#modal-root").innerHTML = ""; }
+function modal(html, cls){ const sc = $(".backdrop")?.scrollTop || 0; $("#modal-root").innerHTML = `<div class="backdrop" id="backdrop"><div class="dialog ${cls||""}" role="dialog" aria-modal="true">${html}</div></div>`; if (cls) $(".backdrop").scrollTop = sc; }
+
+function openTrEditor(k){
+  const [s,a] = k.split(":").map(Number);
+  const v = surahOf(s).v[a-1], rev = S.tr[k];
+  M = {type:"tr", s, a, l: S.trLang};
+  modal(`<h2>${rev?"Edit revised translation":"Revise translation"} · ${s}:${a} · ${LNAME_EN[M.l]}</h2>
+    <p class="ref-ar" lang="ar" dir="rtl">${esc(arText(s,a))}</p>
+    <div class="orig" style="max-width:none" ${trAttrs(M.l)}><b>${TR_NAME[M.l]} (original)</b>${esc(baseTr(s,a,M.l))}</div>
+    <div class="field"><label for="tr-text">Your ${LNAME_EN[M.l]} translation</label><textarea id="tr-text" rows="4" ${trAttrs(M.l)}>${esc(rev?rev.text:baseTr(s,a,M.l))}</textarea></div>
+    <div class="field"><label for="tr-note">Reason for the revision (optional, shown to readers)</label><textarea id="tr-note" rows="2" style="min-height:60px">${esc(rev?.note||"")}</textarea></div>
+    <div id="m-confirm"></div><div class="err" id="m-err"></div>
+    <div class="foot">
+      ${rev ? `<button type="button" class="btn danger" data-m="tr-revert">Restore original</button>` : ""}
+      <span class="spacer"></span>
+      <button type="button" class="btn" data-m="close">Cancel</button>
+      <button type="button" class="btn primary" data-m="tr-save">Save</button>
+    </div>`);
+  $("#tr-text").focus();
+}
+
+function blankLang(){ return {en:"",bn:"",ar:"",ur:""}; }
+function draftKey(){ return "aba.draft." + (M.it.id || ("new-" + M.type)); }
+function openWriteEditor(kind, existing, preset){
+  // kind: "explanation" (a note) | "lesson" | "word"
+  const it = existing ? JSON.parse(JSON.stringify(existing)) : {kind: (kind==="lesson"||kind==="word")?undefined:"explanation", title:blankLang(), summary:blankLang(), body:blankLang(), tags:[], src: S.lang, ai:{}};
+  it.title = Object.assign(blankLang(), it.title); it.summary = Object.assign(blankLang(), it.summary); it.body = Object.assign(blankLang(), it.body); it.ai = it.ai || {};
+  M = {type: kind==="lesson" ? "lesson" : kind==="word" ? "word" : "note", it, tab: it.src || "en", existing: !!existing, ctl: [], preview:false, dirty:false};
+  if (M.type === "note" || M.type === "word") M.ref = existing ? `${it.s}:${it.a}` : (preset || "");
+  else M.ref = existing ? (it.ranges||[]).map(rangeLabel).join(", ") : (preset || "");
+  M.initial = JSON.stringify([M.ref, it]);
+  try { const d = JSON.parse(store.get(draftKey()) || "null"); if (d && d.savedAt > (it.updatedAt||0) && JSON.stringify([d.ref, d.it]) !== M.initial) M.draft = d; } catch {}
+  drawWriteEditor();
+  if (M.type === "word") loadEditorWords();
+  (M.ref ? $("#w-title") : $("#w-ref"))?.focus();
+}
+function loadEditorWords(){
+  const r = parseRefs(M.ref || "");
+  if (!r || r.length !== 1 || r[0].from !== r[0].to) { M.wordList = null; return; }
+  const {s, from: a} = r[0];
+  if (M.wordList && M.wordList.s === s && M.wordList.a === a) return;
+  M.wordList = {s, a, words: null};
+  loadGrammar(s).then(d => { if (M && M.type === "word" && M.wordList?.s === s && M.wordList?.a === a) { M.wordList.words = d[a-1]; captureFields(); drawWriteEditor(); } }).catch(() => {});
+}
+const FMT = [
+  ["h2","Section","## ","line"], ["h3","Sub-section","### ","line"], ["b","Bold","**","wrap"], ["i","Italic","*","wrap"],
+  ["q","Quote","> ","line"], ["ar","Arabic / Qur'an quote",">> ","line"], ["ul","• List","- ","line"], ["ol","1. List","1. ","line"],
+  ["fn","Footnote","","fn"], ["link","Link","","link"], ["hr","Divider","\n---\n","insert"]
+];
+/* ---------- word usage across the Qur'an (concordance by lemma or root, from the Quranic Arabic Corpus data) ---------- */
+let CONC = null; const GD = {};
+function loadConc(){ if (!CONC) CONC = fetch("conc.json").then(r => { if (!r.ok) throw 0; return r.json(); }).catch(e => { CONC = null; throw e; }); return CONC; }
+const decCode = c => [Math.floor(c/1e6), Math.floor(c/1000) % 1000, c % 1000];
+const stripHarakat = t => t.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, "").replace(/[ٱأإآ]/g, "ا");
+function usageKey(){ const it = M.it; return (M.useScope || "lemma") + "|" + (M.useScope === "root" ? it.root : it.lemma); }
+async function usagePrepare(){
+  const it = M.it, k = usageKey();
+  if (!it.lemma || (M.use && M.use.key === k)) return;
+  const U = M.use = {key: k, scope: M.useScope || "lemma", state: "loading", rows: [], form: null, shown: 40, loaded: 0, need: 0};
+  try {
+    const C = await loadConc();
+    const lemmas = U.scope === "root" && it.root ? (C.R[it.root] || [it.lemma]) : [it.lemma];
+    const codes = [].concat(...lemmas.map(l => C.L[l] || [])).sort((x, y) => x - y);
+    const surahs = [...new Set(codes.map(c => decCode(c)[0]))];
+    U.need = surahs.length;
+    await Promise.all(surahs.map(sn => loadGrammar(sn).then(d => { GD[sn] = d; U.loaded++; if (M && M.use === U && U.loaded % 10 === 0) redrawUsage(); })));
+    if (!M || M.use !== U) return;
+    U.rows = codes.map(c => {
+      const [s0, a0, w0] = decCode(c), wd = GD[s0][a0-1][w0-1];
+      const surf = wd[2].map(x => x[0]).join("");
+      return {s: s0, a: a0, w: w0, surf, form: stripHarakat(surf), gloss: wd[1], mk: surahOf(s0).t === "meccan"};
+    });
+    const f = {}; U.rows.forEach(r => f[r.form] = (f[r.form] || 0) + 1);
+    U.forms = Object.entries(f).sort((x, y) => y[1] - x[1]);
+    U.state = "ok";
+  } catch { if (M && M.use === U) U.state = "failed"; }
+  redrawUsage();
+}
+function redrawUsage(){ if (M && M.type === "word") { captureFields(); drawWriteEditor(); } }
+function markWord(s, a, w){
+  const toks = arText(s, a).split(/\s+/), wc = (GD[s] && GD[s][a-1]) ? GD[s][a-1].length : 0;
+  const isWordTok = t => t && !/^[\u06D6-\u06ED\u06DE\u06E9]+$/.test(t);
+  let n = 0; const out = toks.map(t => { if (!isWordTok(t)) return esc(t); n++; return n === w ? `<mark>${esc(t)}</mark>` : esc(t); });
+  if (n === wc) return out.join(" ");
+  // The script's word division differs from the corpus here: find the word by its letters instead.
+  const sk = t => t.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640\u08D3-\u08FFاٱأإآءىئؤۦيیوۥ]/g, "").replace(/ک/g, "ك").replace(/[ۃة]/g, "ه").replace(/[^\u0621-\u064A\u0671-\u06D3]/g, "");
+  const want = sk(GD[s][a-1][w-1][2].map(x => x[0]).join(""));
+  const hits = toks.map((t, i) => sk(t) === want ? i : -1).filter(i => i >= 0);
+  if (!hits.length || !want) return esc(toks.join(" "));
+  const best = hits.reduce((x, y) => Math.abs(y - (w-1)) < Math.abs(x - (w-1)) ? y : x);
+  return toks.map((t, i) => i === best ? `<mark>${esc(t)}</mark>` : esc(t)).join(" ");
+}
+function usagePanel(){
+  const it = M.it;
+  if (!it.lemma) return "";
+  const scope = M.useScope || "lemma";
+  const head = `<button type="button" class="btn small" data-m="use-open" aria-expanded="${!!M.useOpen}">${M.useOpen ? "Hide" : "Show"} where this word occurs in the Qur'an</button>`;
+  if (!M.useOpen) return `<div style="margin-top:8px">${head}</div>`;
+  const U = M.use;
+  let body;
+  if (!U || U.state === "loading") body = `<p class="small muted" style="margin:0">Finding every occurrence…${U && U.need ? ` (${U.loaded} of ${U.need} surahs read)` : ""}</p>`;
+  else if (U.state === "failed") body = `<p class="small muted" style="margin:0">The word data didn't load. Close the editor and try again.</p>`;
+  else {
+    const rows = U.form ? U.rows.filter(r => r.form === U.form) : U.rows;
+    const ns = new Set(rows.map(r => r.s)).size, mk = rows.filter(r => r.mk).length;
+    body = `<div class="ustats">${rows.length.toLocaleString()} occurrence${rows.length===1?"":"s"} in ${ns} surah${ns===1?"":"s"} · ${mk} in Makki surahs, ${rows.length - mk} in Madani${U.form ? " · filtered to one form" : ""}</div>
+      ${U.forms.length > 1 ? `<div class="uforms" aria-label="Forms">${U.forms.slice(0, 24).map(([f, c]) => `<button type="button" class="uform" lang="ar" dir="rtl" data-m="use-form" data-v="${esc(f)}" aria-pressed="${U.form === f}">${esc(f)}<small>×${c}</small></button>`).join("")}${U.forms.length > 24 ? `<span class="small muted">+${U.forms.length - 24} more forms</span>` : ""}</div>` : ""}
+      ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="use-ai" ${U.busy||M.busy?"disabled":""}>Analyse usage with AI</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}
+        <span class="small muted">${esc(U.status || `Groups ${U.form ? "these" : "all"} ${rows.length.toLocaleString()} occurrences by sense and context, and adds the result to the ${LNAME_EN[it.src]} text for you to review.${rows.length > 1200 ? " That is too many for one analysis: choose one form above first." : ""}`)}</span></div>
+        <div class="uask"><label class="flabel" for="use-q">Ask something specific about this word's usage</label>
+          <textarea id="use-q" rows="2" placeholder="e.g. Where is it used for prophets and where for ordinary people? Is it ever used in a negative sense? Write a paragraph comparing its use in 2:124 and 14:40.">${esc(U.q || "")}</textarea>
+          <div class="row"><button type="button" class="btn" data-m="use-ask" ${U.busy||M.busy?"disabled":""}>Ask</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}<span class="small muted" id="use-ask-status">${esc(U.askStatus || `Answers from the ${rows.length.toLocaleString()} occurrences shown${(it.body[it.src]||"").trim() ? ", with your current text as context" : ""}.`)}</span></div>
+          ${U.answer != null ? `<div class="uans prose w" lang="${it.src}" dir="${RTL[it.src]?"rtl":"ltr"}" id="use-ans">${renderDoc(U.answer, it.src, "ua").html}</div>
+            ${!U.busy ? `<div class="row"><button type="button" class="btn primary small" data-m="use-add">Add to the ${LNAME_EN[it.src]} text</button><button type="button" class="btn small" data-m="use-discard">Discard</button></div>` : ""}` : ""}
+        </div>` : ""}
+      <div class="ulist">${rows.slice(0, U.shown).map(r => `<div class="urow${r.s===it.s&&r.a===it.a?" cur":""}"><span class="uref">${r.s}:${r.a}<em>${r.mk?"Makki":"Madani"}${r.s===it.s&&r.a===it.a?" · this ayah":""}</em></span>
+          <p class="uar" lang="ar" dir="rtl">${markWord(r.s, r.a, r.w)}</p>
+          <span class="ugloss"><b lang="ar" class="gar">${esc(r.surf)}</b> · ${esc(r.gloss)}</span>
+          <p class="tr utr" ${trAttrs()}>${esc(trText(r.s, r.a))}</p></div>`).join("")}
+        ${rows.length > U.shown ? `<p style="margin:8px 0"><button type="button" class="btn small" data-m="use-more">Show more (${(rows.length - U.shown).toLocaleString()} left)</button></p>` : ""}</div>`;
+  }
+  return `<div class="usage" style="margin-top:8px"><div class="uhead">${head}
+    <div class="seg" role="group" aria-label="Search by"><button type="button" data-m="use-scope" data-v="lemma" aria-pressed="${scope==="lemma"}">Same lemma <span lang="ar" class="gar">${esc(it.lemma)}</span></button>${it.root ? `<button type="button" data-m="use-scope" data-v="root" aria-pressed="${scope==="root"}">Whole root <span lang="ar" class="gar">${esc(spaced(it.root))}</span></button>` : ""}</div></div>
+    ${body}</div>`;
+}
+async function usageAI(){
+  const U = M.use, it = M.it;
+  if (!U || U.state !== "ok" || U.busy || !S.sample) return;
+  const rows = U.form ? U.rows.filter(r => r.form === U.form) : U.rows;
+  if (rows.length > 1200) { U.status = "Too many occurrences for one analysis. Choose one form above first."; redrawUsage(); return; }
+  const L = it.src, tl = TR_LANGS.includes(L) ? L : "en";
+  if (tl !== "en") await loadTrx(tl);
+  const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
+  const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
+  const ns = new Set(rows.map(r => r.s)).size, mk = rows.filter(r => r.mk).length;
+  const forms = {}; rows.forEach(r => forms[r.form] = (forms[r.form]||0) + 1);
+  const what = `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`;
+  const scopeTxt = U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`;
+  const stats = `${rows.length} places in ${ns} surahs; ${mk} in Makki surahs and ${rows.length - mk} in Madani surahs.${U.form ? ` (Only the form ${U.form} is included.)` : ""} Forms and counts: ${Object.entries(forms).sort((x,y)=>y[1]-x[1]).map(([f,c]) => `${f} ×${c}`).join(", ")}.`;
+  const task = `Write a section for a word analysis, in ${guide[L]}, beginning with the heading "## ${L==="en"?"Usage across the Qur'an":L==="bn"?"কুরআনে শব্দটির ব্যবহার":L==="ar"?"استعمال الكلمة في القرآن":"قرآن میں لفظ کا استعمال"}".
+1. A short overview: how often and where the word occurs, and the forms it takes.
+2. Group the occurrences by the sense or context in which the word is used. For each group: a "### " heading naming the sense; two to four sentences on what the word conveys there, what it is paired or contrasted with, and who or what it describes; then the references of that group, written like 2:255, all of them.
+3. Patterns worth a researcher's attention: forms or constructions limited to certain contexts, Makki and Madani differences, recurring collocations.
+4. Close with how the use in ${it.s}:${it.a} relates to these groups.
+
+Rules:
+- Use only the occurrences given. Do not cite any ayah that is not in the data.
+- When you quote Arabic from an ayah, copy it exactly from the data, on its own line starting with ">> ".
+- When you give the meaning of an ayah, use the ${LNAME_EN[tl]} translation given in the data, word for word.
+- Base every observation on the texts given. Where a sense is uncertain, say so. Do not attribute views to scholars or commentators.
+- Use "## ", "### ", "- " and **bold** only. Reply with the section only.`;
+  U.busy = true; U.ctl = []; U.status = "Reading the occurrences…"; redrawUsage();
+  const run = async (prompt) => { const ctl = new AbortController(); U.ctl.push(ctl); const r = await S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex"}); return r; };
+  try {
+    let out;
+    if (rows.length <= 140) {
+      const r = await run(`You are helping a researcher of the Qur'an write a linguistic analysis of ${what}. Below is ${scopeTxt} in the Qur'an: ${stats}
+Each line gives the reference, Makki or Madani, the word as it appears there, its word-by-word gloss, the ayah in Arabic, and a translation.
+
+${task}
+
+Data:
+${rows.map(line).join("\n")}`);
+      out = r.text; if (r.truncated) U.warn = "The analysis was cut short. Check its ending.";
+    } else {
+      const chunks = []; for (let i = 0; i < rows.length; i += 80) chunks.push(rows.slice(i, i + 80));
+      let done = 0, next = 0;
+      const notes = new Array(chunks.length);
+      const one = async (ch, i) => {
+        const r = await run(`You are helping a researcher of the Qur'an study ${what}. Below is part ${i+1} of ${chunks.length} of ${scopeTxt} in the Qur'an. Each line gives the reference, Makki or Madani, the word, its gloss, the ayah in Arabic and a translation.
+
+Group these occurrences by the sense or context in which the word is used. For each group write: a short label; one or two sentences on what the word conveys there and what it is paired or contrasted with; and every reference in the group, written like 2:255. Then list any notable collocations or constructions. Use only the data given. Write in English, as plain notes.
+
+Data:
+${ch.map(line).join("\n")}`);
+        done++; U.status = `Read ${done} of ${chunks.length} parts…`; redrawUsage();
+        notes[i] = r.text;
+      };
+      await Promise.all([0,1,2].map(async () => { while (next < chunks.length) { const i = next++; await one(chunks[i], i); } }));
+      U.status = "Combining the parts…"; redrawUsage();
+      const cur = rows.find(r => r.s === it.s && r.a === it.a);
+      const r = await run(`You are helping a researcher of the Qur'an write a linguistic analysis of ${what}. The ${rows.length} occurrences (${scopeTxt}) were read in ${chunks.length} parts, and each part was grouped by sense. Merge the groups that describe the same sense, keeping every reference. ${stats}
+
+${task}
+- The Arabic of an ayah is not repeated here; quote Arabic only from the line for ${it.s}:${it.a} below.
+
+The ayah being analysed:
+${cur ? line(cur) : `${it.s}:${it.a}`}
+
+Grouped notes from the parts:
+${notes.map((n, i) => `--- Part ${i+1} ---\n${n}`).join("\n\n")}`);
+      out = r.text; if (r.truncated) U.warn = "The analysis was cut short. Check its ending.";
+    }
+    if (!M || M.use !== U) return;
+    captureFields();
+    const body = (it.body[L] || "").trim();
+    it.body[L] = (body ? body + "\n\n" : "") + out.trim();
+    M.tab = L; M.preview = false;
+    U.status = (U.warn ? U.warn + " " : "") + `Added at the end of the ${LNAME_EN[L]} text. Review it before saving.`;
+    U.added = true;
+  } catch (e) {
+    if (!M || M.use !== U) return;
+    U.status = e?.code === "cancelled" ? "Stopped." : e?.code === "prompt_too_large" ? "Too much text for one analysis. Choose one form above and try again." : aiErr(e?.code, L).replace(/ draft/g, " analysis");
+  }
+  U.busy = false; U.ctl = [];
+  drawWriteEditor();
+  if (U.added) { U.added = false; saveLocalDraft(); }
+}
+async function usageAsk(){
+  const U = M.use, it = M.it;
+  if (!U || U.state !== "ok" || U.busy || !S.sample) return;
+  const q = (U.q || "").trim();
+  if (!q) { U.askStatus = "Type your request first."; drawWriteEditor(); return; }
+  const rows = U.form ? U.rows.filter(r => r.form === U.form) : U.rows;
+  if (rows.length > 1200) { U.askStatus = "Too many occurrences to read at once. Choose one form above first."; drawWriteEditor(); return; }
+  const L = it.src, tl = TR_LANGS.includes(L) ? L : "en";
+  if (tl !== "en") await loadTrx(tl);
+  const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
+  const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
+  const what = `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`;
+  const scopeTxt = (U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`) + (U.form ? ` (only the form ${U.form})` : "");
+  const draft = (it.body[L] || "").trim();
+  const ctxDraft = draft ? `\n\nThe researcher's current text of the analysis, for context (do not repeat it):\n"""\n${draft.length > 20000 ? draft.slice(0, 20000) + "\n[…]" : draft}\n"""` : "";
+  const rules = `Answer the request in ${guide[L]}.
+- If the request asks you to write something, write it ready to paste into the analysis. Use "## " or "### " headings, "- " lists and **bold** only where they help. Quote Arabic only by copying it exactly from the data, on its own line starting with ">> ".
+- Use only the occurrences given. Do not cite any ayah that is not in the data; give references like 2:255.
+- When you give the meaning of an ayah, use the ${LNAME_EN[tl]} translation given in the data, word for word.
+- Base everything on the texts given. If the data does not answer the request, say so plainly. Do not attribute views to scholars or commentators.
+- Reply with the answer only.`;
+  U.busy = true; U.ctl = []; U.answer = ""; U.askStatus = "Working on it…"; drawWriteEditor();
+  const run = (prompt, onText) => { const ctl = new AbortController(); U.ctl.push(ctl); return S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex", onText}); };
+  const stream = ({text}) => { if (M && M.use === U) { U.answer = text; const el = $("#use-ans"); if (el) el.innerHTML = renderDoc(text, L, "ua").html; } };
+  const setSt = t => { U.askStatus = t; const st = $("#use-ask-status"); if (st) st.textContent = t; };
+  try {
+    let r;
+    if (rows.length <= 140) {
+      r = await run(`You are helping a researcher of the Qur'an with ${what}. Below is ${scopeTxt} in the Qur'an (${rows.length} places). Each line gives the reference, Makki or Madani, the word as it appears there, its word-by-word gloss, the ayah in Arabic, and a translation.${ctxDraft}
+
+The researcher's request:
+"""
+${q}
+"""
+
+${rules}
+
+Data:
+${rows.map(line).join("\n")}`, stream);
+    } else {
+      const chunks = []; for (let i = 0; i < rows.length; i += 80) chunks.push(rows.slice(i, i + 80));
+      const notes = new Array(chunks.length); let next = 0, done = 0;
+      await Promise.all([0,1,2].map(async () => { while (next < chunks.length) { const i = next++;
+        const x = await run(`A researcher of the Qur'an is studying ${what} and asks:
+"""
+${q}
+"""
+Below is part ${i+1} of ${chunks.length} of ${scopeTxt}. From this part only, extract everything relevant to the request: the relevant references (written like 2:255), what each shows, and short Arabic phrases copied exactly where they matter. If nothing in this part is relevant, reply "Nothing relevant." Write in English, as plain notes. Use only the data given.
+
+Data:
+${chunks[i].map(line).join("\n")}`);
+        notes[i] = x.text; done++; setSt(`Read ${done} of ${chunks.length} parts…`); } }));
+      setSt("Writing the answer…");
+      r = await run(`You are helping a researcher of the Qur'an with ${what}. All ${rows.length} places (${scopeTxt}) were read in ${chunks.length} parts, and what is relevant to the request was extracted from each part.${ctxDraft}
+
+The researcher's request:
+"""
+${q}
+"""
+
+${rules}
+- The Arabic of the ayahs is not repeated here; quote Arabic only where the notes copy it.
+
+Notes from the parts:
+${notes.map((n, i) => `--- Part ${i+1} ---\n${n}`).join("\n\n")}`, stream);
+    }
+    if (!M || M.use !== U) return;
+    U.answer = r.text; U.askStatus = (r.truncated ? "The answer was cut short. " : "") + "Review the answer, then add it to your text or discard it.";
+  } catch (e) {
+    if (!M || M.use !== U) return;
+    if (!U.answer) U.answer = null;
+    U.askStatus = e?.code === "cancelled" ? "Stopped." : e?.code === "prompt_too_large" ? "Too much text to read at once. Choose one form above and try again." : aiErr(e?.code, L).replace(/ draft/g, " answer");
+  }
+  U.busy = false; U.ctl = [];
+  captureFields(); drawWriteEditor();
+}
+function drawWriteEditor(){
+  const it = M.it, isLesson = M.type === "lesson", isWord = M.type === "word", isQ = false;
+  const [s,a] = (!isLesson && M.ref && parseRefs(M.ref)?.length===1) ? [parseRefs(M.ref)[0].s, parseRefs(M.ref)[0].from] : [0,0];
+  const heading = isLesson ? (M.existing?"Edit lesson":"New lesson") : isWord ? (M.existing?"Edit word analysis":"New word analysis") : (M.existing?"Edit note":"New note");
+  const titleLbl = isLesson ? "Lesson title" : isWord ? "Title (optional; the word itself is shown if empty)" : "Title";
+  const bodyLbl = isLesson ? "Lesson and implementation steps" : isWord ? "Word analysis" : "Note";
+  const others = LANGS.filter(l=>l!==it.src);
+  const L = M.tab, dir = RTL[L] ? "rtl" : "ltr";
+  const doc = renderDoc(it.body[L], L, "pv");
+  modal(`<div class="row"><h2>${heading}</h2><span class="spacer"></span><span class="small muted" id="w-count">${doc.words.toLocaleString()} words · ${readMins(doc.words)} min read</span></div>
+    ${M.draft ? `<div class="confirm"><span>You have unsaved writing from ${new Date(M.draft.savedAt).toLocaleString()}.</span><span class="spacer"></span><button type="button" class="btn" data-m="draft-discard">Discard it</button><button type="button" class="btn primary" data-m="draft-restore">Restore it</button></div>` : ""}
+    ${M.type === "note" ? `<div class="grid2">
+      <div class="field"><label for="w-cat">Category (required)</label>
+        <select id="w-cat"><option value="">Choose a category…</option>${S.cats.map(c => `<option value="${esc(c.id)}" ${it.cat===c.id?"selected":""}>${esc(catName(c.id))}</option>`).join("")}<option value="__new" ${M.catNew!==undefined && it.cat==="__new"?"selected":""}>+ New category…</option></select></div>
+      ${it.cat === "__new" ? `<div class="field"><label for="w-newcat">New category name (English)</label><input type="text" id="w-newcat" value="${esc(M.catNew||"")}" placeholder="e.g. Scientific objections" autocomplete="off"></div>` : `<div></div>`}
+    </div>` : ""}
+    <div class="grid2">
+      <div class="field"><label for="w-ref">${isLesson ? "Ayahs covered (e.g. 2:153-157, 2:177)" : "Ayah (e.g. 2:255)"}</label><input type="text" id="w-ref" value="${esc(M.ref)}" autocomplete="off"></div>
+      <div class="field"><label for="w-tags">Tags, separated by commas</label><input type="text" id="w-tags" value="${esc((it.tags||[]).join(", "))}" placeholder="sabr, salah, fiqh" autocomplete="off"></div>
+    </div>
+    ${s && !isWord ? `<p class="ref-ar" lang="ar" dir="rtl">${esc(arText(s,a))}</p>` : ""}
+    ${isWord ? `<div class="field"><span class="flabel">Word (required): choose the word in the ayah</span>
+      ${!s ? `<p class="small muted" style="margin:0">Enter the ayah first.</p>`
+        : !M.wordList?.words ? `<p class="small muted" style="margin:0">Loading the words of ${s}:${a}…</p>`
+        : `<div class="gstrip" lang="ar" dir="rtl">${M.wordList.words.map((w, i) => `<button type="button" class="gchip" data-m="pick-word" data-v="${i+1}" aria-pressed="${it.w === i+1 && it.s === s && it.a === a}">${esc(w[2].map(x=>x[0]).join(""))}</button>`).join("")}</div>
+           ${it.w && it.s === s && it.a === a ? `<p class="small" style="margin:4px 0 0">Selected: <b lang="ar" class="gar" style="font-size:18px">${esc(it.word)}</b>${it.root?` · root <b lang="ar" class="gar">${esc(spaced(it.root))}</b>`:""}${it.lemma?` · lemma <b lang="ar" class="gar">${esc(it.lemma)}</b>`:""}${it.pos?` · ${esc(it.pos)}`:""}</p>${usagePanel()}` : ""}`}
+    </div>` : ""}
+    <div class="row"><label class="flabel" for="w-src">I am writing in</label>
+      <select id="w-src" style="width:auto">${LANGS.map(l=>`<option value="${l}" ${it.src===l?"selected":""}>${LNAME_EN[l]}</option>`).join("")}</select></div>
+    <div class="ltabs" role="tablist">${LANGS.map(l=>`<button type="button" role="tab" data-m="tab" data-v="${l}" aria-selected="${M.tab===l}" class="${(it.title[l]||it.body[l])?"filled":""}">${LNAME[l]}${l===it.src?' <span class="flag" style="color:var(--muted)">SOURCE</span>':""}${it.ai[l]?'<span class="flag">AI DRAFT</span>':""}</button>`).join("")}</div>
+    <div class="field"><label for="w-title">${titleLbl} · ${LNAME_EN[L]}</label>
+      <input type="text" id="w-title" lang="${L}" dir="${dir}" class="w" value="${esc(it.title[L])}"></div>
+    <div class="field"><label for="w-sum">Summary or abstract · ${LNAME_EN[L]} <span style="font-weight:400">(optional, shown on cards and under the title)</span></label>
+      <textarea id="w-sum" rows="2" lang="${L}" dir="${dir}" class="w" style="min-height:56px">${esc(it.summary[L])}</textarea></div>
+    <div class="field">
+      <div class="row"><span class="flabel">${bodyLbl} · ${LNAME_EN[L]}</span><span class="spacer"></span>
+        <div class="seg" role="group" aria-label="Editor view"><button type="button" data-m="view" data-v="write" aria-pressed="${!M.preview}">Write</button><button type="button" data-m="view" data-v="preview" aria-pressed="${M.preview}">Preview</button></div></div>
+      ${M.preview
+        ? `<div class="preview"><div class="art-grid">${doc.toc.length>=2?`<nav class="toc" lang="${L}" dir="${dir}"><div class="flabel">Contents</div><ol>${doc.toc.map(h=>`<li class="t${h.lvl}"><button type="button" data-fn="${h.id}">${esc(h.text)}</button></li>`).join("")}</ol></nav>`:""}
+           <div class="prose article-body w" lang="${L}" dir="${dir}">${doc.html || '<p class="muted">Nothing written yet.</p>'}</div></div></div>`
+        : `<div class="fmtbar" role="toolbar" aria-label="Formatting">${FMT.map(([k,l])=>`<button type="button" data-m="fmt" data-v="${k}" title="${esc(l)}">${esc(l)}</button>`).join("")}</div>
+           <textarea id="w-body" rows="20" lang="${L}" dir="${dir}" class="w editor-area">${esc(it.body[L])}</textarea>
+           <details class="small muted fmthelp"><summary>Formatting guide</summary>
+             <div><code>## Section</code> and <code>### Sub-section</code> build the table of contents. <code>&gt;&gt; </code> sets a line as a Qur'an / Arabic quotation (a whole Arabic paragraph is detected automatically in English and Bangla articles). <code>&gt; </code> quote, <code>- </code> bullet, <code>1. </code> numbered, <code>---</code> divider, <code>**bold**</code>, <code>*italic*</code>, <code>[text](https://…)</code> link. Footnotes: put <code>[^1]</code> in the text and a line <code>[^1]: source or note</code> anywhere; they are numbered and listed at the end. Ayah numbers like 2:255 become links. Write-ups longer than about 900 characters, or with sections or footnotes, open as a full article page.</div></details>`}
+    </div>
+    ${it.ai[L] ? `<div class="row small"><span class="notice">This language was drafted by AI. Readers see it marked as unreviewed.</span><button type="button" class="btn small" data-m="reviewed">Mark as reviewed</button></div>` : ""}
+    ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="ai" ${M.busy?"disabled":""}>Draft ${others.map(l=>LNAME_EN[l]).join(", ")} from ${LNAME_EN[it.src]} with AI</button>
+      ${M.busy ? `<button type="button" class="btn" data-m="ai-stop">Stop</button>` : ""}
+      <span class="small muted" id="ai-status">${esc(M.aiStatus || "Drafts fill the other tabs for you to review before saving. Long articles take a few minutes.")}</span></div>` : ""}
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err||"")}</div>
+    <div class="foot">
+      ${M.existing ? `<button type="button" class="btn danger" data-m="delete">Delete</button>` : ""}
+      <span class="spacer"></span>
+      <button type="button" class="btn" data-m="close">Cancel</button>
+      <button type="button" class="btn primary" data-m="save" ${M.busy?"disabled":""}>Save</button>
+    </div>`, "wide");
+}
+function captureFields(){
+  if (!M || (M.type!=="note" && M.type!=="lesson" && M.type!=="word")) return;
+  const t = $("#w-title"), b = $("#w-body"), sm = $("#w-sum"), r = $("#w-ref"), g = $("#w-tags"), src = $("#w-src");
+  const it = M.it, L = M.tab;
+  if (r) M.ref = r.value;
+  if (g) it.tags = g.value.split(/[,،]/).map(x=>x.trim().replace(/^#/,"")).filter(Boolean);
+  if (src) it.src = src.value;
+  const uq = $("#use-q"); if (uq && M.use) M.use.q = uq.value;
+  const cs = $("#w-cat"), nc = $("#w-newcat");
+  if (cs) it.cat = cs.value;
+  if (nc) M.catNew = nc.value;
+  const before = it.title[L] + "\u0000" + it.summary[L] + "\u0000" + it.body[L];
+  if (t) it.title[L] = t.value;
+  if (sm) it.summary[L] = sm.value;
+  if (b) it.body[L] = b.value;
+  if (before !== it.title[L] + "\u0000" + it.summary[L] + "\u0000" + it.body[L] && it.ai[L] && !M.busy) delete it.ai[L];
+}
+function saveLocalDraft(){
+  if (!M || (M.type!=="note" && M.type!=="lesson" && M.type!=="word")) return;
+  captureFields();
+  const cur = JSON.stringify([M.ref, M.it]);
+  M.dirty = cur !== M.initial;
+  if (M.dirty) store.set(draftKey(), JSON.stringify({ref:M.ref, it:M.it, savedAt:Date.now()}));
+}
+function clearLocalDraft(){ try { localStorage.removeItem(draftKey()); } catch {} }
+function applyFmt(k){
+  const ta = $("#w-body"); if (!ta) return;
+  const [ , , tok, mode] = FMT.find(f=>f[0]===k);
+  const v = ta.value, s0 = ta.selectionStart, e0 = ta.selectionEnd, sel = v.slice(s0, e0);
+  let ins, cs, ce;
+  if (mode === "wrap") { const inner = sel || "text"; ins = tok + inner + tok; cs = s0 + tok.length; ce = cs + inner.length; }
+  else if (mode === "line") {
+    const ls = v.lastIndexOf("\n", s0 - 1) + 1;
+    const block = v.slice(ls, e0) || "";
+    const lines = (block || "").split("\n").map((l,i) => tok === "1. " ? `${i+1}. ${l.replace(/^\s*\d+[.)]\s+/,"")}` : tok + l.replace(/^(#{1,4}|>>?|-|\d+[.)])\s+/,""));
+    ins = lines.join("\n"); ta.setRangeText(ins, ls, e0, "end"); ta.focus(); return;
+  }
+  else if (mode === "fn") {
+    const used = [...v.matchAll(/\[\^(\d+)\]/g)].map(m=>+m[1]); const n = (used.length ? Math.max(...used) : 0) + 1;
+    ta.setRangeText(`[^${n}]`, e0, e0, "end");
+    const tail = (ta.value.endsWith("\n") ? "" : "\n") + `\n[^${n}]: `;
+    ta.value = ta.value + tail; ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); ta.scrollTop = ta.scrollHeight; return;
+  }
+  else if (mode === "link") { const txt = sel || "link text"; ins = `[${txt}](https://)`; cs = s0 + txt.length + 3; ce = cs + 8; }
+  else { ins = tok; cs = ce = s0 + tok.length; }
+  ta.setRangeText(ins, s0, e0); ta.focus(); ta.setSelectionRange(cs, ce);
+}
+
+async function aiDraft(force){
+  captureFields();
+  const it = M.it, src = it.src;
+  if (!it.title[src].trim() && !it.body[src].trim()) { M.err = `Write the ${LNAME_EN[src]} version first, then draft the others.`; drawWriteEditor(); return; }
+  const targets = LANGS.filter(l=>l!==src);
+  const filled = targets.filter(l => (it.title[l]||"").trim() || (it.body[l]||"").trim());
+  if (filled.length && !force) {
+    $("#m-confirm").innerHTML = `<div class="confirm"><span>This replaces what is already written in ${filled.map(l=>LNAME_EN[l]).join(", ")}.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep them</button><button type="button" class="btn primary" data-m="ai-force">Replace</button></div>`;
+    return;
+  }
+  M.err = ""; M.busy = true; M.aiStatus = "Drafting… the first words usually take 10–40 seconds."; drawWriteEditor();
+  const kindWord = M.type==="lesson" ? "a practical lesson (with implementation steps) drawn from Qur'anic ayahs" : M.type==="word" ? "a linguistic analysis of a word of the Qur'an" : (it.kind==="question" ? "a question about a Qur'anic ayah and its answer" : "an explanation of a Qur'anic ayah");
+  const guide = {
+    en: "English in a clear scholarly register used in English Islamic studies writing",
+    bn: "Bangla (Bengali script) in the standard register of Bangladeshi Islamic literature, using the Islamic terms customary there (e.g. আল্লাহ, সালাত, তাকওয়া)",
+    ar: "Modern Standard Arabic in a classical scholarly register, as in Arabic tafsir and Islamic studies writing",
+    ur: "Urdu (Arabic script) in the register of standard Urdu Islamic scholarly prose"
+  };
+  const done = [];
+  M.ctl = [];
+  // Ayahs this write-up touches: its own ayah or ranges, plus every reference such as 2:255 or 2:83-84 in the source text.
+  const refAyahs = [], seenRef = new Set();
+  const addRef = (s, a) => { const k = key(s,a); if (refAyahs.length < 80 && validRef(s,a) && !seenRef.has(k)) { seenRef.add(k); refAyahs.push([s,a]); } };
+  if (it.s && it.a) addRef(+it.s, +it.a);
+  if (M.s && M.a) addRef(+M.s, +M.a);
+  for (const r of (it.ranges||[])) for (let a = r.from; a <= r.to; a++) addRef(r.s, a);
+  const srcAll = [it.title[src], it.summary[src], it.body[src]].join("\n");
+  for (const m of srcAll.matchAll(/(?<![\d:])(\d{1,3}):(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?(?![\d:])/g)) {
+    const s0 = +m[1], a0 = +m[2], a1 = m[3] ? Math.min(+m[3], a0 + 30) : a0;
+    for (let a = a0; a <= a1; a++) addRef(s0, a);
+  }
+  await Promise.all(targets.filter(l => TR_LANGS.includes(l)).map(loadTrx));
+  const trBlock = l => {
+    if (!TR_LANGS.includes(l) || !refAyahs.length || (l !== "en" && !S.TRX[l])) return "";
+    const lines = refAyahs.map(([s,a]) => `${s}:${a} — ${trText(s, a, l)}`).join("\n");
+    return `
+- Wherever the text gives the meaning of an ayah (for example the rendering that follows an Arabic quotation, or a quoted phrase of an ayah), do not translate the source's rendering yourself. Use the ${LNAME_EN[l]} translation of that ayah given in the list below (${TR_NAME[l]}${Object.keys(S.trAll[l]||{}).length ? ", including the platform's own revisions" : ""}), word for word. If the source renders only part of an ayah, use the matching part of that wording. Keep the ayah reference that follows it.
+
+${LNAME_EN[l]} translation of the ayahs referred to:
+${lines}
+`;
+  };
+  await Promise.all(targets.map(async l => {
+    const ctl = new AbortController(); M.ctl.push(ctl);
+    const prompt = `Translate ${kindWord} from ${LNAME_EN[src]} into ${guide[l]}.
+
+Rules:
+- Translate faithfully. Do not add, remove, summarise or comment.
+- Keep every quotation of the Qur'an in Arabic exactly as written, character for character.
+- Keep ayah references such as 2:255 exactly as written.
+- Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links.
+- Keep footnote markers such as [^1] exactly where they are, and translate the footnote lines that start with "[^1]: " while keeping that marker at the start.
+- Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}
+
+- If the source title is "(none)", leave the title empty: write "TITLE:" with nothing after it. Never make up a title.
+
+Reply in exactly this form and nothing else:
+TITLE: <the translated title on one line, or nothing if the source has none>
+SUMMARY: <the translated summary on one line, or leave empty if the source has none>
+BODY:
+<the translated body>
+
+Source title:
+${it.title[src] || "(none)"}
+
+Source summary:
+${it.summary[src] || "(none)"}
+
+Source body:
+${it.body[src] || "(none)"}`;
+    try {
+      const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache:false, onText: ({text}) => {
+        if (M && M.tab === l) { const p = parseDraft(text); const tb = $("#w-body"), tt = $("#w-title"), ts = $("#w-sum"); if (tt && p.title) tt.value = p.title; if (ts && p.summary) ts.value = p.summary; if (tb && p.body) tb.value = p.body; }
+      }});
+      if (!M) return;
+      const p = parseDraft(text);
+      if (!(it.title[src] || "").trim()) p.title = "";
+      it.title[l] = p.title; it.summary[l] = p.summary; it.body[l] = p.body; it.ai[l] = true; done.push(l);
+      if (truncated) M.err = `The ${LNAME_EN[l]} draft was cut short. Check its ending.`;
+    } catch (e) {
+      if (!M) return;
+      if (e && e.text) { const p = parseDraft(e.text); it.title[l]=p.title; it.summary[l]=p.summary; it.body[l]=p.body; it.ai[l]=true; }
+      if (e?.code === "cancelled") return;
+      M.err = aiErr(e?.code, l);
+      if (["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)) S.sample = null;
+    }
+  }));
+  if (!M) return;
+  M.busy = false; M.ctl = [];
+  M.aiStatus = done.length ? `Drafted ${done.map(l=>LNAME_EN[l]).join(", ")}. Review each tab, then save.` : "";
+  drawWriteEditor();
+}
+function parseDraft(t){
+  const title = (t.match(/TITLE:[ \t]*(.*)/) || [])[1] || "";
+  let summary = (t.match(/SUMMARY:[ \t]*(.*)/) || [])[1] || "";
+  if (/^\(none\)$|^<.*>$/.test(summary.trim())) summary = "";
+  const bm = t.match(/\n\s*BODY:[ \t]*\r?\n?([\s\S]*)$/);
+  return {title: title.trim(), summary: summary.trim(), body: bm ? bm[1].trim() : ""};
+}
+function aiErr(code, l){
+  const n = LNAME_EN[l];
+  switch(code){
+    case "not_granted": case "sampling_disabled": case "not_declared": case "capability_disabled": case "capability_removed": return "AI drafting isn't available in this view.";
+    case "rate_limited": return `The ${n} draft hit a usage limit. Try again in a little while.`;
+    case "prompt_too_large": return "This article is too long to draft in one go (about 60,000 characters is the limit). Draft it in parts: temporarily paste one half in the source tab, draft, then the other half.";
+    case "session_expired": return "Your session expired. Sign in again, then retry.";
+    case "refused": return `The ${n} draft was declined. Try rewording the source text.`;
+    default: return `The ${n} draft failed. Try again.`;
+  }
+}
+
+async function saveWrite(){
+  captureFields();
+  const it = M.it, isLesson = M.type === "lesson", isWord = M.type === "word";
+  const refs = parseRefs(M.ref || "");
+  if (!refs) { M.err = isLesson ? "List the ayahs as surah:ayah or ranges, like 2:153-157, 2:177." : "Enter one ayah as surah:ayah, like 2:255."; drawWriteEditor(); return; }
+  if (!isLesson && (refs.length !== 1 || refs[0].from !== refs[0].to)) { M.err = isWord ? "A word analysis belongs to one ayah." : "A note belongs to one ayah. Use a lesson for a group of ayahs."; drawWriteEditor(); return; }
+  if (isWord && !(it.w && it.s === refs[0].s && it.a === refs[0].from)) { M.err = "Choose the word this analysis is about."; drawWriteEditor(); return; }
+  if (!LANGS.some(l => it.title[l].trim() || it.body[l].trim())) { M.err = "Write a title or text in at least one language."; drawWriteEditor(); return; }
+  if (M.type === "note") {
+    if (it.cat === "__new") {
+      const nm = (M.catNew || "").trim();
+      if (!nm) { M.err = "Type a name for the new category, or choose an existing one."; drawWriteEditor(); return; }
+      const existing = S.cats.find(c => (c.name?.en || "").toLowerCase() === nm.toLowerCase());
+      if (existing) it.cat = existing.id;
+      else {
+        const c = {id: newCatId(), name: {en: nm}};
+        try { await saveCats([...S.cats, c]); S.cats = [...S.cats, c]; it.cat = c.id; M.catNew = undefined; }
+        catch (e) { M.err = dbErr(e); drawWriteEditor(); return; }
+      }
+    }
+    if (!it.cat || !catById(it.cat)) { M.err = "Choose a category. Every note needs one."; drawWriteEditor(); return; }
+  }
+  const now = Date.now();
+  const doc = {title: it.title, summary: it.summary, body: it.body, tags: [...new Set(it.tags)], src: it.src, ai: it.ai, updatedAt: now, createdAt: it.createdAt || now};
+  if (isLesson) doc.ranges = refs;
+  else if (isWord) Object.assign(doc, {s: refs[0].s, a: refs[0].from, w: it.w, word: it.word, root: it.root || "", lemma: it.lemma || "", pos: it.pos || ""});
+  else { doc.kind = it.kind || "explanation"; doc.s = refs[0].s; doc.a = refs[0].from; doc.cat = it.cat; }
+  const col = S.db.collection(isLesson ? "lessons" : isWord ? "words" : "notes");
+  const ref = it.id ? col.doc(it.id) : col.doc(Date.now().toString(36) + Math.random().toString(36).slice(2, 7));
+  M.busy = true; drawWriteEditor();
+  try {
+    await ref.set(doc);
+    const kindL = isLesson ? "l" : isWord ? "w" : "n", id = ref.id, s = doc.s, a = doc.a;
+    clearLocalDraft(); M.dirty = false;
+    closeModal(); toast("Saved");
+    if (kindL === "n") S.open.add(key(s,a));
+    if (S.view === "article") render(); else go("article", {kind: kindL, id});
+  } catch (e) { M.busy = false; M.err = dbErr(e); drawWriteEditor(); }
+}
+function dbErr(e){
+  if (e?.code === "invalid_argument") return "You don't have permission to save here, or the write-up is too large (256 KB limit).";
+  if (e?.code === "quota_exceeded") return "The storage limit is full. Delete old write-ups before adding new ones.";
+  return "Saving failed. Check your connection and try again.";
+}
+
+/* ---------- events ---------- */
+document.addEventListener("click", async (ev) => {
+  const t = ev.target.closest("button, .backdrop");
+  if (!t) return;
+  if (t.id === "backdrop") { if (ev.target === t && !M?.busy && (M?.type === "tr" || M?.type === "share" || (M?.type === "gram" && !M.edit))) closeModal(); return; }
+  const d = t.dataset;
+  if (t.id === "brand") return go("surahs");
+  if (d.nav) return go(d.nav);
+  if ("goback" in d) return goBack();
+  if ("gobackX" in d) { S.ret = null; return drawBackPill(); }
+  if (d.script) { S.script = d.script; store.set("aba.script", d.script); if (d.script === "indopak" && S.ipState === "failed") S.ipState = "idle"; return render(); }
+  if (d.qsize) { S.qscale = Math.round(Math.min(1.6, Math.max(0.8, S.qscale + (+d.qsize) * 0.1)) * 10) / 10; store.set("aba.qscale", String(S.qscale)); applyQFont(); return; }
+  if (d.lang) { S.lang = d.lang; store.set("aba.lang", d.lang); return render(); }
+  if (d.trlang) { S.trLang = d.trlang; store.set("aba.trlang", d.trlang); S.tr = S.trAll[d.trlang]; S.compare.clear(); loadTrx(d.trlang); reindex(); return render(); }
+  if (d.surah) return go("surah", {s:+d.surah});
+  if (d.go) { closeModal(); return goRef(d.go); }
+  if (d.compare) { S.compare.has(d.compare) ? S.compare.delete(d.compare) : S.compare.add(d.compare); return render(); }
+  if (d.toggle) { S.open.has(d.toggle) ? S.open.delete(d.toggle) : S.open.add(d.toggle); return render(); }
+  if (d.grammar) return openGrammar(d.grammar);
+  if (d.gword !== undefined && M?.type === "gram") { M.sel = +d.gword; drawGrammar(); requestAnimationFrame(()=> document.getElementById("gw-"+d.gword)?.scrollIntoView({block:"center", behavior:"smooth"})); return; }
+  if (d.focus !== undefined) return enterFocus();
+  if (d.unfocus !== undefined) return exitFocus();
+  if (d.fsize) { S.readScale = Math.round(Math.min(1.5, Math.max(0.85, S.readScale + (+d.fsize) * 0.08)) * 100) / 100; store.set("aba.readscale", String(S.readScale)); S.qscale = Math.round(Math.min(1.6, Math.max(0.8, S.qscale + (+d.fsize) * 0.1)) * 10) / 10; store.set("aba.qscale", String(S.qscale)); applyReadScale(); applyQFont(); return; }
+  if (d.share) return openShare(d.share);
+  if (d.cats !== undefined) { if (S.admin) openCats(); return; }
+  if (d.ncat !== undefined && !d.m) { closeModal(); S.ncat = d.ncat; if (S.nkind === "revised") S.nkind = "all"; if (S.view !== "notes") go("notes"); else render(); return; }
+  if (d.article) { const [kind, id] = d.article.split(":"); closeModal(); S.showAyahs = false; return go("article", {kind, id}); }
+  if (d.back !== undefined) {
+    const f = S.art?.from;
+    if (f && typeof f === "object") { go("surah", {s: f.surah}); requestAnimationFrame(()=> window.scrollTo(0, f.y||0)); return; }
+    return go(f === "lessons" || f === "notes" || f === "words" || f === "surahs" ? f : (S.art?.kind === "l" ? "lessons" : S.art?.kind === "w" ? "words" : "notes"));
+  }
+  if (d.fn) { const el = document.getElementById(d.fn); if (el) { el.scrollIntoView({block:"center"}); el.classList.add("hl"); setTimeout(()=>el.classList.remove("hl"), 1600); } return; }
+  if (d.showAyahs !== undefined) { S.showAyahs = true; return render(); }
+  if (d.lesson) { S.showAyahs = false; return go("article", {kind:"l", id:d.lesson}); }
+  if (d.openNote) { S.openNote.has(d.openNote) ? S.openNote.delete(d.openNote) : S.openNote.add(d.openNote); return render(); }
+  if (d.openLesson) { S.openLesson.has(d.openLesson) ? S.openLesson.delete(d.openLesson) : S.openLesson.add(d.openLesson); return render(); }
+  if (d.nkind) { S.nkind = d.nkind; return render(); }
+  if (d.ntag) { S.ntag = S.ntag === d.ntag ? null : d.ntag; if (S.nkind==="revised") S.nkind="all"; if (S.view!=="notes") go("notes"); else render(); return; }
+  if (d.ltag) { S.ltag = S.ltag === d.ltag ? null : d.ltag; return render(); }
+  if (d.clear === "notes") { S.nq=""; S.ntag=null; S.ncat=""; return render(); }
+  if (d.clear === "words") { S.wq=""; S.wroot=""; return render(); }
+  if (d.clear === "lessons") { S.lq=""; S.ltag=null; return render(); }
+  if (!S.admin && (d.editTr || d.newNote || d.editNote || d.newLesson !== undefined || d.editLesson || d.newWord !== undefined || d.editWord)) return;
+  if (d.newWord !== undefined) return openWriteEditor("word", null, d.newWord);
+  if (d.editWord) { const w = S.words.find(x=>x.id===d.editWord); if (w) openWriteEditor("word", w); return; }
+  if (d.editTr) return openTrEditor(d.editTr);
+  if (d.newNote) return openWriteEditor(d.newNote, null, d.ref);
+  if (d.editNote) { const n = S.notes.find(x=>x.id===d.editNote); if (n) openWriteEditor(n.kind, n); return; }
+  if (d.newLesson !== undefined) return openWriteEditor("lesson", null, "");
+  if (d.editLesson) { const l = S.lessons.find(x=>x.id===d.editLesson); if (l) openWriteEditor("lesson", l); return; }
+  if (d.export !== undefined) return exportData();
+
+  // modal actions
+  if (!d.m || !M) return;
+  const act = d.m;
+  if (act === "close") {
+    if (M.busy) return;
+    if (M.type === "gram" && M.edit) { captureIrab(); $("#m-confirm").innerHTML = `<div class="confirm"><span>Close without saving the iʿrāb?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep writing</button><button type="button" class="btn danger" data-m="close-yes">Close</button></div>`; return; }
+    if (M.type !== "tr") { saveLocalDraft(); if (M.dirty) { $("#m-confirm").innerHTML = `<div class="confirm"><span>Close without saving? Your writing stays on this device and you can restore it next time you open this editor.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep writing</button><button type="button" class="btn danger" data-m="close-yes">Close</button></div>`; return; } }
+    closeModal(); return;
+  }
+  if (act === "close-yes") { closeModal(); return; }
+  if (M.type === "cats") {
+    captureCats();
+    const i = +d.v;
+    if (act === "cat-add") { M.list.push({id: newCatId(), name: {en:""}}); drawCats(); document.getElementById(`cat-${M.list.length-1}-en`)?.focus(); return; }
+    if (act === "cat-up" && i > 0) { [M.list[i-1], M.list[i]] = [M.list[i], M.list[i-1]]; drawCats(); return; }
+    if (act === "cat-down" && i < M.list.length - 1) { [M.list[i+1], M.list[i]] = [M.list[i], M.list[i+1]]; drawCats(); return; }
+    if (act === "cat-del") { if (!catUse(M.list[i].id)) M.list.splice(i, 1); drawCats(); return; }
+    if (act === "cat-save") {
+      const list = M.list.filter(c => (c.name?.en || "").trim()).map(c => ({id: c.id, name: {en: c.name.en.trim()}}));
+      const names = list.map(c => c.name.en.toLowerCase());
+      if (new Set(names).size !== names.length) { M.err = "Two categories have the same English name."; drawCats(); return; }
+      M.busy = true; drawCats();
+      try { await saveCats(list); S.cats = list; closeModal(); toast("Categories saved"); render(); }
+      catch (e) { M.busy = false; M.err = dbErr(e); drawCats(); }
+      return;
+    }
+    return;
+  }
+  if (M.type === "share") {
+    if (act === "copy-link") return copyFrom("share-link", M.link, "Link copied");
+    if (act === "copy-text") return copyFrom("share-text", M.text, "Text copied");
+    return;
+  }
+  if (M.type === "gram") {
+    if (act === "irab-edit") { const ir = irabOf(M.s,M.a); M.draft = {text: Object.assign(blankLang(), ir?.text), ai: Object.assign({}, ir?.ai), src: ir?.src}; if (!ir) { M.draft.text.ar = autoIrab(); M.draft.src = "ar"; } M.tab = ir ? (ir.text?.[S.lang] ? S.lang : (ir.src || "ar")) : "ar"; M.edit = true; M.err=""; drawGrammar(); return; }
+    if (act === "irab-tab") { captureIrab(); M.tab = d.v; drawGrammar(); $("#irab-text")?.focus(); return; }
+    if (act === "irab-reviewed") { captureIrab(); delete M.draft.ai[M.tab]; drawGrammar(); return; }
+    if (act === "irab-ai") return irabAI();
+    if (act === "ai-stop") { M.ctl.forEach(c=>c.abort()); return; }
+    if (act === "irab-cancel") { if (M.busy) return; M.edit = false; M.draft = null; M.err=""; drawGrammar(); return; }
+    if (act === "irab-save") {
+      captureIrab();
+      const text = M.draft.text; const filled = LANGS.filter(l => text[l].trim());
+      if (!filled.length) { M.err = "Write the iʿrāb in at least one language, or use Delete."; drawGrammar(); return; }
+      const ai = {}; for (const l of filled) if (M.draft.ai[l]) ai[l] = true;
+      const src = M.draft.src && text[M.draft.src]?.trim() ? M.draft.src : (text.ar.trim() ? "ar" : filled[0]);
+      M.busy = true; drawGrammar();
+      try { await irabWrite({text, ai, src, updatedAt: Date.now()}); M.busy = false; M.edit = false; M.draft = null; toast("Iʿrāb saved"); drawGrammar(); }
+      catch (e) { M.busy = false; M.err = dbErr(e); drawGrammar(); }
+      return;
+    }
+    if (act === "irab-delete") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Delete the iʿrāb for ${M.s}:${M.a} in all languages?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="irab-delete-yes">Delete</button></div>`; return; }
+    if (act === "irab-delete-yes") { try { await irabWrite(null); M.edit = false; M.draft = null; toast("Iʿrāb deleted"); drawGrammar(); } catch (e) { $("#m-err").textContent = dbErr(e); } return; }
+    if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+    return;
+  }
+  if (M.type === "tr") {
+    if (act === "tr-save") {
+      const text = $("#tr-text").value.trim(), note = $("#tr-note").value.trim();
+      const orig = baseTr(M.s, M.a, M.l);
+      const ref = S.db.collection("translations").doc(trDocId(M.s, M.a, M.l));
+      try {
+        if (!text || text === orig) { await ref.delete(); }
+        else await ref.set(Object.assign({s:M.s, a:M.a, text, note, updatedAt: Date.now()}, M.l === "en" ? {} : {lang: M.l}));
+        const k = key(M.s,M.a); closeModal(); toast(text && text!==orig ? "Translation saved" : "Original translation restored"); S.compare.delete(k); render();
+      } catch(e){ $("#m-err").textContent = dbErr(e); }
+      return;
+    }
+    if (act === "tr-revert") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Remove your revision and show ${TR_NAME[M.l]} again?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="tr-revert-yes">Restore original</button></div>`; return; }
+    if (act === "tr-revert-yes") { try { await S.db.collection("translations").doc(trDocId(M.s, M.a, M.l)).delete(); closeModal(); toast("Original translation restored"); } catch(e){ $("#m-err").textContent = dbErr(e); } return; }
+    if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+    return;
+  }
+  if (act === "pick-word" && M.type === "word" && M.wordList?.words) {
+    captureFields();
+    const i = +d.v, w = M.wordList.words[i-1], segs = w[2].map(decodeSeg);
+    const stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0];
+    Object.assign(M.it, {s: M.wordList.s, a: M.wordList.a, w: i, word: w[2].map(x=>x[0]).join(""), root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""});
+    if (M.use && !M.use.busy) M.use = null;
+    drawWriteEditor(); return;
+  }
+  if (act === "use-open") { captureFields(); M.useOpen = !M.useOpen; if (M.useOpen) usagePrepare(); drawWriteEditor(); return; }
+  if (act === "use-scope") { captureFields(); if (M.use?.busy) return; M.useScope = d.v; M.use = null; usagePrepare(); drawWriteEditor(); return; }
+  if (act === "use-form") { captureFields(); if (M.use && !M.use.busy) { M.use.form = M.use.form === d.v ? null : d.v; M.use.shown = 40; } drawWriteEditor(); return; }
+  if (act === "use-more") { captureFields(); if (M.use) M.use.shown += 60; drawWriteEditor(); return; }
+  if (act === "use-ai") { captureFields(); usageAI(); return; }
+  if (act === "use-ask") { captureFields(); usageAsk(); return; }
+  if (act === "use-add") { captureFields(); const U = M.use, L = M.it.src; if (U && U.answer) { const b = (M.it.body[L] || "").trim(); M.it.body[L] = (b ? b + "\n\n" : "") + U.answer.trim(); U.answer = null; U.askStatus = `Added at the end of the ${LNAME_EN[L]} text.`; M.tab = L; M.preview = false; drawWriteEditor(); saveLocalDraft(); } return; }
+  if (act === "use-discard") { captureFields(); if (M.use) { M.use.answer = null; M.use.askStatus = ""; } drawWriteEditor(); return; }
+  if (act === "use-stop") { (M.use?.ctl || []).forEach(c => c.abort()); return; }
+  if (act === "tab") { captureFields(); M.tab = d.v; M.err=""; drawWriteEditor(); ($("#w-body")||$("#w-title")).focus(); return; }
+  if (act === "view") { captureFields(); M.preview = d.v === "preview"; drawWriteEditor(); return; }
+  if (act === "fmt") { applyFmt(d.v); saveLocalDraft(); return; }
+  if (act === "draft-restore") { M.ref = M.draft.ref; M.it = Object.assign(M.it, M.draft.it); M.draft = null; drawWriteEditor(); return; }
+  if (act === "draft-discard") { M.draft = null; clearLocalDraft(); drawWriteEditor(); return; }
+  if (act === "kind") { captureFields(); M.it.kind = d.v; drawWriteEditor(); return; }
+  if (act === "reviewed") { captureFields(); delete M.it.ai[M.tab]; drawWriteEditor(); return; }
+  if (act === "ai") return aiDraft(false);
+  if (act === "ai-force") return aiDraft(true);
+  if (act === "ai-stop") { M.ctl.forEach(c=>c.abort()); return; }
+  if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+  if (act === "save") return saveWrite();
+  if (act === "delete") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Delete this ${M.type==="lesson"?"lesson":M.type==="word"?"word analysis":"note"} in all four languages? This can't be undone.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="delete-yes">Delete</button></div>`; return; }
+  if (act === "delete-yes") {
+    try { await S.db.collection(M.type==="lesson"?"lessons":M.type==="word"?"words":"notes").doc(M.it.id).delete(); clearLocalDraft(); const wasArt = S.view === "article", back = M.type==="lesson" ? "lessons" : M.type==="word" ? "words" : "notes"; closeModal(); toast("Deleted"); if (wasArt) go(back); }
+    catch(e){ $("#m-err").textContent = dbErr(e); }
+    return;
+  }
+});
+document.addEventListener("input", (ev) => {
+  const t = ev.target;
+  if (t.id === "sq") { S.sq = t.value; rerenderKeepingInput("sq"); }
+  else if (t.id === "nq") { S.nq = t.value; rerenderKeepingInput("nq"); }
+  else if (t.id === "lq") { S.lq = t.value; rerenderKeepingInput("lq"); }
+  else if (t.id === "wq") { S.wq = t.value; rerenderKeepingInput("wq"); }
+  else if (M && (t.id === "w-title" || t.id === "w-body" || t.id === "w-sum" || t.id === "w-tags" || t.id === "w-ref")) {
+    if (t.id === "w-body") { const d = renderDoc(t.value, M.tab); const c = $("#w-count"); if (c) c.textContent = `${d.words.toLocaleString()} words · ${readMins(d.words)} min read`; }
+    clearTimeout(saveLocalDraft.t); saveLocalDraft.t = setTimeout(saveLocalDraft, 1200);
+  }
+});
+document.addEventListener("change", (ev) => {
+  const t = ev.target;
+  if (t.id === "wroot") { S.wroot = t.value; render(); return; }
+  if (t.id === "ncat") { S.ncat = t.value; if (S.nkind === "revised") S.nkind = "all"; render(); return; }
+  if (t.id === "onlymarked") { S.onlyMarked = t.checked; render(); }
+  if (t.id === "qfont") { S.qfont = t.value; store.set("aba.qfont", t.value); applyQFont(); }
+  if (t.id === "w-src" && M) { captureFields(); if (M.tab !== M.it.src) M.tab = M.it.src; drawWriteEditor(); }
+  if (t.id === "w-ref" && M && (M.type === "note" || M.type === "word")) { captureFields(); if (M.type === "word") loadEditorWords(); drawWriteEditor(); }
+  if (t.id === "w-cat" && M && M.type === "note") { captureFields(); if (M.it.cat === "__new" && M.catNew === undefined) M.catNew = ""; drawWriteEditor(); if (M.it.cat === "__new") $("#w-newcat")?.focus(); }
+});
+document.addEventListener("submit", (ev) => {
+  if (ev.target.id === "jump") {
+    ev.preventDefault();
+    const a = parseInt($("#jumpa").value, 10);
+    if (validRef(S.surah, a)) { S.onlyMarked = false; go("surah", {s:S.surah, a}); }
+    else toast(`Enter an ayah from 1 to ${surahOf(S.surah).v.length}.`);
+  }
+});
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && S.focus && !M && !document.fullscreenElement) { exitFocus(); return; } });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && M && !M.busy && (M.type === "tr" || M.type === "share" || (M.type === "gram" && !M.edit))) closeModal(); });
+function rerenderKeepingInput(id){
+  const el = document.getElementById(id); const pos = el ? el.selectionStart : null;
+  render();
+  const n = document.getElementById(id); if (n) { n.focus(); try { n.setSelectionRange(pos,pos); } catch {} }
+}
+
+async function exportData(){
+  if (!S.downloads) return;
+  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons}, null, 2);
+  try { await S.downloads.save({filename: `ayah-by-ayah-backup-${new Date().toISOString().slice(0,10)}.json`, data}); }
+  catch (e) { if (e?.code !== "declined") toast("The backup couldn't be saved here."); }
+}
+
+/* ---------- boot ---------- */
+fromHash();
+render();
+loadTrx(S.trLang);
+fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q => { S.Q = q; render(); })
+  .catch(() => { $("#app").innerHTML = `<div class="empty"><b>The Qur'an text didn't load</b>Reload the page to try again.</div>`; });
+
+(async () => {
+  const C = window.claude;
+  if (!C || !C.use) return loadStatic();
+  const [db, user, sample, downloads] = await Promise.all(["db","user","sample","downloads"].map(n => C.use(n).catch(()=>null)));
+  if (user) { try { S.admin = !!(await user.canEdit()) || !!(await user.isOwner()); } catch {} }
+  if (S.admin) { S.sample = sample; S.downloads = downloads; }
+  if (!db) { S.dbState = "none"; S.admin = false; render(); return; }
+  S.db = db;
+  let got = 0;
+  const ready = () => { if (++got >= 3) { S.dbState = "ok"; } };
+  const fail = () => { S.dbState = "none"; render(); };
+  let first = {tr:true, notes:true, lessons:true};
+  db.collection("translations").onSnapshot(snap => {
+    setTrDocs(snap.docs.map(d => d.data()).filter(Boolean)); if (first.tr) { first.tr=false; ready(); } reindex(); render();
+  }, fail);
+  db.collection("notes").onSnapshot(snap => {
+    S.notes = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(n => validRefSafe(n.s, n.a));
+    if (first.notes) { first.notes=false; ready(); } reindex(); render();
+  }, fail);
+  db.doc("settings/categories").onSnapshot(snap => {
+    const d = snap.exists ? snap.data() : null;
+    S.cats = (d?.list || []).slice().sort((a, b) => (a.order||0) - (b.order||0));
+    render();
+  }, () => {});
+  db.collection("words").onSnapshot(snap => {
+    S.words = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(w => validRefSafe(w.s, w.a));
+    reindex(); render();
+  }, () => {});
+  db.collection("lessons").onSnapshot(snap => {
+    S.lessons = snap.docs.map(d => Object.assign({id:d.id}, d.data()));
+    if (first.lessons) { first.lessons=false; ready(); } reindex(); render();
+  }, fail);
+  if (S.admin && S.downloads) {
+    const f = document.createElement("button");
+    f.type = "button"; f.className = "btn ghost small"; f.dataset.export = ""; f.textContent = "Back up all write-ups";
+    $(".langbar").appendChild(f);
+  }
+  render();
+})();
+async function loadStatic(){
+  // Public edition: read the published copy of the write-ups instead of the live database.
+  try {
+    const r = await fetch("data/content.json", {cache: "no-cache"});
+    if (!r.ok) throw 0;
+    const d = await r.json();
+    S.static = true;
+    setTrDocs(d.translations || []);
+    S.notes = (d.notes || []).filter(n => validRefSafe(n.s, n.a));
+    S.lessons = d.lessons || [];
+    S.words = (d.words || []).filter(w => validRefSafe(w.s, w.a));
+    S.cats = (d.categories || []).slice().sort((a, b) => (a.order||0) - (b.order||0));
+    S.irabAll = d.irab || {};
+    S.dbState = "ok";
+    reindex(); render();
+    const nav = () => { const y = window.scrollY; fromHash(); render(); if (S.view !== "surah") window.scrollTo(0, 0); };
+    window.addEventListener("popstate", nav);
+  } catch { S.dbState = "none"; render(); }
+}
+function validRefSafe(s,a){ return !S.Q || validRef(s,a); }
+})();
+</script>
