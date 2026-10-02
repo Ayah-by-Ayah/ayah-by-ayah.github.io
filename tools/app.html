@@ -2059,9 +2059,21 @@ function drawWriteEditor(){
              <div><code>## Section</code> and <code>### Sub-section</code> build the table of contents. <code>&gt;&gt; </code> sets a line as a Qur'an / Arabic quotation (a whole Arabic paragraph is detected automatically in English and Bangla articles). <code>&gt; </code> quote, <code>- </code> bullet, <code>1. </code> numbered, <code>---</code> divider, <code>**bold**</code>, <code>*italic*</code>, <code>[text](https://…)</code> link. Footnotes: put <code>[^1]</code> in the text and a line <code>[^1]: source or note</code> anywhere; they are numbered and listed at the end. Ayah numbers like 2:255 become links. Write-ups longer than about 900 characters, or with sections or footnotes, open as a full article page.</div></details>`}
     </div>
     ${it.ai[L] ? `<div class="row small"><span class="notice">This language was drafted by AI. Readers see it marked as unreviewed.</span><button type="button" class="btn small" data-m="reviewed">Mark as reviewed</button></div>` : ""}
-    ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="ai" ${M.busy?"disabled":""}>Draft ${others.map(l=>LNAME_EN[l]).join(", ")} from ${LNAME_EN[it.src]} with AI</button>
+    ${S.sample ? (() => {
+      const AN = (M.aiNotes ||= {}), SC = M.aiScope || "all", scName = SC === "all" ? "all languages" : LNAME_EN[SC];
+      return `<div class="aibox"><button type="button" class="btn" data-m="ai" ${M.busy?"disabled":""}>Draft ${others.map(l=>LNAME_EN[l]).join(", ")} from ${LNAME_EN[it.src]} with AI</button>
+      ${["bn","ar","ur"].map(l=>`<button type="button" class="btn" data-m="ai-one" data-v="${l}" ${M.busy||l===it.src?"disabled":""} title="${l===it.src?"This is the language you are writing in":`Draft only the ${LNAME_EN[l]} version`}">Draft in ${LNAME_EN[l]}</button>`).join("")}
       ${M.busy ? `<button type="button" class="btn" data-m="ai-stop">Stop</button>` : ""}
-      <span class="small muted" id="ai-status">${esc(M.aiStatus || "Drafts fill the other tabs for you to review before saving. Long articles take a few minutes.")}</span></div>` : ""}
+      <span class="small muted" id="ai-status">${esc(M.aiStatus || "Drafts fill the tabs for you to review before saving. Long articles take a few minutes.")}</span></div>
+    <div class="aibox" style="flex-direction:column;align-items:stretch">
+      <div class="row"><label class="flabel" for="ai-notes">Your instructions to the AI</label><span class="spacer"></span>
+        <label class="small muted" for="ai-scope">Applies to</label>
+        <select id="ai-scope" style="width:auto"><option value="all" ${SC==="all"?"selected":""}>All languages together</option>${LANGS.map(l=>`<option value="${l}" ${SC===l?"selected":""}>${LNAME_EN[l]} only</option>`).join("")}</select></div>
+      <textarea id="ai-notes" rows="3" class="w" style="min-height:64px" placeholder="${esc(SC==="all" ? "For example: use a more formal tone; keep technical terms in transliteration; do not shorten anything." : "For example: use a particular word for a term; change a sentence; simplify the style in this language only.")}">${esc(AN[SC]||"")}</textarea>
+      <div class="row"><button type="button" class="btn" data-m="ai-revise" ${M.busy?"disabled":""}>Revise ${scName} with these instructions</button>
+        ${M.undo && !M.busy ? `<button type="button" class="btn" data-m="ai-undo">Undo last AI change</button>` : ""}
+        <span class="small muted">Instructions for “All languages” and for the language itself are both used in every draft above. “Revise” applies them to the text already written.</span></div>
+    </div>`; })() : ""}
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err||"")}</div>
     <div class="foot">
       ${M.existing ? `<button type="button" class="btn danger" data-m="delete">Delete</button>` : ""}
@@ -2078,6 +2090,7 @@ function captureFields(){
   if (g) it.tags = g.value.split(/[,،]/).map(x=>x.trim().replace(/^#/,"")).filter(Boolean);
   if (src) it.src = src.value;
   const uq = $("#use-q"); if (uq && M.use) M.use.q = uq.value;
+  const an = $("#ai-notes"); if (an) (M.aiNotes ||= {})[M.aiScope || "all"] = an.value;
   const cs = $("#w-cat"), nc = $("#w-newcat");
   if (cs) it.cat = cs.value;
   if (nc) M.catNew = nc.value;
@@ -2118,16 +2131,20 @@ function applyFmt(k){
   ta.setRangeText(ins, s0, e0); ta.focus(); ta.setSelectionRange(cs, ce);
 }
 
-async function aiDraft(force){
+async function aiDraft(force, only){
   captureFields();
   const it = M.it, src = it.src;
   if (!it.title[src].trim() && !it.body[src].trim()) { M.err = `Write the ${LNAME_EN[src]} version first, then draft the others.`; drawWriteEditor(); return; }
-  const targets = LANGS.filter(l=>l!==src);
+  if (only && only === src) return;
+  M.aiOnly = only || null;
+  const targets = only ? [only] : LANGS.filter(l=>l!==src);
   const filled = targets.filter(l => (it.title[l]||"").trim() || (it.body[l]||"").trim());
   if (filled.length && !force) {
     $("#m-confirm").innerHTML = `<div class="confirm"><span>This replaces what is already written in ${filled.map(l=>LNAME_EN[l]).join(", ")}.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep them</button><button type="button" class="btn primary" data-m="ai-force">Replace</button></div>`;
     return;
   }
+  M.undo = {}; targets.forEach(l => { M.undo[l] = {title: it.title[l], summary: it.summary[l], body: it.body[l], ai: !!it.ai[l]}; });
+  if (only) { M.tab = only; M.preview = false; }
   M.err = ""; M.busy = true; M.aiStatus = "Drafting… the first words usually take 10–40 seconds."; drawWriteEditor();
   const kindWord = M.type==="lesson" ? "a practical lesson (with implementation steps) drawn from Qur'anic ayahs" : M.type==="word" ? "a linguistic analysis of a word of the Qur'an" : (it.kind==="question" ? "a question about a Qur'anic ayah and its answer" : "an explanation of a Qur'anic ayah");
   const guide = {
@@ -2149,6 +2166,11 @@ async function aiDraft(force){
     const s0 = +m[1], a0 = +m[2], a1 = m[3] ? Math.min(+m[3], a0 + 30) : a0;
     for (let a = a0; a <= a1; a++) addRef(s0, a);
   }
+  const instrBlock = l => { const t = aiInstr(l); return t ? `
+- Extra instructions from the editor for the ${LNAME_EN[l]} text. Follow them, but they never override the rules above about Qur'anic quotations, ayah references and formatting marks:
+"""
+${t}
+"""` : ""; };
   await Promise.all(targets.filter(l => TR_LANGS.includes(l)).map(loadTrx));
   const trBlock = l => {
     if (!TR_LANGS.includes(l) || !refAyahs.length || (l !== "en" && !S.TRX[l])) return "";
@@ -2170,7 +2192,7 @@ Rules:
 - Keep ayah references such as 2:255 exactly as written.
 - Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links.
 - Keep footnote markers such as [^1] exactly where they are, and translate the footnote lines that start with "[^1]: " while keeping that marker at the start.
-- Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}
+- Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}${instrBlock(l)}
 
 - If the source title is "(none)", leave the title empty: write "TITLE:" with nothing after it. Never make up a title.
 
@@ -2209,6 +2231,84 @@ ${it.body[src] || "(none)"}`;
   M.busy = false; M.ctl = [];
   M.aiStatus = done.length ? `Drafted ${done.map(l=>LNAME_EN[l]).join(", ")}. Review each tab, then save.` : "";
   drawWriteEditor();
+}
+function aiInstr(l){
+  const n = M.aiNotes || {};
+  return [n.all, n[l]].map(x => (x || "").trim()).filter(Boolean).join("\n\n");
+}
+async function aiRevise(){
+  captureFields();
+  const it = M.it, src = it.src, scope = M.aiScope || "all";
+  const has = l => (it.title[l] || "").trim() || (it.summary[l] || "").trim() || (it.body[l] || "").trim();
+  const wanted = scope === "all" ? LANGS : [scope];
+  const langs = wanted.filter(l => has(l) && aiInstr(l));
+  if (!langs.length) {
+    M.err = !wanted.some(has) ? `There is no ${scope === "all" ? "" : LNAME_EN[scope] + " "}text to revise yet.` : "Write your instructions first (for all languages, or for the chosen language).";
+    drawWriteEditor(); return;
+  }
+  M.undo = {}; langs.forEach(l => { M.undo[l] = {title: it.title[l], summary: it.summary[l], body: it.body[l], ai: !!it.ai[l]}; });
+  if (!langs.includes(M.tab)) { M.tab = langs[0]; M.preview = false; }
+  M.err = ""; M.busy = true; M.ctl = []; M.aiStatus = "Revising… the first words usually take 10–40 seconds."; drawWriteEditor();
+  const kindWord = M.type==="lesson" ? "a practical lesson (with implementation steps) drawn from Qur'anic ayahs" : M.type==="word" ? "a linguistic analysis of a word of the Qur'an" : (it.kind==="question" ? "a question about a Qur'anic ayah and its answer" : "an explanation of a Qur'anic ayah");
+  const guide = {en:"English", bn:"Bangla (Bengali script)", ar:"Arabic", ur:"Urdu (Arabic script)"};
+  const done = [];
+  await Promise.all(langs.map(async l => {
+    const ctl = new AbortController(); M.ctl.push(ctl);
+    const hadTitle = !!(it.title[l] || "").trim();
+    const prompt = `You are editing ${kindWord}. The text below is written in ${guide[l]}. Apply the editor's instructions to it, in ${guide[l]}.
+
+Rules:
+- Change only what the instructions ask for. Keep everything else exactly as it is, word for word.
+- Keep every quotation of the Qur'an in Arabic exactly as written, character for character, and keep the ayah references such as 2:255 exactly as written. Do not change the rendering of an ayah unless the instructions explicitly ask for it.
+- Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links, and footnote markers such as [^1] with their "[^1]: " lines.
+- If the current title is "(none)", leave the title empty: write "TITLE:" with nothing after it. Never make up a title. The same holds for the summary.
+
+Reply in exactly this form and nothing else:
+TITLE: <the title on one line, or nothing>
+SUMMARY: <the summary on one line, or nothing>
+BODY:
+<the full body>
+
+Editor's instructions:
+"""
+${aiInstr(l)}
+"""
+
+Current title:
+${it.title[l] || "(none)"}
+
+Current summary:
+${it.summary[l] || "(none)"}
+
+Current body:
+${it.body[l] || "(none)"}`;
+    try {
+      const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache:false, onText: ({text}) => {
+        if (M && M.tab === l) { const p = parseDraft(text); const tb = $("#w-body"), tt = $("#w-title"), ts = $("#w-sum"); if (tt && p.title) tt.value = p.title; if (ts && p.summary) ts.value = p.summary; if (tb && p.body) tb.value = p.body; }
+      }});
+      if (!M) return;
+      const p = parseDraft(text);
+      if (!hadTitle) p.title = "";
+      it.title[l] = p.title; it.summary[l] = p.summary; it.body[l] = p.body; if (l !== src) it.ai[l] = true; done.push(l);
+      if (truncated) M.err = `The ${LNAME_EN[l]} revision was cut short. Check its ending, or use Undo.`;
+    } catch (e) {
+      if (!M) return;
+      if (e?.code === "cancelled") return;
+      M.err = aiErr(e?.code, l).replace(/ draft/g, " revision");
+      if (["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)) S.sample = null;
+    }
+  }));
+  if (!M) return;
+  M.busy = false; M.ctl = [];
+  M.aiStatus = done.length ? `Revised ${done.map(l=>LNAME_EN[l]).join(", ")}. Review each tab, then save. Undo is available.` : "";
+  drawWriteEditor();
+}
+function aiUndo(){
+  if (!M || !M.undo) return;
+  const it = M.it;
+  for (const l in M.undo) { const u = M.undo[l]; it.title[l] = u.title; it.summary[l] = u.summary; it.body[l] = u.body; if (u.ai) it.ai[l] = true; else delete it.ai[l]; }
+  M.undo = null; M.aiStatus = "Restored the text from before the last AI change."; M.err = "";
+  drawWriteEditor(); saveLocalDraft();
 }
 function parseDraft(t){
   const title = (t.match(/TITLE:[ \t]*(.*)/) || [])[1] || "";
@@ -2425,7 +2525,10 @@ document.addEventListener("click", async (ev) => {
   if (act === "kind") { captureFields(); M.it.kind = d.v; drawWriteEditor(); return; }
   if (act === "reviewed") { captureFields(); delete M.it.ai[M.tab]; drawWriteEditor(); return; }
   if (act === "ai") return aiDraft(false);
-  if (act === "ai-force") return aiDraft(true);
+  if (act === "ai-one") return aiDraft(false, d.v);
+  if (act === "ai-force") return aiDraft(true, M.aiOnly || undefined);
+  if (act === "ai-revise") return aiRevise();
+  if (act === "ai-undo") return aiUndo();
   if (act === "ai-stop") { M.ctl.forEach(c=>c.abort()); return; }
   if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
   if (act === "save") return saveWrite();
@@ -2453,6 +2556,7 @@ document.addEventListener("change", (ev) => {
   if (t.id === "ncat") { S.ncat = t.value; if (S.nkind === "revised") S.nkind = "all"; render(); return; }
   if (t.id === "onlymarked") { S.onlyMarked = t.checked; render(); }
   if (t.id === "qfont") { S.qfont = t.value; store.set("aba.qfont", t.value); applyQFont(); }
+  if (t.id === "ai-scope" && M) { captureFields(); M.aiScope = t.value; drawWriteEditor(); $("#ai-notes")?.focus(); return; }
   if (t.id === "w-src" && M) { captureFields(); if (M.tab !== M.it.src) M.tab = M.it.src; drawWriteEditor(); }
   if (t.id === "w-ref" && M && (M.type === "note" || M.type === "word")) { captureFields(); if (M.type === "word") loadEditorWords(); drawWriteEditor(); }
   if (t.id === "w-cat" && M && M.type === "note") { captureFields(); if (M.it.cat === "__new" && M.catNew === undefined) M.catNew = ""; drawWriteEditor(); if (M.it.cat === "__new") $("#w-newcat")?.focus(); }
