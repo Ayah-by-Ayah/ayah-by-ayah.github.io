@@ -2070,9 +2070,10 @@ function drawWriteEditor(){
         <label class="small muted" for="ai-scope">Applies to</label>
         <select id="ai-scope" style="width:auto"><option value="all" ${SC==="all"?"selected":""}>All languages together</option>${LANGS.map(l=>`<option value="${l}" ${SC===l?"selected":""}>${LNAME_EN[l]} only</option>`).join("")}</select></div>
       <textarea id="ai-notes" rows="3" class="w" style="min-height:64px" placeholder="${esc(SC==="all" ? "For example: use a more formal tone; keep technical terms in transliteration; do not shorten anything." : "For example: use a particular word for a term; change a sentence; simplify the style in this language only.")}">${esc(AN[SC]||"")}</textarea>
-      <div class="row"><button type="button" class="btn" data-m="ai-revise" ${M.busy?"disabled":""}>Revise ${scName} with these instructions</button>
+      <div class="row"><button type="button" class="btn primary" data-m="ai-revise" ${M.busy?"disabled":""}>▶ Run my instructions on ${scName}</button>
+        <button type="button" class="btn" data-m="ai-continue" ${M.busy?"disabled":""} title="Use when a drafted text stops in the middle">Complete the cut-off ${SC==="all"?"drafts":LNAME_EN[SC]+" draft"}</button>
         ${M.undo && !M.busy ? `<button type="button" class="btn" data-m="ai-undo">Undo last AI change</button>` : ""}
-        <span class="small muted">Instructions for “All languages” and for the language itself are both used in every draft above. “Revise” applies them to the text already written.</span></div>
+        <span class="small muted">Instructions for “All languages” and for the language itself are both used in every draft above. “Run my instructions” applies them to the text already written. “Complete the cut-off draft” continues a translation that stops early, from the source text.</span></div>
     </div>`; })() : ""}
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err||"")}</div>
     <div class="foot">
@@ -2274,7 +2275,7 @@ Editor's instructions:
 ${aiInstr(l)}
 """
 
-Current title:
+${l !== src && (it.body[src]||"").trim() ? `Source text in ${guide[src]}, for reference only (the text below was translated from it; if the instructions ask you to complete, fix or compare against the source, use it):\n"""\n${it.body[src]}\n"""\n\n` : ""}Current title:
 ${it.title[l] || "(none)"}
 
 Current summary:
@@ -2302,6 +2303,65 @@ ${it.body[l] || "(none)"}`;
   M.busy = false; M.ctl = [];
   M.aiStatus = done.length ? `Revised ${done.map(l=>LNAME_EN[l]).join(", ")}. Review each tab, then save. Undo is available.` : "";
   drawWriteEditor();
+}
+async function aiContinue(){
+  captureFields();
+  const it = M.it, src = it.src, scope = M.aiScope || "all";
+  const wanted = (scope === "all" ? LANGS : [scope]).filter(l => l !== src && (it.body[l] || "").trim());
+  if (!(it.body[src] || "").trim()) { M.err = `Write the ${LNAME_EN[src]} version first.`; drawWriteEditor(); return; }
+  if (!wanted.length) { M.err = scope === src ? "That is the language you are writing in; nothing to complete." : "There is no drafted text to complete yet. Use the Draft button first."; drawWriteEditor(); return; }
+  M.undo = {}; wanted.forEach(l => { M.undo[l] = {title: it.title[l], summary: it.summary[l], body: it.body[l], ai: !!it.ai[l]}; });
+  if (!wanted.includes(M.tab)) { M.tab = wanted[0]; M.preview = false; }
+  M.err = ""; M.busy = true; M.ctl = []; M.aiStatus = "Completing… the first words usually take 10–40 seconds."; drawWriteEditor();
+  const guide = {en:"English", bn:"Bangla (Bengali script)", ar:"Modern Standard Arabic", ur:"Urdu (Arabic script)"};
+  const done = [];
+  await Promise.all(wanted.map(async l => {
+    const ctl = new AbortController(); M.ctl.push(ctl);
+    const cur = it.body[l].replace(/\s+$/, ""), cut = cur.lastIndexOf("\n\n"), head = cut >= 0 ? cur.slice(0, cut) : "", tail = cut >= 0 ? cur.slice(cut + 2) : cur;
+    const extra = aiInstr(l);
+    const prompt = `The ${guide[l]} text below is a translation of the ${guide[src]} source. The translation stops before the end of the source: it was cut off. Finish it.
+
+Rules:
+- Start your reply with the last paragraph of the translation (shown under "Last paragraph so far"), completed if it is unfinished, then continue translating the rest of the source until its very end. Do not repeat any earlier paragraph.
+- Translate faithfully. Do not add, remove, summarise or comment.
+- Keep every quotation of the Qur'an in Arabic exactly as written, character for character, and keep ayah references such as 2:255 exactly as written. Render ayahs in the same way the earlier part of the translation does.
+- Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links, footnote markers such as [^1] and their "[^1]: " lines (translate those lines).
+- Reply with the text only, no heading or explanation.${extra ? `\n- Extra instructions from the editor (they never override the rules above):\n"""\n${extra}\n"""` : ""}
+
+Source (${guide[src]}):
+"""
+${it.body[src]}
+"""
+
+Translation so far, before the last paragraph:
+"""
+${head || "(nothing)"}
+"""
+
+Last paragraph so far:
+"""
+${tail}
+"""`;
+    const join = t => (head ? head + "\n\n" : "") + t.trim();
+    try {
+      const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache:false, onText: ({text}) => {
+        if (M && M.tab === l) { const tb = $("#w-body"); if (tb) tb.value = join(text); }
+      }});
+      if (!M) return;
+      it.body[l] = join(text); it.ai[l] = true; done.push(l);
+      if (truncated) M.err = `The ${LNAME_EN[l]} text was cut short again. Press “Complete the cut-off draft” once more.`;
+    } catch (e) {
+      if (!M) return;
+      if (e && e.text) { it.body[l] = join(e.text); it.ai[l] = true; }
+      if (e?.code === "cancelled") return;
+      M.err = aiErr(e?.code, l).replace(/ draft/g, " completion");
+      if (["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)) S.sample = null;
+    }
+  }));
+  if (!M) return;
+  M.busy = false; M.ctl = [];
+  M.aiStatus = done.length ? `Completed ${done.map(l=>LNAME_EN[l]).join(", ")}. Check the ending of each, then save. Undo is available.` : "";
+  drawWriteEditor(); saveLocalDraft();
 }
 function aiUndo(){
   if (!M || !M.undo) return;
@@ -2528,6 +2588,7 @@ document.addEventListener("click", async (ev) => {
   if (act === "ai-one") return aiDraft(false, d.v);
   if (act === "ai-force") return aiDraft(true, M.aiOnly || undefined);
   if (act === "ai-revise") return aiRevise();
+  if (act === "ai-continue") return aiContinue();
   if (act === "ai-undo") return aiUndo();
   if (act === "ai-stop") { M.ctl.forEach(c=>c.abort()); return; }
   if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
