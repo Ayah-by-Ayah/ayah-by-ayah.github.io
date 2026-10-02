@@ -49,6 +49,8 @@ To work on it in a new session: attach the repo (add_repo **Ayah-by-Ayah/ayah-by
 
 **irab/<s>-<group>** — `{s, ayahs:{<a>:{text:{en,bn,ar,ur}, ai, src, updatedAt}}}`, group = floor((a-1)/5).
 
+**chunks/<kind>~<id>~<lang>~<r>~<i>** — extra pieces of a long write-up: `{kind(n|l|w), ref, lang, r, i, text}`. The note keeps piece 0 in `body.<lang>` and `more.<lang>={r,n}` (r = revision tag, n = number of pieces); the app stitches them on load (pieces ≤ 48,000 bytes). Always write chunk docs first, then the note, and delete stale chunks.
+
 **settings/categories** — `{"list":[{"id","name":{"en"},"order"}]}`. Current ids:
 
 | id | name |
@@ -77,7 +79,7 @@ Write-ups over ~900 characters (or with sections/footnotes) open as full article
 5. Report: title, summary, category, tags, the verification result, anything you changed. If the article is mostly about a different ayah than the one he named, mention it (he usually wants the ayah the article is about).
 
 ### B. "Publish" / "publish the latest"
-1. Export all six collections (ArtifactData `list`, `query {"limit":1000}`, `out_dir` = scratchpad/export) — notes, lessons, words, translations, irab, settings.
+1. Export all seven collections (add `chunks`) (ArtifactData `list`, `query {"limit":1000}`, `out_dir` = scratchpad/export) — notes, lessons, words, translations, irab, settings, chunks.
 2. Compare with the current `data/content.json` (see rule in section 2).
 3. `python3 tools/make_content.py <export dir>` and, if `tools/app.html` changed, `python3 tools/build_site.py`.
 4. Commit and push. Pages deploys in about 1–3 minutes.
@@ -108,4 +110,4 @@ Ideas discussed but **not built yet**: image upload in notes (planned: upload bu
 
 ## 8. Content snapshot (2 Oct 2026)
 
-Notes: `did-god-take-a-promise-from-our-souls` (7:172, Alternative Commentary), `between-the-backbone-and-the-ribs` (86:7, Scientific Objections), `manna-and-salwa` (2:61, Alternative Commentary; includes Bukhārī 4478 / Muslim 2049d on truffles). The Basmala study (1:1, Concept) is a 5-part series, each part a note on 1:1 with all four languages (bn, ur, ar are AI drafts, unreviewed; Arabic fully voweled): `the-basmala-from-grammar-to-transformation` (Part 1), `the-basmala-part-2-the-name-allah`, `the-basmala-part-3-ar-rahman-and-ar-rahim`, `the-basmala-part-4-practical-pondering`, `the-basmala-part-5-exercises-conclusion-and-references`. **A document in the database is limited to about 256 KB**, so a long article in four languages must be split into parts (a 80,000-character article does not fit in one note). Word analyses: 2:2 لِّلْمُتَّقِينَ, 86:6 مَّآءٍ, 86:6 دَافِقٍ (English only). No lessons, translation revisions or iʿrāb yet.
+Notes: `did-god-take-a-promise-from-our-souls` (7:172, Alternative Commentary), `between-the-backbone-and-the-ribs` (86:7, Scientific Objections), `manna-and-salwa` (2:61, Alternative Commentary; includes Bukhārī 4478 / Muslim 2049d on truffles). The Basmala study (1:1, Concept) is a 5-part series, each part a note on 1:1 with all four languages (bn, ur, ar are AI drafts, unreviewed; Arabic fully voweled): `the-basmala-from-grammar-to-transformation` (Part 1), `the-basmala-part-2-the-name-allah`, `the-basmala-part-3-ar-rahman-and-ar-rahim`, `the-basmala-part-4-practical-pondering`, `the-basmala-part-5-exercises-conclusion-and-references`. **A single database document is limited to about 256 KB**, so long write-ups are stored in pieces (`chunks` collection, see §3) and appear as one article; no need to split into parts. Word analyses: 2:2 لِّلْمُتَّقِينَ, 86:6 مَّآءٍ, 86:6 دَافِقٍ (English only). No lessons, translation revisions or iʿrāb yet.

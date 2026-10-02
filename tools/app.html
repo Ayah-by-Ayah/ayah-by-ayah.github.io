@@ -422,7 +422,7 @@ const S = {
   qscale: Math.min(1.6, Math.max(0.8, parseFloat(store.get("aba.qscale")) || 1)),
   trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
   trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
-  tr: {}, notes: [], lessons: [],
+  tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [],
   admin: false, db: null, dbState: "loading", sample: null, downloads: null,
   open: new Set(), compare: new Set(), onlyMarked: false,
   words: [], wq: "", wroot: "", cats: [], ncat: "", focus: false, readScale: Math.min(1.5, Math.max(0.85, parseFloat(store.get("aba.readscale")) || 1)), sq: "", nq: "", nkind: "all", ntag: null, lq: "", ltag: null, openLesson: new Set(), openNote: new Set()
@@ -2430,15 +2430,71 @@ async function saveWrite(){
   else { doc.kind = it.kind || "explanation"; doc.s = refs[0].s; doc.a = refs[0].from; doc.cat = it.cat; }
   const col = S.db.collection(isLesson ? "lessons" : isWord ? "words" : "notes");
   const ref = it.id ? col.doc(it.id) : col.doc(Date.now().toString(36) + Math.random().toString(36).slice(2, 7));
+  if (it._partial) { M.err = "The later parts of this long write-up are still loading. Wait a moment, then save again."; drawWriteEditor(); return; }
+  const kind0 = isLesson ? "l" : isWord ? "w" : "n", extra = [], bodyOut = {}, more = {};
+  for (const l of Object.keys(it.body || {})) {
+    const parts = splitPieces(it.body[l]); bodyOut[l] = parts[0];
+    if (parts.length > 1) {
+      const r = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+      more[l] = {r, n: parts.length - 1};
+      parts.slice(1).forEach((tx, k) => extra.push({id: `${kind0}~${ref.id}~${l}~${r}~${k + 1}`, data: {kind: kind0, ref: ref.id, lang: l, r, i: k + 1, text: tx}}));
+    }
+  }
+  doc.body = bodyOut; if (Object.keys(more).length) doc.more = more;
   M.busy = true; drawWriteEditor();
   try {
+    for (const c of extra) await S.db.collection("chunks").doc(c.id).set(c.data);
     await ref.set(doc);
+    await dropStaleChunks(kind0, ref.id, extra.map(c => c.id));
     const kindL = isLesson ? "l" : isWord ? "w" : "n", id = ref.id, s = doc.s, a = doc.a;
     clearLocalDraft(); M.dirty = false;
     closeModal(); toast("Saved");
     if (kindL === "n") S.open.add(key(s,a));
     if (S.view === "article") render(); else go("article", {kind: kindL, id});
   } catch (e) { M.busy = false; M.err = dbErr(e); drawWriteEditor(); }
+}
+/* ---------- long write-ups: stored in pieces ----------
+   A database document is limited to about 256 KB. A write-up keeps the first piece of each language's text in its own document
+   (body.<lang>) and any further pieces in the "chunks" collection: doc id `${kind}~${id}~${lang}~${r}~${i}` with
+   {kind, ref, lang, r, i, text}; the write-up says how many it has in `more.<lang> = {r, n}` (r = a revision token, so a save
+   swaps to a new set of pieces in one step). The app joins the pieces when it loads; everything else sees the whole text. */
+const CHUNK_BYTES = 48000;
+const cpBytes = c => c < 0x80 ? 1 : c < 0x800 ? 2 : c < 0x10000 ? 3 : 4;
+const blen = s => { let n = 0; for (const ch of s) n += cpBytes(ch.codePointAt(0)); return n; };
+function splitPieces(t){
+  t = t || "";
+  if (blen(t) <= CHUNK_BYTES) return [t];
+  const out = []; let cur = "", curB = 0;
+  for (const u of t.split(/(?=\n\n)/)) {            // paragraph units keep their leading blank line, so out.join("") === t
+    const ub = blen(u);
+    if (curB + ub <= CHUNK_BYTES) { cur += u; curB += ub; continue; }
+    if (cur) { out.push(cur); cur = ""; curB = 0; }
+    if (ub <= CHUNK_BYTES) { cur = u; curB = ub; continue; }
+    for (const ch of u) { const b = cpBytes(ch.codePointAt(0)); if (curB + b > CHUNK_BYTES) { out.push(cur); cur = ""; curB = 0; } cur += ch; curB += b; }   // one huge paragraph
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+function stitchOne(raw, kind){
+  const more = raw.more;
+  if (!more) return raw;
+  const body = Object.assign({}, raw.body); let partial = false;
+  for (const l of Object.keys(more)) {
+    const m = more[l]; if (!m || !m.n) continue;
+    let txt = body[l] || "";
+    for (let i = 1; i <= m.n; i++) { const p = S.chunkIx[`${kind}~${raw.id}~${l}~${m.r}~${i}`]; if (p == null) partial = true; else txt += p; }
+    body[l] = txt;
+  }
+  return Object.assign({}, raw, {body}, partial ? {_partial: true} : {});
+}
+function restitch(){
+  S.notes = S.rawNotes.map(n => stitchOne(n, "n"));
+  S.lessons = S.rawLessons.map(n => stitchOne(n, "l"));
+  S.words = S.rawWords.map(n => stitchOne(n, "w"));
+}
+async function dropStaleChunks(kind, ref, keep){
+  const k = new Set(keep);
+  for (const c of S.chunkDocs.slice()) if (c.kind === kind && c.ref === ref && !k.has(c.docId)) { try { await S.db.collection("chunks").doc(c.docId).delete(); } catch {} }
 }
 function dbErr(e){
   if (e?.code === "invalid_argument") return "You don't have permission to save here, or the write-up is too large (256 KB limit).";
@@ -2607,7 +2663,7 @@ document.addEventListener("click", async (ev) => {
   if (act === "save") return saveWrite();
   if (act === "delete") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Delete this ${M.type==="lesson"?"lesson":M.type==="word"?"word analysis":"note"} in all four languages? This can't be undone.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="delete-yes">Delete</button></div>`; return; }
   if (act === "delete-yes") {
-    try { await S.db.collection(M.type==="lesson"?"lessons":M.type==="word"?"words":"notes").doc(M.it.id).delete(); clearLocalDraft(); const wasArt = S.view === "article", back = M.type==="lesson" ? "lessons" : M.type==="word" ? "words" : "notes"; closeModal(); toast("Deleted"); if (wasArt) go(back); }
+    try { await S.db.collection(M.type==="lesson"?"lessons":M.type==="word"?"words":"notes").doc(M.it.id).delete(); await dropStaleChunks(M.type==="lesson"?"l":M.type==="word"?"w":"n", M.it.id, []); clearLocalDraft(); const wasArt = S.view === "article", back = M.type==="lesson" ? "lessons" : M.type==="word" ? "words" : "notes"; closeModal(); toast("Deleted"); if (wasArt) go(back); }
     catch(e){ $("#m-err").textContent = dbErr(e); }
     return;
   }
@@ -2680,7 +2736,7 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     setTrDocs(snap.docs.map(d => d.data()).filter(Boolean)); if (first.tr) { first.tr=false; ready(); } reindex(); render();
   }, fail);
   db.collection("notes").onSnapshot(snap => {
-    S.notes = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(n => validRefSafe(n.s, n.a));
+    S.rawNotes = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(n => validRefSafe(n.s, n.a)); S.notes = S.rawNotes.map(n => stitchOne(n, "n"));
     if (first.notes) { first.notes=false; ready(); } reindex(); render();
   }, fail);
   db.doc("settings/categories").onSnapshot(snap => {
@@ -2689,13 +2745,18 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     render();
   }, () => {});
   db.collection("words").onSnapshot(snap => {
-    S.words = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(w => validRefSafe(w.s, w.a));
+    S.rawWords = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(w => validRefSafe(w.s, w.a)); S.words = S.rawWords.map(n => stitchOne(n, "w"));
     reindex(); render();
   }, () => {});
   db.collection("lessons").onSnapshot(snap => {
-    S.lessons = snap.docs.map(d => Object.assign({id:d.id}, d.data()));
+    S.rawLessons = snap.docs.map(d => Object.assign({id:d.id}, d.data())); S.lessons = S.rawLessons.map(n => stitchOne(n, "l"));
     if (first.lessons) { first.lessons=false; ready(); } reindex(); render();
   }, fail);
+  db.collection("chunks").onSnapshot(snap => {
+    S.chunkDocs = []; S.chunkIx = {};
+    for (const d of snap.docs) { const c = d.data(); if (!c) continue; S.chunkDocs.push({docId: d.id, kind: c.kind, ref: c.ref}); S.chunkIx[`${c.kind}~${c.ref}~${c.lang}~${c.r}~${c.i}`] = c.text; }
+    restitch(); reindex(); render();
+  }, () => {});
   if (S.admin && S.downloads) {
     const f = document.createElement("button");
     f.type = "button"; f.className = "btn ghost small"; f.dataset.export = ""; f.textContent = "Back up all write-ups";
