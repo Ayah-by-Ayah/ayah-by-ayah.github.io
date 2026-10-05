@@ -51,6 +51,8 @@ To work on it in a new session: attach the repo (add_repo **Ayah-by-Ayah/ayah-by
 
 **chunks/<kind>~<id>~<lang>~<r>~<i>** — extra pieces of a long write-up: `{kind(n|l|w), ref, lang, r, i, text}`. The note keeps piece 0 in `body.<lang>` and `more.<lang>={r,n}` (r = revision tag, n = number of pieces); the app stitches them on load (pieces ≤ 48,000 bytes). Always write chunk docs first, then the note, and delete stale chunks.
 
+**vocab/<surah>** — per-surah vocabulary tables (shown at the bottom of the surah page, "Show tables"): `{s, ai, note, updatedAt, ism:[{sg,p1,p2,mean,ayahs}], fil:[{madi,mud,masdar,amr,mean,ayahs}]}`. Column order is reversed for Arabic reading (Singular rightmost, Ayah leftmost). `ai:true` = unreviewed draft (editor button "Mark as reviewed"); `note` explains which forms were AI-added. Only 97 (al-Qadr) exists so far; forms.json (Arramooz plurals) could generate others.
+
 **settings/categories** — `{"list":[{"id","name":{"en"},"order"}]}`. Current ids:
 
 | id | name |
@@ -79,7 +81,7 @@ Write-ups over ~900 characters (or with sections/footnotes) open as full article
 5. Report: title, summary, category, tags, the verification result, anything you changed. If the article is mostly about a different ayah than the one he named, mention it (he usually wants the ayah the article is about).
 
 ### B. "Publish" / "publish the latest"
-1. Export all seven collections (add `chunks`) (ArtifactData `list`, `query {"limit":1000}`, `out_dir` = scratchpad/export) — notes, lessons, words, translations, irab, settings, chunks.
+1. Export all collections (add `chunks` and `vocab`) (ArtifactData `list`, `query {"limit":1000}`, `out_dir` = scratchpad/export) — notes, lessons, words, translations, irab, settings, chunks.
 2. Compare with the current `data/content.json` (see rule in section 2).
 3. `python3 tools/make_content.py <export dir>` and, if `tools/app.html` changed, `python3 tools/build_site.py`.
 4. Commit and push. Pages deploys in about 1–3 minutes.
@@ -105,7 +107,7 @@ Write-ups over ~900 characters (or with sections/footnotes) open as full article
 
 ## 7. Features (so you know what already exists)
 
-Surah reader (IndoPak/Madani, font size, full screen) · revised translation per ayah with "compare with original" · translation language switch (English / বাংলা Taisirul / اردو Maududi) separate from the write-up language switch · Notes (category required, dropdown filter, tags, search) · Lessons (ayah ranges) · Word analysis (pick a word; whole-Qur'an occurrence list by lemma or root with forms and Makki/Madani counts; "Analyse usage with AI"; "Ask something specific" box) · grammar panel (morphology, tap any word of an ayah in the surah reader → flash card (meaning, root, lemma, Forms: singular/plurals or māḍī/muḍāriʿ/amr/maṣdar from `forms.json`; close by tapping the word, Esc, or "Back to the ayah"; "Full grammar" opens the grammar panel), sentence structure from the treebank, automatic traditional iʿrāb, his own iʿrāb in four languages) · article pages with contents list and footnotes · Share (link + ready text) · one-click "Back to …" after following an ayah link · AI drafting of the other three languages (uses the chosen translation of every ayah the piece mentions; never invents a title when his is empty) · backup download.
+Surah reader (IndoPak/Madani, font size, full screen) · revised translation per ayah with "compare with original" · translation language switch (English / বাংলা Taisirul / اردو Maududi) separate from the write-up language switch · Notes (category required, dropdown filter, tags, search) · Lessons (ayah ranges) · Word analysis (pick a word; whole-Qur'an occurrence list by lemma or root with forms and Makki/Madani counts; "Analyse usage with AI"; "Ask something specific" box) · grammar panel (morphology, tap any word of an ayah in the surah reader → flash card (meaning, root, lemma, Forms: singular/plurals or māḍī/muḍāriʿ/amr/maṣdar from `forms.json`; close by tapping the word, Esc, or "Back to the ayah"; "Full grammar" opens the grammar panel), sentence structure from the treebank, automatic traditional iʿrāb, his own iʿrāb in four languages) · article pages with contents list and footnotes · Share (link + ready text) · one-click "Back to …" after following an ayah link · AI drafting of the other three languages (uses the chosen translation of every ayah the piece mentions; never invents a title when his is empty) · per-surah vocabulary tables (Ism / Fi'l, trial: 97) · backup download.
 
 Ideas discussed but **not built yet**: image upload in notes (planned: upload button, compressed images in the artifact's file storage, copied to the repo on publish, captions translated, images extracted from .docx).
 

@@ -137,6 +137,17 @@ html.script-indopak .ar .end{font-family:"Scheherazade New",serif}
 .orig b{font:600 11px/1 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
 .marks{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .admin-bar{display:flex;gap:2px;flex-wrap:wrap;margin-top:8px}
+.vocab{margin-top:28px;border-top:1px solid var(--line);padding-top:16px}
+.vocab h2{font-size:18px;margin:0}
+.vocab h3{font-size:15px;margin:18px 0 8px}
+.vtbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.vtbl{border-collapse:collapse;width:100%;font-size:14px}
+.vtbl th,.vtbl td{border:1px solid var(--line);padding:7px 10px;text-align:center;vertical-align:middle}
+.vtbl th{background:var(--sunk);font-weight:600;font-size:13px;white-space:nowrap}
+.vtbl td.ar{font-size:21px;line-height:1.9;white-space:nowrap}
+.vtbl td.mean{text-align:left}
+.vtbl td.refs{white-space:nowrap}
+
 .admin-bar .btn{font-size:13px}
 
 /* Write-ups */
@@ -432,7 +443,7 @@ const S = {
   qscale: Math.min(1.6, Math.max(0.8, parseFloat(store.get("aba.qscale")) || 1)),
   trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
   trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
-  tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [],
+  tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [], vocab: {}, vocabOpen: false,
   admin: false, db: null, dbState: "loading", sample: null, downloads: null,
   open: new Set(), compare: new Set(), onlyMarked: false,
   words: [], wq: "", wroot: "", cats: [], ncat: "", focus: false, readScale: Math.min(1.5, Math.max(0.85, parseFloat(store.get("aba.readscale")) || 1)), sq: "", nq: "", nkind: "all", ntag: null, lq: "", ltag: null, openLesson: new Set(), openNote: new Set()
@@ -802,6 +813,27 @@ function viewSurahs(){
 
 function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] || IDX.lessons[k]); }
 
+const VOC_ISM = [["Ayah",""],["Meaning",""],["Plural 2","جمع ٢"],["Plural 1","جمع ١"],["Singular","مفرد"]];
+const VOC_FIL = [["Ayah",""],["Meaning",""],["Amr","أمر"],["Maṣdar","مصدر"],["Muḍāriʿ","مضارع"],["Māḍī","ماضٍ"]];
+function vocabRefs(s, arr){ return (arr||[]).map(a => `<button type="button" class="reflink" data-go="${s}:${a}">${a}</button>`).join(", "); }
+function vocabHTML(s){
+  const v = S.vocab[s];
+  if (!v || (!(v.ism||[]).length && !(v.fil||[]).length)) return "";
+  const ar = x => x ? `<td class="ar" lang="ar" dir="rtl">${esc(x)}</td>` : `<td class="muted">—</td>`;
+  const head = cols => `<tr>${cols.map(c => `<th>${esc(c[0])}${c[1] ? ` <span lang="ar">${esc(c[1])}</span>` : ""}</th>`).join("")}</tr>`;
+  const ism = (v.ism||[]).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.p2)}${ar(r.p1)}${ar(r.sg)}</tr>`).join("");
+  const fil = (v.fil||[]).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.amr)}${ar(r.masdar)}${ar(r.mud)}${ar(r.madi)}</tr>`).join("");
+  return `<section class="vocab" id="vocab">
+    <div class="row"><h2>Vocabulary · Ism and Fiʿl</h2><span class="spacer"></span>
+      <button type="button" class="btn small" data-vtoggle aria-expanded="${S.vocabOpen}">${S.vocabOpen ? "Hide tables" : "Show tables"}</button></div>
+    ${S.vocabOpen ? `
+    ${v.ai ? `<div class="row small" style="margin-top:10px"><span class="notice">Unreviewed draft. ${esc(v.note || "Plural, maṣdar and amr forms are not in the corpus; gaps were filled by AI and still need checking.")}</span>${S.admin ? `<button type="button" class="btn small" data-vreviewed="${s}">Mark as reviewed</button>` : ""}</div>` : ""}
+    ${ism ? `<h3>Ism (nouns)</h3><div class="vtbl-wrap"><table class="vtbl"><thead>${head(VOC_ISM)}</thead><tbody>${ism}</tbody></table></div>` : ""}
+    ${fil ? `<h3>Fiʿl (verbs)</h3><div class="vtbl-wrap"><table class="vtbl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""}
+    <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>` : ""}
+  </section>`;
+}
+
 function viewSurah(){
   const su = surahOf(S.surah);
   ensureFW(su.n);
@@ -828,7 +860,8 @@ function viewSurah(){
     <span class="legend">${marksFor(su.n) || `<span class="small muted">No marks in this surah yet</span>`}</span>
   </div>
   ${showBism && !S.onlyMarked ? `<div class="bism" lang="ar" dir="rtl">${esc(bism)}</div>` : ""}
-  ${ayahs.map(x => ayahHTML(su.n, x)).join("") || `<div class="empty" style="margin-top:16px"><b>No marked ayahs in this surah</b>Turn off “Only ayahs with marks” to see every ayah.</div>`}`;
+  ${ayahs.map(x => ayahHTML(su.n, x)).join("") || `<div class="empty" style="margin-top:16px"><b>No marked ayahs in this surah</b>Turn off “Only ayahs with marks” to see every ayah.</div>`}
+  ${vocabHTML(su.n)}`;
 }
 
 function ayahHTML(s, x){
@@ -2609,6 +2642,8 @@ document.addEventListener("click", async (ev) => {
   if (d.trlang) { S.trLang = d.trlang; store.set("aba.trlang", d.trlang); S.tr = S.trAll[d.trlang]; S.compare.clear(); loadTrx(d.trlang); reindex(); return render(); }
   if (d.surah) return go("surah", {s:+d.surah});
   if (d.go) { closeModal(); return goRef(d.go); }
+  if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
+  if (d.vreviewed) { if (!S.admin || !S.db) return; try { await S.db.doc("vocab/" + d.vreviewed).update({ai: false, updatedAt: Date.now()}); toast("Marked as reviewed."); } catch (e) { toast("Couldn't save. Try again."); } return; }
   if (d.compare) { S.compare.has(d.compare) ? S.compare.delete(d.compare) : S.compare.add(d.compare); return render(); }
   if (d.toggle) { S.open.has(d.toggle) ? S.open.delete(d.toggle) : S.open.add(d.toggle); return render(); }
   if (d.grammar) return openGrammar(d.grammar);
@@ -2845,6 +2880,10 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     S.rawLessons = snap.docs.map(d => Object.assign({id:d.id}, d.data())); S.lessons = S.rawLessons.map(n => stitchOne(n, "l"));
     if (first.lessons) { first.lessons=false; ready(); } reindex(); render();
   }, fail);
+  db.collection("vocab").onSnapshot(snap => {
+    S.vocab = {}; for (const d of snap.docs) { const x = d.data(); if (x) S.vocab[d.id] = x; }
+    render();
+  }, () => {});
   db.collection("chunks").onSnapshot(snap => {
     S.chunkDocs = []; S.chunkIx = {};
     for (const d of snap.docs) { const c = d.data(); if (!c) continue; S.chunkDocs.push({docId: d.id, kind: c.kind, ref: c.ref}); S.chunkIx[`${c.kind}~${c.ref}~${c.lang}~${c.r}~${c.i}`] = c.text; }
@@ -2870,6 +2909,7 @@ async function loadStatic(){
     S.words = (d.words || []).filter(w => validRefSafe(w.s, w.a));
     S.cats = (d.categories || []).slice().sort((a, b) => (a.order||0) - (b.order||0));
     S.irabAll = d.irab || {};
+    S.vocab = d.vocab || {};
     S.dbState = "ok";
     reindex(); render();
     const nav = () => { const y = window.scrollY; fromHash(); render(); if (S.view !== "surah") window.scrollTo(0, 0); };
