@@ -137,6 +137,13 @@ html.script-indopak .ar .end{font-family:"Scheherazade New",serif}
 .orig b{font:600 11px/1 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
 .marks{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .admin-bar{display:flex;gap:2px;flex-wrap:wrap;margin-top:8px}
+button.ruku{width:100%;text-align:left;font:inherit;font-size:14px;color:inherit;cursor:pointer}
+button.ruku:hover{border-color:var(--muted)}
+button.rkend{background:none;color:inherit;font-family:inherit;cursor:pointer;padding:0}
+.rklist{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.rkrow{display:flex;gap:12px;align-items:center;width:100%;text-align:left;font:inherit;font-size:15px;color:inherit;background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+.rkrow b{min-width:2ch}.rkrow.cur{border-color:var(--ink);background:var(--surface)}
+.rkrow .muted{margin-left:auto}
 .ruku{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin:22px 0 4px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:var(--sunk);font-size:14px;scroll-margin-top:120px}
 .ruku .rk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1.5px solid currentColor;border-radius:50%;font-size:16px;line-height:1}
 .rkend{display:inline-flex;align-items:center;justify-content:center;width:1.3em;height:1.3em;border:1.5px solid currentColor;border-radius:50%;font-size:.6em;vertical-align:middle;opacity:.7}
@@ -855,7 +862,14 @@ function rukuAt(s, a){
 function rukuEnds(s, a){ const st = RUKU[s]; return !!st && (a === surahOf(s).v.length || st.includes(a + 1)); }
 function rukuBand(s, a){
   const r = rukuAt(s, a); if (!r) return "";
-  return `<div class="ruku" id="r-${s}-${r.i}" role="separator"><span class="rk" lang="ar">ع</span><b>Rukūʿ ${r.i} of ${r.n}</b><span>ayahs ${r.from}–${r.to}</span><span class="muted">(${r.g} of 558)</span></div>`;
+  return `<button type="button" class="ruku" id="r-${s}-${r.i}" data-rukulist="${s}:${r.i}" title="Show all rukūʿ of this surah"><span class="rk" lang="ar">ع</span><b>Rukūʿ ${r.i} of ${r.n}</b><span>ayahs ${r.from}–${r.to}</span><span class="muted">(${r.g} of 558)</span><span class="spacer"></span><span class="muted small">All rukūʿ ▾</span></button>`;
+}
+function openRukuList(ref){
+  const [s, cur] = ref.split(":").map(Number), su = surahOf(s), st = RUKU[s];
+  M = {type:"rukus"};
+  modal(`<div class="row"><h2>Rukūʿ · ${esc(su.tl)}</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <p class="small muted" style="margin:0">${st.length} rukūʿ in this surah. Tap one to go to it.</p>
+    <ol class="rklist">${st.map((a, i) => { const to = (st[i+1] || su.v.length + 1) - 1; return `<li><button type="button" class="rkrow${i+1===cur?" cur":""}" data-go="${s}:${a}"><b>${i+1}</b><span>ayahs ${a}–${to}</span><span class="muted small">${to - a + 1} ayah${to - a ? "s" : ""} · ${RUKU_BASE[s] + i + 1} of 558</span></button></li>`; }).join("")}</ol>`);
 }
 
 function viewSurah(){
@@ -900,7 +914,7 @@ function ayahHTML(s, x){
   return `<article class="ayah${S.flashKey===k?" flash":""}" id="a-${s}-${x.a}">
     <div class="anum">${s}:${x.a}${dots.length?`<div class="dots" aria-hidden="true">${dots.map(d=>`<span class="dot ${d}"></span>`).join("")}</div>`:""}</div>
     <div class="abody">
-      <p class="ar" lang="ar" dir="rtl">${arTokHTML(s, x.a, x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span>${rukuEnds(s, x.a) ? ` <span class="rkend" title="End of rukūʿ ${(RUKU[s].filter(v => v <= x.a).length)}">ع</span>` : ""}</p>
+      <p class="ar" lang="ar" dir="rtl">${arTokHTML(s, x.a, x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span>${rukuEnds(s, x.a) ? ` <button type="button" class="rkend" data-rukulist="${s}:${RUKU[s].filter(v => v <= x.a).length}" title="End of rukūʿ ${RUKU[s].filter(v => v <= x.a).length} · show all rukūʿ">ع</button>` : ""}</p>
       <p class="tr${rev?" revised":""}" ${trAttrs()}>${esc(rev ? rev.text : x.en)}</p>
       ${rev ? `<div class="revline"><span class="chip rev" title="This translation has been revised from ${TR_NAME[S.trLang]}">Translation revised</span>
         <button type="button" class="btn ghost small" data-compare="${k}">${S.compare.has(k)?"Hide original":"Compare with original"}</button></div>
@@ -2665,6 +2679,7 @@ document.addEventListener("click", async (ev) => {
   if (d.lang) { S.lang = d.lang; store.set("aba.lang", d.lang); return render(); }
   if (d.trlang) { S.trLang = d.trlang; store.set("aba.trlang", d.trlang); S.tr = S.trAll[d.trlang]; S.compare.clear(); loadTrx(d.trlang); reindex(); return render(); }
   if (d.surah) return go("surah", {s:+d.surah});
+  if (d.rukulist) return openRukuList(d.rukulist);
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.vall !== undefined) { S.vrange = null; render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
@@ -2863,7 +2878,7 @@ document.addEventListener("submit", (ev) => {
 });
 document.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && ev.target.classList && ev.target.classList.contains("wtok") && !M) { ev.preventDefault(); ev.target.click(); } });
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && S.focus && !M && !document.fullscreenElement) { exitFocus(); return; } });
-document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && M && !M.busy && (M.type === "tr" || M.type === "share" || M.type === "flash" || (M.type === "gram" && !M.edit))) closeModal(); });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && M && !M.busy && (M.type === "tr" || M.type === "share" || M.type === "rukus" || M.type === "flash" || (M.type === "gram" && !M.edit))) closeModal(); });
 function rerenderKeepingInput(id){
   const el = document.getElementById(id); const pos = el ? el.selectionStart : null;
   render();
