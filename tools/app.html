@@ -137,6 +137,9 @@ html.script-indopak .ar .end{font-family:"Scheherazade New",serif}
 .orig b{font:600 11px/1 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
 .marks{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .admin-bar{display:flex;gap:2px;flex-wrap:wrap;margin-top:8px}
+.ruku{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin:22px 0 4px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:var(--sunk);font-size:14px;scroll-margin-top:120px}
+.ruku .rk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1.5px solid currentColor;border-radius:50%;font-size:16px;line-height:1}
+.rkend{display:inline-flex;align-items:center;justify-content:center;width:1.3em;height:1.3em;border:1.5px solid currentColor;border-radius:50%;font-size:.6em;vertical-align:middle;opacity:.7}
 .vocab{margin-top:28px;border-top:1px solid var(--line);padding-top:16px}
 .vocab h2{font-size:18px;margin:0}
 .vocab h3{font-size:15px;margin:18px 0 8px}
@@ -841,6 +844,20 @@ function vocabHTML(s){
   </section>`;
 }
 
+/* Rukūʿ starts per surah (558 in all; Indo-Pak/quran.com division). Source: quran-meta package, checked against quran.ai metadata. */
+const RUKU = {1:[1],2:[1,8,21,30,40,47,60,62,72,83,87,97,104,113,122,130,142,148,153,164,168,177,183,189,197,211,217,222,229,232,236,243,249,254,258,261,267,274,282,284],3:[1,10,21,31,42,55,64,72,81,92,102,110,121,130,144,149,156,172,181,190],4:[1,11,15,23,26,34,43,51,60,71,77,88,92,97,101,105,113,116,127,135,142,153,163,172],5:[1,6,12,20,27,35,44,51,57,67,78,87,94,101,109,116],6:[1,11,21,31,42,51,56,61,71,83,91,95,101,111,122,130,141,145,151,155],7:[1,11,26,32,40,48,54,59,65,73,85,94,100,109,127,130,142,148,152,158,163,172,182,189],8:[1,11,20,29,38,45,49,59,65,70],9:[1,7,17,25,30,38,43,60,67,73,81,90,100,111,119,123],10:[1,11,21,31,41,54,61,71,83,93,104],11:[1,9,25,36,50,61,69,84,96,110],12:[1,7,21,30,36,43,50,58,69,80,94,105],13:[1,8,19,27,32,38],14:[1,7,13,22,28,35,42],15:[1,16,26,45,61,80],16:[1,10,22,26,35,41,51,61,66,71,77,84,90,101,111,120],17:[1,11,23,31,41,53,61,71,78,85,94,101],18:[1,13,18,23,32,45,50,54,60,71,83,102],19:[1,16,41,51,66,83],20:[1,25,55,77,90,105,116,129],21:[1,11,30,42,51,76,94],22:[1,11,23,26,34,39,49,58,65,73],23:[1,23,33,51,78,93],24:[1,11,21,27,35,41,51,58,62],25:[1,10,21,35,45,61],26:[1,10,34,53,70,105,123,141,160,176,192],27:[1,15,32,45,59,67,83],28:[1,14,22,29,43,51,61,76,83],29:[1,14,23,31,45,52,64],30:[1,11,20,28,41,54],31:[1,12,20,31],32:[1,12,23],33:[1,9,21,28,35,41,53,59,69],34:[1,10,22,31,37,46],35:[1,8,15,27,38],36:[1,13,33,51,68],37:[1,22,75,114,139],38:[1,15,27,41,65],39:[1,10,22,32,42,53,64,71],40:[1,10,21,28,38,51,61,69,79],41:[1,9,19,26,33,45],42:[1,10,20,30,44],43:[1,16,26,36,46,57,68],44:[1,30,43],45:[1,12,22,27],46:[1,11,21,27],47:[1,12,20,29],48:[1,11,18,27],49:[1,11],50:[1,16,30],51:[1,24,47],52:[1,29],53:[1,26,33],54:[1,23,41],55:[1,26,46],56:[1,39,75],57:[1,11,20,26],58:[1,7,14],59:[1,11,18],60:[1,7],61:[1,10],62:[1,9],63:[1,9],64:[1,11],65:[1,8],66:[1,8],67:[1,15],68:[1,34],69:[1,38],70:[1,36],71:[1,21],72:[1,20],73:[1,20],74:[1,32],75:[1,31],76:[1,23],77:[1,41],78:[1,31],79:[1,27],80:[1],81:[1],82:[1],83:[1],84:[1],85:[1],86:[1],87:[1],88:[1],89:[1],90:[1],91:[1],92:[1],93:[1],94:[1],95:[1],96:[1],97:[1],98:[1],99:[1],100:[1],101:[1],102:[1],103:[1],104:[1],105:[1],106:[1],107:[1],108:[1],109:[1],110:[1],111:[1],112:[1],113:[1],114:[1]};
+const RUKU_BASE = (() => { const b = {}; let c = 0; for (let s = 1; s <= 114; s++) { b[s] = c; c += RUKU[s].length; } return b; })();
+function rukuAt(s, a){
+  const st = RUKU[s]; if (!st) return null;
+  const i = st.indexOf(a);
+  return i < 0 ? null : {i: i + 1, n: st.length, g: RUKU_BASE[s] + i + 1, from: a, to: (st[i+1] || surahOf(s).v.length + 1) - 1};
+}
+function rukuEnds(s, a){ const st = RUKU[s]; return !!st && (a === surahOf(s).v.length || st.includes(a + 1)); }
+function rukuBand(s, a){
+  const r = rukuAt(s, a); if (!r) return "";
+  return `<div class="ruku" id="r-${s}-${r.i}" role="separator"><span class="rk" lang="ar">ع</span><b>Rukūʿ ${r.i} of ${r.n}</b><span>ayahs ${r.from}–${r.to}</span><span class="muted">(${r.g} of 558)</span></div>`;
+}
+
 function viewSurah(){
   const su = surahOf(S.surah);
   ensureFW(su.n);
@@ -867,7 +884,7 @@ function viewSurah(){
     <span class="legend">${marksFor(su.n) || `<span class="small muted">No marks in this surah yet</span>`}</span>
   </div>
   ${showBism && !S.onlyMarked ? `<div class="bism" lang="ar" dir="rtl">${esc(bism)}</div>` : ""}
-  ${ayahs.map(x => ayahHTML(su.n, x)).join("") || `<div class="empty" style="margin-top:16px"><b>No marked ayahs in this surah</b>Turn off “Only ayahs with marks” to see every ayah.</div>`}
+  ${ayahs.map(x => (S.onlyMarked ? "" : rukuBand(su.n, x.a)) + ayahHTML(su.n, x)).join("") || `<div class="empty" style="margin-top:16px"><b>No marked ayahs in this surah</b>Turn off “Only ayahs with marks” to see every ayah.</div>`}
   ${vocabHTML(su.n)}`;
 }
 
@@ -883,7 +900,7 @@ function ayahHTML(s, x){
   return `<article class="ayah${S.flashKey===k?" flash":""}" id="a-${s}-${x.a}">
     <div class="anum">${s}:${x.a}${dots.length?`<div class="dots" aria-hidden="true">${dots.map(d=>`<span class="dot ${d}"></span>`).join("")}</div>`:""}</div>
     <div class="abody">
-      <p class="ar" lang="ar" dir="rtl">${arTokHTML(s, x.a, x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span></p>
+      <p class="ar" lang="ar" dir="rtl">${arTokHTML(s, x.a, x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span>${rukuEnds(s, x.a) ? ` <span class="rkend" title="End of rukūʿ ${(RUKU[s].filter(v => v <= x.a).length)}">ع</span>` : ""}</p>
       <p class="tr${rev?" revised":""}" ${trAttrs()}>${esc(rev ? rev.text : x.en)}</p>
       ${rev ? `<div class="revline"><span class="chip rev" title="This translation has been revised from ${TR_NAME[S.trLang]}">Translation revised</span>
         <button type="button" class="btn ghost small" data-compare="${k}">${S.compare.has(k)?"Hide original":"Compare with original"}</button></div>
