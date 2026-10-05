@@ -443,7 +443,7 @@ const S = {
   qscale: Math.min(1.6, Math.max(0.8, parseFloat(store.get("aba.qscale")) || 1)),
   trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
   trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
-  tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [], vocab: {}, vocabOpen: false,
+  tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [], vocab: {}, vocabOpen: false, vrange: null,
   admin: false, db: null, dbState: "loading", sample: null, downloads: null,
   open: new Set(), compare: new Set(), onlyMarked: false,
   words: [], wq: "", wroot: "", cats: [], ncat: "", focus: false, readScale: Math.min(1.5, Math.max(0.85, parseFloat(store.get("aba.readscale")) || 1)), sq: "", nq: "", nkind: "all", ntag: null, lq: "", ltag: null, openLesson: new Set(), openNote: new Set()
@@ -819,15 +819,22 @@ function vocabRefs(s, arr){ return (arr||[]).map(a => `<button type="button" cla
 function vocabHTML(s){
   const v = S.vocab[s];
   if (!v || (!(v.ism||[]).length && !(v.fil||[]).length)) return "";
+  const nAy = surahOf(s).v.length;
+  const vr = S.vrange && S.vrange.s === s ? S.vrange : null;
+  const lo = vr ? vr.from : 1, hi = vr ? vr.to : nAy;
+  const inR = r => (r.ayahs||[]).some(a => a >= lo && a <= hi);
+  const cut = r => ({...r, ayahs: (r.ayahs||[]).filter(a => a >= lo && a <= hi)});
   const ar = x => x ? `<td class="ar" lang="ar" dir="rtl">${esc(x)}</td>` : `<td class="muted">—</td>`;
   const head = cols => `<tr>${cols.map(c => `<th>${esc(c[0])}${c[1] ? ` <span lang="ar">${esc(c[1])}</span>` : ""}</th>`).join("")}</tr>`;
-  const ism = (v.ism||[]).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.p2)}${ar(r.p1)}${ar(r.sg)}</tr>`).join("");
-  const fil = (v.fil||[]).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.amr)}${ar(r.masdar)}${ar(r.mud)}${ar(r.madi)}</tr>`).join("");
+  const ism = (v.ism||[]).filter(inR).map(cut).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.p2)}${ar(r.p1)}${ar(r.sg)}</tr>`).join("");
+  const fil = (v.fil||[]).filter(inR).map(cut).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.amr)}${ar(r.masdar)}${ar(r.mud)}${ar(r.madi)}</tr>`).join("");
   return `<section class="vocab" id="vocab">
     <div class="row"><h2>Vocabulary · Ism and Fiʿl</h2><span class="spacer"></span>
       <button type="button" class="btn small" data-vtoggle aria-expanded="${S.vocabOpen}">${S.vocabOpen ? "Hide tables" : "Show tables"}</button></div>
     ${S.vocabOpen ? `
     ${v.ai ? `<div class="row small" style="margin-top:10px"><span class="notice">Unreviewed draft. ${esc(v.note || "Plural, maṣdar and amr forms are not in the corpus; gaps were filled by AI and still need checking.")}</span>${S.admin ? `<button type="button" class="btn small" data-vreviewed="${s}">Mark as reviewed</button>` : ""}</div>` : ""}
+    <form class="row small" id="vrange" autocomplete="off" style="margin-top:10px;gap:8px"><label class="flabel" for="vfrom">Ayah from</label><input type="text" id="vfrom" inputmode="numeric" style="width:64px" placeholder="1" value="${vr ? lo : ""}"><label class="flabel" for="vto">to</label><input type="text" id="vto" inputmode="numeric" style="width:64px" placeholder="${nAy}" value="${vr ? hi : ""}"><button class="btn small" type="submit">Filter</button>${vr ? `<button type="button" class="btn small ghost" data-vall>Show all</button><span class="muted">Ayahs ${lo}–${hi}</span>` : ""}</form>
+    ${!ism && !fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in this table.</p>` : ""}
     ${ism ? `<h3>Ism (nouns)</h3><div class="vtbl-wrap"><table class="vtbl"><thead>${head(VOC_ISM)}</thead><tbody>${ism}</tbody></table></div>` : ""}
     ${fil ? `<h3>Fiʿl (verbs)</h3><div class="vtbl-wrap"><table class="vtbl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""}
     <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>` : ""}
@@ -2643,6 +2650,7 @@ document.addEventListener("click", async (ev) => {
   if (d.surah) return go("surah", {s:+d.surah});
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
+  if (d.vall !== undefined) { S.vrange = null; render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.vreviewed) { if (!S.admin || !S.db) return; try { await S.db.doc("vocab/" + d.vreviewed).update({ai: false, updatedAt: Date.now()}); toast("Marked as reviewed."); } catch (e) { toast("Couldn't save. Try again."); } return; }
   if (d.compare) { S.compare.has(d.compare) ? S.compare.delete(d.compare) : S.compare.add(d.compare); return render(); }
   if (d.toggle) { S.open.has(d.toggle) ? S.open.delete(d.toggle) : S.open.add(d.toggle); return render(); }
@@ -2818,6 +2826,17 @@ document.addEventListener("change", (ev) => {
   if (t.id === "w-cat" && M && M.type === "note") { captureFields(); if (M.it.cat === "__new" && M.catNew === undefined) M.catNew = ""; drawWriteEditor(); if (M.it.cat === "__new") $("#w-newcat")?.focus(); }
 });
 document.addEventListener("submit", (ev) => {
+  if (ev.target.id === "vrange") {
+    ev.preventDefault();
+    const n = surahOf(S.surah).v.length;
+    const f = $("#vfrom").value.trim(), e = $("#vto").value.trim();
+    let from = f === "" ? 1 : parseInt(f, 10), to = e === "" ? n : parseInt(e, 10);
+    if (!(from >= 1 && from <= n && to >= 1 && to <= n)) { toast(`Enter ayah numbers from 1 to ${n}.`); return; }
+    if (from > to) [from, to] = [to, from];
+    S.vrange = (from === 1 && to === n) ? null : {s: S.surah, from, to};
+    render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"}));
+    return;
+  }
   if (ev.target.id === "jump") {
     ev.preventDefault();
     const a = parseInt($("#jumpa").value, 10);
