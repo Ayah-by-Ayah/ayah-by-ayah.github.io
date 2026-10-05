@@ -875,69 +875,99 @@ function rukuBand(s, a){
 }
 
 /* ---------- Q&A (private: editor only, never part of the public export) ---------- */
+/* doc: {s, a, src, q:{en,bn,ar,ur}, ans:{…}, ai:{lang:true}, final, fu:[…], createdAt, updatedAt} */
 function qaList(k){ return (S.qaIx && S.qaIx[k]) || []; }
-const qaDir = (x) => /[؀-ۿ]/.test(x || "") ? "rtl" : "auto";
+function qaNorm(x){
+  const src = x.src || (typeof x.q === "string" && /[؀-ۿ]/.test(x.q) ? "ar" : "en");
+  const fix = v => typeof v === "string" ? Object.assign(blankLang(), {[src]: v}) : Object.assign(blankLang(), v || {});
+  return Object.assign({}, x, {src, q: fix(x.q), ans: fix(x.ans), ai: (x.ai && typeof x.ai === "object") ? x.ai : (x.ai ? {[src]: true} : {})});
+}
+const QA_GUIDE = {
+  en: "English, in a clear scholarly register used in English Islamic studies writing",
+  bn: "Bangla (Bengali script) in the standard register of Bangladeshi Islamic literature, using the Islamic terms customary there (e.g. আল্লাহ, সালাত, তাকওয়া)",
+  ar: "Modern Standard Arabic in a classical scholarly register, fully vowelled with all harakat (tashkeel) on every word",
+  ur: "Urdu (Arabic script) in the register of standard Urdu Islamic scholarly prose"
+};
 function qaCard(x){
-  const su = surahOf(x.s), body = renderDoc(x.ans || "", /[؀-ۿ]/.test(x.ans || "") ? "ar" : "en", "qa" + x.id);
+  const su = surahOf(x.s), q = pick(x.q, S.lang, x.src), an = pick(x.ans, S.lang, x.src);
+  const body = renderDoc(an.text, an.lang, "qa" + x.id), dir = l => RTL[l] ? "rtl" : "ltr";
   return `<article class="qacard">
     <div class="row"><button type="button" class="reflink" data-go="${x.s}:${x.a}">${x.s}:${x.a}</button><span class="muted small">${esc(su.tl)}</span>
-      <span class="chip ${x.final ? "exp" : "rev"}">${x.final ? "Final" : "Draft"}</span><span class="spacer"></span>
+      <span class="chip ${x.final ? "exp" : "rev"}">${x.final ? "Final" : "Draft"}</span>
+      ${(an.fallback || q.fallback) ? `<span class="chip">Shown in ${LNAME_EN[an.text ? an.lang : q.lang]}</span>` : ""}
+      ${x.ai[an.lang] ? `<span class="chip rev">AI draft</span>` : ""}<span class="spacer"></span>
       <button type="button" class="btn small" data-qa="${x.s}:${x.a}:${esc(x.id)}">Open</button></div>
-    <p class="qq" dir="${qaDir(x.q)}"><b>${esc(x.q || "")}</b></p>
-    <div class="qa-ans" dir="auto">${x.ans ? body.html : `<p class="muted small">No answer yet.</p>`}</div>
+    <p class="qq" lang="${q.lang}" dir="${dir(q.lang)}"><b>${esc(q.text)}</b></p>
+    <div class="qa-ans" lang="${an.lang}" dir="${dir(an.lang)}">${an.text ? body.html : `<p class="muted small">No answer yet.</p>`}</div>
   </article>`;
 }
 function viewQA(){
   if (!S.admin) return `${statusBar()}<div class="empty"><b>Q&amp;A is private</b>It is available in the editor only.</div>`;
   const q = S.qq.trim(), refs = q ? refMatch(q) : null, nq = normalize(q);
-  const items = S.qa.filter(x => refs ? inRanges(x.s, x.a, refs) : (!q || normalize([x.q, x.ans].join(" ")).includes(nq)))
+  const items = S.qa.filter(x => refs ? inRanges(x.s, x.a, refs) : (!q || normalize(LANGS.map(l => (x.q[l] || "") + " " + (x.ans[l] || "")).join(" ")).includes(nq)))
     .sort((a, b) => (a.s*1000 + a.a) - (b.s*1000 + b.a) || (a.createdAt || 0) - (b.createdAt || 0));
   return `${statusBar()}
   <div class="phead"><h1>Q&amp;A</h1></div>
-  <p class="lede">Your questions about ayahs, with the answers you finalised. Private: not shown on the public site. Start one from any ayah in the surah reader (the “Q&amp;A” button), or search here by text or by an ayah such as <b>2:255</b>.</p>
+  <p class="lede">Your questions about ayahs, with the answers you finalised, in the write-up language chosen at the top (falling back to the language it was written in). Private: not shown on the public site. Start one from any ayah in the surah reader (the “Q&amp;A” button), or search here by text or by an ayah such as <b>2:255</b>.</p>
   <div class="filters"><div class="row"><input type="search" id="qq" class="search" placeholder="Search questions and answers, or 2:255" value="${esc(S.qq)}" aria-label="Search Q&amp;A"></div>
     ${q ? `<div class="small muted">${items.length} result${items.length === 1 ? "" : "s"}</div>` : ""}</div>
   <div class="results">${items.map(qaCard).join("") || (S.qa.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No Q&amp;A yet</b>Open a surah and press “Q&amp;A” under any ayah.</div>`)}</div>`;
 }
+const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final]);
 function openQA(ref){
   const [s, a, id] = ref.split(":"); const ex = id ? S.qa.find(x => x.id === id) : null;
-  M = {type: "qa", s: +s, a: +a, id: ex ? ex.id : null, q: ex?.q || "", ans: ex?.ans || "", fu: "", final: !!ex?.final, ai: !!ex?.ai, hist: (ex?.fu || []).slice(), created: ex?.createdAt || 0, busy: false, ctl: [], err: "", status: "",
-    saved: {q: ex?.q || "", ans: ex?.ans || "", final: !!ex?.final}};
+  const src = ex ? ex.src : S.lang;
+  M = {type: "qa", s: +s, a: +a, id: ex ? ex.id : null, src, tab: (ex && ((ex.q[S.lang] || "") + (ex.ans[S.lang] || "")).trim()) ? S.lang : src,
+    q: Object.assign(blankLang(), ex?.q), ans: Object.assign(blankLang(), ex?.ans), ai: Object.assign({}, ex?.ai), fu: "", final: !!ex?.final, hist: (ex?.fu || []).slice(), created: ex?.createdAt || 0,
+    busy: false, ctl: [], err: "", status: ""};
+  M.saved = qaSnap();
   drawQA();
 }
 function captureQA(){
   if (!M || M.type !== "qa") return;
   const g = (i) => document.getElementById(i);
-  if (g("qa-q")) M.q = g("qa-q").value;
-  if (g("qa-ans")) M.ans = g("qa-ans").value;
+  if (g("qa-q")) M.q[M.tab] = g("qa-q").value;
+  if (g("qa-ans")) M.ans[M.tab] = g("qa-ans").value;
   if (g("qa-fu")) M.fu = g("qa-fu").value;
   if (g("qa-final")) M.final = g("qa-final").checked;
+  if (g("qa-src")) M.src = g("qa-src").value;
 }
-const qaDirty = () => M.q !== M.saved.q || M.ans !== M.saved.ans || M.final !== M.saved.final;
+const qaDirty = () => qaSnap() !== M.saved;
 function drawQA(){
-  const {s, a} = M, k = key(s, a), list = qaList(k), su = surahOf(s);
+  const {s, a} = M, k = key(s, a), list = qaList(k), su = surahOf(s), T = M.tab, isSrc = T === M.src, dir = RTL[T] ? "rtl" : "ltr";
   const cut = (x, n) => { x = String(x || "").replace(/\s+/g, " "); return x.length > n ? x.slice(0, n - 1) + "…" : x; };
+  const noAI = !S.sample;
   modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
     <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
       <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
-    ${list.length ? `<div class="row small"><span class="flabel">Saved for this ayah</span>${list.map(x => `<button type="button" class="chip ${x.id === M.id ? "exp" : "les"}" data-m="qa-open" data-v="${esc(x.id)}">${esc(cut(x.q, 50))}</button>`).join("")}${M.id ? `<button type="button" class="btn small" data-m="qa-open" data-v="">New question</button>` : ""}</div>` : ""}
-    <div class="field"><label for="qa-q">Question</label>
-      <textarea id="qa-q" rows="3" dir="${qaDir(M.q)}" placeholder="Write your question about this ayah (any language)">${esc(M.q)}</textarea>
-      <div class="row"><button type="button" class="btn primary" data-m="qa-ask" ${M.busy || !S.sample ? "disabled" : ""}>${M.ans.trim() ? "Ask again from scratch" : "Ask AI"}</button>
-        ${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button>` : ""}<span class="small muted">${esc(M.status || (S.sample ? "" : "AI is not available in this view."))}</span></div></div>
-    <div class="field"><label for="qa-ans">Answer ${M.ai ? `<span class="chip rev">AI draft</span>` : ""}</label>
-      <textarea id="qa-ans" rows="14" dir="${qaDir(M.ans)}" placeholder="The AI draft appears here. You can also write or edit the answer yourself.">${esc(M.ans)}</textarea>
-      <span class="small muted">The AI works from its own knowledge only: it cannot look up tafsir, hadith or the Qur'an text. Check every quotation, reference and attribution before you finalise.</span></div>
-    ${M.ans.trim() ? `<div class="field"><label for="qa-fu">Follow-up or change</label>
+    ${list.length ? `<div class="row small"><span class="flabel">Saved for this ayah</span>${list.map(x => `<button type="button" class="chip ${x.id === M.id ? "exp" : "les"}" data-m="qa-open" data-v="${esc(x.id)}">${esc(cut(pick(x.q, S.lang, x.src).text, 50))}</button>`).join("")}${M.id ? `<button type="button" class="btn small" data-m="qa-open" data-v="">New question</button>` : ""}</div>` : ""}
+    <div class="row small"><label class="flabel" for="qa-src">Written in</label>
+      <select id="qa-src" style="width:auto">${LANGS.map(l => `<option value="${l}" ${l === M.src ? "selected" : ""}>${LNAME_EN[l]}</option>`).join("")}</select>
+      <span class="muted">Write and research in this language; the others are drafted from it.</span></div>
+    <div class="ltabs" role="tablist">${LANGS.map(l => `<button type="button" role="tab" data-m="qa-tab" data-v="${l}" aria-selected="${T === l}" class="${((M.q[l] || "") + (M.ans[l] || "")).trim() ? "filled" : ""}">${LNAME[l]}${M.ai[l] ? '<span class="flag">AI DRAFT</span>' : ""}</button>`).join("")}</div>
+    <div class="field"><label for="qa-q">Question · ${LNAME_EN[T]}</label>
+      <textarea id="qa-q" rows="3" lang="${T}" dir="${dir}" placeholder="${isSrc ? "Write your question about this ayah" : "Drafted from the " + LNAME_EN[M.src] + " question, or write it here"}">${esc(M.q[T])}</textarea>
+      ${isSrc ? `<div class="row"><button type="button" class="btn primary" data-m="qa-ask" ${M.busy || noAI ? "disabled" : ""}>${M.ans[T].trim() ? "Ask again from scratch" : "Ask AI"}</button>
+        ${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button>` : ""}<span class="small muted">${esc(M.status || (noAI ? "AI is not available in this view." : ""))}</span></div>`
+        : `<div class="row">${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button>` : ""}<span class="small muted">${esc(M.status || "")}</span></div>`}</div>
+    <div class="field"><label for="qa-ans">Answer · ${LNAME_EN[T]} ${M.ai[T] ? `<span class="chip rev">AI draft</span>` : ""}</label>
+      <textarea id="qa-ans" rows="14" lang="${T}" dir="${dir}" placeholder="${isSrc ? "The AI draft appears here. You can also write or edit the answer yourself." : "Draft this language with AI, or write it here"}">${esc(M.ans[T])}</textarea>
+      ${isSrc ? `<span class="small muted">The AI works from its own knowledge only: it cannot look up tafsir, hadith or the Qur'an text. Check every quotation, reference and attribution before you finalise.</span>` : ""}
+      ${M.ai[T] ? `<div class="row small"><span class="notice">Drafted by AI. Review it, then mark it reviewed.</span><button type="button" class="btn small" data-m="qa-reviewed">Mark as reviewed</button></div>` : ""}</div>
+    <div class="aibox row">
+      <button type="button" class="btn" data-m="qa-trans" data-v="" ${M.busy || noAI ? "disabled" : ""}>Draft the other languages with AI</button>
+      ${!isSrc ? `<button type="button" class="btn" data-m="qa-trans" data-v="${T}" ${M.busy || noAI ? "disabled" : ""}>Draft ${LNAME_EN[T]} only</button>` : ""}
+      <span class="small muted">Translates the ${LNAME_EN[M.src]} question and answer. Replaces what is already written in the language drafted.</span></div>
+    ${(isSrc && M.ans[T].trim()) ? `<div class="field"><label for="qa-fu">Follow-up or change</label>
       <textarea id="qa-fu" rows="2" dir="auto" placeholder="For example: also consider 4:82 · make it shorter · explain the grammar more · I disagree with the second point because…">${esc(M.fu)}</textarea>
-      <div class="row"><button type="button" class="btn" data-m="qa-follow" ${M.busy || !S.sample ? "disabled" : ""}>Revise the answer with AI</button><span class="small muted">It revises the answer above, keeping your edits.</span></div></div>` : ""}
+      <div class="row"><button type="button" class="btn" data-m="qa-follow" ${M.busy || noAI ? "disabled" : ""}>Revise the answer with AI</button><span class="small muted">It revises the answer above, keeping your edits. Other languages must be redrafted afterwards.</span></div></div>` : ""}
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
     <div class="foot row"><label class="row small"><input type="checkbox" id="qa-final" ${M.final ? "checked" : ""}> Final: I have reviewed this answer</label><span class="spacer"></span>
       ${M.id ? `<button type="button" class="btn danger" data-m="qa-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
       <button type="button" class="btn primary" data-m="qa-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
 }
 function qaPrompt(follow){
-  const {s, a} = M, su = surahOf(s), n = su.v.length;
+  const {s, a} = M, su = surahOf(s), n = su.v.length, S0 = M.src;
   const line = (x) => `${s}:${x}  ${arText(s, x)}  —  ${trText(s, x)}`;
   const ctx = [a > 1 ? "Previous ayah: " + line(a - 1) : "", a < n ? "Next ayah: " + line(a + 1) : ""].filter(Boolean).join("\n");
   return `You are assisting a researcher of the Qur'an and Arabic (the questioner) in preparing an answer to his question about one ayah.
@@ -947,68 +977,144 @@ ${arText(s, a)}
 Translation (${TR_NAME[S.trLang]}): ${trText(s, a)}
 ${ctx}
 
-Question: ${M.q.trim()}
-${follow ? `\nCurrent draft of the answer (the questioner may have edited it; keep his edits unless he asks you to change them):\n"""\n${M.ans.trim()}\n"""\n\nHis follow-up or instruction: ${M.fu.trim()}\n\nWrite the complete revised answer.` : "\nWrite the answer."}
+Question (in ${LNAME_EN[S0]}): ${M.q[S0].trim()}
+${follow ? `\nCurrent draft of the answer (the questioner may have edited it; keep his edits unless he asks you to change them):\n"""\n${M.ans[S0].trim()}\n"""\n\nHis follow-up or instruction: ${M.fu.trim()}\n\nWrite the complete revised answer.` : "\nWrite the answer."}
 
 Rules:
-- Write in the language of the question. If you write Arabic, give it fully voweled (harakat on every word).
+- Write the answer in ${QA_GUIDE[S0]}.
 - Quote Qur'anic Arabic only from the ayahs given above, copied exactly, each on its own line starting with ">> ". For any other ayah give only its reference, written like 2:255, and describe it in your own words.
 - Do not give hadith texts or numbers, and do not quote tafsir or any scholar, from memory. You may say that views exist, in general terms, and mark every such statement as needing verification.
 - Base the answer on the text of the ayahs, the language and context. Separate what the text says clearly from what is interpretation, and say where you are unsure.
 - Be direct and organised. Use "## " headings only if the answer is long; **bold** and "- " lists are fine. No preamble and no closing remarks.
-- End with a final section headed "To verify before saving" that lists, as short bullets, every reference, quotation, attribution or factual claim in your answer that the questioner should check against the sources.`;
+- End with a final section headed "To verify before saving" (in the same language) that lists, as short bullets, every reference, quotation, attribution or factual claim in your answer that the questioner should check against the sources.`;
 }
 async function qaRun(follow){
   captureQA();
-  if (!M.q.trim()) { M.err = "Write the question first."; drawQA(); return; }
+  const S0 = M.src;
+  if (!M.q[S0].trim()) { M.tab = S0; M.err = `Write the question in the ${LNAME_EN[S0]} tab first.`; drawQA(); return; }
   if (follow && !M.fu.trim()) { M.err = "Write the follow-up or the change you want first."; drawQA(); return; }
   if (!S.sample) { M.err = "AI is not available in this view."; drawQA(); return; }
-  const prompt = qaPrompt(follow), keepAns = M.ans;
-  M.err = ""; M.busy = true; M.status = "Thinking… this can take a minute."; drawQA();
+  const prompt = qaPrompt(follow), keepAns = M.ans[S0];
+  M.tab = S0; M.err = ""; M.busy = true; M.status = "Thinking… this can take a minute."; drawQA();
   const ctl = new AbortController(); M.ctl = [ctl];
   try {
-    const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex", onText: ({text}) => { const t = $("#qa-ans"); if (t && M && M.type === "qa") t.value = text; }});
+    const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex", onText: ({text}) => { const t = $("#qa-ans"); if (t && M && M.type === "qa" && M.tab === S0) t.value = text; }});
     if (!M || M.type !== "qa") return;
     if (follow) M.hist.push(M.fu.trim());
-    M.ans = text.trim(); M.ai = true; M.final = false; if (follow) M.fu = "";
-    M.status = truncated ? "The answer was cut short. Check its ending." : "Draft ready. Edit it, ask a follow-up, then save.";
+    M.ans[S0] = text.trim(); M.ai[S0] = true; M.final = false; if (follow) M.fu = "";
+    M.status = truncated ? "The answer was cut short. Check its ending." : "Draft ready. Edit it, ask a follow-up, then draft the other languages and save.";
   } catch (e) {
     if (!M || M.type !== "qa") return;
-    if (e?.text) { M.ans = e.text; M.ai = true; M.final = false; } else M.ans = keepAns;
-    if (e?.code !== "cancelled") M.err = aiErr(e?.code, "en").replace("The English draft", "The answer");
+    if (e?.text) { M.ans[S0] = e.text; M.ai[S0] = true; M.final = false; } else M.ans[S0] = keepAns;
+    if (e?.code !== "cancelled") M.err = aiErr(e?.code, S0).replace(/The \w+ draft/, "The answer");
     M.status = "";
   }
   M.busy = false; M.ctl = []; drawQA();
 }
+function qaParse(text){
+  const m = String(text).match(/^\s*QUESTION:[ \t]*(.*?)[ \t]*\r?\n[ \t]*ANSWER:[ \t]*\r?\n?([\s\S]*)$/);
+  return m ? {q: m[1].trim(), ans: m[2].trim()} : {q: "", ans: String(text).trim()};
+}
+async function qaTranslate(only, force){
+  captureQA();
+  const S0 = M.src;
+  if (!M.q[S0].trim() && !M.ans[S0].trim()) { M.tab = S0; M.err = `Write the ${LNAME_EN[S0]} question first, then draft the others.`; drawQA(); return; }
+  if (only === S0) return;
+  if (!S.sample) { M.err = "AI is not available in this view."; drawQA(); return; }
+  const targets = only ? [only] : LANGS.filter(l => l !== S0);
+  const filled = targets.filter(l => ((M.q[l] || "") + (M.ans[l] || "")).trim());
+  if (filled.length && !force) { M.pendingTrans = only || ""; $("#m-confirm").innerHTML = `<div class="confirm"><span>This replaces what is already written in ${filled.map(l => LNAME_EN[l]).join(", ")}.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep them</button><button type="button" class="btn primary" data-m="qa-trans-yes">Replace</button></div>`; return; }
+  if (only) M.tab = only;
+  M.err = ""; M.busy = true; M.status = "Drafting… the first words usually take 10–40 seconds."; drawQA();
+  M.ctl = [];
+  const refAyahs = [], seen = new Set();
+  const addRef = (s, a) => { const k = key(s, a); if (refAyahs.length < 60 && validRef(s, a) && !seen.has(k)) { seen.add(k); refAyahs.push([s, a]); } };
+  addRef(M.s, M.a);
+  for (const m of (M.q[S0] + "\n" + M.ans[S0]).matchAll(/(?<![\d:])(\d{1,3}):(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?(?![\d:])/g)) {
+    const a0 = +m[2], a1 = m[3] ? Math.min(+m[3], a0 + 30) : a0; for (let x = a0; x <= a1; x++) addRef(+m[1], x);
+  }
+  await Promise.all(targets.filter(l => TR_LANGS.includes(l)).map(loadTrx));
+  const trBlock = l => (!TR_LANGS.includes(l) || (l !== "en" && !S.TRX[l])) ? "" : `
+- Wherever the text gives the meaning of an ayah (for example the rendering that follows an Arabic quotation, or a quoted phrase of an ayah), do not translate the source's rendering yourself. Use the ${LNAME_EN[l]} translation of that ayah given in the list below (${TR_NAME[l]}), word for word. If the source renders only part of an ayah, use the matching part of that wording. Keep the ayah reference that follows it.
+
+${LNAME_EN[l]} translation of the ayahs referred to:
+${refAyahs.map(([s, a]) => `${s}:${a} — ${trText(s, a, l)}`).join("\n")}
+`;
+  await Promise.all(targets.map(async l => {
+    const ctl = new AbortController(); M.ctl.push(ctl);
+    const prompt = `Translate a question about a Qur'anic ayah, and its answer, from ${LNAME_EN[S0]} into ${QA_GUIDE[l]}.
+
+Rules:
+- Translate faithfully. Do not add, remove, summarise or comment.
+- Keep every quotation of the Qur'an in Arabic exactly as written, character for character.
+- Keep ayah references such as 2:255 exactly as written.
+- Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links.
+- Keep footnote markers such as [^1] exactly where they are, and translate the footnote lines that start with "[^1]: " while keeping that marker at the start.
+- Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}
+
+Reply in exactly this form and nothing else:
+QUESTION: <the translated question on one line>
+ANSWER:
+<the translated answer; leave empty if the source has no answer>
+
+Source question:
+${M.q[S0] || "(none)"}
+
+Source answer:
+${M.ans[S0] || "(none)"}`;
+    try {
+      const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache: false, onText: ({text}) => {
+        if (M && M.type === "qa" && M.tab === l) { const p = qaParse(text); const tq = $("#qa-q"), ta = $("#qa-ans"); if (tq && p.q) tq.value = p.q; if (ta && p.ans) ta.value = p.ans; }
+      }});
+      if (!M || M.type !== "qa") return;
+      const p = qaParse(text); M.q[l] = p.q; M.ans[l] = p.ans; M.ai[l] = true;
+      if (truncated) M.err = `The ${LNAME_EN[l]} draft was cut short. Check its ending.`;
+    } catch (e) {
+      if (!M || M.type !== "qa") return;
+      if (e && e.text) { const p = qaParse(e.text); M.q[l] = p.q; M.ans[l] = p.ans; M.ai[l] = true; }
+      if (e?.code === "cancelled") return;
+      M.err = aiErr(e?.code, l);
+    }
+  }));
+  if (!M || M.type !== "qa") return;
+  M.final = false; M.busy = false; M.ctl = []; M.status = M.err ? "" : "Drafts ready. Check each language, then save.";
+  drawQA();
+}
 async function qaAct(act, d){
   const conf = (msg, yes, yesLabel, noLabel, danger) => { $("#m-confirm").innerHTML = `<div class="confirm"><span>${msg}</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">${noLabel}</button><button type="button" class="btn ${danger ? "danger" : "primary"}" data-m="${yes}">${yesLabel}</button></div>`; };
+  const any = () => LANGS.some(l => ((M.q[l] || "") + (M.ans[l] || "")).trim());
   if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
   if (act === "close-yes") { closeModal(); return; }
   if (act === "close") {
     captureQA();
     if (M.busy) { M.ctl.forEach(c => c.abort()); closeModal(); return; }
-    if (qaDirty() && (M.q.trim() || M.ans.trim())) { conf("Close without saving?", "close-yes", "Close", "Keep writing", true); return; }
+    if (qaDirty() && any()) { conf("Close without saving?", "close-yes", "Close", "Keep writing", true); return; }
     closeModal(); return;
   }
   if (M.busy && act !== "qa-stop") return;
   if (act === "qa-stop") { M.ctl.forEach(c => c.abort()); return; }
+  if (act === "qa-tab") { captureQA(); M.tab = d.v; M.err = ""; drawQA(); return; }
+  if (act === "qa-reviewed") { captureQA(); delete M.ai[M.tab]; drawQA(); return; }
   if (act === "qa-ask") return qaRun(false);
   if (act === "qa-follow") return qaRun(true);
+  if (act === "qa-trans") return qaTranslate(d.v || "", false);
+  if (act === "qa-trans-yes") return qaTranslate(M.pendingTrans || "", true);
   if (act === "qa-open" || act === "qa-open-yes") {
-    if (act === "qa-open") { captureQA(); M.next = d.v || ""; if (qaDirty() && (M.q.trim() || M.ans.trim())) { conf("Leave this one without saving?", "qa-open-yes", "Leave", "Stay", true); return; } }
+    if (act === "qa-open") { captureQA(); M.next = d.v || ""; if (qaDirty() && any()) { conf("Leave this one without saving?", "qa-open-yes", "Leave", "Stay", true); return; } }
     openQA(`${M.s}:${M.a}${M.next ? ":" + M.next : ""}`); return;
   }
   if (act === "qa-save") {
     captureQA();
-    if (!M.q.trim()) { M.err = "Write the question first."; drawQA(); return; }
+    if (!M.q[M.src].trim()) { M.tab = M.src; M.err = `Write the question in ${LNAME_EN[M.src]} first (it is the language you wrote in).`; drawQA(); return; }
     const id = M.id || ("qa-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)), now = Date.now();
-    const doc = {s: M.s, a: M.a, q: M.q.trim(), ans: M.ans.trim(), final: !!M.final, ai: !!M.ai, fu: M.hist, createdAt: M.created || now, updatedAt: now};
+    const tr = o => Object.fromEntries(LANGS.map(l => [l, (o[l] || "").trim()]));
+    const doc = {s: M.s, a: M.a, src: M.src, q: tr(M.q), ans: tr(M.ans), ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && ((M.q[l] || "") + (M.ans[l] || "")).trim())), final: !!M.final, fu: M.hist, createdAt: M.created || now, updatedAt: now};
     M.busy = true; M.err = ""; drawQA();
-    try { await S.db.collection("qa").doc(id).set(doc); M.id = id; M.created = doc.createdAt; M.saved = {q: M.q.trim(), ans: M.ans.trim(), final: !!M.final}; M.q = M.saved.q; M.ans = M.saved.ans; M.status = "Saved."; toast("Q&A saved"); }
+    try { await S.db.collection("qa").doc(id).set(doc); M.id = id; M.created = doc.createdAt; M.q = Object.assign(blankLang(), doc.q); M.ans = Object.assign(blankLang(), doc.ans); M.ai = Object.assign({}, doc.ai); M.saved = qaSnap(); M.status = "Saved."; toast("Q&A saved"); }
     catch (e) { M.err = dbErr(e); }
     M.busy = false; drawQA(); return;
   }
-  if (act === "qa-delete") { conf("Delete this question and its answer?", "qa-delete-yes", "Delete", "Keep it", true); return; }
+  if (act === "qa-delete") { conf("Delete this question and its answers in all languages?", "qa-delete-yes", "Delete", "Keep it", true); return; }
   if (act === "qa-delete-yes") {
     M.busy = true; drawQA();
     try { await S.db.collection("qa").doc(M.id).delete(); closeModal(); toast("Deleted"); }
@@ -1016,7 +1122,6 @@ async function qaAct(act, d){
     return;
   }
 }
-
 function openRukuList(ref){
   const [s, cur] = ref.split(":").map(Number), su = surahOf(s), st = RUKU[s];
   M = {type:"rukus"};
@@ -3089,7 +3194,7 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     if (first.lessons) { first.lessons=false; ready(); } reindex(); render();
   }, fail);
   db.collection("qa").onSnapshot(snap => {
-    S.qa = snap.docs.map(d => Object.assign({id:d.id}, d.data())).filter(x => validRefSafe(x.s, x.a)); S.qaIx = {};
+    S.qa = snap.docs.map(d => qaNorm(Object.assign({id:d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a)); S.qaIx = {};
     for (const x of S.qa) (S.qaIx[key(x.s, x.a)] ||= []).push(x);
     render();
   }, () => {});
