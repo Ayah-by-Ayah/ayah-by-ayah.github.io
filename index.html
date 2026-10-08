@@ -149,6 +149,33 @@ html.script-indopak .ar .end{font-family:"Scheherazade New",serif}
 .orig b{font:600 11px/1 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
 .marks{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 .admin-bar{display:flex;gap:2px;flex-wrap:wrap;margin-top:8px}
+button.ruku{width:100%;text-align:left;font:inherit;font-size:14px;color:inherit;cursor:pointer}
+button.ruku:hover{border-color:var(--muted)}
+button.rkend{background:none;color:inherit;font-family:inherit;cursor:pointer;padding:0}
+.rklist{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.rkrow{display:flex;gap:12px;align-items:center;width:100%;text-align:left;font:inherit;font-size:15px;color:inherit;background:var(--sunk);border:1px solid var(--line);border-radius:8px;padding:8px 12px;cursor:pointer}
+.rkrow b{min-width:2ch}.rkrow.cur{border-color:var(--ink);background:var(--surface)}
+.rkrow .muted{margin-left:auto}
+nav.tabs button[hidden]{display:none}
+.dialog.qa{max-width:860px}
+.dialog.qa textarea{width:100%;font:inherit;line-height:1.6}
+.qacard{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 16px;margin:12px 0}
+.qacard .qq{margin:8px 0 6px;font-size:17px}
+.qacard .qa-ans{font-size:15.5px;line-height:1.65}
+.ruku{display:flex;flex-wrap:wrap;align-items:center;gap:4px 12px;margin:22px 0 4px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;background:var(--sunk);font-size:14px;scroll-margin-top:120px}
+.ruku .rk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border:1.5px solid currentColor;border-radius:50%;font-size:16px;line-height:1}
+.rkend{display:inline-flex;align-items:center;justify-content:center;width:1.3em;height:1.3em;border:1.5px solid currentColor;border-radius:50%;font-size:.6em;vertical-align:middle;opacity:.7}
+.vocab{margin-top:28px;border-top:1px solid var(--line);padding-top:16px}
+.vocab h2{font-size:18px;margin:0}
+.vocab h3{font-size:15px;margin:18px 0 8px}
+.vtbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.vtbl{border-collapse:collapse;width:100%;font-size:14px}
+.vtbl th,.vtbl td{border:1px solid var(--line);padding:7px 10px;text-align:center;vertical-align:middle}
+.vtbl th{background:var(--sunk);font-weight:600;font-size:13px;white-space:nowrap}
+.vtbl td.ar{font-size:21px;line-height:1.9;white-space:nowrap}
+.vtbl td.mean{text-align:left}
+.vtbl td.refs{white-space:nowrap}
+
 .admin-bar .btn{font-size:13px}
 
 /* Write-ups */
@@ -396,6 +423,7 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
       <button type="button" data-nav="notes">Notes</button>
       <button type="button" data-nav="lessons">Lessons</button>
       <button type="button" data-nav="words">Word analysis</button>
+      <button type="button" data-nav="qa" id="nav-qa" hidden>Q&amp;A</button>
     </nav>
     <div class="langbar">
       <span class="lbl">Write-ups in</span>
@@ -446,7 +474,7 @@ const S = {
   qscale: Math.min(1.6, Math.max(0.8, parseFloat(store.get("aba.qscale")) || 1)),
   trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
   trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
-  tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [],
+  tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [], vocab: {}, vocabOpen: false, vrange: null, qa: [], qaIx: {}, qq: "",
   admin: false, db: null, dbState: "loading", sample: null, downloads: null,
   open: new Set(), compare: new Set(), onlyMarked: false,
   words: [], wq: "", wroot: "", cats: [], ncat: "", focus: false, readScale: Math.min(1.5, Math.max(0.85, parseFloat(store.get("aba.readscale")) || 1)), sq: "", nq: "", nkind: "all", ntag: null, lq: "", ltag: null, openLesson: new Set(), openNote: new Set()
@@ -641,8 +669,8 @@ function goRef(ref){
       S.ret = {view: "article", art: Object.assign({}, S.art), y, label: t ? `Back to “${t.length > 48 ? t.slice(0, 46) + "…" : t}”` : `Back to the ${kindL}`};
     } else if (S.view === "surah") {
       if (!S.ret || S.ret.view !== "surah" || S.ret.surah !== S.surah || Math.abs(S.ret.y - y) > 40) S.ret = {view: "surah", surah: S.surah, y, label: `Back to where you were in ${surahOf(S.surah).tl}`};
-    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words") {
-      S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view[0].toUpperCase() + S.view.slice(1)}`};
+    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa") {
+      S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view === "qa" ? "Q&A" : S.view[0].toUpperCase() + S.view.slice(1)}`};
     }
     S.keepRet = true; if (S.onlyMarked && !hasMarks(s,a)) S.onlyMarked = false; S.open.add(key(s,a)); go("surah",{s,a}); }
 }
@@ -650,7 +678,7 @@ function fromHash(){
   const h = (location.hash||"").slice(1);
   let m;
   if (h === "" || h === "surahs") S.view = "surahs";
-  else if (h === "notes" || h === "lessons" || h === "words") S.view = h;
+  else if (h === "notes" || h === "lessons" || h === "words" || h === "qa") S.view = h;
   else if ((m = h.match(/^([nlw])-([A-Za-z0-9_.~-]+)$/))) { S.view = "article"; S.art = {kind: m[1], id: m[2], from: m[1]==="n" ? "notes" : m[1]==="w" ? "words" : "lessons"}; }
   else if ((m = h.match(/^s(\d{1,3})(?:-(\d{1,3}))?$/)) && +m[1]>=1 && +m[1]<=114) { S.view = "surah"; S.surah = +m[1]; if (m[2]) { S.pendingAyah = +m[2]; S.open.add(key(+m[1],+m[2])); } }
 }
@@ -746,6 +774,7 @@ function render(){
   if (S.focus && S.view !== "surah" && S.view !== "article") { S.focus = false; document.documentElement.classList.remove("reading"); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
   setTimeout(drawFocusBar, 0);
   drawBackPill();
+  { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; }
   document.querySelectorAll("nav.tabs button").forEach(b => {
     const cur = b.dataset.nav === S.view || (b.dataset.nav==="surahs" && S.view==="surah")
       || (S.view==="article" && ((S.art?.kind==="l" && b.dataset.nav==="lessons") || (S.art?.kind==="n" && b.dataset.nav==="notes") || (S.art?.kind==="w" && b.dataset.nav==="words")));
@@ -764,6 +793,7 @@ function render(){
   else if (S.view === "notes") app.innerHTML = viewNotes();
   else if (S.view === "lessons") app.innerHTML = viewLessons();
   else if (S.view === "words") app.innerHTML = viewWords();
+  else if (S.view === "qa") app.innerHTML = viewQA();
   else if (S.view === "article") app.innerHTML = viewArticle();
   window.scrollTo(0, y);
   if (S.pendingAyah) { const a = S.pendingAyah; S.pendingAyah = null; S.flashKey = key(S.surah,a); render(); requestAnimationFrame(()=> document.getElementById(`a-${S.surah}-${a}`)?.scrollIntoView({block:"start"})); }
@@ -816,6 +846,304 @@ function viewSurahs(){
 
 function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] || IDX.lessons[k]); }
 
+const VOC_ISM = [["Ayah",""],["Meaning",""],["Plural 2","جمع ٢"],["Plural 1","جمع ١"],["Singular","مفرد"]];
+const VOC_FIL = [["Ayah",""],["Meaning",""],["Amr","أمر"],["Maṣdar","مصدر"],["Muḍāriʿ","مضارع"],["Māḍī","ماضٍ"]];
+function vocabRefs(s, arr){ return (arr||[]).map(a => `<button type="button" class="reflink" data-go="${s}:${a}">${a}</button>`).join(", "); }
+function vocabHTML(s){
+  const v = S.vocab[s];
+  if (!v || (!(v.ism||[]).length && !(v.fil||[]).length)) return "";
+  const nAy = surahOf(s).v.length;
+  const vr = S.vrange && S.vrange.s === s ? S.vrange : null;
+  const lo = vr ? vr.from : 1, hi = vr ? vr.to : nAy;
+  const inR = r => (r.ayahs||[]).some(a => a >= lo && a <= hi);
+  const cut = r => ({...r, ayahs: (r.ayahs||[]).filter(a => a >= lo && a <= hi)});
+  const ar = x => x ? `<td class="ar" lang="ar" dir="rtl">${esc(x)}</td>` : `<td class="muted">—</td>`;
+  const head = cols => `<tr>${cols.map(c => `<th>${esc(c[0])}${c[1] ? ` <span lang="ar">${esc(c[1])}</span>` : ""}</th>`).join("")}</tr>`;
+  const ism = (v.ism||[]).filter(inR).map(cut).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.p2)}${ar(r.p1)}${ar(r.sg)}</tr>`).join("");
+  const fil = (v.fil||[]).filter(inR).map(cut).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.amr)}${ar(r.masdar)}${ar(r.mud)}${ar(r.madi)}</tr>`).join("");
+  return `<section class="vocab" id="vocab">
+    <div class="row"><h2>Vocabulary · Ism and Fiʿl</h2><span class="spacer"></span>
+      <button type="button" class="btn small" data-vtoggle aria-expanded="${S.vocabOpen}">${S.vocabOpen ? "Hide tables" : "Show tables"}</button></div>
+    ${S.vocabOpen ? `
+    ${v.ai ? `<div class="row small" style="margin-top:10px"><span class="notice">Unreviewed draft. ${esc(v.note || "Plural, maṣdar and amr forms are not in the corpus; gaps were filled by AI and still need checking.")}</span>${S.admin ? `<button type="button" class="btn small" data-vreviewed="${s}">Mark as reviewed</button>` : ""}</div>` : ""}
+    <form class="row small" id="vrange" autocomplete="off" style="margin-top:10px;gap:8px"><label class="flabel" for="vfrom">Ayah from</label><input type="text" id="vfrom" inputmode="numeric" style="width:64px" placeholder="1" value="${vr ? lo : ""}"><label class="flabel" for="vto">to</label><input type="text" id="vto" inputmode="numeric" style="width:64px" placeholder="${nAy}" value="${vr ? hi : ""}"><button class="btn small" type="submit">Filter</button>${vr ? `<button type="button" class="btn small ghost" data-vall>Show all</button><span class="muted">Ayahs ${lo}–${hi}</span>` : ""}</form>
+    ${!ism && !fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in this table.</p>` : ""}
+    ${ism ? `<h3>Ism (nouns)</h3><div class="vtbl-wrap"><table class="vtbl"><thead>${head(VOC_ISM)}</thead><tbody>${ism}</tbody></table></div>` : ""}
+    ${fil ? `<h3>Fiʿl (verbs)</h3><div class="vtbl-wrap"><table class="vtbl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""}
+    <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>` : ""}
+  </section>`;
+}
+
+/* Rukūʿ starts per surah (558 in all; Indo-Pak/quran.com division). Source: quran-meta package, checked against quran.ai metadata. */
+const RUKU = {1:[1],2:[1,8,21,30,40,47,60,62,72,83,87,97,104,113,122,130,142,148,153,164,168,177,183,189,197,211,217,222,229,232,236,243,249,254,258,261,267,274,282,284],3:[1,10,21,31,42,55,64,72,81,92,102,110,121,130,144,149,156,172,181,190],4:[1,11,15,23,26,34,43,51,60,71,77,88,92,97,101,105,113,116,127,135,142,153,163,172],5:[1,6,12,20,27,35,44,51,57,67,78,87,94,101,109,116],6:[1,11,21,31,42,51,56,61,71,83,91,95,101,111,122,130,141,145,151,155],7:[1,11,26,32,40,48,54,59,65,73,85,94,100,109,127,130,142,148,152,158,163,172,182,189],8:[1,11,20,29,38,45,49,59,65,70],9:[1,7,17,25,30,38,43,60,67,73,81,90,100,111,119,123],10:[1,11,21,31,41,54,61,71,83,93,104],11:[1,9,25,36,50,61,69,84,96,110],12:[1,7,21,30,36,43,50,58,69,80,94,105],13:[1,8,19,27,32,38],14:[1,7,13,22,28,35,42],15:[1,16,26,45,61,80],16:[1,10,22,26,35,41,51,61,66,71,77,84,90,101,111,120],17:[1,11,23,31,41,53,61,71,78,85,94,101],18:[1,13,18,23,32,45,50,54,60,71,83,102],19:[1,16,41,51,66,83],20:[1,25,55,77,90,105,116,129],21:[1,11,30,42,51,76,94],22:[1,11,23,26,34,39,49,58,65,73],23:[1,23,33,51,78,93],24:[1,11,21,27,35,41,51,58,62],25:[1,10,21,35,45,61],26:[1,10,34,53,70,105,123,141,160,176,192],27:[1,15,32,45,59,67,83],28:[1,14,22,29,43,51,61,76,83],29:[1,14,23,31,45,52,64],30:[1,11,20,28,41,54],31:[1,12,20,31],32:[1,12,23],33:[1,9,21,28,35,41,53,59,69],34:[1,10,22,31,37,46],35:[1,8,15,27,38],36:[1,13,33,51,68],37:[1,22,75,114,139],38:[1,15,27,41,65],39:[1,10,22,32,42,53,64,71],40:[1,10,21,28,38,51,61,69,79],41:[1,9,19,26,33,45],42:[1,10,20,30,44],43:[1,16,26,36,46,57,68],44:[1,30,43],45:[1,12,22,27],46:[1,11,21,27],47:[1,12,20,29],48:[1,11,18,27],49:[1,11],50:[1,16,30],51:[1,24,47],52:[1,29],53:[1,26,33],54:[1,23,41],55:[1,26,46],56:[1,39,75],57:[1,11,20,26],58:[1,7,14],59:[1,11,18],60:[1,7],61:[1,10],62:[1,9],63:[1,9],64:[1,11],65:[1,8],66:[1,8],67:[1,15],68:[1,34],69:[1,38],70:[1,36],71:[1,21],72:[1,20],73:[1,20],74:[1,32],75:[1,31],76:[1,23],77:[1,41],78:[1,31],79:[1,27],80:[1],81:[1],82:[1],83:[1],84:[1],85:[1],86:[1],87:[1],88:[1],89:[1],90:[1],91:[1],92:[1],93:[1],94:[1],95:[1],96:[1],97:[1],98:[1],99:[1],100:[1],101:[1],102:[1],103:[1],104:[1],105:[1],106:[1],107:[1],108:[1],109:[1],110:[1],111:[1],112:[1],113:[1],114:[1]};
+const RUKU_BASE = (() => { const b = {}; let c = 0; for (let s = 1; s <= 114; s++) { b[s] = c; c += RUKU[s].length; } return b; })();
+function rukuAt(s, a){
+  const st = RUKU[s]; if (!st) return null;
+  const i = st.indexOf(a);
+  return i < 0 ? null : {i: i + 1, n: st.length, g: RUKU_BASE[s] + i + 1, from: a, to: (st[i+1] || surahOf(s).v.length + 1) - 1};
+}
+function rukuEnds(s, a){ const st = RUKU[s]; return !!st && (a === surahOf(s).v.length || st.includes(a + 1)); }
+function rukuBand(s, a){
+  const r = rukuAt(s, a); if (!r) return "";
+  return `<button type="button" class="ruku" id="r-${s}-${r.i}" data-rukulist="${s}:${r.i}" title="Show all rukūʿ of this surah"><span class="rk" lang="ar">ع</span><b>Rukūʿ ${r.i} of ${r.n}</b><span>ayahs ${r.from}–${r.to}</span><span class="muted">(${r.g} of 558)</span><span class="spacer"></span><span class="muted small">All rukūʿ ▾</span></button>`;
+}
+
+/* ---------- Q&A (private: editor only, never part of the public export) ---------- */
+/* doc: {s, a, src, q:{en,bn,ar,ur}, ans:{…}, ai:{lang:true}, final, fu:[…], createdAt, updatedAt} */
+function qaList(k){ return (S.qaIx && S.qaIx[k]) || []; }
+function qaNorm(x){
+  const src = x.src || (typeof x.q === "string" && /[؀-ۿ]/.test(x.q) ? "ar" : "en");
+  const fix = v => typeof v === "string" ? Object.assign(blankLang(), {[src]: v}) : Object.assign(blankLang(), v || {});
+  return Object.assign({}, x, {src, q: fix(x.q), ans: fix(x.ans), ai: (x.ai && typeof x.ai === "object") ? x.ai : (x.ai ? {[src]: true} : {})});
+}
+const QA_GUIDE = {
+  en: "English, in a clear scholarly register used in English Islamic studies writing",
+  bn: "Bangla (Bengali script) in the standard register of Bangladeshi Islamic literature, using the Islamic terms customary there (e.g. আল্লাহ, সালাত, তাকওয়া)",
+  ar: "Modern Standard Arabic in a classical scholarly register, fully vowelled with all harakat (tashkeel) on every word",
+  ur: "Urdu (Arabic script) in the register of standard Urdu Islamic scholarly prose"
+};
+function qaCard(x){
+  const su = surahOf(x.s), q = pick(x.q, S.lang, x.src), an = pick(x.ans, S.lang, x.src);
+  const body = renderDoc(an.text, an.lang, "qa" + x.id), dir = l => RTL[l] ? "rtl" : "ltr";
+  return `<article class="qacard">
+    <div class="row"><button type="button" class="reflink" data-go="${x.s}:${x.a}">${x.s}:${x.a}</button><span class="muted small">${esc(su.tl)}</span>
+      <span class="chip ${x.final ? "exp" : "rev"}">${x.final ? "Final" : "Draft"}</span>
+      ${(an.fallback || q.fallback) ? `<span class="chip">Shown in ${LNAME_EN[an.text ? an.lang : q.lang]}</span>` : ""}
+      ${x.ai[an.lang] ? `<span class="chip rev">AI draft</span>` : ""}<span class="spacer"></span>
+      <button type="button" class="btn small" data-qa="${x.s}:${x.a}:${esc(x.id)}">Open</button></div>
+    <p class="qq" lang="${q.lang}" dir="${dir(q.lang)}"><b>${esc(q.text)}</b></p>
+    <div class="qa-ans" lang="${an.lang}" dir="${dir(an.lang)}">${an.text ? body.html : `<p class="muted small">No answer yet.</p>`}</div>
+  </article>`;
+}
+function viewQA(){
+  if (!S.admin) return `${statusBar()}<div class="empty"><b>Q&amp;A is private</b>It is available in the editor only.</div>`;
+  const q = S.qq.trim(), refs = q ? refMatch(q) : null, nq = normalize(q);
+  const items = S.qa.filter(x => refs ? inRanges(x.s, x.a, refs) : (!q || normalize(LANGS.map(l => (x.q[l] || "") + " " + (x.ans[l] || "")).join(" ")).includes(nq)))
+    .sort((a, b) => (a.s*1000 + a.a) - (b.s*1000 + b.a) || (a.createdAt || 0) - (b.createdAt || 0));
+  return `${statusBar()}
+  <div class="phead"><h1>Q&amp;A</h1></div>
+  <p class="lede">Your questions about ayahs, with the answers you finalised, in the write-up language chosen at the top (falling back to the language it was written in). Private: not shown on the public site. Start one from any ayah in the surah reader (the “Q&amp;A” button), or search here by text or by an ayah such as <b>2:255</b>.</p>
+  <div class="filters"><div class="row"><input type="search" id="qq" class="search" placeholder="Search questions and answers, or 2:255" value="${esc(S.qq)}" aria-label="Search Q&amp;A"></div>
+    ${q ? `<div class="small muted">${items.length} result${items.length === 1 ? "" : "s"}</div>` : ""}</div>
+  <div class="results">${items.map(qaCard).join("") || (S.qa.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No Q&amp;A yet</b>Open a surah and press “Q&amp;A” under any ayah.</div>`)}</div>`;
+}
+const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final]);
+function openQA(ref){
+  const [s, a, id] = ref.split(":"); const ex = id ? S.qa.find(x => x.id === id) : null;
+  const src = ex ? ex.src : S.lang;
+  M = {type: "qa", s: +s, a: +a, id: ex ? ex.id : null, src, tab: (ex && ((ex.q[S.lang] || "") + (ex.ans[S.lang] || "")).trim()) ? S.lang : src,
+    q: Object.assign(blankLang(), ex?.q), ans: Object.assign(blankLang(), ex?.ans), ai: Object.assign({}, ex?.ai), fu: "", final: !!ex?.final, hist: (ex?.fu || []).slice(), created: ex?.createdAt || 0,
+    busy: false, ctl: [], err: "", status: ""};
+  M.saved = qaSnap();
+  drawQA();
+}
+function captureQA(){
+  if (!M || M.type !== "qa") return;
+  const g = (i) => document.getElementById(i);
+  if (g("qa-q")) M.q[M.tab] = g("qa-q").value;
+  if (g("qa-ans")) M.ans[M.tab] = g("qa-ans").value;
+  if (g("qa-fu")) M.fu = g("qa-fu").value;
+  if (g("qa-final")) M.final = g("qa-final").checked;
+  if (g("qa-src")) M.src = g("qa-src").value;
+}
+const qaDirty = () => qaSnap() !== M.saved;
+function drawQA(){
+  const {s, a} = M, k = key(s, a), list = qaList(k), su = surahOf(s), T = M.tab, isSrc = T === M.src, dir = RTL[T] ? "rtl" : "ltr";
+  const cut = (x, n) => { x = String(x || "").replace(/\s+/g, " "); return x.length > n ? x.slice(0, n - 1) + "…" : x; };
+  const noAI = !S.sample;
+  modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
+      <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
+    ${list.length ? `<div class="row small"><span class="flabel">Saved for this ayah</span>${list.map(x => `<button type="button" class="chip ${x.id === M.id ? "exp" : "les"}" data-m="qa-open" data-v="${esc(x.id)}">${esc(cut(pick(x.q, S.lang, x.src).text, 50))}</button>`).join("")}${M.id ? `<button type="button" class="btn small" data-m="qa-open" data-v="">New question</button>` : ""}</div>` : ""}
+    <div class="row small"><label class="flabel" for="qa-src">Written in</label>
+      <select id="qa-src" style="width:auto">${LANGS.map(l => `<option value="${l}" ${l === M.src ? "selected" : ""}>${LNAME_EN[l]}</option>`).join("")}</select>
+      <span class="muted">Write and research in this language; the others are drafted from it.</span></div>
+    <div class="ltabs" role="tablist">${LANGS.map(l => `<button type="button" role="tab" data-m="qa-tab" data-v="${l}" aria-selected="${T === l}" class="${((M.q[l] || "") + (M.ans[l] || "")).trim() ? "filled" : ""}">${LNAME[l]}${M.ai[l] ? '<span class="flag">AI DRAFT</span>' : ""}</button>`).join("")}</div>
+    <div class="field"><label for="qa-q">Question · ${LNAME_EN[T]}</label>
+      <textarea id="qa-q" rows="3" lang="${T}" dir="${dir}" placeholder="${isSrc ? "Write your question about this ayah" : "Drafted from the " + LNAME_EN[M.src] + " question, or write it here"}">${esc(M.q[T])}</textarea>
+      ${isSrc ? `<div class="row"><button type="button" class="btn primary" data-m="qa-ask" ${M.busy || noAI ? "disabled" : ""}>${M.ans[T].trim() ? "Ask again from scratch" : "Ask AI"}</button>
+        ${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button>` : ""}<span class="small muted">${esc(M.status || (noAI ? "AI is not available in this view." : ""))}</span></div>`
+        : `<div class="row">${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button>` : ""}<span class="small muted">${esc(M.status || "")}</span></div>`}</div>
+    <div class="field"><label for="qa-ans">Answer · ${LNAME_EN[T]} ${M.ai[T] ? `<span class="chip rev">AI draft</span>` : ""}</label>
+      <textarea id="qa-ans" rows="14" lang="${T}" dir="${dir}" placeholder="${isSrc ? "The AI draft appears here. You can also write or edit the answer yourself." : "Draft this language with AI, or write it here"}">${esc(M.ans[T])}</textarea>
+      ${isSrc ? `<span class="small muted">The AI works from its own knowledge only: it cannot look up tafsir, hadith or the Qur'an text. Check every quotation, reference and attribution before you finalise.</span>` : ""}
+      ${M.ai[T] ? `<div class="row small"><span class="notice">Drafted by AI. Review it, then mark it reviewed.</span><button type="button" class="btn small" data-m="qa-reviewed">Mark as reviewed</button></div>` : ""}</div>
+    <div class="aibox row">
+      <button type="button" class="btn" data-m="qa-trans" data-v="" ${M.busy || noAI ? "disabled" : ""}>Draft the other languages with AI</button>
+      ${!isSrc ? `<button type="button" class="btn" data-m="qa-trans" data-v="${T}" ${M.busy || noAI ? "disabled" : ""}>Draft ${LNAME_EN[T]} only</button>` : ""}
+      <span class="small muted">Translates the ${LNAME_EN[M.src]} question and answer. Replaces what is already written in the language drafted.</span></div>
+    ${(isSrc && M.ans[T].trim()) ? `<div class="field"><label for="qa-fu">Follow-up or change</label>
+      <textarea id="qa-fu" rows="2" dir="auto" placeholder="For example: also consider 4:82 · make it shorter · explain the grammar more · I disagree with the second point because…">${esc(M.fu)}</textarea>
+      <div class="row"><button type="button" class="btn" data-m="qa-follow" ${M.busy || noAI ? "disabled" : ""}>Revise the answer with AI</button><span class="small muted">It revises the answer above, keeping your edits. Other languages must be redrafted afterwards.</span></div></div>` : ""}
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot row"><label class="row small"><input type="checkbox" id="qa-final" ${M.final ? "checked" : ""}> Final: I have reviewed this answer</label><span class="spacer"></span>
+      ${M.id ? `<button type="button" class="btn danger" data-m="qa-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
+      <button type="button" class="btn primary" data-m="qa-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
+}
+function qaPrompt(follow){
+  const {s, a} = M, su = surahOf(s), n = su.v.length, S0 = M.src;
+  const line = (x) => `${s}:${x}  ${arText(s, x)}  —  ${trText(s, x)}`;
+  const ctx = [a > 1 ? "Previous ayah: " + line(a - 1) : "", a < n ? "Next ayah: " + line(a + 1) : ""].filter(Boolean).join("\n");
+  return `You are assisting a researcher of the Qur'an and Arabic (the questioner) in preparing an answer to his question about one ayah.
+
+The ayah, Sūrat ${su.tl} ${s}:${a}:
+${arText(s, a)}
+Translation (${TR_NAME[S.trLang]}): ${trText(s, a)}
+${ctx}
+
+Question (in ${LNAME_EN[S0]}): ${M.q[S0].trim()}
+${follow ? `\nCurrent draft of the answer (the questioner may have edited it; keep his edits unless he asks you to change them):\n"""\n${M.ans[S0].trim()}\n"""\n\nHis follow-up or instruction: ${M.fu.trim()}\n\nWrite the complete revised answer.` : "\nWrite the answer."}
+
+Rules:
+- Write the answer in ${QA_GUIDE[S0]}.
+- Quote Qur'anic Arabic only from the ayahs given above, copied exactly, each on its own line starting with ">> ". For any other ayah give only its reference, written like 2:255, and describe it in your own words.
+- Do not give hadith texts or numbers, and do not quote tafsir or any scholar, from memory. You may say that views exist, in general terms, and mark every such statement as needing verification.
+- Base the answer on the text of the ayahs, the language and context. Separate what the text says clearly from what is interpretation, and say where you are unsure.
+- Be direct and organised. Use "## " headings only if the answer is long; **bold** and "- " lists are fine. No preamble and no closing remarks.
+- End with a final section headed "To verify before saving" (in the same language) that lists, as short bullets, every reference, quotation, attribution or factual claim in your answer that the questioner should check against the sources.`;
+}
+async function qaRun(follow){
+  captureQA();
+  const S0 = M.src;
+  if (!M.q[S0].trim()) { M.tab = S0; M.err = `Write the question in the ${LNAME_EN[S0]} tab first.`; drawQA(); return; }
+  if (follow && !M.fu.trim()) { M.err = "Write the follow-up or the change you want first."; drawQA(); return; }
+  if (!S.sample) { M.err = "AI is not available in this view."; drawQA(); return; }
+  const prompt = qaPrompt(follow), keepAns = M.ans[S0];
+  M.tab = S0; M.err = ""; M.busy = true; M.status = "Thinking… this can take a minute."; drawQA();
+  const ctl = new AbortController(); M.ctl = [ctl];
+  try {
+    const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex", onText: ({text}) => { const t = $("#qa-ans"); if (t && M && M.type === "qa" && M.tab === S0) t.value = text; }});
+    if (!M || M.type !== "qa") return;
+    if (follow) M.hist.push(M.fu.trim());
+    M.ans[S0] = text.trim(); M.ai[S0] = true; M.final = false; if (follow) M.fu = "";
+    M.status = truncated ? "The answer was cut short. Check its ending." : "Draft ready. Edit it, ask a follow-up, then draft the other languages and save.";
+  } catch (e) {
+    if (!M || M.type !== "qa") return;
+    if (e?.text) { M.ans[S0] = e.text; M.ai[S0] = true; M.final = false; } else M.ans[S0] = keepAns;
+    if (e?.code !== "cancelled") M.err = aiErr(e?.code, S0).replace(/The \w+ draft/, "The answer");
+    M.status = "";
+  }
+  M.busy = false; M.ctl = []; drawQA();
+}
+function qaParse(text){
+  const m = String(text).match(/^\s*QUESTION:[ \t]*(.*?)[ \t]*\r?\n[ \t]*ANSWER:[ \t]*\r?\n?([\s\S]*)$/);
+  return m ? {q: m[1].trim(), ans: m[2].trim()} : {q: "", ans: String(text).trim()};
+}
+async function qaTranslate(only, force){
+  captureQA();
+  const S0 = M.src;
+  if (!M.q[S0].trim() && !M.ans[S0].trim()) { M.tab = S0; M.err = `Write the ${LNAME_EN[S0]} question first, then draft the others.`; drawQA(); return; }
+  if (only === S0) return;
+  if (!S.sample) { M.err = "AI is not available in this view."; drawQA(); return; }
+  const targets = only ? [only] : LANGS.filter(l => l !== S0);
+  const filled = targets.filter(l => ((M.q[l] || "") + (M.ans[l] || "")).trim());
+  if (filled.length && !force) { M.pendingTrans = only || ""; $("#m-confirm").innerHTML = `<div class="confirm"><span>This replaces what is already written in ${filled.map(l => LNAME_EN[l]).join(", ")}.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep them</button><button type="button" class="btn primary" data-m="qa-trans-yes">Replace</button></div>`; return; }
+  if (only) M.tab = only;
+  M.err = ""; M.busy = true; M.status = "Drafting… the first words usually take 10–40 seconds."; drawQA();
+  M.ctl = [];
+  const refAyahs = [], seen = new Set();
+  const addRef = (s, a) => { const k = key(s, a); if (refAyahs.length < 60 && validRef(s, a) && !seen.has(k)) { seen.add(k); refAyahs.push([s, a]); } };
+  addRef(M.s, M.a);
+  for (const m of (M.q[S0] + "\n" + M.ans[S0]).matchAll(/(?<![\d:])(\d{1,3}):(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?(?![\d:])/g)) {
+    const a0 = +m[2], a1 = m[3] ? Math.min(+m[3], a0 + 30) : a0; for (let x = a0; x <= a1; x++) addRef(+m[1], x);
+  }
+  await Promise.all(targets.filter(l => TR_LANGS.includes(l)).map(loadTrx));
+  const trBlock = l => (!TR_LANGS.includes(l) || (l !== "en" && !S.TRX[l])) ? "" : `
+- Wherever the text gives the meaning of an ayah (for example the rendering that follows an Arabic quotation, or a quoted phrase of an ayah), do not translate the source's rendering yourself. Use the ${LNAME_EN[l]} translation of that ayah given in the list below (${TR_NAME[l]}), word for word. If the source renders only part of an ayah, use the matching part of that wording. Keep the ayah reference that follows it.
+
+${LNAME_EN[l]} translation of the ayahs referred to:
+${refAyahs.map(([s, a]) => `${s}:${a} — ${trText(s, a, l)}`).join("\n")}
+`;
+  await Promise.all(targets.map(async l => {
+    const ctl = new AbortController(); M.ctl.push(ctl);
+    const prompt = `Translate a question about a Qur'anic ayah, and its answer, from ${LNAME_EN[S0]} into ${QA_GUIDE[l]}.
+
+Rules:
+- Translate faithfully. Do not add, remove, summarise or comment.
+- Keep every quotation of the Qur'an in Arabic exactly as written, character for character.
+- Keep ayah references such as 2:255 exactly as written.
+- Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links.
+- Keep footnote markers such as [^1] exactly where they are, and translate the footnote lines that start with "[^1]: " while keeping that marker at the start.
+- Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}
+
+Reply in exactly this form and nothing else:
+QUESTION: <the translated question on one line>
+ANSWER:
+<the translated answer; leave empty if the source has no answer>
+
+Source question:
+${M.q[S0] || "(none)"}
+
+Source answer:
+${M.ans[S0] || "(none)"}`;
+    try {
+      const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache: false, onText: ({text}) => {
+        if (M && M.type === "qa" && M.tab === l) { const p = qaParse(text); const tq = $("#qa-q"), ta = $("#qa-ans"); if (tq && p.q) tq.value = p.q; if (ta && p.ans) ta.value = p.ans; }
+      }});
+      if (!M || M.type !== "qa") return;
+      const p = qaParse(text); M.q[l] = p.q; M.ans[l] = p.ans; M.ai[l] = true;
+      if (truncated) M.err = `The ${LNAME_EN[l]} draft was cut short. Check its ending.`;
+    } catch (e) {
+      if (!M || M.type !== "qa") return;
+      if (e && e.text) { const p = qaParse(e.text); M.q[l] = p.q; M.ans[l] = p.ans; M.ai[l] = true; }
+      if (e?.code === "cancelled") return;
+      M.err = aiErr(e?.code, l);
+    }
+  }));
+  if (!M || M.type !== "qa") return;
+  M.final = false; M.busy = false; M.ctl = []; M.status = M.err ? "" : "Drafts ready. Check each language, then save.";
+  drawQA();
+}
+async function qaAct(act, d){
+  const conf = (msg, yes, yesLabel, noLabel, danger) => { $("#m-confirm").innerHTML = `<div class="confirm"><span>${msg}</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">${noLabel}</button><button type="button" class="btn ${danger ? "danger" : "primary"}" data-m="${yes}">${yesLabel}</button></div>`; };
+  const any = () => LANGS.some(l => ((M.q[l] || "") + (M.ans[l] || "")).trim());
+  if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+  if (act === "close-yes") { closeModal(); return; }
+  if (act === "close") {
+    captureQA();
+    if (M.busy) { M.ctl.forEach(c => c.abort()); closeModal(); return; }
+    if (qaDirty() && any()) { conf("Close without saving?", "close-yes", "Close", "Keep writing", true); return; }
+    closeModal(); return;
+  }
+  if (M.busy && act !== "qa-stop") return;
+  if (act === "qa-stop") { M.ctl.forEach(c => c.abort()); return; }
+  if (act === "qa-tab") { captureQA(); M.tab = d.v; M.err = ""; drawQA(); return; }
+  if (act === "qa-reviewed") { captureQA(); delete M.ai[M.tab]; drawQA(); return; }
+  if (act === "qa-ask") return qaRun(false);
+  if (act === "qa-follow") return qaRun(true);
+  if (act === "qa-trans") return qaTranslate(d.v || "", false);
+  if (act === "qa-trans-yes") return qaTranslate(M.pendingTrans || "", true);
+  if (act === "qa-open" || act === "qa-open-yes") {
+    if (act === "qa-open") { captureQA(); M.next = d.v || ""; if (qaDirty() && any()) { conf("Leave this one without saving?", "qa-open-yes", "Leave", "Stay", true); return; } }
+    openQA(`${M.s}:${M.a}${M.next ? ":" + M.next : ""}`); return;
+  }
+  if (act === "qa-save") {
+    captureQA();
+    if (!M.q[M.src].trim()) { M.tab = M.src; M.err = `Write the question in ${LNAME_EN[M.src]} first (it is the language you wrote in).`; drawQA(); return; }
+    const id = M.id || ("qa-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)), now = Date.now();
+    const tr = o => Object.fromEntries(LANGS.map(l => [l, (o[l] || "").trim()]));
+    const doc = {s: M.s, a: M.a, src: M.src, q: tr(M.q), ans: tr(M.ans), ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && ((M.q[l] || "") + (M.ans[l] || "")).trim())), final: !!M.final, fu: M.hist, createdAt: M.created || now, updatedAt: now};
+    M.busy = true; M.err = ""; drawQA();
+    try { await S.db.collection("qa").doc(id).set(doc); M.id = id; M.created = doc.createdAt; M.q = Object.assign(blankLang(), doc.q); M.ans = Object.assign(blankLang(), doc.ans); M.ai = Object.assign({}, doc.ai); M.saved = qaSnap(); M.status = "Saved."; toast("Q&A saved"); }
+    catch (e) { M.err = dbErr(e); }
+    M.busy = false; drawQA(); return;
+  }
+  if (act === "qa-delete") { conf("Delete this question and its answers in all languages?", "qa-delete-yes", "Delete", "Keep it", true); return; }
+  if (act === "qa-delete-yes") {
+    M.busy = true; drawQA();
+    try { await S.db.collection("qa").doc(M.id).delete(); closeModal(); toast("Deleted"); }
+    catch (e) { M.busy = false; M.err = dbErr(e); drawQA(); }
+    return;
+  }
+}
+function openRukuList(ref){
+  const [s, cur] = ref.split(":").map(Number), su = surahOf(s), st = RUKU[s];
+  M = {type:"rukus"};
+  modal(`<div class="row"><h2>Rukūʿ · ${esc(su.tl)}</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <p class="small muted" style="margin:0">${st.length} rukūʿ in this surah. Tap one to go to it.</p>
+    <ol class="rklist">${st.map((a, i) => { const to = (st[i+1] || su.v.length + 1) - 1; return `<li><button type="button" class="rkrow${i+1===cur?" cur":""}" data-go="${s}:${a}"><b>${i+1}</b><span>ayahs ${a}–${to}</span><span class="muted small">${to - a + 1} ayah${to - a ? "s" : ""} · ${RUKU_BASE[s] + i + 1} of 558</span></button></li>`; }).join("")}</ol>`);
+}
+
 function viewSurah(){
   const su = surahOf(S.surah);
   ensureFW(su.n);
@@ -842,7 +1170,8 @@ function viewSurah(){
     <span class="legend">${marksFor(su.n) || `<span class="small muted">No marks in this surah yet</span>`}</span>
   </div>
   ${showBism && !S.onlyMarked ? `<div class="bism" lang="ar" dir="rtl">${esc(bism)}</div>` : ""}
-  ${ayahs.map(x => ayahHTML(su.n, x)).join("") || `<div class="empty" style="margin-top:16px"><b>No marked ayahs in this surah</b>Turn off “Only ayahs with marks” to see every ayah.</div>`}`;
+  ${ayahs.map(x => (S.onlyMarked ? "" : rukuBand(su.n, x.a)) + ayahHTML(su.n, x)).join("") || `<div class="empty" style="margin-top:16px"><b>No marked ayahs in this surah</b>Turn off “Only ayahs with marks” to see every ayah.</div>`}
+  ${vocabHTML(su.n)}`;
 }
 
 function ayahHTML(s, x){
@@ -857,7 +1186,7 @@ function ayahHTML(s, x){
   return `<article class="ayah${S.flashKey===k?" flash":""}" id="a-${s}-${x.a}">
     <div class="anum">${s}:${x.a}${dots.length?`<div class="dots" aria-hidden="true">${dots.map(d=>`<span class="dot ${d}"></span>`).join("")}</div>`:""}</div>
     <div class="abody">
-      <p class="ar" lang="ar" dir="rtl">${arTokHTML(s, x.a, x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span></p>
+      <p class="ar" lang="ar" dir="rtl">${arTokHTML(s, x.a, x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span>${rukuEnds(s, x.a) ? ` <button type="button" class="rkend" data-rukulist="${s}:${RUKU[s].filter(v => v <= x.a).length}" title="End of rukūʿ ${RUKU[s].filter(v => v <= x.a).length} · show all rukūʿ">ع</button>` : ""}</p>
       <p class="tr${rev?" revised":""}" ${trAttrs()}>${esc(rev ? rev.text : x.en)}</p>
       ${rev ? `<div class="revline"><span class="chip rev" title="This translation has been revised from ${TR_NAME[S.trLang]}">Translation revised</span>
         <button type="button" class="btn ghost small" data-compare="${k}">${S.compare.has(k)?"Hide original":"Compare with original"}</button></div>
@@ -873,7 +1202,8 @@ function ayahHTML(s, x){
       ${S.admin ? `
         <button type="button" class="btn ghost" data-edit-tr="${k}">${rev?"Edit revised translation":"Revise translation"}</button>
         <button type="button" class="btn ghost" data-new-note="explanation" data-ref="${k}">Add note</button>
-        <button type="button" class="btn ghost" data-new-word="${k}">Add word analysis</button>` : ""}
+        <button type="button" class="btn ghost" data-new-word="${k}">Add word analysis</button>
+        <button type="button" class="btn ghost" data-qa="${k}">Q&amp;A${qaList(k).length ? ` (${qaList(k).length})` : ""}</button>` : ""}
       </div>
     </div>
   </article>`;
@@ -2622,7 +2952,12 @@ document.addEventListener("click", async (ev) => {
   if (d.lang) { S.lang = d.lang; store.set("aba.lang", d.lang); return render(); }
   if (d.trlang) { S.trLang = d.trlang; store.set("aba.trlang", d.trlang); S.tr = S.trAll[d.trlang]; S.compare.clear(); loadTrx(d.trlang); reindex(); return render(); }
   if (d.surah) return go("surah", {s:+d.surah});
+  if (d.rukulist) return openRukuList(d.rukulist);
+  if (d.qa) { if (S.admin && S.db) openQA(d.qa); return; }
   if (d.go) { closeModal(); return goRef(d.go); }
+  if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
+  if (d.vall !== undefined) { S.vrange = null; render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
+  if (d.vreviewed) { if (!S.admin || !S.db) return; try { await S.db.doc("vocab/" + d.vreviewed).update({ai: false, updatedAt: Date.now()}); toast("Marked as reviewed."); } catch (e) { toast("Couldn't save. Try again."); } return; }
   if (d.compare) { S.compare.has(d.compare) ? S.compare.delete(d.compare) : S.compare.add(d.compare); return render(); }
   if (d.toggle) { S.open.has(d.toggle) ? S.open.delete(d.toggle) : S.open.add(d.toggle); return render(); }
   if (d.grammar) return openGrammar(d.grammar);
@@ -2663,6 +2998,7 @@ document.addEventListener("click", async (ev) => {
   // modal actions
   if (!d.m || !M) return;
   const act = d.m;
+  if (M.type === "qa") return qaAct(act, d);
   if (act === "close") {
     if (M.busy) return;
     if (M.type === "gram" && M.edit) { captureIrab(); $("#m-confirm").innerHTML = `<div class="confirm"><span>Close without saving the iʿrāb?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep writing</button><button type="button" class="btn danger" data-m="close-yes">Close</button></div>`; return; }
@@ -2780,6 +3116,7 @@ document.addEventListener("input", (ev) => {
   else if (t.id === "nq") { S.nq = t.value; rerenderKeepingInput("nq"); }
   else if (t.id === "lq") { S.lq = t.value; rerenderKeepingInput("lq"); }
   else if (t.id === "wq") { S.wq = t.value; rerenderKeepingInput("wq"); }
+  else if (t.id === "qq") { S.qq = t.value; rerenderKeepingInput("qq"); }
   else if (M && (t.id === "w-title" || t.id === "w-body" || t.id === "w-sum" || t.id === "w-tags" || t.id === "w-ref")) {
     if (t.id === "w-body") { const d = renderDoc(t.value, M.tab); const c = $("#w-count"); if (c) c.textContent = `${d.words.toLocaleString()} words · ${readMins(d.words)} min read`; }
     clearTimeout(saveLocalDraft.t); saveLocalDraft.t = setTimeout(saveLocalDraft, 1200);
@@ -2797,6 +3134,17 @@ document.addEventListener("change", (ev) => {
   if (t.id === "w-cat" && M && M.type === "note") { captureFields(); if (M.it.cat === "__new" && M.catNew === undefined) M.catNew = ""; drawWriteEditor(); if (M.it.cat === "__new") $("#w-newcat")?.focus(); }
 });
 document.addEventListener("submit", (ev) => {
+  if (ev.target.id === "vrange") {
+    ev.preventDefault();
+    const n = surahOf(S.surah).v.length;
+    const f = $("#vfrom").value.trim(), e = $("#vto").value.trim();
+    let from = f === "" ? 1 : parseInt(f, 10), to = e === "" ? n : parseInt(e, 10);
+    if (!(from >= 1 && from <= n && to >= 1 && to <= n)) { toast(`Enter ayah numbers from 1 to ${n}.`); return; }
+    if (from > to) [from, to] = [to, from];
+    S.vrange = (from === 1 && to === n) ? null : {s: S.surah, from, to};
+    render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"}));
+    return;
+  }
   if (ev.target.id === "jump") {
     ev.preventDefault();
     const a = parseInt($("#jumpa").value, 10);
@@ -2806,7 +3154,7 @@ document.addEventListener("submit", (ev) => {
 });
 document.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && ev.target.classList && ev.target.classList.contains("wtok") && !M) { ev.preventDefault(); ev.target.click(); } });
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && S.focus && !M && !document.fullscreenElement) { exitFocus(); return; } });
-document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && M && !M.busy && (M.type === "tr" || M.type === "share" || M.type === "flash" || (M.type === "gram" && !M.edit))) closeModal(); });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && M && !M.busy && (M.type === "tr" || M.type === "share" || M.type === "rukus" || M.type === "flash" || (M.type === "gram" && !M.edit))) closeModal(); });
 function rerenderKeepingInput(id){
   const el = document.getElementById(id); const pos = el ? el.selectionStart : null;
   render();
@@ -2859,6 +3207,15 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     S.rawLessons = snap.docs.map(d => Object.assign({id:d.id}, d.data())); S.lessons = S.rawLessons.map(n => stitchOne(n, "l"));
     if (first.lessons) { first.lessons=false; ready(); } reindex(); render();
   }, fail);
+  db.collection("qa").onSnapshot(snap => {
+    S.qa = snap.docs.map(d => qaNorm(Object.assign({id:d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a)); S.qaIx = {};
+    for (const x of S.qa) (S.qaIx[key(x.s, x.a)] ||= []).push(x);
+    render();
+  }, () => {});
+  db.collection("vocab").onSnapshot(snap => {
+    S.vocab = {}; for (const d of snap.docs) { const x = d.data(); if (x) S.vocab[d.id] = x; }
+    render();
+  }, () => {});
   db.collection("chunks").onSnapshot(snap => {
     S.chunkDocs = []; S.chunkIx = {};
     for (const d of snap.docs) { const c = d.data(); if (!c) continue; S.chunkDocs.push({docId: d.id, kind: c.kind, ref: c.ref}); S.chunkIx[`${c.kind}~${c.ref}~${c.lang}~${c.r}~${c.i}`] = c.text; }
@@ -2884,6 +3241,7 @@ async function loadStatic(){
     S.words = (d.words || []).filter(w => validRefSafe(w.s, w.a));
     S.cats = (d.categories || []).slice().sort((a, b) => (a.order||0) - (b.order||0));
     S.irabAll = d.irab || {};
+    S.vocab = d.vocab || {};
     S.dbState = "ok";
     reindex(); render();
     const nav = () => { const y = window.scrollY; fromHash(); render(); if (S.view !== "surah") window.scrollTo(0, 0); };
