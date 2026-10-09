@@ -1,7 +1,8 @@
 """Assemble data/content.json (the public site's copy of the write-ups) from a database export.
 
 Export every collection first with the ArtifactData tool, action "list", query {"limit": 1000},
-and out_dir=<EXPORT_DIR>, for: notes, lessons, words, translations, irab, vocab, chunks, settings.
+and out_dir=<EXPORT_DIR>, for: notes, lessons, words, translations, irab, vocab, chunks, commentary, settings.
+NEVER export or read the private collections: qa and research (they stay in the editor only).
 That writes <EXPORT_DIR>/<collection>/<doc_id>.json.
 
 Usage (from the repo root):  python3 tools/make_content.py <EXPORT_DIR>
@@ -42,11 +43,11 @@ cats = json.load(open(cats_f, encoding='utf-8')).get('list', []) if os.path.exis
 c = {
     'exportedAt': datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ'),
     'notes': stitch('n', load('notes')), 'lessons': stitch('l', load('lessons')), 'words': stitch('w', load('words')),
-    'translations': load('translations'), 'categories': cats, 'irab': irab,
+    'translations': load('translations'), 'commentary': load('commentary'), 'categories': cats, 'irab': irab,
     'vocab': {str(d.get('s') or d['id']): {k: v for k, v in d.items() if k != 'id'} for d in load('vocab')},
 }
 os.makedirs(os.path.join(ROOT, 'data'), exist_ok=True)
 json.dump(c, open(os.path.join(ROOT, 'data', 'content.json'), 'w', encoding='utf-8'), ensure_ascii=False)
-for k in ('notes', 'lessons', 'words', 'translations'):
+for k in ('notes', 'lessons', 'words', 'translations', 'commentary'):
     print(k, len(c[k]), [x['id'] for x in c[k]][:20])
 print('categories', len(cats), '| irab surahs', len(irab))
