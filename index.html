@@ -18,7 +18,7 @@
 :root{
   --bg:#F2F4F1; --surface:#FFFFFF; --sunk:#E9ECE8; --ink:#1B2427; --muted:#5B6669; --line:#D6DCD7;
   --accent:#1E4E79; --accent-ink:#FFFFFF; --focus:#1E4E79;
-  --rev:#9A5A12; --rev-bg:#F7EBDB; --exp:#1E4E79; --exp-bg:#E1EAF3; --qa:#23685C; --qa-bg:#DCEEEA; --les:#723867; --les-bg:#F1E2EE;
+  --rev:#9A5A12; --rev-bg:#F7EBDB; --exp:#1E4E79; --exp-bg:#E1EAF3; --qa:#23685C; --qa-bg:#DCEEEA; --les:#723867; --les-bg:#F1E2EE; --cm:#6A5A10; --cm-bg:#F2ECCB; --rs:#4F4A94; --rs-bg:#E6E4F4;
   --danger:#A3322A; --flash:#FFF3C4;
   --f-ui:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-text:"Literata",Georgia,"Times New Roman",serif;
@@ -32,14 +32,14 @@
   color-scheme:dark;
   --bg:#111719; --surface:#182023; --sunk:#131a1c; --ink:#E4E9E7; --muted:#98A4A6; --line:#2B3538;
   --accent:#86B5DE; --accent-ink:#0E1B26; --focus:#86B5DE;
-  --rev:#E3A75E; --rev-bg:#3A2A17; --exp:#86B5DE; --exp-bg:#1B2C3B; --qa:#73C3B3; --qa-bg:#16312C; --les:#D69BC8; --les-bg:#35202F;
+  --rev:#E3A75E; --rev-bg:#3A2A17; --exp:#86B5DE; --exp-bg:#1B2C3B; --qa:#73C3B3; --qa-bg:#16312C; --les:#D69BC8; --les-bg:#35202F; --cm:#DCC96A; --cm-bg:#37310F; --rs:#B3AEF0; --rs-bg:#25244A;
   --danger:#F08A80; --flash:#3B3514;
 }}
 :root[data-theme="dark"]{
   color-scheme:dark;
   --bg:#111719; --surface:#182023; --sunk:#131a1c; --ink:#E4E9E7; --muted:#98A4A6; --line:#2B3538;
   --accent:#86B5DE; --accent-ink:#0E1B26; --focus:#86B5DE;
-  --rev:#E3A75E; --rev-bg:#3A2A17; --exp:#86B5DE; --exp-bg:#1B2C3B; --qa:#73C3B3; --qa-bg:#16312C; --les:#D69BC8; --les-bg:#35202F;
+  --rev:#E3A75E; --rev-bg:#3A2A17; --exp:#86B5DE; --exp-bg:#1B2C3B; --qa:#73C3B3; --qa-bg:#16312C; --les:#D69BC8; --les-bg:#35202F; --cm:#DCC96A; --cm-bg:#37310F; --rs:#B3AEF0; --rs-bg:#25244A;
   --danger:#F08A80; --flash:#3B3514;
 }
 *{box-sizing:border-box}
@@ -95,6 +95,19 @@ button.chip{cursor:pointer}
 .chip.exp{background:var(--exp-bg);color:var(--exp)}
 .chip.qa{background:var(--qa-bg);color:var(--qa)}
 .chip.les{background:var(--les-bg);color:var(--les)}
+.chip.cm{background:var(--cm-bg);color:var(--cm)}
+.chip.rs{background:var(--rs-bg);color:var(--rs)}
+.cmbox{margin:10px 0 0;padding:10px 14px;border-radius:8px;background:var(--cm-bg);border-inline-start:3px solid var(--cm);max-width:68ch}
+.cmbox .cmlab{display:flex;gap:8px;align-items:center;font:600 11px/1 var(--f-ui);letter-spacing:.06em;text-transform:uppercase;color:var(--cm);margin-bottom:6px}
+.cmbox .cmtx{font:15.5px/1.7 var(--f-text)}
+.cmbox .cmtx[lang="ar"]{font-family:var(--f-ar);font-size:18px;line-height:2}
+.cmbox .cmtx[lang="ur"]{font-family:var(--f-ur);line-height:2.3}
+.cmbox .cmtx[lang="bn"]{font-family:var(--f-bn)}
+.rsgroup{margin:18px 0 6px;font:600 13px/1.3 var(--f-ui);color:var(--muted);display:flex;gap:8px;align-items:center}
+.rscard{border:1px solid var(--line);border-inline-start:4px solid var(--rs);border-radius:10px;background:var(--surface);padding:12px 14px;margin:8px 0}
+.rscard.done{opacity:.72;border-inline-start-color:var(--line)}
+.rscard h3{font-size:16.5px;margin:6px 0 2px}
+.rscard .rsnote{font:14.5px/1.6 var(--f-text);color:var(--muted);white-space:pre-wrap;margin-top:4px}
 .tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:5px;background:var(--sunk);color:var(--muted);border:1px solid transparent;cursor:pointer}
 .tag[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
 .legend{display:flex;gap:8px;flex-wrap:wrap}
@@ -134,7 +147,7 @@ html.script-indopak .ar .end{font-family:"Scheherazade New",serif}
 .anum{font:600 13px/1 var(--f-ui);color:var(--muted);font-variant-numeric:tabular-nums;padding-top:12px}
 .anum .dots{display:flex;flex-direction:column;gap:4px;margin-top:10px}
 .anum .dot{width:8px;height:8px;border-radius:50%}
-.dot.rev{background:var(--rev)} .dot.exp{background:var(--exp)} .dot.qa{background:var(--qa)} .dot.les{background:var(--les)}
+.dot.rev{background:var(--rev)} .dot.exp{background:var(--exp)} .dot.qa{background:var(--qa)} .dot.les{background:var(--les)} .dot.cm{background:var(--cm)}
 .abody{min-width:0}
 .ar{font:calc(29px * var(--q-scale))/2.2 var(--f-quran);direction:rtl;text-align:right;margin:0 0 10px}
 .ar .end{font-size:.8em;color:var(--muted);white-space:nowrap}
@@ -423,7 +436,9 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
       <button type="button" data-nav="notes">Notes</button>
       <button type="button" data-nav="lessons">Lessons</button>
       <button type="button" data-nav="words">Word analysis</button>
+      <button type="button" data-nav="commentary">Commentary</button>
       <button type="button" data-nav="qa" id="nav-qa" hidden>Q&amp;A</button>
+      <button type="button" data-nav="research" id="nav-research" hidden>Research</button>
     </nav>
     <div class="langbar">
       <span class="lbl">Write-ups in</span>
@@ -475,6 +490,7 @@ const S = {
   trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
   trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
   tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [], vocab: {}, vocabOpen: false, vrange: null, qa: [], qaIx: {}, qq: "",
+  cm: [], cmIx: {}, cmq: "", research: [], rsIx: {}, rq: "", rstatus: "", rtag: null, rgroup: true,
   admin: false, db: null, dbState: "loading", sample: null, downloads: null,
   open: new Set(), compare: new Set(), onlyMarked: false,
   words: [], wq: "", wroot: "", cats: [], ncat: "", focus: false, readScale: Math.min(1.5, Math.max(0.85, parseFloat(store.get("aba.readscale")) || 1)), sq: "", nq: "", nkind: "all", ntag: null, lq: "", ltag: null, openLesson: new Set(), openNote: new Set()
@@ -618,7 +634,10 @@ function toast(msg){
 let IDX = {notes:{}, lessons:{}, words:{}, counts:{}};
 function reindex(){
   const notes = {}, lessons = {}, words = {}, counts = {};
-  const bump = (s, k) => { (counts[s] ||= {rev:0,exp:0,les:0,wa:0})[k]++; };
+  const bump = (s, k) => { (counts[s] ||= {rev:0,exp:0,les:0,wa:0,cm:0})[k]++; };
+  S.cmIx = {}; for (const c of S.cm) { S.cmIx[key(c.s, c.a)] = c; bump(c.s, "cm"); }
+  S.rsIx = {};
+  for (const r of S.research) for (const k of rsKeys(r)) (S.rsIx[k] ||= []).push(r);
   for (const n of S.notes) { (notes[key(n.s,n.a)] ||= []).push(n); bump(n.s, "exp"); }
   for (const w of S.words) { (words[key(w.s,w.a)] ||= []).push(w); bump(w.s, "wa"); }
   for (const k in S.tr) bump(S.tr[k].s, "rev");
@@ -669,7 +688,7 @@ function goRef(ref){
       S.ret = {view: "article", art: Object.assign({}, S.art), y, label: t ? `Back to “${t.length > 48 ? t.slice(0, 46) + "…" : t}”` : `Back to the ${kindL}`};
     } else if (S.view === "surah") {
       if (!S.ret || S.ret.view !== "surah" || S.ret.surah !== S.surah || Math.abs(S.ret.y - y) > 40) S.ret = {view: "surah", surah: S.surah, y, label: `Back to where you were in ${surahOf(S.surah).tl}`};
-    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa") {
+    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa" || S.view === "commentary" || S.view === "research") {
       S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view === "qa" ? "Q&A" : S.view[0].toUpperCase() + S.view.slice(1)}`};
     }
     S.keepRet = true; if (S.onlyMarked && !hasMarks(s,a)) S.onlyMarked = false; S.open.add(key(s,a)); go("surah",{s,a}); }
@@ -678,7 +697,7 @@ function fromHash(){
   const h = (location.hash||"").slice(1);
   let m;
   if (h === "" || h === "surahs") S.view = "surahs";
-  else if (h === "notes" || h === "lessons" || h === "words" || h === "qa") S.view = h;
+  else if (h === "notes" || h === "lessons" || h === "words" || h === "qa" || h === "commentary" || h === "research") S.view = h;
   else if ((m = h.match(/^([nlw])-([A-Za-z0-9_.~-]+)$/))) { S.view = "article"; S.art = {kind: m[1], id: m[2], from: m[1]==="n" ? "notes" : m[1]==="w" ? "words" : "lessons"}; }
   else if ((m = h.match(/^s(\d{1,3})(?:-(\d{1,3}))?$/)) && +m[1]>=1 && +m[1]<=114) { S.view = "surah"; S.surah = +m[1]; if (m[2]) { S.pendingAyah = +m[2]; S.open.add(key(+m[1],+m[2])); } }
 }
@@ -774,7 +793,7 @@ function render(){
   if (S.focus && S.view !== "surah" && S.view !== "article") { S.focus = false; document.documentElement.classList.remove("reading"); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
   setTimeout(drawFocusBar, 0);
   drawBackPill();
-  { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; }
+  { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; const nr = $("#nav-research"); if (nr) nr.hidden = !S.admin; }
   document.querySelectorAll("nav.tabs button").forEach(b => {
     const cur = b.dataset.nav === S.view || (b.dataset.nav==="surahs" && S.view==="surah")
       || (S.view==="article" && ((S.art?.kind==="l" && b.dataset.nav==="lessons") || (S.art?.kind==="n" && b.dataset.nav==="notes") || (S.art?.kind==="w" && b.dataset.nav==="words")));
@@ -794,6 +813,8 @@ function render(){
   else if (S.view === "lessons") app.innerHTML = viewLessons();
   else if (S.view === "words") app.innerHTML = viewWords();
   else if (S.view === "qa") app.innerHTML = viewQA();
+  else if (S.view === "commentary") app.innerHTML = viewCommentary();
+  else if (S.view === "research") app.innerHTML = viewResearch();
   else if (S.view === "article") app.innerHTML = viewArticle();
   window.scrollTo(0, y);
   if (S.pendingAyah) { const a = S.pendingAyah; S.pendingAyah = null; S.flashKey = key(S.surah,a); render(); requestAnimationFrame(()=> document.getElementById(`a-${S.surah}-${a}`)?.scrollIntoView({block:"start"})); }
@@ -812,7 +833,8 @@ function marksFor(s, counts){
     c.rev ? `<span class="chip rev">${c.rev} revised</span>` : "",
     c.exp ? `<span class="chip exp">${c.exp} note${c.exp>1?"s":""}</span>` : "",
     c.les ? `<span class="chip les">${c.les} lesson${c.les>1?"s":""}</span>` : "",
-    c.wa ? `<span class="chip wa">${c.wa} word${c.wa>1?"s":""}</span>` : ""
+    c.wa ? `<span class="chip wa">${c.wa} word${c.wa>1?"s":""}</span>` : "",
+    c.cm ? `<span class="chip cm">${c.cm} commentar${c.cm>1?"ies":"y"}</span>` : ""
   ].join("");
 }
 
@@ -844,7 +866,7 @@ function viewSurahs(){
   <footer class="src">Arabic text: IndoPak script as published by quran.com, set in the Al Qalam IndoPak Qur'an font; Madani (Uthmani) script from the Noble Qur'an Encyclopedia (quranenc.com). Translations: English, Saheeh International (via tanzil.net); Bangla, Taisirul Quran (via the Quranic Universal Library); Urdu, Sayyid Abul Aʿla Maududi, Tafheem-ul-Quran (via tanzil.net).</footer>`;
 }
 
-function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] || IDX.lessons[k]); }
+function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] || IDX.lessons[k] || S.cmIx[k]); }
 
 const VOC_ISM = [["Ayah",""],["Meaning",""],["Plural 2","جمع ٢"],["Plural 1","جمع ١"],["Singular","مفرد"]];
 const VOC_FIL = [["Ayah",""],["Meaning",""],["Amr","أمر"],["Maṣdar","مصدر"],["Muḍāriʿ","مضارع"],["Māḍī","ماضٍ"]];
@@ -1136,6 +1158,271 @@ async function qaAct(act, d){
     return;
   }
 }
+/* ---------- Short commentary (one per ayah; public once published) ---------- */
+/* doc commentary/<s>-<a>: {s, a, src, text:{en,bn,ar,ur}, ai:{lang:true}, createdAt, updatedAt} */
+function cmNorm(x){
+  const src = LANGS.includes(x.src) ? x.src : "en";
+  return Object.assign({}, x, {src, text: Object.assign(blankLang(), x.text || {}), ai: (x.ai && typeof x.ai === "object") ? x.ai : {}});
+}
+function cmBox(c){
+  const p = pick(c.text, S.lang, c.src);
+  if (!p.text.trim()) return "";
+  const flag = p.fallback ? ` <span class="chip">Shown in ${LNAME_EN[p.lang]}</span>` : (c.ai[p.lang] ? ` <span class="chip rev">AI-assisted, not yet reviewed</span>` : "");
+  return `<div class="cmbox"><div class="cmlab">Commentary${flag}</div><div class="cmtx prose" lang="${p.lang}" dir="${RTL[p.lang] ? "rtl" : "ltr"}">${mdLite(p.text, p.lang)}</div></div>`;
+}
+function viewCommentary(){
+  const q = S.cmq.trim(), refs = q ? refMatch(q) : null, nq = normalize(q);
+  const items = S.cm.filter(c => refs ? inRanges(c.s, c.a, refs) : (!q || nq.split(/\s+/).filter(Boolean).every(w => normalize(LANGS.map(l => c.text[l] || "").join(" \n ")).includes(w))))
+    .sort((a, b) => a.s - b.s || a.a - b.a);
+  return `${statusBar()}
+  <div class="phead"><h1>Commentary</h1></div>
+  <p class="lede">Short commentary on single ayahs, in the write-up language chosen at the top (falling back to the language it was written in). The same text appears under the ayah in the surah reader. Search by text or by an ayah such as <b>2:23</b>.</p>
+  <div class="filters"><div class="row"><input type="search" id="cmq" class="search" placeholder="Search commentary, or 2:23" value="${esc(S.cmq)}" aria-label="Search commentary"></div>
+    ${q ? `<div class="small muted">${items.length} result${items.length === 1 ? "" : "s"}</div>` : ""}</div>
+  <div class="results">${items.map(c => `<article class="wcard">
+      <div class="whead"><span class="chip cm">Commentary</span><button type="button" class="reflink" data-go="${c.s}:${c.a}">${c.s}:${c.a} · ${esc(surahOf(c.s).tl)}</button><span class="spacer"></span>
+        ${S.admin ? `<button type="button" class="btn ghost small" data-cm="${c.s}:${c.a}">Edit</button>` : ""}</div>
+      ${ayahBlock(c.s, c.a)}${cmBox(c)}</article>`).join("") || (S.cm.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No commentary yet</b>${S.admin ? "Open a surah and press “Add commentary” under any ayah." : "Short commentaries will appear here as they are added."}</div>`)}</div>`;
+}
+const cmSnap = () => JSON.stringify([M.src, M.text]);
+function openCM(k){
+  const [s, a] = k.split(":").map(Number), ex = S.cmIx[k], src = ex ? ex.src : S.lang;
+  M = {type: "cm", s, a, src, tab: (ex && (ex.text[S.lang] || "").trim()) ? S.lang : src, text: Object.assign(blankLang(), ex?.text), ai: Object.assign({}, ex?.ai),
+    exists: !!ex, created: ex?.createdAt || 0, busy: false, ctl: [], err: "", status: ""};
+  M.saved = cmSnap();
+  drawCM();
+}
+function captureCM(){
+  if (!M || M.type !== "cm") return;
+  const g = i => document.getElementById(i);
+  if (g("cm-text")) M.text[M.tab] = g("cm-text").value;
+  if (g("cm-src")) M.src = g("cm-src").value;
+}
+function drawCM(){
+  const {s, a} = M, su = surahOf(s), T = M.tab, isSrc = T === M.src, dir = RTL[T] ? "rtl" : "ltr", noAI = !S.sample;
+  modal(`<div class="row"><h2>Commentary · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
+      <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
+    <div class="row small"><label class="flabel" for="cm-src">Written in</label>
+      <select id="cm-src" style="width:auto">${LANGS.map(l => `<option value="${l}" ${l === M.src ? "selected" : ""}>${LNAME_EN[l]}</option>`).join("")}</select>
+      <span class="muted">Write in this language; the others can be drafted from it.</span></div>
+    <div class="ltabs" role="tablist">${LANGS.map(l => `<button type="button" role="tab" data-m="cm-tab" data-v="${l}" aria-selected="${T === l}" class="${(M.text[l] || "").trim() ? "filled" : ""}">${LNAME[l]}${M.ai[l] ? '<span class="flag">AI DRAFT</span>' : ""}</button>`).join("")}</div>
+    <div class="field"><label for="cm-text">Short commentary · ${LNAME_EN[T]} ${M.ai[T] ? `<span class="chip rev">AI draft</span>` : ""}</label>
+      <textarea id="cm-text" rows="9" lang="${T}" dir="${dir}" placeholder="${isSrc ? "Write a short commentary on this ayah. Blank lines make paragraphs; **bold**, *italic* and references such as 4:82 work." : "Draft this language with AI, or write it here"}">${esc(M.text[T])}</textarea>
+      ${M.ai[T] ? `<div class="row small"><span class="notice">Drafted by AI. Review it, then mark it reviewed.</span><button type="button" class="btn small" data-m="cm-reviewed">Mark as reviewed</button></div>` : ""}
+      ${M.busy ? `<div class="row"><button type="button" class="btn" data-m="cm-stop">Stop</button><span class="small muted">${esc(M.status || "")}</span></div>` : ""}</div>
+    <div class="aibox row">
+      <button type="button" class="btn" data-m="cm-trans" data-v="" ${M.busy || noAI ? "disabled" : ""}>Draft the other languages with AI</button>
+      ${!isSrc ? `<button type="button" class="btn" data-m="cm-trans" data-v="${T}" ${M.busy || noAI ? "disabled" : ""}>Draft ${LNAME_EN[T]} only</button>` : ""}
+      <span class="small muted">${noAI ? "AI is not available in this view." : `Translates the ${LNAME_EN[M.src]} text. Replaces what is already written in the language drafted.`}</span></div>
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot row"><span class="small muted">Shown to readers once you publish the site.</span><span class="spacer"></span>
+      ${M.exists ? `<button type="button" class="btn danger" data-m="cm-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
+      <button type="button" class="btn primary" data-m="cm-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
+}
+async function cmTranslate(only, force){
+  captureCM();
+  const S0 = M.src;
+  if (!M.text[S0].trim()) { M.tab = S0; M.err = `Write the ${LNAME_EN[S0]} commentary first, then draft the others.`; drawCM(); return; }
+  if (only === S0) return;
+  if (!S.sample) { M.err = "AI is not available in this view."; drawCM(); return; }
+  const targets = only ? [only] : LANGS.filter(l => l !== S0);
+  const filled = targets.filter(l => (M.text[l] || "").trim());
+  if (filled.length && !force) { M.pendingTrans = only || ""; $("#m-confirm").innerHTML = `<div class="confirm"><span>This replaces what is already written in ${filled.map(l => LNAME_EN[l]).join(", ")}.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep them</button><button type="button" class="btn primary" data-m="cm-trans-yes">Replace</button></div>`; return; }
+  if (only) M.tab = only;
+  M.err = ""; M.busy = true; M.status = "Drafting… the first words usually take 10–40 seconds."; drawCM();
+  M.ctl = [];
+  const refAyahs = [], seen = new Set();
+  const addRef = (s, a) => { const k = key(s, a); if (refAyahs.length < 60 && validRef(s, a) && !seen.has(k)) { seen.add(k); refAyahs.push([s, a]); } };
+  addRef(M.s, M.a);
+  for (const m of M.text[S0].matchAll(/(?<![\d:])(\d{1,3}):(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?(?![\d:])/g)) {
+    const a0 = +m[2], a1 = m[3] ? Math.min(+m[3], a0 + 30) : a0; for (let x = a0; x <= a1; x++) addRef(+m[1], x);
+  }
+  await Promise.all(targets.filter(l => TR_LANGS.includes(l)).map(loadTrx));
+  const trBlock = l => (!TR_LANGS.includes(l) || (l !== "en" && !S.TRX[l])) ? "" : `
+- Wherever the text gives the meaning of an ayah (for example the rendering that follows an Arabic quotation, or a quoted phrase of an ayah), do not translate the source's rendering yourself. Use the ${LNAME_EN[l]} translation of that ayah given in the list below (${TR_NAME[l]}), word for word. If the source renders only part of an ayah, use the matching part of that wording. Keep the ayah reference that follows it.
+
+${LNAME_EN[l]} translation of the ayahs referred to:
+${refAyahs.map(([s, a]) => `${s}:${a} — ${trText(s, a, l)}`).join("\n")}
+`;
+  await Promise.all(targets.map(async l => {
+    const ctl = new AbortController(); M.ctl.push(ctl);
+    const prompt = `Translate a short commentary on a Qur'anic ayah from ${LNAME_EN[S0]} into ${QA_GUIDE[l]}.
+
+Rules:
+- Translate faithfully. Do not add, remove, summarise or comment.
+- Keep every quotation of the Qur'an in Arabic exactly as written, character for character.
+- Keep ayah references such as 2:255 exactly as written.
+- Keep the formatting marks exactly: blank lines between paragraphs, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, **bold**, *italic*, [text](url) links.
+- Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}
+
+Reply with the translated commentary only, nothing else.
+
+Source commentary:
+${M.text[S0]}`;
+    try {
+      const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache: false, onText: ({text}) => { if (M && M.type === "cm" && M.tab === l) { const t = $("#cm-text"); if (t) t.value = text; } }});
+      if (!M || M.type !== "cm") return;
+      M.text[l] = String(text).trim(); M.ai[l] = true;
+      if (truncated) M.err = `The ${LNAME_EN[l]} draft was cut short. Check its ending.`;
+    } catch (e) {
+      if (!M || M.type !== "cm") return;
+      if (e && e.text) { M.text[l] = String(e.text).trim(); M.ai[l] = true; }
+      if (e?.code === "cancelled") return;
+      M.err = aiErr(e?.code, l);
+    }
+  }));
+  if (!M || M.type !== "cm") return;
+  M.busy = false; M.ctl = []; M.status = M.err ? "" : "Drafts ready. Check each language, then save.";
+  drawCM();
+}
+async function cmAct(act, d){
+  const conf = (msg, yes, yesLabel, noLabel, danger) => { $("#m-confirm").innerHTML = `<div class="confirm"><span>${msg}</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">${noLabel}</button><button type="button" class="btn ${danger ? "danger" : "primary"}" data-m="${yes}">${yesLabel}</button></div>`; };
+  const any = () => LANGS.some(l => (M.text[l] || "").trim());
+  if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+  if (act === "close-yes") { closeModal(); return; }
+  if (act === "close") {
+    captureCM();
+    if (M.busy) { M.ctl.forEach(c => c.abort()); closeModal(); return; }
+    if (cmSnap() !== M.saved && any()) { conf("Close without saving?", "close-yes", "Close", "Keep writing", true); return; }
+    closeModal(); return;
+  }
+  if (M.busy && act !== "cm-stop") return;
+  if (act === "cm-stop") { M.ctl.forEach(c => c.abort()); return; }
+  if (act === "cm-tab") { captureCM(); M.tab = d.v; M.err = ""; drawCM(); return; }
+  if (act === "cm-reviewed") { captureCM(); delete M.ai[M.tab]; drawCM(); return; }
+  if (act === "cm-trans") return cmTranslate(d.v || "", false);
+  if (act === "cm-trans-yes") return cmTranslate(M.pendingTrans || "", true);
+  if (act === "cm-save") {
+    captureCM();
+    if (!M.text[M.src].trim()) { M.tab = M.src; M.err = `Write the commentary in ${LNAME_EN[M.src]} first (it is the language you wrote in).`; drawCM(); return; }
+    const id = `${M.s}-${M.a}`, now = Date.now();
+    const text = Object.fromEntries(LANGS.map(l => [l, (M.text[l] || "").trim()]));
+    const doc = {s: M.s, a: M.a, src: M.src, text, ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && text[l])), createdAt: M.created || now, updatedAt: now};
+    M.busy = true; M.err = ""; drawCM();
+    try { await S.db.collection("commentary").doc(id).set(doc); M.exists = true; M.created = doc.createdAt; M.text = Object.assign(blankLang(), text); M.ai = Object.assign({}, doc.ai); M.saved = cmSnap(); M.status = "Saved."; toast("Commentary saved"); }
+    catch (e) { M.err = dbErr(e); }
+    M.busy = false; drawCM(); return;
+  }
+  if (act === "cm-delete") { conf("Delete this commentary in all languages?", "cm-delete-yes", "Delete", "Keep it", true); return; }
+  if (act === "cm-delete-yes") {
+    M.busy = true; drawCM();
+    try { await S.db.collection("commentary").doc(`${M.s}-${M.a}`).delete(); closeModal(); toast("Deleted"); }
+    catch (e) { M.busy = false; M.err = dbErr(e); drawCM(); }
+    return;
+  }
+}
+
+/* ---------- Research topics (PRIVATE: editor only, never part of the public export) ---------- */
+/* doc research/<id>: {title, note, refs (as typed), ranges:[{s,from,to}], status: open|doing|done, tags:[…], createdAt, updatedAt}
+   make_content.py does not read this collection and loadStatic never sets S.research: keep it that way. */
+const RS_STATUS = {open: "Open", doing: "In progress", done: "Done"};
+function rsNorm(x){
+  return Object.assign({}, x, {title: x.title || "", note: x.note || "", refs: x.refs || "", ranges: Array.isArray(x.ranges) ? x.ranges : [],
+    status: RS_STATUS[x.status] ? x.status : "open", tags: Array.isArray(x.tags) ? x.tags : []});
+}
+function rsKeys(r){ const out = []; for (const g of (r.ranges || [])) for (let a = g.from; a <= g.to && out.length < 400; a++) out.push(key(g.s, a)); return out; }
+const rsRefLabel = r => (r.ranges || []).map(rangeLabel).join(", ");
+function rsCard(r){
+  return `<article class="rscard${r.status === "done" ? " done" : ""}">
+    <div class="row"><span class="chip rs">${RS_STATUS[r.status]}</span>${(r.ranges || []).map(g => `<button type="button" class="reflink" data-go="${g.s}:${g.from}">${rangeLabel(g)}</button>`).join(" ")}<span class="spacer"></span>
+      <button type="button" class="btn ghost small" data-rs-set="${esc(r.id)}:${r.status === "done" ? "open" : "done"}">${r.status === "done" ? "Reopen" : "Mark done"}</button>
+      <button type="button" class="btn ghost small" data-rs-edit="${esc(r.id)}">Edit</button></div>
+    <h3 dir="auto">${esc(r.title)}</h3>${r.note ? `<div class="rsnote" dir="auto">${esc(r.note)}</div>` : ""}
+    ${r.tags.length ? `<div class="tags">${r.tags.map(t => `<button type="button" class="tag" data-rtag="${esc(t)}" aria-pressed="${S.rtag === t}">#${esc(t)}</button>`).join("")}</div>` : ""}</article>`;
+}
+function viewResearch(){
+  if (!S.admin) return `${statusBar()}<div class="empty"><b>Research topics are private</b>They are available in the editor only and are never published.</div>`;
+  const q = S.rq.trim(), refs = q ? refMatch(q) : null, nq = normalize(q), first = r => (r.ranges && r.ranges[0]) || null;
+  const items = S.research.filter(r => (!S.rstatus || r.status === S.rstatus) && (!S.rtag || r.tags.includes(S.rtag)) &&
+      (refs ? overlaps(r.ranges, refs) : (!q || nq.split(/\s+/).filter(Boolean).every(w => normalize([r.title, r.note, r.refs, rsRefLabel(r), ...r.tags].join(" \n ")).includes(w.replace(/^#/, ""))))))
+    .sort((a, b) => { const fa = first(a), fb = first(b); if (!fa !== !fb) return fa ? -1 : 1; if (fa && fb && (fa.s - fb.s || fa.from - fb.from)) return fa.s - fb.s || fa.from - fb.from; return (a.createdAt || 0) - (b.createdAt || 0); });
+  const cnt = st => S.research.filter(r => r.status === st).length, tagMap = {};
+  for (const r of S.research) for (const t of r.tags) tagMap[t] = (tagMap[t] || 0) + 1;
+  const tags = Object.keys(tagMap).sort((a, b) => tagMap[b] - tagMap[a] || a.localeCompare(b));
+  let html = "", last = null;
+  for (const r of items) {
+    if (S.rgroup) { const f = first(r), g = f ? `${f.s}:${f.from}` : "none"; if (g !== last) { last = g; html += `<div class="rsgroup">${f ? `<button type="button" class="reflink" data-go="${g}">${g}</button><span>${esc(surahOf(f.s).tl)}</span>` : "<span>Not tied to an ayah</span>"}</div>`; } }
+    html += rsCard(r);
+  }
+  const segBtn = (v, label) => `<button type="button" data-rstatus="${v}" aria-pressed="${S.rstatus === v}">${label}</button>`;
+  return `${statusBar()}
+  <div class="phead"><h1>Research topics</h1><button type="button" class="btn primary" data-rs-new>New topic</button></div>
+  <p class="lede">Things to look into while you study, tied to the ayahs they come from. Private: kept only in this editor, never published and not part of the public export. Add one from any ayah (the “Research” button), or here. Search by text, tag or an ayah such as <b>2:23</b>.</p>
+  <div class="filters"><div class="row"><input type="search" id="rq" class="search" placeholder="Search topics, notes, tags, or 2:23" value="${esc(S.rq)}" aria-label="Search research topics">
+      <div class="seg" role="group" aria-label="Status">${segBtn("", `All ${S.research.length}`)}${segBtn("open", `Open ${cnt("open")}`)}${segBtn("doing", `In progress ${cnt("doing")}`)}${segBtn("done", `Done ${cnt("done")}`)}</div>
+      <label class="row small"><input type="checkbox" id="rgroup" ${S.rgroup ? "checked" : ""}> Group by ayah</label></div>
+    ${tags.length ? `<div class="tagrow">${tags.map(t => `<button type="button" class="tag" data-rtag="${esc(t)}" aria-pressed="${S.rtag === t}">#${esc(t)} ${tagMap[t]}</button>`).join("")}</div>` : ""}
+    ${(q || S.rtag || S.rstatus) ? `<div class="small muted">${items.length} topic${items.length === 1 ? "" : "s"} <button type="button" class="btn ghost small" data-clear="research">Clear filters</button></div>` : ""}</div>
+  <div class="results">${html || (S.research.length ? `<div class="empty"><b>No match</b>Try another word, tag or ayah.</div>` : `<div class="empty"><b>No research topics yet</b>Open a surah and press “Research” under any ayah, or use “New topic”.</div>`)}</div>`;
+}
+const rsSnap = () => JSON.stringify([M.title, M.refs, M.status, M.note, M.tags]);
+function openRS(id, ctx){
+  const ex = id ? S.research.find(x => x.id === id) : null;
+  M = {type: "rs", id: ex ? ex.id : null, ctx: ctx || "", title: ex ? ex.title : "", note: ex ? ex.note : "", refs: ex ? (ex.refs || rsRefLabel(ex)) : (ctx || ""),
+    status: ex ? ex.status : "open", tags: ex ? ex.tags.join(", ") : "", created: ex ? ex.createdAt || 0 : 0, busy: false, err: ""};
+  M.saved = rsSnap();
+  drawRS();
+}
+function captureRS(){
+  if (!M || M.type !== "rs") return;
+  const g = i => document.getElementById(i);
+  if (g("rs-title")) M.title = g("rs-title").value;
+  if (g("rs-refs")) M.refs = g("rs-refs").value;
+  if (g("rs-status")) M.status = g("rs-status").value;
+  if (g("rs-note")) M.note = g("rs-note").value;
+  if (g("rs-tags")) M.tags = g("rs-tags").value;
+}
+function drawRS(){
+  const ctx = M.ctx, [s, a] = ctx ? ctx.split(":").map(Number) : [0, 0], list = ctx ? (S.rsIx[ctx] || []) : [];
+  const cut = (x, n) => { x = String(x || "").replace(/\s+/g, " "); return x.length > n ? x.slice(0, n - 1) + "…" : x; };
+  modal(`<div class="row"><h2>${M.id ? "Edit research topic" : "New research topic"}${ctx ? ` · ${ctx} <span class="muted" style="font-weight:400">${esc(surahOf(s).tl)}</span>` : ""}</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    ${ctx ? `<div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p><p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
+      ${list.length ? `<div class="row small"><span class="flabel">Topics for this ayah</span>${list.map(x => `<button type="button" class="chip ${x.id === M.id ? "rs" : ""}" data-m="rs-open" data-v="${esc(x.id)}">${esc(cut(x.title, 40))}</button>`).join("")}${M.id ? `<button type="button" class="btn small" data-m="rs-open" data-v="">New topic</button>` : ""}</div>` : ""}` : ""}
+    <div class="field"><label for="rs-title">Topic to research</label><input type="text" id="rs-title" dir="auto" value="${esc(M.title)}" placeholder="What do you need to find out?"></div>
+    <div class="grid2"><div class="field"><label for="rs-refs">Ayah(s) <span class="muted" style="font-weight:400">optional</span></label><input type="text" id="rs-refs" value="${esc(M.refs)}" placeholder="2:23, 10:38, 11:13-14"></div>
+      <div class="field"><label for="rs-status">Status</label><select id="rs-status">${Object.entries(RS_STATUS).map(([v, l]) => `<option value="${v}" ${v === M.status ? "selected" : ""}>${l}</option>`).join("")}</select></div></div>
+    <div class="field"><label for="rs-note">Notes <span class="muted" style="font-weight:400">optional</span></label><textarea id="rs-note" rows="6" dir="auto" placeholder="What you already know, sources to check, questions…">${esc(M.note)}</textarea></div>
+    <div class="field"><label for="rs-tags">Tags <span class="muted" style="font-weight:400">optional, separated by commas</span></label><input type="text" id="rs-tags" dir="auto" value="${esc(M.tags)}" placeholder="grammar, tafsir, hadith"></div>
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot row"><span class="small muted">Private: never shown on the public site.</span><span class="spacer"></span>
+      ${M.id ? `<button type="button" class="btn danger" data-m="rs-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
+      ${ctx ? `<button type="button" class="btn" data-m="rs-save-new" ${M.busy ? "disabled" : ""}>Save and add another</button>` : ""}
+      <button type="button" class="btn primary" data-m="rs-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
+}
+async function rsSave(){
+  captureRS();
+  const title = M.title.trim(), refsT = M.refs.trim();
+  if (!title) { M.err = "Write the topic first."; drawRS(); document.getElementById("rs-title")?.focus(); return false; }
+  const ranges = refsT ? parseRefs(refsT) : [];
+  if (!ranges) { M.err = "Write the ayahs like 2:23, 10:38 or 11:13-14, with real surah and ayah numbers. Leave it empty if the topic isn't tied to an ayah."; drawRS(); return false; }
+  const id = M.id || ("rs-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)), now = Date.now();
+  const tags = [...new Set(M.tags.split(/[,،]+/).map(t => t.trim().replace(/^#/, "")).filter(Boolean))];
+  const doc = {title, note: M.note.trim(), refs: refsT, ranges, status: M.status, tags, createdAt: M.created || now, updatedAt: now};
+  M.busy = true; M.err = ""; drawRS();
+  try { await S.db.collection("research").doc(id).set(doc); M.id = id; M.created = doc.createdAt; M.title = title; M.note = doc.note; M.refs = refsT; M.tags = tags.join(", "); M.saved = rsSnap(); toast("Research topic saved"); M.busy = false; return true; }
+  catch (e) { M.err = dbErr(e); M.busy = false; drawRS(); return false; }
+}
+async function rsAct(act, d){
+  const conf = (msg, yes, yesLabel, noLabel, danger) => { $("#m-confirm").innerHTML = `<div class="confirm"><span>${msg}</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">${noLabel}</button><button type="button" class="btn ${danger ? "danger" : "primary"}" data-m="${yes}">${yesLabel}</button></div>`; };
+  if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+  if (act === "close-yes") { closeModal(); return; }
+  if (M.busy) return;
+  if (act === "close") { captureRS(); if (rsSnap() !== M.saved && M.title.trim()) { conf("Close without saving?", "close-yes", "Close", "Keep writing", true); return; } closeModal(); return; }
+  if (act === "rs-open" || act === "rs-open-yes") {
+    if (act === "rs-open") { captureRS(); M.next = d.v || ""; if (rsSnap() !== M.saved && M.title.trim()) { conf("Leave this one without saving?", "rs-open-yes", "Leave", "Stay", true); return; } }
+    openRS(M.next || "", M.ctx); return;
+  }
+  if (act === "rs-save") { if (await rsSave()) { drawRS(); } return; }
+  if (act === "rs-save-new") { const ctx = M.ctx; if (await rsSave()) openRS("", ctx); return; }
+  if (act === "rs-delete") { conf("Delete this research topic?", "rs-delete-yes", "Delete", "Keep it", true); return; }
+  if (act === "rs-delete-yes") {
+    M.busy = true; drawRS();
+    try { await S.db.collection("research").doc(M.id).delete(); closeModal(); toast("Deleted"); }
+    catch (e) { M.busy = false; M.err = dbErr(e); drawRS(); }
+    return;
+  }
+}
 function openRukuList(ref){
   const [s, cur] = ref.split(":").map(Number), su = surahOf(s), st = RUKU[s];
   M = {type:"rukus"};
@@ -1182,7 +1469,8 @@ function ayahHTML(s, x){
   const wlist = IDX.words[k] || [];
   const nExp = notes.length;
   const open = S.open.has(k);
-  const dots = [rev?"rev":"", nExp?"exp":"", lessons.length?"les":"", wlist.length?"wa":""].filter(Boolean);
+  const cmt = S.cmIx[k], nRs = S.admin ? (S.rsIx[k] || []).length : 0;
+  const dots = [rev?"rev":"", nExp?"exp":"", lessons.length?"les":"", wlist.length?"wa":"", cmt?"cm":""].filter(Boolean);
   return `<article class="ayah${S.flashKey===k?" flash":""}" id="a-${s}-${x.a}">
     <div class="anum">${s}:${x.a}${dots.length?`<div class="dots" aria-hidden="true">${dots.map(d=>`<span class="dot ${d}"></span>`).join("")}</div>`:""}</div>
     <div class="abody">
@@ -1191,6 +1479,7 @@ function ayahHTML(s, x){
       ${rev ? `<div class="revline"><span class="chip rev" title="This translation has been revised from ${TR_NAME[S.trLang]}">Translation revised</span>
         <button type="button" class="btn ghost small" data-compare="${k}">${S.compare.has(k)?"Hide original":"Compare with original"}</button></div>
         ${S.compare.has(k) ? `<div class="orig" ${trAttrs()}><b>${TR_NAME[S.trLang]}</b>${esc(x.en)}${rev.note?`<div style="margin-top:8px;color:var(--ink)"><b>Reason for revision</b>${esc(rev.note)}</div>`:""}</div>` : ""}` : ""}
+      ${cmt ? cmBox(cmt) : ""}
       ${(notes.length || lessons.length || wlist.length) ? `<div class="marks">
         ${nExp ? `<button type="button" class="chip exp" data-toggle="${k}" aria-expanded="${open}">${nExp} note${nExp>1?"s":""}</button>` : ""}
         ${wlist.map(w => `<button type="button" class="chip wa" data-article="w:${esc(w.id)}" title="Word analysis">Word: <span lang="ar" class="wa-ar">${esc(w.word||"")}</span></button>`).join("")}
@@ -1203,7 +1492,9 @@ function ayahHTML(s, x){
         <button type="button" class="btn ghost" data-edit-tr="${k}">${rev?"Edit revised translation":"Revise translation"}</button>
         <button type="button" class="btn ghost" data-new-note="explanation" data-ref="${k}">Add note</button>
         <button type="button" class="btn ghost" data-new-word="${k}">Add word analysis</button>
-        <button type="button" class="btn ghost" data-qa="${k}">Q&amp;A${qaList(k).length ? ` (${qaList(k).length})` : ""}</button>` : ""}
+        <button type="button" class="btn ghost" data-cm="${k}">${cmt ? "Edit commentary" : "Add commentary"}</button>
+        <button type="button" class="btn ghost" data-qa="${k}">Q&amp;A${qaList(k).length ? ` (${qaList(k).length})` : ""}</button>
+        <button type="button" class="btn ghost" data-rs="${k}">Research${nRs ? ` (${nRs})` : ""}</button>` : ""}
       </div>
     </div>
   </article>`;
@@ -2954,6 +3245,19 @@ document.addEventListener("click", async (ev) => {
   if (d.surah) return go("surah", {s:+d.surah});
   if (d.rukulist) return openRukuList(d.rukulist);
   if (d.qa) { if (S.admin && S.db) openQA(d.qa); return; }
+  if (d.cm) { if (S.admin && S.db) openCM(d.cm); return; }
+  if (d.rs) { if (S.admin && S.db) openRS("", d.rs); return; }
+  if (d.rsNew !== undefined) { if (S.admin && S.db) openRS("", ""); return; }
+  if (d.rsEdit) { if (S.admin && S.db) openRS(d.rsEdit, ""); return; }
+  if (d.rsSet) {
+    if (!S.admin || !S.db) return;
+    const [id, st] = d.rsSet.split(":"), r = S.research.find(x => x.id === id); if (!r) return;
+    try { await S.db.collection("research").doc(id).update({status: st, updatedAt: Date.now()}); } catch (e) { toast(dbErr(e)); }
+    return;
+  }
+  if (d.rstatus !== undefined) { S.rstatus = d.rstatus; return render(); }
+  if (d.rtag) { S.rtag = S.rtag === d.rtag ? null : d.rtag; return render(); }
+  if (d.clear === "research") { S.rq = ""; S.rtag = null; S.rstatus = ""; return render(); }
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.vall !== undefined) { S.vrange = null; render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
@@ -2999,6 +3303,8 @@ document.addEventListener("click", async (ev) => {
   if (!d.m || !M) return;
   const act = d.m;
   if (M.type === "qa") return qaAct(act, d);
+  if (M.type === "cm") return cmAct(act, d);
+  if (M.type === "rs") return rsAct(act, d);
   if (act === "close") {
     if (M.busy) return;
     if (M.type === "gram" && M.edit) { captureIrab(); $("#m-confirm").innerHTML = `<div class="confirm"><span>Close without saving the iʿrāb?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep writing</button><button type="button" class="btn danger" data-m="close-yes">Close</button></div>`; return; }
@@ -3117,6 +3423,8 @@ document.addEventListener("input", (ev) => {
   else if (t.id === "lq") { S.lq = t.value; rerenderKeepingInput("lq"); }
   else if (t.id === "wq") { S.wq = t.value; rerenderKeepingInput("wq"); }
   else if (t.id === "qq") { S.qq = t.value; rerenderKeepingInput("qq"); }
+  else if (t.id === "cmq") { S.cmq = t.value; rerenderKeepingInput("cmq"); }
+  else if (t.id === "rq") { S.rq = t.value; rerenderKeepingInput("rq"); }
   else if (M && (t.id === "w-title" || t.id === "w-body" || t.id === "w-sum" || t.id === "w-tags" || t.id === "w-ref")) {
     if (t.id === "w-body") { const d = renderDoc(t.value, M.tab); const c = $("#w-count"); if (c) c.textContent = `${d.words.toLocaleString()} words · ${readMins(d.words)} min read`; }
     clearTimeout(saveLocalDraft.t); saveLocalDraft.t = setTimeout(saveLocalDraft, 1200);
@@ -3127,6 +3435,7 @@ document.addEventListener("change", (ev) => {
   if (t.id === "wroot") { S.wroot = t.value; render(); return; }
   if (t.id === "ncat") { S.ncat = t.value; if (S.nkind === "revised") S.nkind = "all"; render(); return; }
   if (t.id === "onlymarked") { S.onlyMarked = t.checked; render(); }
+  if (t.id === "rgroup") { S.rgroup = t.checked; render(); return; }
   if (t.id === "qfont") { S.qfont = t.value; store.set("aba.qfont", t.value); applyQFont(); }
   if (t.id === "ai-scope" && M) { captureFields(); M.aiScope = t.value; drawWriteEditor(); $("#ai-notes")?.focus(); return; }
   if (t.id === "w-src" && M) { captureFields(); if (M.tab !== M.it.src) M.tab = M.it.src; drawWriteEditor(); }
@@ -3163,7 +3472,7 @@ function rerenderKeepingInput(id){
 
 async function exportData(){
   if (!S.downloads) return;
-  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons}, null, 2);
+  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, research: S.research}, null, 2);
   try { await S.downloads.save({filename: `ayah-by-ayah-backup-${new Date().toISOString().slice(0,10)}.json`, data}); }
   catch (e) { if (e?.code !== "declined") toast("The backup couldn't be saved here."); }
 }
@@ -3212,6 +3521,13 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     for (const x of S.qa) (S.qaIx[key(x.s, x.a)] ||= []).push(x);
     render();
   }, () => {});
+  db.collection("commentary").onSnapshot(snap => {
+    S.cm = snap.docs.map(d => cmNorm(Object.assign({id: d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a));
+    reindex(); render();
+  }, () => {});
+  if (S.admin) db.collection("research").onSnapshot(snap => {
+    S.research = snap.docs.map(d => rsNorm(Object.assign({id: d.id}, d.data()))); reindex(); render();
+  }, () => {});
   db.collection("vocab").onSnapshot(snap => {
     S.vocab = {}; for (const d of snap.docs) { const x = d.data(); if (x) S.vocab[d.id] = x; }
     render();
@@ -3239,6 +3555,7 @@ async function loadStatic(){
     S.notes = (d.notes || []).filter(n => validRefSafe(n.s, n.a));
     S.lessons = d.lessons || [];
     S.words = (d.words || []).filter(w => validRefSafe(w.s, w.a));
+    S.cm = (d.commentary || []).filter(c => validRefSafe(c.s, c.a)).map(cmNorm);
     S.cats = (d.categories || []).slice().sort((a, b) => (a.order||0) - (b.order||0));
     S.irabAll = d.irab || {};
     S.vocab = d.vocab || {};
