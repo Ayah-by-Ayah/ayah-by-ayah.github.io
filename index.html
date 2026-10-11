@@ -172,6 +172,9 @@ button.rkend{background:none;color:inherit;font-family:inherit;cursor:pointer;pa
 nav.tabs button[hidden]{display:none}
 .dialog.qa{max-width:860px}
 .dialog.qa textarea{width:100%;font:inherit;line-height:1.6}
+.qafit{border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin:10px 0}
+.qafit .qw{font:20px/1.5 var(--f-ar);background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:0 9px;margin:2px;cursor:pointer;color:inherit}
+.qafit .qw[aria-pressed="true"]{background:var(--qa-bg);border-color:var(--qa);color:var(--qa)}
 .qacard{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 16px;margin:12px 0}
 .qacard .qq{margin:8px 0 6px;font-size:17px}
 .qacard .qa-ans{font-size:15.5px;line-height:1.65}
@@ -949,15 +952,66 @@ function viewQA(){
     ${q ? `<div class="small muted">${items.length} result${items.length === 1 ? "" : "s"}</div>` : ""}</div>
   <div class="results">${items.map(qaCard).join("") || (S.qa.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No Q&amp;A yet</b>Open a surah and press “Q&amp;A” under any ayah.</div>`)}</div>`;
 }
-const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final]);
+const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final, M.fit || null]);
 function openQA(ref){
   const [s, a, id] = ref.split(":"); const ex = id ? S.qa.find(x => x.id === id) : null;
   const src = ex ? ex.src : S.lang;
   M = {type: "qa", s: +s, a: +a, id: ex ? ex.id : null, src, tab: (ex && ((ex.q[S.lang] || "") + (ex.ans[S.lang] || "")).trim()) ? S.lang : src,
     q: Object.assign(blankLang(), ex?.q), ans: Object.assign(blankLang(), ex?.ans), ai: Object.assign({}, ex?.ai), fu: "", final: !!ex?.final, hist: (ex?.fu || []).slice(), created: ex?.createdAt || 0,
-    busy: false, ctl: [], err: "", status: ""};
+    fit: ex?.fit ? Object.assign({}, ex.fit) : null, busy: false, ctl: [], err: "", status: ""};
   M.saved = qaSnap();
   drawQA();
+  qaLoadWords();
+}
+function qaLoadWords(){
+  const m = M; if (!m || m.type !== "qa" || m.words) return;
+  loadGrammar(m.s).then(d => { if (M === m) { m.words = d[m.a - 1] || []; if (!m.busy) { captureQA(); drawQA(); } } }).catch(() => { if (M === m) m.words = []; });
+}
+const QA_FIT_Q = {
+  en: (w, s, a) => `How does the word «${w}» fit in this ayah (${s}:${a}) compared with similar Qur'anic words used elsewhere? Why this word here and not another?`,
+  ar: (w, s, a) => `مَا وَجْهُ مُنَاسَبَةِ لَفْظِ «${w}» فِي هَذِهِ الْآيَةِ (${s}:${a}) مُقَارَنَةً بِالْأَلْفَاظِ الْقُرْآنِيَّةِ الْمُشَابِهَةِ لَهُ فِي مَوَاضِعَ أُخْرَى؟ وَلِمَاذَا اخْتِيرَ هَذَا اللَّفْظُ هُنَا دُونَ غَيْرِهِ؟`,
+  bn: (w, s, a) => `এই আয়াতে (${s}:${a}) «${w}» শব্দটি কুরআনের অন্যত্র ব্যবহৃত অনুরূপ শব্দগুলোর তুলনায় কীভাবে উপযুক্ত হয়েছে? এখানে অন্য শব্দ নয়, এই শব্দ কেন?`,
+  ur: (w, s, a) => `اس آیت (${s}:${a}) میں لفظ «${w}» قرآن میں دوسری جگہ استعمال ہونے والے ملتے جلتے الفاظ کے مقابلے میں کس طرح موزوں ہے؟ یہاں دوسرا لفظ کیوں نہیں، یہی کیوں؟`
+};
+function qaPickWord(i){
+  const w = M.words && M.words[i - 1]; if (!w) return;
+  captureQA();
+  const segs = w[2].map(decodeSeg), stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0];
+  M.fit = (M.fit && M.fit.w === i) ? null : {w: i, word: w[2].map(x => x[0]).join(""), gloss: w[1], root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""};
+  drawQA();
+}
+function qaFitFill(){
+  captureQA();
+  if (!M.fit) { M.err = "Select a word of the ayah first."; drawQA(); return; }
+  const S0 = M.src, q = QA_FIT_Q[S0](M.fit.word, M.s, M.a);
+  M.q[S0] = M.q[S0].trim() && !M.q[S0].includes("«" + M.fit.word + "»") ? M.q[S0].trim() + "\n" + q : q;
+  M.tab = S0; M.err = "";
+  drawQA();   // put the question in the box first: qaRun reads the box
+  return qaRun(false);
+}
+async function qaFitData(){
+  const f = M.fit; if (!f) return "";
+  const tl = S.trLang, line = (s, a) => `${s}:${a}  ${S.Q[s - 1].v[a - 1][0]}  —  ${trText(s, a)}`;
+  let C = null; try { C = await loadConc(); } catch {}
+  if (!C || !f.lemma) return `\nSelected word: «${f.word}» (word ${f.w}, gloss: ${f.gloss}${f.root ? ", root " + spaced(f.root) : ""}). No occurrence data is available; say so, and keep the comparison general and clearly marked for verification.`;
+  const own = (C.L[f.lemma] || []).map(decCode), sib = f.root ? (C.R[f.root] || []).filter(l => l !== f.lemma) : [];
+  const pick = (arr, n) => arr.filter((x, i) => i < n);
+  let out = `\nSelected word: «${f.word}» in ${M.s}:${M.a} (word ${f.w}; gloss: ${f.gloss}; lemma ${f.lemma}${f.root ? "; root " + spaced(f.root) : ""}${f.pos ? "; " + f.pos : ""}).\n`;
+  out += `\nOther places where the same lemma ${f.lemma} occurs (${own.length} in all${own.length > 25 ? ", first 25 shown" : ""}):\n` + pick(own, 25).map(([s, a]) => line(s, a)).join("\n");
+  if (sib.length) {
+    out += `\n\nOther lemmas from the same root ${spaced(f.root)} (word-family neighbours):\n` + sib.slice(0, 12).map(l => { const c = (C.L[l] || []).map(decCode); return `- ${l} (${c.length} occurrence${c.length === 1 ? "" : "s"})\n` + pick(c, 3).map(([s, a]) => "    " + line(s, a)).join("\n"); }).join("\n");
+  }
+  return out;
+}
+function qaFitBox(){
+  const noAI = !S.sample, f = M.fit, T = M.src;
+  const words = M.words;
+  const chips = !words ? `<span class="small muted">Loading the words of this ayah…</span>` : words.length ? words.map((w, i) => `<button type="button" class="qw" lang="ar" dir="rtl" data-m="qa-word" data-v="${i + 1}" aria-pressed="${!!f && f.w === i + 1}" title="${esc(w[1])}">${esc(w[2].map(x => x[0]).join(""))}</button>`).join("") : `<span class="small muted">The word list did not load.</span>`;
+  return `<div class="qafit"><div class="flabel">Ask about a word: how does it fit here?</div>
+    <div class="small muted" style="margin:2px 0 6px">Select one word of this ayah. The AI compares its use here with the same word and with similar Qur'anic words elsewhere, and explains why this word suits this place.</div>
+    <div class="row" style="flex-wrap:wrap">${chips}</div>
+    ${f ? `<div class="row small" style="margin-top:6px"><span>Selected: <b lang="ar" class="gar" style="font-size:18px">${esc(f.word)}</b> · ${esc(f.gloss)}${f.root ? ` · root <b lang="ar" class="gar">${esc(spaced(f.root))}</b>` : ""}</span><span class="spacer"></span>
+      <button type="button" class="btn primary" data-m="qa-fit" ${M.busy || noAI ? "disabled" : ""}>Ask: how does this word fit here?</button></div>` : ""}</div>`;
 }
 function captureQA(){
   if (!M || M.type !== "qa") return;
@@ -976,6 +1030,7 @@ function drawQA(){
   modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
     <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
       <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
+    ${qaFitBox()}
     ${list.length ? `<div class="row small"><span class="flabel">Saved for this ayah</span>${list.map(x => `<button type="button" class="chip ${x.id === M.id ? "exp" : "les"}" data-m="qa-open" data-v="${esc(x.id)}">${esc(cut(pick(x.q, S.lang, x.src).text, 50))}</button>`).join("")}${M.id ? `<button type="button" class="btn small" data-m="qa-open" data-v="">New question</button>` : ""}</div>` : ""}
     <div class="row small"><label class="flabel" for="qa-src">Written in</label>
       <select id="qa-src" style="width:auto">${LANGS.map(l => `<option value="${l}" ${l === M.src ? "selected" : ""}>${LNAME_EN[l]}</option>`).join("")}</select>
@@ -1002,7 +1057,7 @@ function drawQA(){
       ${M.id ? `<button type="button" class="btn danger" data-m="qa-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
       <button type="button" class="btn primary" data-m="qa-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
 }
-function qaPrompt(follow){
+function qaPrompt(follow, fitData){
   const {s, a} = M, su = surahOf(s), n = su.v.length, S0 = M.src;
   const line = (x) => `${s}:${x}  ${arText(s, x)}  —  ${trText(s, x)}`;
   const ctx = [a > 1 ? "Previous ayah: " + line(a - 1) : "", a < n ? "Next ayah: " + line(a + 1) : ""].filter(Boolean).join("\n");
@@ -1014,14 +1069,16 @@ Translation (${TR_NAME[S.trLang]}): ${trText(s, a)}
 ${ctx}
 
 Question (in ${LNAME_EN[S0]}): ${M.q[S0].trim()}
+${fitData || ""}
 ${follow ? `\nCurrent draft of the answer (the questioner may have edited it; keep his edits unless he asks you to change them):\n"""\n${M.ans[S0].trim()}\n"""\n\nHis follow-up or instruction: ${M.fu.trim()}\n\nWrite the complete revised answer.` : "\nWrite the answer."}
 
 Rules:
 - Write the answer in ${QA_GUIDE[S0]}.
-- Quote Qur'anic Arabic only from the ayahs given above, copied exactly, each on its own line starting with ">> ". For any other ayah give only its reference, written like 2:255, and describe it in your own words.
+- Quote Qur'anic Arabic only from the ayahs given above (and in the data below, if any), copied exactly, each on its own line starting with ">> ". For any other ayah give only its reference, written like 2:255, and describe it in your own words.
 - Do not give hadith texts or numbers, and do not quote tafsir or any scholar, from memory. You may say that views exist, in general terms, and mark every such statement as needing verification.
 - Base the answer on the text of the ayahs, the language and context. Separate what the text says clearly from what is interpretation, and say where you are unsure.
 - Be direct and organised. Use "## " headings only if the answer is long; **bold** and "- " lists are fine. No preamble and no closing remarks.
+${fitData ? `- This is a word-fit question. Explain why the selected word suits this place by comparing it with the data below: the same word elsewhere, and the other words of its root. Say what each comparison shows about meaning, context, grammar or sound. You may also name other Qur'anic words of similar meaning from other roots, but give their references only as references (like 2:255), described in your own words and flagged for verification.\n- Do not claim a reason is certain when it is only a reading of the text; mark it as interpretation.` : ""}
 - End with a final section headed "To verify before saving" (in the same language) that lists, as short bullets, every reference, quotation, attribution or factual claim in your answer that the questioner should check against the sources.`;
 }
 async function qaRun(follow){
@@ -1030,8 +1087,10 @@ async function qaRun(follow){
   if (!M.q[S0].trim()) { M.tab = S0; M.err = `Write the question in the ${LNAME_EN[S0]} tab first.`; drawQA(); return; }
   if (follow && !M.fu.trim()) { M.err = "Write the follow-up or the change you want first."; drawQA(); return; }
   if (!S.sample) { M.err = "AI is not available in this view."; drawQA(); return; }
-  const prompt = qaPrompt(follow), keepAns = M.ans[S0];
   M.tab = S0; M.err = ""; M.busy = true; M.status = "Thinking… this can take a minute."; drawQA();
+  const fitData = (M.fit && M.q[S0].includes("«" + M.fit.word + "»")) ? await qaFitData() : "";
+  if (!M || M.type !== "qa") return;
+  const prompt = qaPrompt(follow, fitData), keepAns = M.ans[S0];
   const ctl = new AbortController(); M.ctl = [ctl];
   try {
     const {text, truncated} = await S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex", onText: ({text}) => { const t = $("#qa-ans"); if (t && M && M.type === "qa" && M.tab === S0) t.value = text; }});
@@ -1131,6 +1190,8 @@ async function qaAct(act, d){
   if (act === "qa-stop") { M.ctl.forEach(c => c.abort()); return; }
   if (act === "qa-tab") { captureQA(); M.tab = d.v; M.err = ""; drawQA(); return; }
   if (act === "qa-reviewed") { captureQA(); delete M.ai[M.tab]; drawQA(); return; }
+  if (act === "qa-word") { qaPickWord(+d.v); return; }
+  if (act === "qa-fit") return qaFitFill();
   if (act === "qa-ask") return qaRun(false);
   if (act === "qa-follow") return qaRun(true);
   if (act === "qa-trans") return qaTranslate(d.v || "", false);
@@ -1144,7 +1205,7 @@ async function qaAct(act, d){
     if (!M.q[M.src].trim()) { M.tab = M.src; M.err = `Write the question in ${LNAME_EN[M.src]} first (it is the language you wrote in).`; drawQA(); return; }
     const id = M.id || ("qa-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)), now = Date.now();
     const tr = o => Object.fromEntries(LANGS.map(l => [l, (o[l] || "").trim()]));
-    const doc = {s: M.s, a: M.a, src: M.src, q: tr(M.q), ans: tr(M.ans), ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && ((M.q[l] || "") + (M.ans[l] || "")).trim())), final: !!M.final, fu: M.hist, createdAt: M.created || now, updatedAt: now};
+    const doc = {s: M.s, a: M.a, src: M.src, q: tr(M.q), ans: tr(M.ans), ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && ((M.q[l] || "") + (M.ans[l] || "")).trim())), final: !!M.final, ...(M.fit ? {fit: M.fit} : {}), fu: M.hist, createdAt: M.created || now, updatedAt: now};
     M.busy = true; M.err = ""; drawQA();
     try { await S.db.collection("qa").doc(id).set(doc); M.id = id; M.created = doc.createdAt; M.q = Object.assign(blankLang(), doc.q); M.ans = Object.assign(blankLang(), doc.ans); M.ai = Object.assign({}, doc.ai); M.saved = qaSnap(); M.status = "Saved."; toast("Q&A saved"); }
     catch (e) { M.err = dbErr(e); }
@@ -3298,6 +3359,8 @@ document.addEventListener("click", async (ev) => {
   if (d.newLesson !== undefined) return openWriteEditor("lesson", null, "");
   if (d.editLesson) { const l = S.lessons.find(x=>x.id===d.editLesson); if (l) openWriteEditor("lesson", l); return; }
   if (d.export !== undefined) return exportData();
+  if (d.offOpen !== undefined) return openOfflineSync();
+  if (d.syncImport !== undefined) { const fi = $("#sync-file"); if (fi) fi.click(); return; }
 
   // modal actions
   if (!d.m || !M) return;
@@ -3305,6 +3368,7 @@ document.addEventListener("click", async (ev) => {
   if (M.type === "qa") return qaAct(act, d);
   if (M.type === "cm") return cmAct(act, d);
   if (M.type === "rs") return rsAct(act, d);
+  if (M.type === "offsync" || M.type === "syncin") return syncAct(act);
   if (act === "close") {
     if (M.busy) return;
     if (M.type === "gram" && M.edit) { captureIrab(); $("#m-confirm").innerHTML = `<div class="confirm"><span>Close without saving the iʿrāb?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep writing</button><button type="button" class="btn danger" data-m="close-yes">Close</button></div>`; return; }
@@ -3477,6 +3541,138 @@ async function exportData(){
   catch (e) { if (e?.code !== "declined") toast("The backup couldn't be saved here."); }
 }
 
+/* ---------- offline edition ⇄ online platform: sync ---------- */
+/* Checked against live version 1791569968-ab53 on 11 Oct 2026: it carried no changes beyond tools/app.html at HEAD.
+   The offline file (tools/build_offline.py) keeps your edits on the device and exports them as a sync file.
+   The online platform imports that file here. Same stable hash as tools/offline_shim.js (used to spot conflicts). */
+function stableJ(v){
+  if (v === null || typeof v !== "object") return JSON.stringify(v);
+  if (Array.isArray(v)) return "[" + v.map(stableJ).join(",") + "]";
+  return "{" + Object.keys(v).filter(k => v[k] !== undefined).sort().map(k => JSON.stringify(k) + ":" + stableJ(v[k])).join(",") + "}";
+}
+function hashDocJ(d){
+  if (d == null) return null;
+  const t = stableJ(d); let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for (let i = 0; i < t.length; i++) { const c = t.charCodeAt(i); h1 = Math.imul(h1 ^ c, 2654435761); h2 = Math.imul(h2 ^ c, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
+const SYNC_FORMAT = "ayah-by-ayah-offline-sync";
+const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","research","settings"];
+function syncLabel(path, doc){
+  const col = path.split("/")[0], id = path.slice(col.length + 1);
+  let t = "";
+  if (doc) {
+    const pickT = (o) => o && (o.en || o.ar || o.bn || o.ur) || "";
+    t = pickT(doc.title) || doc.word || (col === "commentary" ? `Commentary ${doc.s}:${doc.a}` : "") || (col === "qa" ? `Q&A ${doc.s}:${doc.a} ` + (pickT(doc.q) || "").slice(0, 60) : "") || (col === "research" ? doc.title : "") || (col === "translations" ? `Translation ${doc.s}:${doc.a}${doc.lang ? " (" + doc.lang + ")" : ""}` : "");
+  }
+  const names = {notes:"Note", lessons:"Lesson", words:"Word analysis", translations:"Translation", irab:"Iʿrāb", chunks:"Part of a long write-up", vocab:"Vocabulary table", qa:"Q&A", commentary:"Commentary", research:"Research topic", settings:"Settings"};
+  return `${names[col] || col}: ${t ? String(t).trim() : id}`;
+}
+function refreshOfflineBtn(){
+  const b = document.getElementById("off-btn"), O = window.__OFFLINE__;
+  if (!b || !O) return;
+  const n = O.pendingCount();
+  b.textContent = n ? `Offline · ${n} unsynced change${n === 1 ? "" : "s"}` : "Offline · nothing to sync";
+  b.className = "btn small" + (n ? " primary" : " ghost");
+}
+function openOfflineSync(){
+  const O = window.__OFFLINE__; if (!O) return;
+  M = {type: "offsync"}; drawOfflineSync();
+}
+function drawOfflineSync(){
+  const O = window.__OFFLINE__, paths = O.pendingPaths(), f = O.buildSyncFile();
+  const byPath = {}; f.changes.forEach(c => byPath[c.path] = c);
+  const items = paths.filter(p => !p.startsWith("chunks/")).map(p => `<li>${esc(syncLabel(p, byPath[p]?.doc))}${byPath[p]?.op === "delete" ? " — <b>deleted</b>" : ""}</li>`).join("");
+  const mode = O.persistMode();
+  modal(`<div class="row"><h2>Offline edition</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <p class="small muted">Your changes are saved on this device${mode === "memory" ? " <b>only until you close this page</b> (this browser blocks local storage) — download the sync file before leaving" : ""}. When you are online, download the sync file and import it into the Ayah by Ayah platform (button “Import offline changes” there). Nothing is lost if you do this later.</p>
+    <p class="small">Data in this file was taken from the platform on <b>${esc(String(O.exportedAt || "").slice(0, 16).replace("T", " "))}</b>.</p>
+    ${paths.length ? `<p><b>${paths.length}</b> unsynced document${paths.length === 1 ? "" : "s"}:</p><ul class="small">${items || "<li>Parts of long write-ups only</li>"}</ul>` : `<p class="muted">Nothing to sync yet. Edit a note, translation, commentary or research topic and it will appear here.</p>`}
+    <div id="m-confirm"></div><div class="err" id="m-err"></div>
+    <div class="foot"><button type="button" class="btn danger" data-m="off-clear" ${paths.length ? "" : "disabled"}>I have imported them — clear this list</button><span class="spacer"></span><button type="button" class="btn primary" data-m="off-download" ${paths.length ? "" : "disabled"}>Download sync file</button></div>`);
+}
+async function syncPicked(file){
+  if (!file) return;
+  let f;
+  try { f = JSON.parse(await file.text()); } catch { return toast("That file isn't a sync file."); }
+  if (!f || f.format !== SYNC_FORMAT || !Array.isArray(f.changes)) return toast("That file isn't an Ayah by Ayah sync file.");
+  if (!S.db || !S.admin) return toast("Open the editor platform to import changes.");
+  M = {type: "syncin", busy: true, items: [], file: f, name: file.name}; modal(`<h2>Import offline changes</h2><p class="muted">Checking ${f.changes.length} change${f.changes.length === 1 ? "" : "s"} against the platform…</p>`);
+  const items = [];
+  for (let i = 0; i < f.changes.length; i++) {
+    const c = f.changes[i];
+    const ok = c && typeof c.path === "string" && /^[a-z]+\/[^\/]+$/.test(c.path) && SYNC_COLS.includes(c.path.split("/")[0]) && (c.op === "delete" || (c.op === "set" && c.doc && typeof c.doc === "object"));
+    if (!ok) { items.push({i, path: String(c && c.path), op: c && c.op, status: "invalid"}); continue; }
+    let cur = null;
+    try { const sn = await S.db.doc(c.path).get(); cur = sn.exists ? sn.data() : null; } catch { items.push({i, path: c.path, op: c.op, c, status: "error"}); continue; }
+    const curHash = hashDocJ(cur);
+    let status;
+    if (c.op === "set") status = curHash === hashDocJ(c.doc) ? "same" : (curHash === c.baseHash || (cur && c.baseUpdatedAt != null && cur.updatedAt === c.baseUpdatedAt)) ? "apply" : "conflict";
+    else status = cur == null ? "same" : (curHash === c.baseHash || (c.baseUpdatedAt != null && cur.updatedAt === c.baseUpdatedAt)) ? "apply" : "conflict";
+    items.push({i, path: c.path, op: c.op, c, cur, status});
+  }
+  M.items = items; M.busy = false; drawSyncIn();
+}
+function drawSyncIn(){
+  const its = M.items, n = (s) => its.filter(x => x.status === s).length;
+  const shown = its.filter(x => !x.path.startsWith("chunks/") || x.status !== "apply");
+  const row = (x) => {
+    const lab = esc(syncLabel(x.path, x.c?.doc || x.cur)) + (x.op === "delete" ? " — <b>deleted offline</b>" : "");
+    if (x.status === "conflict") return `<li><label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" data-sync-use="${x.i}" ${M.use?.has(x.i) ? "checked" : ""}> <span>${lab}<br><span class="small muted">Changed on the platform too. Tick to replace the platform version with the offline one (a backup of the platform version is downloaded first). Left unticked, it is skipped.</span></span></label></li>`;
+    const tag = {apply: "will be applied", same: "already up to date", invalid: "not valid, skipped", error: "couldn't be checked, skipped"}[x.status];
+    return `<li>${lab} <span class="small muted">· ${tag}</span></li>`;
+  };
+  modal(`<div class="row"><h2>Import offline changes</h2><span class="spacer"></span><button type="button" class="btn" data-m="sync-close" ${M.busy ? "disabled" : ""}>${M.done ? "Close" : "Cancel"}</button></div>
+    <p class="small muted">${esc(M.name || "")} · made ${esc(String(M.file.createdAt || "").slice(0, 16).replace("T", " "))}</p>
+    <p><b>${n("apply")}</b> to apply · <b>${n("same")}</b> already up to date · <b>${n("conflict")}</b> in conflict${n("invalid") + n("error") ? ` · <b>${n("invalid") + n("error")}</b> skipped` : ""}</p>
+    <ul class="small" style="max-height:46vh;overflow:auto;padding-inline-start:18px">${shown.map(row).join("") || "<li>Nothing to import.</li>"}</ul>
+    <div class="err" id="m-err">${esc(M.err || "")}</div>
+    ${M.done ? `<p><b>${esc(M.result)}</b></p>` : `<div class="foot"><span class="spacer"></span><button type="button" class="btn primary" data-m="sync-apply" ${M.busy || !(n("apply") || n("conflict")) ? "disabled" : ""}>${M.busy ? "Importing…" : "Import"}</button></div>`}`);
+}
+async function syncApply(){
+  M.use = new Set([...document.querySelectorAll("input[data-sync-use]:checked")].map(x => +x.dataset.syncUse));
+  const todo = M.items.filter(x => x.status === "apply" || (x.status === "conflict" && M.use.has(x.i)));
+  if (!todo.length) { M.err = "Nothing selected to import."; return drawSyncIn(); }
+  M.busy = true; M.err = ""; drawSyncIn();
+  const back = todo.filter(x => x.cur != null).map(x => ({path: x.path, doc: x.cur}));
+  if (back.length && S.downloads) { try { await S.downloads.save({filename: `before-import-backup-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "-")}.json`, data: JSON.stringify({note: "Platform versions replaced or deleted by an offline import", docs: back}, null, 1)}); } catch {} }
+  const isChunk = (x) => x.path.startsWith("chunks/");
+  const order = [...todo.filter(x => x.op === "set" && isChunk(x)), ...todo.filter(x => x.op === "set" && !isChunk(x)), ...todo.filter(x => x.op === "delete" && !isChunk(x)), ...todo.filter(x => x.op === "delete" && isChunk(x))];
+  let ok = 0; const failed = [];
+  for (const x of order) {
+    try { const ref = S.db.doc(x.path); if (x.op === "set") await ref.set(x.c.doc); else await ref.delete(); ok++; }
+    catch (e) { failed.push(`${syncLabel(x.path, x.c?.doc)} — ${dbErr(e)}`); }
+  }
+  M.busy = false; M.done = true;
+  M.result = `Imported ${ok} change${ok === 1 ? "" : "s"}.` + (failed.length ? ` ${failed.length} failed: ${failed.join("; ")}` : " You can now clear the list in the offline edition.");
+  drawSyncIn();
+}
+function syncAct(act){
+  if (act === "close" || act === "sync-close") { if (M.busy) return; closeModal(); return; }
+  if (M.type === "offsync") {
+    const O = window.__OFFLINE__;
+    if (act === "off-download") { const n = O.exportChanges(); toast(`Sync file saved (${n} change${n === 1 ? "" : "s"})`); return; }
+    if (act === "off-clear") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Only clear after the platform has confirmed the import. Clear the list?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="off-clear-yes">Clear</button></div>`; return; }
+    if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+    if (act === "off-clear-yes") { O.markSynced(); drawOfflineSync(); toast("Cleared"); return; }
+  }
+  if (M.type === "syncin" && act === "sync-apply") return syncApply();
+}
+function addSyncControls(){
+  const bar = $(".langbar"); if (!bar) return;
+  if (window.__OFFLINE__) {
+    const b = document.createElement("button"); b.type = "button"; b.id = "off-btn"; b.dataset.offOpen = ""; bar.appendChild(b);
+    window.addEventListener("offline-pending", refreshOfflineBtn); refreshOfflineBtn();
+  } else if (S.admin && S.db && !S.static) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "btn ghost small"; b.dataset.syncImport = ""; b.textContent = "Import offline changes"; bar.appendChild(b);
+    const inp = document.createElement("input"); inp.type = "file"; inp.id = "sync-file"; inp.accept = ".json,application/json"; inp.hidden = true;
+    inp.addEventListener("change", () => { const f = inp.files && inp.files[0]; inp.value = ""; syncPicked(f); });
+    document.body.appendChild(inp);
+  }
+}
+
 /* ---------- boot ---------- */
 fromHash();
 render();
@@ -3542,6 +3738,7 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     f.type = "button"; f.className = "btn ghost small"; f.dataset.export = ""; f.textContent = "Back up all write-ups";
     $(".langbar").appendChild(f);
   }
+  addSyncControls();
   render();
 })();
 async function loadStatic(){
