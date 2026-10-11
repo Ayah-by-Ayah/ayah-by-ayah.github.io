@@ -3284,6 +3284,8 @@ document.addEventListener("click", async (ev) => {
   if (d.newLesson !== undefined) return openWriteEditor("lesson", null, "");
   if (d.editLesson) { const l = S.lessons.find(x=>x.id===d.editLesson); if (l) openWriteEditor("lesson", l); return; }
   if (d.export !== undefined) return exportData();
+  if (d.offOpen !== undefined) return openOfflineSync();
+  if (d.syncImport !== undefined) { const fi = $("#sync-file"); if (fi) fi.click(); return; }
 
   // modal actions
   if (!d.m || !M) return;
@@ -3291,6 +3293,7 @@ document.addEventListener("click", async (ev) => {
   if (M.type === "qa") return qaAct(act, d);
   if (M.type === "cm") return cmAct(act, d);
   if (M.type === "rs") return rsAct(act, d);
+  if (M.type === "offsync" || M.type === "syncin") return syncAct(act);
   if (act === "close") {
     if (M.busy) return;
     if (M.type === "gram" && M.edit) { captureIrab(); $("#m-confirm").innerHTML = `<div class="confirm"><span>Close without saving the iʿrāb?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep writing</button><button type="button" class="btn danger" data-m="close-yes">Close</button></div>`; return; }
@@ -3463,6 +3466,138 @@ async function exportData(){
   catch (e) { if (e?.code !== "declined") toast("The backup couldn't be saved here."); }
 }
 
+/* ---------- offline edition ⇄ online platform: sync ---------- */
+/* Checked against live version 1791569968-ab53 on 11 Oct 2026: it carried no changes beyond tools/app.html at HEAD.
+   The offline file (tools/build_offline.py) keeps your edits on the device and exports them as a sync file.
+   The online platform imports that file here. Same stable hash as tools/offline_shim.js (used to spot conflicts). */
+function stableJ(v){
+  if (v === null || typeof v !== "object") return JSON.stringify(v);
+  if (Array.isArray(v)) return "[" + v.map(stableJ).join(",") + "]";
+  return "{" + Object.keys(v).filter(k => v[k] !== undefined).sort().map(k => JSON.stringify(k) + ":" + stableJ(v[k])).join(",") + "}";
+}
+function hashDocJ(d){
+  if (d == null) return null;
+  const t = stableJ(d); let h1 = 0xdeadbeef, h2 = 0x41c6ce57;
+  for (let i = 0; i < t.length; i++) { const c = t.charCodeAt(i); h1 = Math.imul(h1 ^ c, 2654435761); h2 = Math.imul(h2 ^ c, 1597334677); }
+  h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+  h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+  return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+}
+const SYNC_FORMAT = "ayah-by-ayah-offline-sync";
+const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","research","settings"];
+function syncLabel(path, doc){
+  const col = path.split("/")[0], id = path.slice(col.length + 1);
+  let t = "";
+  if (doc) {
+    const pickT = (o) => o && (o.en || o.ar || o.bn || o.ur) || "";
+    t = pickT(doc.title) || doc.word || (col === "commentary" ? `Commentary ${doc.s}:${doc.a}` : "") || (col === "qa" ? `Q&A ${doc.s}:${doc.a} ` + (pickT(doc.q) || "").slice(0, 60) : "") || (col === "research" ? doc.title : "") || (col === "translations" ? `Translation ${doc.s}:${doc.a}${doc.lang ? " (" + doc.lang + ")" : ""}` : "");
+  }
+  const names = {notes:"Note", lessons:"Lesson", words:"Word analysis", translations:"Translation", irab:"Iʿrāb", chunks:"Part of a long write-up", vocab:"Vocabulary table", qa:"Q&A", commentary:"Commentary", research:"Research topic", settings:"Settings"};
+  return `${names[col] || col}: ${t ? String(t).trim() : id}`;
+}
+function refreshOfflineBtn(){
+  const b = document.getElementById("off-btn"), O = window.__OFFLINE__;
+  if (!b || !O) return;
+  const n = O.pendingCount();
+  b.textContent = n ? `Offline · ${n} unsynced change${n === 1 ? "" : "s"}` : "Offline · nothing to sync";
+  b.className = "btn small" + (n ? " primary" : " ghost");
+}
+function openOfflineSync(){
+  const O = window.__OFFLINE__; if (!O) return;
+  M = {type: "offsync"}; drawOfflineSync();
+}
+function drawOfflineSync(){
+  const O = window.__OFFLINE__, paths = O.pendingPaths(), f = O.buildSyncFile();
+  const byPath = {}; f.changes.forEach(c => byPath[c.path] = c);
+  const items = paths.filter(p => !p.startsWith("chunks/")).map(p => `<li>${esc(syncLabel(p, byPath[p]?.doc))}${byPath[p]?.op === "delete" ? " — <b>deleted</b>" : ""}</li>`).join("");
+  const mode = O.persistMode();
+  modal(`<div class="row"><h2>Offline edition</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <p class="small muted">Your changes are saved on this device${mode === "memory" ? " <b>only until you close this page</b> (this browser blocks local storage) — download the sync file before leaving" : ""}. When you are online, download the sync file and import it into the Ayah by Ayah platform (button “Import offline changes” there). Nothing is lost if you do this later.</p>
+    <p class="small">Data in this file was taken from the platform on <b>${esc(String(O.exportedAt || "").slice(0, 16).replace("T", " "))}</b>.</p>
+    ${paths.length ? `<p><b>${paths.length}</b> unsynced document${paths.length === 1 ? "" : "s"}:</p><ul class="small">${items || "<li>Parts of long write-ups only</li>"}</ul>` : `<p class="muted">Nothing to sync yet. Edit a note, translation, commentary or research topic and it will appear here.</p>`}
+    <div id="m-confirm"></div><div class="err" id="m-err"></div>
+    <div class="foot"><button type="button" class="btn danger" data-m="off-clear" ${paths.length ? "" : "disabled"}>I have imported them — clear this list</button><span class="spacer"></span><button type="button" class="btn primary" data-m="off-download" ${paths.length ? "" : "disabled"}>Download sync file</button></div>`);
+}
+async function syncPicked(file){
+  if (!file) return;
+  let f;
+  try { f = JSON.parse(await file.text()); } catch { return toast("That file isn't a sync file."); }
+  if (!f || f.format !== SYNC_FORMAT || !Array.isArray(f.changes)) return toast("That file isn't an Ayah by Ayah sync file.");
+  if (!S.db || !S.admin) return toast("Open the editor platform to import changes.");
+  M = {type: "syncin", busy: true, items: [], file: f, name: file.name}; modal(`<h2>Import offline changes</h2><p class="muted">Checking ${f.changes.length} change${f.changes.length === 1 ? "" : "s"} against the platform…</p>`);
+  const items = [];
+  for (let i = 0; i < f.changes.length; i++) {
+    const c = f.changes[i];
+    const ok = c && typeof c.path === "string" && /^[a-z]+\/[^\/]+$/.test(c.path) && SYNC_COLS.includes(c.path.split("/")[0]) && (c.op === "delete" || (c.op === "set" && c.doc && typeof c.doc === "object"));
+    if (!ok) { items.push({i, path: String(c && c.path), op: c && c.op, status: "invalid"}); continue; }
+    let cur = null;
+    try { const sn = await S.db.doc(c.path).get(); cur = sn.exists ? sn.data() : null; } catch { items.push({i, path: c.path, op: c.op, c, status: "error"}); continue; }
+    const curHash = hashDocJ(cur);
+    let status;
+    if (c.op === "set") status = curHash === hashDocJ(c.doc) ? "same" : (curHash === c.baseHash || (cur && c.baseUpdatedAt != null && cur.updatedAt === c.baseUpdatedAt)) ? "apply" : "conflict";
+    else status = cur == null ? "same" : (curHash === c.baseHash || (c.baseUpdatedAt != null && cur.updatedAt === c.baseUpdatedAt)) ? "apply" : "conflict";
+    items.push({i, path: c.path, op: c.op, c, cur, status});
+  }
+  M.items = items; M.busy = false; drawSyncIn();
+}
+function drawSyncIn(){
+  const its = M.items, n = (s) => its.filter(x => x.status === s).length;
+  const shown = its.filter(x => !x.path.startsWith("chunks/") || x.status !== "apply");
+  const row = (x) => {
+    const lab = esc(syncLabel(x.path, x.c?.doc || x.cur)) + (x.op === "delete" ? " — <b>deleted offline</b>" : "");
+    if (x.status === "conflict") return `<li><label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" data-sync-use="${x.i}" ${M.use?.has(x.i) ? "checked" : ""}> <span>${lab}<br><span class="small muted">Changed on the platform too. Tick to replace the platform version with the offline one (a backup of the platform version is downloaded first). Left unticked, it is skipped.</span></span></label></li>`;
+    const tag = {apply: "will be applied", same: "already up to date", invalid: "not valid, skipped", error: "couldn't be checked, skipped"}[x.status];
+    return `<li>${lab} <span class="small muted">· ${tag}</span></li>`;
+  };
+  modal(`<div class="row"><h2>Import offline changes</h2><span class="spacer"></span><button type="button" class="btn" data-m="sync-close" ${M.busy ? "disabled" : ""}>${M.done ? "Close" : "Cancel"}</button></div>
+    <p class="small muted">${esc(M.name || "")} · made ${esc(String(M.file.createdAt || "").slice(0, 16).replace("T", " "))}</p>
+    <p><b>${n("apply")}</b> to apply · <b>${n("same")}</b> already up to date · <b>${n("conflict")}</b> in conflict${n("invalid") + n("error") ? ` · <b>${n("invalid") + n("error")}</b> skipped` : ""}</p>
+    <ul class="small" style="max-height:46vh;overflow:auto;padding-inline-start:18px">${shown.map(row).join("") || "<li>Nothing to import.</li>"}</ul>
+    <div class="err" id="m-err">${esc(M.err || "")}</div>
+    ${M.done ? `<p><b>${esc(M.result)}</b></p>` : `<div class="foot"><span class="spacer"></span><button type="button" class="btn primary" data-m="sync-apply" ${M.busy || !(n("apply") || n("conflict")) ? "disabled" : ""}>${M.busy ? "Importing…" : "Import"}</button></div>`}`);
+}
+async function syncApply(){
+  M.use = new Set([...document.querySelectorAll("input[data-sync-use]:checked")].map(x => +x.dataset.syncUse));
+  const todo = M.items.filter(x => x.status === "apply" || (x.status === "conflict" && M.use.has(x.i)));
+  if (!todo.length) { M.err = "Nothing selected to import."; return drawSyncIn(); }
+  M.busy = true; M.err = ""; drawSyncIn();
+  const back = todo.filter(x => x.cur != null).map(x => ({path: x.path, doc: x.cur}));
+  if (back.length && S.downloads) { try { await S.downloads.save({filename: `before-import-backup-${new Date().toISOString().slice(0, 16).replace(/[:T]/g, "-")}.json`, data: JSON.stringify({note: "Platform versions replaced or deleted by an offline import", docs: back}, null, 1)}); } catch {} }
+  const isChunk = (x) => x.path.startsWith("chunks/");
+  const order = [...todo.filter(x => x.op === "set" && isChunk(x)), ...todo.filter(x => x.op === "set" && !isChunk(x)), ...todo.filter(x => x.op === "delete" && !isChunk(x)), ...todo.filter(x => x.op === "delete" && isChunk(x))];
+  let ok = 0; const failed = [];
+  for (const x of order) {
+    try { const ref = S.db.doc(x.path); if (x.op === "set") await ref.set(x.c.doc); else await ref.delete(); ok++; }
+    catch (e) { failed.push(`${syncLabel(x.path, x.c?.doc)} — ${dbErr(e)}`); }
+  }
+  M.busy = false; M.done = true;
+  M.result = `Imported ${ok} change${ok === 1 ? "" : "s"}.` + (failed.length ? ` ${failed.length} failed: ${failed.join("; ")}` : " You can now clear the list in the offline edition.");
+  drawSyncIn();
+}
+function syncAct(act){
+  if (act === "close" || act === "sync-close") { if (M.busy) return; closeModal(); return; }
+  if (M.type === "offsync") {
+    const O = window.__OFFLINE__;
+    if (act === "off-download") { const n = O.exportChanges(); toast(`Sync file saved (${n} change${n === 1 ? "" : "s"})`); return; }
+    if (act === "off-clear") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Only clear after the platform has confirmed the import. Clear the list?</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="off-clear-yes">Clear</button></div>`; return; }
+    if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+    if (act === "off-clear-yes") { O.markSynced(); drawOfflineSync(); toast("Cleared"); return; }
+  }
+  if (M.type === "syncin" && act === "sync-apply") return syncApply();
+}
+function addSyncControls(){
+  const bar = $(".langbar"); if (!bar) return;
+  if (window.__OFFLINE__) {
+    const b = document.createElement("button"); b.type = "button"; b.id = "off-btn"; b.dataset.offOpen = ""; bar.appendChild(b);
+    window.addEventListener("offline-pending", refreshOfflineBtn); refreshOfflineBtn();
+  } else if (S.admin && S.db && !S.static) {
+    const b = document.createElement("button"); b.type = "button"; b.className = "btn ghost small"; b.dataset.syncImport = ""; b.textContent = "Import offline changes"; bar.appendChild(b);
+    const inp = document.createElement("input"); inp.type = "file"; inp.id = "sync-file"; inp.accept = ".json,application/json"; inp.hidden = true;
+    inp.addEventListener("change", () => { const f = inp.files && inp.files[0]; inp.value = ""; syncPicked(f); });
+    document.body.appendChild(inp);
+  }
+}
+
 /* ---------- boot ---------- */
 fromHash();
 render();
@@ -3528,6 +3663,7 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     f.type = "button"; f.className = "btn ghost small"; f.dataset.export = ""; f.textContent = "Back up all write-ups";
     $(".langbar").appendChild(f);
   }
+  addSyncControls();
   render();
 })();
 async function loadStatic(){
