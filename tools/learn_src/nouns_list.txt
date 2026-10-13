@@ -1,0 +1,2387 @@
+0|أَبٌ|forefathers|our forefathers ; their fathers
+1|آتِي|come|(is) surely coming ; (will) come
+2|آثِمٌ|sinful|(is) sinful  ; any sinner
+3|أخْذٌ|grasp|has grasp ; Taking
+4|آخِرُ|hereafter|the Hereafter ; (of) the Hereafter
+5|آزِفَةٌ|approaching|the Approaching ; the Approaching Day
+6|آسِنٌ|polluted|polluted
+7|آفِلٌ|ones that set|the ones that set
+8|أُكْلٌ|eat|for those who eat ; (will) surely eat
+9|إلْيٌ|favors|(of the) favors ; (the) Bounties
+10|آمِرٌ|enjoin|those who enjoin
+11|آمِنٌ|secure|secure ; safe
+12|آنَاءٌ|hours|(the) hours ; (during) hours
+13|أَنْفٌ|just now|just now
+14|إِناءٌ|boiling|boiling ; vessels
+15|آيَةٌ|signs|a sign ; a Sign
+16|أَبٌ|father|to his father ; O my father
+17|أبَابِيلُ|flocks|(in) flocks
+18|أبْتَر|one cut off|the one cut off
+19|أبْرَص|leper|and the leper
+20|أَبْكَم|dumb|dumb ; (is) dumb
+21|أَبْيَض|white|white ; (was) white
+22|تِرْبٌ|well-matched|well-matched ; equals in age
+23|أثَاثٌ|furnishing|(is) furnishing ; (in) possessions
+24|إِثَارَةٌ|trace|a trace
+25|إِثْمٌ|penalty|a penalty
+26|أثَرٌ|footsteps|their footsteps ; (the) track
+27|أَثِيمٌ|sinful|sinful ; sinner
+28|أَثْلٌ|tamarisks|and tamarisks
+29|أَجَلٌ|term|a term ; their term
+30|جَنِينٌ|fetuses|fetuses
+31|جَدَثٌ|graves|the graves
+32|أَجْرٌ|reward|a reward ; (is) a reward
+33|أَجَلٌ|time|time
+34|أجْمَع|all|all ; all together
+35|أحَدٌ|anyone|anyone ; one
+36|أَحَقُّ|more right|has more right ; (have) better right
+37|حَبْرٌ|rabbis|and the scholars ; and the religious scholars
+38|أَحْسَنُ|best|(is) best ; (the) best
+39|أَحْكَمُ|most just|(are) the Most Just ; (the) Most Just
+40|حَمَلٌ|pregnant|pregnant
+41|أَخٌ|brother|his brother ; and his brother
+42|خَبَر|news|your news ; your affairs
+43|خِدْنٌ|secret lovers|secret lovers
+44|أخْذٌ|seizure|(with) a seizure ; (is) the seizure (of) your Lord
+45|أَخْسَرُ|greatest losers|(will be) the greatest losers ; of the greatest losers
+46|أَخْضَرُ|green|[the] green 
+47|أَخْفَى|more hidden|and the more hidden
+48|أَدَاءٌ|payment|[and] payment
+49|أَدْنَى|more suitable|(is) more suitable ; (is) inferior
+50|أَدْهَى|more grievous|(will be) more grievous
+51|أَذَانٌ|announcement|And an announcement
+52|أَذىً|hurt|an ailment ; (is) a hurt
+53|ذَلولٌ|weak|weak ; humble
+54|أَرِيكَةٌ|couches|adorned couches ; [the] couches
+55|أَرْبَعُ|four|forty ; four
+56|أَرْبَعَةٌ|four|four ; (for) four
+57|أَرْحَامٌ|wombs|(the) wombs ; the wombs
+58|أَرْذَلُ|worst|the worst ; the most abject
+59|أرْضٌ|earth|the earth ; and the earth
+60|أَزْرٌ|strength|my strength
+61|أُسْطورَةٌ|tales|(the) tales ; tales
+62|أَسْوارٌ|bracelets|bracelets ; (with) bracelets
+63|أَسَفٌ|grief|(in) grief ; Alas, my grief
+64|آسِفٌ|grieved|and grieved ; (and) sorrowful
+65|أَسيرٌ|captives|(as) captives ; prisoners of war
+66|أَسْرٌ|forms|their forms
+67|أَسْرَعُ|swiftest|(is) swiftest ; (is) more swift
+68|إِسْفارٌ|books|books ; our journeys
+69|أَسْفَلُ|below|the lowest ; below
+70|أَسْوَأُ|worst|(the) worst
+71|أسْوَد|black|[the] black
+72|أَشَدُّ|stronger|stronger ; (are) stronger
+73|أَشُدٌّ|maturity|his maturity ; their maturity
+74|شَتٌّ|separately|separately ; (in) scattered groups
+75|شَرَطٌ|indications|its indications
+76|أَشْقى|wretched one|the wretched one ; (the) most wicked of them
+77|أُصْبُعٌ|fingers|their fingers
+78|أَصَمّ|deaf|deaf ; Deaf
+79|أَصيلٌ|evenings|and (in) the evenings ; and in the afternoons
+80|صَاحِبٌ|companions|(are the) companions ; (the) companions
+81|أَصْدَقُ|truer|(is) more truthful ; (is) truer
+82|أَصْغَرُ|smaller|smaller
+83|صَفَدٌ|chains|the chains ; chains
+84|أًصْلٌ|bottom|(the) bottom ; its root
+85|صَنَمٌ|idols|idols ; the idols
+86|صُوفٌ|wool|their wool
+87|ضِغْنٌ|hatred|their hatred ; your hatred
+88|طَوْرٌ|stages|(in) stages
+89|أعَزُّ|mightier|mightier ; and stronger
+90|أَعْجَازٌ|trunks|trunks
+91|أَعْجَميٌّ|foreign|(is) foreign ; (in) a foreign (language)
+92|أَعْرابٌ|bedouins|the bedouins ; the Bedouins
+93|عُرْفٌ|heights|the heights ; (of) the heights
+94|أعْرَج|lame|the lame
+95|أعْظَمُ|greater|(are) greater ; and greater
+96|أعْلَمُ|most knowing|(is) most knowing ; knows best
+97|عُلْيَا|highest|the Most High ; the highest
+98|أعْمى|blind|blind ; the blind
+99|أْفْصَحُ|more eloquent|(is) more eloquent
+100|فَنٌّ|branches|branches
+101|فَاهٌ|mouths|with their mouths ; their mouths
+102|قَوْلٌ|sayings|sayings
+103|أَقَلُّ|lesser|lesser ; and fewer
+104|أقْدَمُ|forefathers|and your forefathers
+105|أقْرَبُ|nearer|(is) nearer ; (are) nearer
+106|قُطْرٌ|regions|(the) regions ; all its sides
+107|قُفْلٌ|locks|(are) locks
+108|قُوتٌ|sustenance|its sustenance
+109|أَقْوَمُ|most straight|(is) most straight ; and more suitable
+110|كِنَانٌ|coverings|coverings
+111|كُبْرَى|greater|(is) greater ; greater
+112|أَكْثَرُ|most|most ; most of them
+113|أكْرَمُ|most generous|(the) most noble of you ; (is) the Most Generous
+114|أَكْلٌ|devouring|devouring ; and (for) their consuming
+115|كُمٌّ|sheaths|their coverings ; sheaths
+116|كُوبٌ|cups|and cups ; With vessels
+117|أَلَدُّ|most quarrelsome|(is) the most quarrelsome
+118|ألِيمٌ|painful|painful ; painful 
+119|لُبٌّ|understanding|(of) understanding ; those of understanding
+120|أَلْفٌ|thousand|a thousand ; thousand[s]
+121|لِفٌّ|thick foliage|(of) thick foliage
+122|لَقَبٌ|nicknames|by nicknames
+123|أمَانَةٌ|trusts|of their trusts ; the trusts
+124|أمَةٌ|bondwoman|And a bondwoman ; and your female slaves
+125|أَمَدٌ|term|(was) a distance ; (in) time
+126|أَمَرُّ|more bitter|and more bitter
+127|أَمَلٌ|hope|(for) hope ; the hope
+128|أَمينٌ|trustworthy|trustworthy ; (and) trusted
+129|أَمْثَلُ|best of them|(the) best of them
+130|أَمْرٌ|command|a matter ; (the) Command
+131|أَمْس|yesterday|yesterday ; the previous day
+132|مَشِيجٌ|mixture|a mixture
+133|مِعًى|intestines|their intestines
+134|أَمْنٌ|security|security ; and (a place of) security
+135|أَنامٌ|creatures|for the creatures
+136|أُنْمُلَةٌ|finger tips|the finger tips
+137|نِدٌّ|rivals|rivals ; equals
+138|أَنْفٌ|nose|and the nose ; for the nose
+139|نَفَلٌ|spoils of war|the spoils of war ; The spoils of war
+140|نِكْثٌ|untwisted strands|(into) untwisted strands
+141|نِكْلٌ|shackles|(are) shackles
+142|هِلاَلٌ|new moons|the new moons
+143|أهْلٌ|people|(the) People ; (the) people
+144|هَوًى|desires|their desires ; (the) desires
+145|أهْوَنُ|easier|(is) easier
+146|أَوَّلُ|first|(the) first ; (of) the former (people)
+147|وَبَرٌ|fur|and their fur
+148|وَتَدٌ|pegs|(as) pegs ; (of) the stakes
+149|وَثَنٌ|idols|idols ; the idols
+150|وَادِي|valleys|the valleys ; their valleys
+151|أوْسَطُ|average|average ; (the) most moderate of them
+152|أوْلَى|woe|the best to claim relationship ; (is) nearer
+153|يَقِظٌ|awake|awake
+154|أَيْكَةٌ|wood|(of) the wood ; (of the) Wood
+155|أَيْمَنُ|right|the right
+156|أَيْنٌ|where|Where ; wherever
+157|أُجاجٌ|bitter|(and) bitter ; salty
+158|أُخْتٌ|sister|a sister ; and your sisters
+159|أُخْدُودٌ|pit|(of) the pit
+160|أُذْنٌ|ears|their ears ; ears
+161|أُسْوَةٌ|example|an example ; an excellent example
+162|أُفُقٌ|horizon|the horizons ; (was) in the horizon 
+163|أُكْلٌ|producing fruit|producing fruit ; its harvest
+164|أُمٌّ|mother|(the) mother ; (of) your mothers
+165|أُمَّةٌ|nation|nation ; a community
+166|أُمِّيٌّ|unlettered|(are) unlettered ones ; the unlettered
+167|أُنْثَى|female|female ; females
+168|إِبِلٌ|camels|the camels
+169|إِبْكَارٌ|morning|and (in) the morning ; and the morning
+170|إِثْمٌ|sin|sin ; (is) a sin
+171|إِجْرَامٌ|crime|(is) my crime
+172|إحْدَى|one|one ; one of them
+173|إحْسَانٌ|good|(be) good ; good
+174|إِخْرَاجٌ|driving out|driving (them) out ; (a new) bringing forth
+175|أَخٌ|brothers|brothers and sisters ; (the) brothers
+176|إِدْبَارٌ|after|and after
+177|إِذْنٌ|permission|by (the) permission ; by His permission
+178|أُرْبَةٌ|having no physical desire|having no physical desire
+179|رَصْدٌ|station|and (as) a station
+180|سِرٌّ|secretly|secretly ; their secrets
+181|إِسْرافٌ|extravagantly|extravagantly ; and our excesses
+182|إِسْلامٌ|islam|their (pretense of) Islam ; your Islam
+183|إشْراقٌ|sunrise|and [the] sunrise
+184|صُبْحٌ|daybreak|(of) the daybreak
+185|إِصْلاحٌ|reconciliation|Setting right (their affairs) ; (for) reconciliation
+186|إِطْعامٌ|feeding|(is) feeding ; feeding
+187|إعْرَاضٌ|desertion|desertion ; their aversion
+188|إعْصَارٌ|whirlwind|whirlwind
+189|إفْكٌ|lie|(is) a lie ; a lie
+190|إكْرَامٌ|honor|and Honor
+191|إكْرَاهٌ|compulsion|compulsion ; their compulsion
+192|إلْحَادٌ|deviation|of deviation
+193|إِلْحَافٌ|importunity|with importunity
+194|إلَهٌ|god|god ; gods
+195|إمَامٌ|leaders|leaders ; a leader
+196|أَمْرٌ|grave|grave
+197|إِمْساكٌ|retain|Then to retain
+198|إِمْلاقٌ|poverty|poverty ; (of) poverty
+199|إِنْسٌ|men|any man ; and the men
+200|إِنْسانٌ|man|man ; [the] man
+201|إِنْسِيٌّ|human being|(to any) human being
+202|إِنْشاءٌ|creation|(into) a creation
+203|إِنْفاقٌ|spending|(of) spending
+204|إنْيٌ|preparation|its preparation
+205|إيابٌ|return|(will be) their return
+206|إيمَانٌ|faith|(in) faith ; their belief
+207|اِبْتِغَاءٌ|seeking|seeking ; pursuit
+208|اِبْنٌ|son|son ; (the) son
+209|اِتِّبَاعٌ|following|(the) following ; then follows up
+210|اِتِّخَاذٌ|taking|by your taking
+211|اِسْتِبْدَالٌ|replacing|replacing
+212|اِسْتِحْيَاءٌ|shyness|shyness
+213|اِسْتِعْجالٌ|he hastens for them|(as) He hastens for them
+214|اِسْتِغْفارٌ|asking of forgiveness|(the) asking of forgiveness
+215|اِسْتِكْبارٌ|pride|(Due to) arrogance ; (with) pride
+216|اِسْمٌ|name|(the) name ; names
+217|اِفْتِرَاءٌ|invention|(as) an invention ; inventing (lies)
+218|اِنْبِعاثٌ|sent|their being sent
+219|اِنْتِقامٌ|retribution|(of) retribution ; (of) Retribution
+220|اِنْفِصامٌ|break|(will) break
+221|بَائِسٌ|miserable|the miserable
+222|بَابٌ|gates|(the) gates ; gates
+223|بَادِي|living in desert|living in (the) desert
+224|بَادِي|immature in opinion|immature in opinion
+225|بَارِئٌ|creator|your Creator ; the Inventor
+226|بَارِدٌ|cool|cool
+227|بَارِزٌ|come forth|come forth
+228|بَازِغٌ|rising|rising
+229|بَاسِطٌ|stretched|(are) stretching out ; stretched
+230|بَاطِلٌ|falsehood|the falsehood ; (in) vain
+231|بَاطِنٌ|secret|and the secret ; and the Unapparent
+232|بَاقِي|survivors|the remaining ones ; the survivors
+233|باقِيَةٌ|lasting|lasting ; remains
+234|بالٌ|case|(is the) case ; their condition
+235|بَالِغٌ|reaching|reaching ; (will) accomplish
+236|بَأسٌ|punishment|Our punishment ; (the) might
+237|بَأْساءُ|adversity|with adversity ; [the] suffering
+238|بَئِيسٌ|wretched|wretched
+239|بَثٌّ|suffering|(of) my suffering
+240|بَحْرٌ|sea|the sea ; and the sea
+241|بَخْسٌ|loss|very low ; any loss
+242|بَدَلٌ|exchange|(is) the exchange
+243|بَدَنٌ|body|in your body
+244|بَدِيعٌ|originator|(The) Originator ; Originator
+245|بَدْوٌ|bedouin life|the bedouin life
+246|بَراءٌ|disassociated|disassociated
+247|بَرَدٌ|hail|(is) hail
+248|بَرَكَةٌ|blessings|blessings ; and blessings
+249|بَرِيءٌ|innocent|free ; innocent
+250|بَرِيَّةٌ|creatures|(of) the creatures
+251|بَرٌّ|land|the land ; (of) the land
+252|بَرْدٌ|cool|cool[ness] ; coolness
+253|بَرْزَخٌ|barrier|(is) a barrier ; a barrier
+254|بَرْقٌ|lightning|the lightning ; and lightning
+255|بَسْطٌ|reach|reach
+256|بَشَرٌ|man|a man ; a human being
+257|بَشيرٌ|bearer of glad tidings|(as) a bearer of good news ; bearer of glad tidings
+258|بَصَرٌ|vision|and the sight ; the vision
+259|بَصَلَةٌ|onions|and its onions
+260|بَصيرٌ|all-seer|(is) All-Seer ; All-Seer
+261|بَصيرَةٌ|enlightenment|enlightenment ; insight
+262|بَطْشٌ|power|(in) power ; (the) Grip
+263|بَطْنٌ|wombs|(the) wombs ; their bellies
+264|بَعوضَةٌ|mosquito|(of) a mosquito
+265|بَعيدٌ|far|far ; far away
+266|بَعيرٌ|camel|(of) a camel's (load) ; (of) a camel
+267|بَعْثٌ|resurrection|the Resurrection ; (of) Resurrection
+268|بُعْدٌ|after|after ; after them
+269|بَعْضٌ|others|others ; some of them
+270|بَعْلٌ|husbands|(of) their husbands ; And their husbands
+271|بَغِيٌّ|unchaste|unchaste
+272|بَغْتَةٌ|suddenly|suddenly ; unexpectedly
+273|بَغْضاءُ|hatred|and [the] hatred ; the hatred
+274|بَغْيٌ|rebellion|grudging ; (out of) jealousy
+275|بَقَرٌ|cows|the cows ; [the] cows
+276|بَقْلٌ|herbs|its herbs
+277|بَلاءٌ|trial|(was) a trial ; (with) a trial
+278|بَلاغٌ|conveyance|the conveyance ; (is) the conveyance
+279|بَلَدٌ|land|a land ; a city
+280|بَليغٌ|penetrating|penetrating
+281|بَنَانٌ|fingertip|fingertip[s] ; his fingertips
+282|بَنَّاءٌ|builder|builder
+283|بَهِيجٌ|beautiful|beautiful
+284|بَهِيمَةٌ|beast|(the) beast ; the quadruped
+285|بَهْجَةٌ|beauty|of beauty (and delight)
+286|بَوَارٌ|destruction|(of) destruction
+287|بَيَانٌ|declaration|(is) a declaration ; [the] speech
+288|بَيِّنٌ|clear|clear
+289|بَيِّنَةٌ|clear|clear ; a clear proof
+290|بَيْتٌ|houses|houses ; a house
+291|بَيْعٌ|trade|bargaining ; any trade
+292|بَيْنٌ|before|before ; between
+293|بُخْلٌ|stinginess|[of] stinginess ; stinginess
+294|بَادِنٌ|camels and cattle|And the camels and cattle 
+295|بُرْجٌ|constellations|constellations ; towers
+296|بُرْهانٌ|proof|your proof ; a convincing proof
+297|بُشْرَى|glad tidings|(as) glad tidings
+298|بُشْرَى|glad tidings|(as) good news ; good tidings
+299|بُعْدٌ|away|away ; Away
+300|بُقْعَةٌ|place even|the place even
+301|بُكْرَةٌ|early|early
+302|بُنْيانٌ|structure|a structure ; (were) a structure
+303|بُهْتَانٌ|slander|(by) slander ; (with) a slander
+304|بُورٌ|ruined|ruined
+305|بِئْرٌ|well|and well
+306|بِدْعٌ|new|a new (one)
+307|بِرٌّ|righteousness|[the] righteousness ; the righteous[ness]
+308|بِساطٌ|expanse|an expanse
+309|بِضاعَةٌ|merchandise|(as) a merchandise ; their merchandise
+310|بِضْعٌ|few|several ; a few
+311|بِطانَةٌ|intimates|(as) intimates ; (whose) inner linings
+312|بِغاءٌ|prostitution|[the] prostitution
+313|بَغْلٌ|mules|and mules
+314|بِكْرٌ|virgins|young ; virgins
+315|بِنَاءٌ|canopy|a canopy
+316|بِنْتٌ|daughters|daughters ; and (the) daughters
+317|بِيعَةٌ|churches|and churches
+318|تَائِبٌ|turn in repentance|Those who turn in repentance
+319|تَابُوتٌ|ark|the ark ; the chest
+320|تَابِعٌ|follower|a follower ; (are) followers
+321|تَارِكٌ|give up|(may) give up ; (will) leave
+322|تَبَرُّجٌ|display|(as was the) display
+323|تَبْدِيلٌ|change|any change ; change
+324|تَبْذِيرٌ|wastefully|wastefully
+325|تَثْرِيبٌ|blame|blame
+326|تَحَاوُرٌ|dialogue of both of you|(the) dialogue of both of you
+327|تَحَصُّنٌ|chastity|chastity
+328|تَحِيَّةٌ|greeting|a greeting ; (with) greetings
+329|تَحْرِيرٌ|freeing|then freeing ; freeing
+330|تَحْوِيلٌ|alteration|any alteration ; (to) transfer (it)
+331|تَخَاصُمٌ|quarreling|(the) quarreling
+332|تَخَوُّفٌ|gradual wasting|a gradual wasting
+333|تَخْسِيرٌ|loss|(in) loss
+334|تَخْفِيفٌ|concession|a concession
+335|تَخْوِيفٌ|warning|(as) a warning
+336|تَدْمِيرٌ|destruction|(with) destruction
+337|تَذْكِرَةٌ|reminder|a reminder ; (is) a Reminder
+338|تَذْليلٌ|dangling low|dangling low
+339|تَرَائِبُ|ribs|and the ribs
+340|تَرَاقِي|collar bones|the collar bones
+341|تَرَبُّصٌ|waiting|(is a) waiting (of)
+342|تَرْتِيلٌ|recitation|(with distinct) recitation ; (with) measured rhythmic recitation
+343|تَسْبِيحٌ|glorification|their glorification ; and its glorification
+344|تَسْرِيحٌ|release|to release (her)
+345|تَسْلِيمٌ|submission|(in full) submission ; (with) greetings
+346|تَسْنِيمٌ|tasneem|Tasneem
+347|تَشَاوُرٌ|consultation|and consultation
+348|تَصْدِيقٌ|confirmation|(it is) a confirmation ; a confirmation
+349|تَصرِيفٌ|directing|and directing ; and (in) directing
+350|تَضَرُّعٌ|humbly|humbly
+351|تَضْلِيلٌ|astray|astray
+352|تَطْهِيرٌ|purification|(with thorough) purification
+353|تَعَفُّفٌ|restraint|(their) restraint
+354|تَعْسٌ|destruction|destruction (is)
+355|تَغَابُنٌ|mutual loss and gain|(of) mutual loss and gain
+356|تَفَاخُرٌ|boasting|and boasting
+357|تَفَاوُتٌ|fault|fault
+358|تَفْجِيرٌ|abundantly|abundantly
+359|تَفْرِيقٌ|division|and (for) division
+360|تَفْسِيرٌ|explanation|explanation
+361|تَفْصِيلٌ|detail|(in) detail ; and a detailed explanation
+362|تَفْضِيلٌ|excellence|(in) excellence ; (with) preference
+363|تَقَلُّبٌ|movement|(the) turning ; (the) movement
+364|تَقِيٌّ|righteous|righteous ; God fearing
+365|تَقْتيلٌ|massacred completely|and massacred completely
+366|تَقْديرٌ|decree|(is the) Decree ; (is the) ordaining
+367|تَقْوَى|righteousness|righteousness ; (the) piety
+368|تَقْويمٌ|mould|mould
+369|تَكاثُرٌ|competition in increase|and competition in increase ; the competition to increase
+370|تَكْبيرٌ|magnificence|(with all) magnificence
+371|تَكْذيبٌ|denial|denial
+372|تَكْليمٌ|conversation|(in a) conversation
+373|تِمْثالٌ|statues|[the] statues ; and statues
+374|تَمامٌ|completing|completing (Our Favor)
+375|تَمْهِيدٌ|ease|ease
+376|تَنَادٌّ|calling|(of) Calling
+377|تَنْزِيلٌ|revelation|(The) revelation ; A revelation
+378|تَنْكِيلٌ|punishment|(in) punishment
+379|تَنُّورٌ|oven|the oven
+380|تَهْلُكَةٌ|destruction|[the] destruction
+381|تَوَّابٌ|oft-returning|Oft-Forgiving ; (is) Oft-Returning (to Mercy)
+382|تَوْبَةٌ|repentance|(seeking) repentance ; (in) repentance
+383|تَوْصِيَةٌ|make a will|(to) make a will
+384|تَوْفِيقٌ|success|and reconciliation ; (is) my success
+385|تَوْكِيدٌ|confirmation|their confirmation
+386|تُرَابٌ|dust|dust ; (is) dust
+387|تُرَاثٌ|inheritance|the inheritance
+388|تِجَارَةٌ|transaction|a transaction ; business
+389|تُسْعٌ|nine|nine ; ninety-nine
+390|تِسْعَةٌ|nine|nine ; (are) nine
+391|تِلْقاءٌ|towards|my own accord ; towards
+392|تينٌ|fig|By the fig
+393|ثَابِتٌ|firm|(is) firm ; with the firm word
+394|ثَاقِبٌ|piercing|piercing ; the piercing
+395|ثَالِثٌ|third|(is the) third ; with a third
+396|ثَامِنٌ|eight of them|and the eight of them
+397|ثَانِي|second|the second ; Twisting
+398|ثَجَّاجٌ|pouring abundantly|pouring abundantly
+399|ثَرىً|soil|the soil
+400|ثَقَل|burdens|their burdens ; your loads
+401|ثَقِيلٌ|heavy|heavy ; grave
+402|ثَلاثُ|three|three ; thirty
+403|ثَلاثَةٌ|three|(of) three ; (for) three
+404|ثَمانِي|eight|(for) eight
+405|ثَمانِيَةٌ|eight|eight ; Eight
+406|ثَمَرٌ|fruit|its fruit ; fruit
+407|ثَمَرَةٌ|fruits|fruits ; the fruits
+408|ثَمَنٌ|price|(for) a price ; a price
+409|ثَوابٌ|reward|reward ; (for) reward
+410|ثُبُوتٌ|it is firmly planted|it is firmly planted
+411|ثُبُورٌ|destruction|(for) destruction ; (for) destructions
+412|ثُعْبَانٌ|serpent|(was) a serpent
+413|ثُلاثَ|three|or three
+414|ثُلْثٌ|two thirds|two thirds ; two-thirds
+415|ثُلَّةٌ|company|A company ; And a company
+416|ثُمْنٌ|eighth|(is) the eighth
+417|ثَوْبٌ|garments|garments ; (will be) garments
+418|جَائِرٌ|crooked|(are) crooked
+419|جَاثِمٌ|fallen prone|fallen prone
+420|جَارٌ|neighbor|a neighbor ; and the neighbor
+421|جَارِيَةٌ|flowing|flowing ; And those sailing
+422|جَازٌ|avail|(can) avail
+423|جَاعِلٌ|makes|going to place ; (Who) makes
+424|جَامِعٌ|gather|will gather ; (of) collective action
+425|جَانِبٌ|side|side ; (the) side
+426|جَانٌّ|jinn|any jinn ; (were) a snake
+427|جَاهِلٌ|ignorant|the ignorant ; ignorant
+428|جَاهِلِيَّةٌ|ignorance|(of) [the] ignorance
+429|جَبَلٌ|mountains|the mountains ; a mountain
+430|جَبِينٌ|forehead|upon his forehead
+431|جَبَّارٌ|tyrant|tyrant ; a tyrant
+432|جَدَلٌ|argument|quarrelsome ; (for) argument
+433|جَدِيدٌ|new|new
+434|جَذْوَةٌ|burning wood|a burning wood
+435|جَرَادَةٌ|locusts|locusts ; and the locusts
+436|جَرَمٌ|doubt|doubt ; No doubt
+437|جَزَاءٌ|recompense|a reward ; (is the) reward
+438|جَزُوعٌ|distressed|distressed
+439|جَسَدٌ|body|an image ; body
+440|جِلْدَةٌ|lash|lash(es) ; lashe(s)
+441|جَمَالٌ|beauty|(is) beauty
+442|جَمَلٌ|camel|the camel
+443|جَمِيلٌ|good|good ; (is) beautiful
+444|جَمٌّ|immense|immense
+445|جَمْعٌ|together|all together ; (in) accumulation
+446|جَنَاحٌ|wing|(the) wing ; having wings
+447|جَنْبٌ|sides|their sides ; regard (to)
+448|جِنِّيٌّ|fruit|and (the) fruit
+449|جِنِّيٌّ|ripe|ripe
+450|جَنَّةٌ|gardens|Gardens ; (to) Gardens
+451|جِهَازٌ|supplies|with their supplies
+452|جَهُولٌ|ignorant|ignorant
+453|جَهْدٌ|strongest|strongest ; strong
+454|جَهْرٌ|loudness|the public mention ; and what you make public
+455|جَوَابٌ|answer|(the) answer ; like reservoirs
+456|جَارِيَةٌ|ships|(are) the ships ; Those that run
+457|جَارِحَةٌ|hunting animals|(your) hunting animals
+458|جَوٌّ|midst|the midst
+459|جَوْفٌ|interior|his interior
+460|جَيْبٌ|bosom|your bosom ; their bosoms
+461|جُبٌّ|well|(of) the well
+462|جَدِيدٌ|tracts|(are) tracts
+463|جَدْرٌ|walls|walls
+464|جُذَاذٌ|pieces|(into) pieces
+465|جُرُزٌ|barren|barren ; [the] barren
+466|جُرْفٌ|cliff|(of) a cliff
+467|جُزْءٌ|portion|a portion ; (is) a portion
+468|جِلْدٌ|skins|skins ; the hides
+469|جُمْلَةٌ|at once|all at once
+470|جُنَاحٌ|blame|blame ; sin
+471|جُنْدٌ|hosts|(the) hosts ; (are the) hosts
+472|جَنْبٌ|impure|(when you are) impure ; (in) a state of ceremonial impurity
+473|جُهْدٌ|effort|their effort
+474|جُوعٌ|hunger|hunger ; (against) hunger
+475|جَبْهَةٌ|foreheads|their foreheads
+476|جِبِلَّةٌ|multitude|a multitude ; and the generations
+477|جِذْعٌ|trunk|(the) trunk ; (the) trunks
+478|جِزْيَةٌ|jizyah|the jizyah
+479|جِسْمٌ|bodies|and [the] physique ; their bodies
+480|جَفْنَةٌ|bowls|and bowls
+481|جِنٌّ|jinn|the jinn ; and the jinn
+482|جِهَادٌ|striving|a striving ; (to) strive
+483|جِهَارٌ|publicly|publicly
+484|جَوَادٌ|excellent bred steeds|excellent bred steeds
+485|جِيدٌ|neck|her neck
+486|حاجَةٌ|need|(it was) a need ; a need
+487|حَاجِزٌ|barrier|a barrier ; (who could) prevent (it)
+488|حاجٌّ|pilgrims|(to) the pilgrims
+489|حَاسِبٌ|reckoners|(as) Reckoners ; (of) the Reckoners
+490|حَاسِدٌ|envier|(of) an envier
+491|حَاشِرٌ|gatherers|gatherers ; gatherers 
+492|حاصِبٌ|storm of stones|a storm of stones ; a violent storm
+493|حَاضِرٌ|presented|presented
+494|حَافِظٌ|guardians|(are) guardians ; Guardian
+495|حافِظَةٌ|guarding|guarding ; and the women who guard (it)
+496|حَافٌّ|surrounding|surrounding
+497|حَاكِمٌ|judges|(of) the Judges ; (of) the judges
+498|حَامِدٌ|praise|those who praise
+499|حَامِلٌ|going to carry|(are) going to carry
+500|حَامِيةٌ|intensely hot|intensely hot
+501|حَبٌّ|grain|grain ; grain 
+502|حَبَّةٌ|grain|a grain ; grain(s)
+503|حَبْلٌ|rope|(his) jugular vein ; (will be) a rope
+504|حَتْمٌ|inevitability|an inevitability
+505|حَثيثٌ|rapidly|rapidly
+506|حَجَرٌ|stone|the stone
+507|حَجٌّ|hajj|the Hajj ; and (for) the Hajj
+508|حَديقَةٌ|gardens|gardens ; Gardens
+509|حَدَبٌ|elevation|elevation
+510|حَديثٌ|statement|statement ; narrations
+511|حَديدٌ|iron|iron ; (is) sharp
+512|حَذَرٌ|fear|(in) fear (of) ; (in) fear
+513|حَرامٌ|sacred|Al-Haraam ; (are in) Ihram
+514|حَرَجٌ|blame|any blame ; any discomfort
+515|حَرَسٌ|guards|guards
+516|حَرُورٌ|heat|the heat
+517|حَرِيرٌ|silk|(will be of) silk ; and silk
+518|حَرِيصٌ|concerned|(he is) concerned
+519|حَرِيقٌ|burning fire|(of) the Burning Fire ; (of) the Blazing Fire
+520|حَرٌّ|heat|(in) heat ; the heat
+521|حَرْبٌ|war|the war ; of a war
+522|حَرْثٌ|harvest|(the) harvest ; (are) a tilth
+523|حَرِدٌ|determination|determination
+524|حَرْفٌ|edge|an edge
+525|حَزَنٌ|sorrow|(of) sorrow ; and a grief
+526|حَسَدٌ|jealousy|(out of) jealousy
+527|حَسَنٌ|good|good ; goodly
+528|حَسَنَةٌ|good|good ; a good
+529|حَسِيبٌ|reckoner|(as) a Reckoner ; an Accountant
+530|حَسِيرٌ|fatigued|(is) fatigued
+531|حَسِيسٌ|slightest sound of it|(the) slightest sound of it
+532|حَسَبٌ|sufficient for us|Sufficient for us ; Then enough for him
+533|حَسْرَةٌ|regret|a regret ; (as) regrets
+534|حَشْرٌ|gathering|(is) a gathering ; gathering
+535|حَصَادٌ|harvest|(of) its harvest
+536|حَصَبٌ|firewood|(are) firewood
+537|حَصِيدٌ|reaped|a harvest clean-mown ; reaped
+538|حَصِيرٌ|prison-bed|a prison-bed
+539|حَطَبٌ|firewood|firewood ; (of) firewood
+540|حَظٌّ|part|a part ; (of) fortune
+541|حَفِيظٌ|guardian|(as) a guardian ; (is) a Guardian
+542|حَفِيٌّ|well informed|(were) well informed ; Ever Gracious
+543|حَقِيقٌ|obligated|Obligated
+544|حَقٌّ|truth|the truth ; (is) true
+545|حَكَمٌ|arbitrator|an arbitrator ; (as) judge
+546|حَكِيمٌ|all-wise|All-Wise ; the All-Wise
+547|حَلالٌ|lawful|lawful ; (is) lawful
+548|حَلِيمٌ|most forbearing|Most Forbearing ; All-Forbearing
+549|حَمْأةٌ|black mud|black mud
+550|حَمِيدٌ|praiseworthy|Praiseworthy ; the Praiseworthy
+551|حَمِيمٌ|scalding water|boiling water ; scalding water
+552|حَمِيَّةٌ|disdain|(the) disdain ; disdain 
+553|حِمَالَةٌ|carrier|(the) carrier
+554|حَمْدٌ|praise|(the) praise ; All praises
+555|حَمْلٌ|burden|a burden ; pregnant woman
+556|حَنْجَرَةٌ|throats|the throats
+557|حَنَانٌ|affection|And affection
+558|حَنِيفٌ|upright|upright ; (the) upright
+559|حَوَارِيٌّ|disciples|the disciples ; to the disciples
+560|حَوْلٌ|around|around ; around you
+561|حَيَاةٌ|life|the life ; (of) the life
+562|حَيَوَانٌ|life|(is) the life
+563|حَيٌّ|alive|alive ; the living
+564|حَيَّةٌ|snake|(was) a snake
+565|حَيْرَان|confused|confused
+566|حُبٌّ|love|(with) love ; (in) love
+567|حِجْرٌ|guardianship|your guardianship
+568|حُجَّةٌ|argument|any argument ; argument
+569|تَحْدِيدٌ|limits|(the) limits ; (are the) limits
+570|حُرُمَةٌ|sacred rites|(the) sacred rites ; and for all the violations
+571|حُرٌّ|freeman|the freeman ; for the freeman
+572|حُزْنٌ|grief|the grief ; and my grief
+573|حُسُومٌ|succession|(in) succession
+574|حُسْبَانٌ|calamity|(for) reckoning ; a calamity
+575|حُسْنٌ|good|good ; (is an) excellent
+576|حُسْنَى|best|the best ; the good
+577|حِصْنٌ|fortresses|their fortresses
+578|حُطَامٌ|debris|debris
+579|حُطَمَةٌ|crusher|the Crusher ; the Crusher (is)
+580|حُفْرَةٌ|pit|(of) pit
+581|حَقَبٌ|long period|(for) a long period
+582|حَاكِمٌ|authorities|the authorities
+583|حُكْمٌ|judgment|wisdom ; judgment
+584|حُلُمٌ|dreams|dreams ; (of) the dreams
+585|حَلْيٌ|ornaments|their ornaments
+586|حُلْقُومٌ|throat|the throat
+587|أحْمَر|red|and red
+588|حُوتٌ|fish|their fish ; the fish
+589|أَحْوَر|fair ones|Fair ones ; (to) companions with beautiful eyes
+590|حِجابٌ|screen|a screen ; (will be) a partition
+591|حَجَرٌ|stones|stones ; (of) stones
+592|حِجَّةٌ|years|years
+593|حِجْرٌ|partition|forbidden ; A partition
+594|حِدادٌ|sharp|sharp
+595|حِزْبٌ|party|(the) party ; (are the) party
+596|حِسَابٌ|account|measure ; account
+597|حِفْظٌ|guard|(the) guarding of both of them ; And (to) guard
+598|حِكْمَةٌ|wisdom|and the wisdom ; and [the] wisdom
+599|حِلٌّ|lawful|(is) lawful ; lawful
+600|حِلْيَةٌ|ornaments|ornaments
+601|حِمَارٌ|donkeys|donkeys ; your donkey
+602|حِمْلٌ|load|(is) a load ; (as) a load
+603|حِنْثٌ|sin|the sin
+604|حَوْلٌ|transfer|any transfer
+605|حِيلَةٌ|plan|plan
+606|خَائِبٌ|disappointed|disappointed
+607|خَائِفٌ|fear|(like) those in fear ; fearful
+608|خَائِنٌ|traitors|for the deceitful ; the traitors
+609|خَاتِمٌ|seal|and Seal
+610|خَادِعٌ|deceives them|who deceives them
+611|خَارِجٌ|come out|will come out ; he comes out
+612|خَازِنٌ|retainers|(are) retainers
+613|خَاسِئٌ|despised|despised ; humbled
+614|خَاسِرٌ|losers|the losers ; (are) the losers
+615|خَاشِعٌ|humbled|humbled ; humbly submissive
+616|خَاصَّةٌ|exclusively|exclusively
+617|خَاضِعٌ|humility|(in) humility
+618|خَاطِئٌ|sinners|sinners ; the sinful
+619|خَالٌ|maternal uncles|(of) your maternal uncles
+620|خَالِدٌ|abide forever|(will) abide forever ; will abide forever
+621|خَالِصٌ|pure|pure ; the pure
+622|خَالِفٌ|stay behind|those who stay behind
+623|خَالِقٌ|creator|(the) Creator ; (is) the Creator
+624|خَامِدٌ|extinct|extinct ; (were) extinguished
+625|خَبَالٌ|ruin|(any) ruin ; (in) confusion
+626|خَبَرٌ|information|some information
+627|خَبِيثٌ|evil|the bad ; the evil
+628|خَبِيرٌ|all-aware|(is) All-Aware ; All-Aware
+629|خَبْءٌ|hidden|the hidden
+630|خَتَّارٌ|traitor|traitor
+631|خَدٌّ|cheek|your cheek
+632|خَذُولٌ|deserter|a deserter
+633|خَرَابٌ|destruction|their destruction
+634|خَرَاجٌ|payment|But the payment
+635|خَرَّاصٌ|liars|the liars
+636|خَرْدَلٌ|mustard|a mustard ; a mustard seed
+637|خَزِينَةٌ|treasures|(are the) treasures ; (the) treasuries
+638|خَشْيَةٌ|fear|fear ; (the) fear
+639|خَصَاصَةٌ|poverty|poverty
+640|خَصْمٌ|argumentative|argumentative
+641|خَصْمٌ|opponents|opponents ; (We are) two litigants
+642|خَضِرٌ|green plant|green plant
+643|خَطَأٌ|mistake|(by) mistake
+644|خَطِيئَةٌ|sins|your sins ; a fault
+645|خَطْبٌ|case|(was) your affair ; (is) your business
+646|خَطْفَةٌ|theft|(by) theft
+647|خَفِيفٌ|light|light
+648|خَفِيٌّ|secret|secret ; stealthy
+649|خَلِيفَةٌ|successors|successors ; a vicegerent
+650|خَلِيلٌ|friend|(as) a friend ; Friends
+651|خَلْفٌ|successors|successors ; behind them
+652|خَلْقٌ|creation|(the) creation ; the creation
+653|خَمْرٌ|wine|wine ; [the] intoxicants
+654|خَمْسَةٌ|five|(they were) five ; five
+655|خَنَّاسٌ|one who withdraws|the one who withdraws
+656|خَوَّانٌ|treacherous|treacherous
+657|خَوْضٌ|discourse|(vain) discourse ; their discourse 
+658|خَوْفٌ|fear|fear ; (in) fear
+659|خَيْرٌ|better|(is) better ; better
+660|خَيْرَةٌ|good|(are) good ; (to) the good
+661|خَيْطٌ|thread|the thread
+662|خَيْلٌ|horses|horses ; and [the] horses
+663|خَبَرٌ|knowledge|any knowledge ; (of the) information
+664|خُبْزٌ|bread|bread
+665|خُرُوجٌ|get out|get out ; (to) go forth
+666|خُرْطُومٌ|snout|the snout
+667|خَشَبٌ|pieces of wood|pieces of wood
+668|خُشُوعٌ|humility|(in) humility
+669|أَخْضَرُ|green|green
+670|خُطْوَةٌ|footsteps|(the) footsteps ; (the) footsteps (of)
+671|خَلِيطٌ|partners|the partners
+672|خُلُقٌ|custom|(the) custom ; (of) a moral character
+673|خُلُودٌ|eternity|(of) Eternity
+674|خُلَّةٌ|friendship|friendship
+675|خُلْدٌ|eternity|the everlasting ; (of) the Eternity
+676|خِمَارٌ|head covers|their head covers
+677|خُمُسٌ|one fifth of it|(is) one fifth of it
+678|خُوَارٌ|lowing sound|(had) a lowing sound ; a lowing sound
+679|خِتَامٌ|seal|Its seal
+680|خِزْيٌ|disgrace|(is) disgrace ; disgrace
+681|خِطَابٌ|address|(to) address ; speech
+682|خَطَأٌ|sin|a sin
+683|خِطْبَةٌ|marriage proposal|marriage proposal
+684|خِلاَلٌ|midst|any friendship ; the inner most part
+685|خِنْزِيرٌ|swine|(of) swine  ; (of) the swine
+686|خِيَاطٌ|needle|(of) the needle
+687|خِيَامٌ|pavilions|the pavilions
+688|خِيَانَةٌ|betrayal|betrayal ; (to) betray you
+689|خِيفَةٌ|fear|a fear ; [a fear]
+690|دَائِرَةٌ|turn|a misfortune ; (will be) the turn
+691|دَائِمٌ|constant|(is) everlasting ; (are) constant
+692|دَابِرٌ|roots|(the) remnant ; the roots
+693|دَابَّةٌ|creature|moving creature ; a creature
+694|دَاخِلٌ|enter|enter (it) ; those who enter
+695|دَارٌ|home|their homes ; (is the) home
+696|دَاعِي|caller|(to the) caller ; the caller
+697|دَافِعٌ|preventer|preventer ; any preventer
+698|دَافِقٌ|ejected|ejected
+699|دَأْبٌ|plight|(the) plight ; Like (the) way
+700|دَخَلٌ|deception|(as) a deception
+701|دِرْهَمٌ|dirhams|dirhams
+702|دَرَجَةٌ|degrees|(in) degrees ; (in) rank
+703|دَرَكٌ|overtaken|to be overtaken
+704|دَعْوَةٌ|call|(to the) invocation ; (is) supplication
+705|دَعْوَى|cry|their plea ; Their prayer
+706|دَفْعٌ|repelling|(for the) repelling ; Allah checks
+707|دَكٌّ|pounded|crumbled to dust ; pounded
+708|دَكَّةٌ|crushing|(with) a crushing
+709|دَليلٌ|indication|an indication
+710|دَلْوٌ|bucket|his bucket
+711|دَمٌ|blood|and the blood ; blood
+712|دَمْعٌ|tears|the tears ; (with) the tears
+713|دَهْرٌ|time|the time ; time
+714|دَائِرَةٌ|turns|the turns (of misfortune)
+715|دَيَّارٌ|inhabitant|(as) an inhabitant
+716|دَيْنٌ|debt|any debt
+717|دُبُرٌ|backs|(the) back ; their backs
+718|دُخَانٌ|smoke|smoke
+719|دِسَارٌ|nails|and nails
+720|دُعَاءٌ|call|calls ; (is) the supplication
+721|دُنْيا|world|(of) the world ; the world
+722|دُهْنٌ|oil|oil
+723|دَوْلَةٌ|circulation|a (perpetual) circulation
+724|دونٌ|besides|besides ; besides Allah
+725|دِفْءٌ|warmth|(is) warmth
+726|دِهاقٌ|full|full
+727|دِهانٌ|murky oil|like murky oil
+728|دِينٌ|religion|the religion ; your religion
+729|دِينارٌ|single coin|with a single coin
+730|دِيَةٌ|blood money|and blood money ; then blood money
+731|ذائِقَةٌ|taste|(will) taste
+732|ذارِيَةٌ|scattering|By those scattering
+733|ذَاكِرٌ|remember|for those who remember ; and the men who remember
+734|ذاكِرَةٌ|women who remember|and the women who remember
+735|ذَاهِبٌ|going|going
+736|ذَرَّةٌ|atom|(of) an atom
+737|ذَرْعٌ|uneasy|(and) uneasy ; its length
+738|ذَكَرٌ|male|male ; the male
+739|ذَلولٌ|trained|trained ; subservient
+740|ذَنْبٌ|sins|your sins ; for their sins
+741|ذَهَابٌ|taking it away|taking it away
+742|ذَهَبٌ|gold|gold ; (of) gold
+743|ذُبابٌ|fly|a fly ; the fly
+744|ذُرِّيَّةٌ|offspring|(the) offspring ; offspring
+745|ذَلولٌ|made smooth|made smooth
+746|ذُلٌّ|humility|(of) humility ; weakness
+747|ذِئْبٌ|wolf|the wolf ; a wolf
+748|ذِبْحٌ|sacrifice|with a sacrifice
+749|ذِراعٌ|cubits|cubits ; his two forelegs
+750|ذِكْرٌ|reminder|(the) remembrance ; a reminder
+751|ذِكْرَى|reminder|a reminder ; and a reminder
+752|ذِمَّةٌ|covenant of protection|covenant of protection
+753|رَابِعٌ|forth of them|the forth of them ; (the) fourth of them
+754|رَابِيَةٌ|exceeding|exceeding
+755|رَاجِعٌ|return|will return ; (will) return
+756|رَاحِمٌ|merciful|(of) those who show mercy ; (of) the merciful
+757|رَادِفَةٌ|subsequent|the subsequent
+758|رَازِقٌ|providers|(of) the Providers ; (of) the providers
+759|رَاسِخٌ|firm|And those firm ; the ones who are firm
+760|رَاشِدٌ|guided ones|the guided ones
+761|رَاعِي|observers|(are) observers
+762|رَاغِبٌ|turn devoutly|turn our hopes ; turn devoutly
+763|رَافِعٌ|raise you|and raise you
+764|رَافِعَةٌ|raising up|raising up
+765|رَاكِعٌ|bow down|bowing ; those who bow down
+766|رَأْسٌ|heads|their heads ; your heads
+767|رَأْفَةٌ|compassion|pity for them ; compassion
+768|رَأْيٌ|sight|with the sight ; immature in opinion
+769|رَبِيبَةٌ|step daughters|and your step daughters
+770|رَبُّ|lord|your Lord ; (of) your Lord
+771|رَبْوَةٌ|high ground|a high ground ; on a height
+772|رَتْقٌ|joined entity|a joined entity
+773|رَجُلٌ|man|a man ; two men
+774|رَجِلٌ|infantry|and infantry
+775|رَجِيمٌ|accursed|accursed ; (are) expelled
+776|رَجٌّ|shaking|(with) a shaking
+777|رَجْعٌ|return|(is) a return ; return him
+778|رَجْفَةٌ|earthquake|the earthquake
+779|رَجْمٌ|guessing|guessing
+780|رَحِيمٌ|most merciful|Most Merciful ; the Most Merciful
+781|رَحْلٌ|bag|the bag ; their saddlebags
+782|رَحْمَةٌ|mercy|mercy ; Mercy
+783|رَدٌّ|repel it|to take them back ; to repel it
+784|رَدْمٌ|barrier|a barrier
+785|رَزَّاقٌ|all-provider|(is) the All-Provider
+786|رَسُولٌ|messenger|a Messenger ; and His Messenger
+787|رَسٌّ|ar-rass|(of) Ar-rass ; (of) Ar-Raas
+788|رَشادٌ|right|the right
+789|رَشَدٌ|right path|(in the) right way ; right way
+790|رَشيدٌ|right-minded|right-minded ; the right-minded
+791|رَصْدٌ|guard|waiting ; a guard
+792|رَضَاعَةٌ|nursing|the suckling ; the nursing
+793|رَضِيٌّ|pleasing|pleasing
+794|رَطْبٌ|moist|moist
+795|رَعْدٌ|thunder|and thunder ; the thunder
+796|رَغَدٌ|freely|freely ; abundantly
+797|رَفيعٌ|possessor of the highest ranks|Possessor of the Highest Ranks
+798|رَفيقٌ|companion|companion(s)
+799|رَفْرَفٌ|cushions|cushions
+800|رَقَبَةٌ|slave|(of) a slave ; (of) a believing slave
+801|رَقيبٌ|observer|Ever-Watchful ; a watcher
+802|رَقيمٌ|inscription|and the inscription
+803|رَقٌّ|parchment|parchment
+804|رَكوبٌ|they ride them|they ride them
+805|رَكْبٌ|caravan|and the caravan
+806|رَمادٌ|ashes|(are) like ashes
+807|رَميمٌ|decomposed|(are) decomposed ; like disintegrated ruins
+808|رَمْزٌ|gestures|(with) gestures
+809|رَهَقٌ|burden|(in) burden ; any burden
+810|رَهينٌ|pledged|(is) pledged
+811|رَهينَةٌ|pledged|(is) pledged
+812|رَهْبانِيَّةٌ|monasticism|But monasticism
+813|رَهْبَةٌ|fear|(in) fear
+814|رَهْطٌ|family heads|family heads ; for your family
+815|رَهْوٌ|at rest|at rest
+816|رَواحٌ|afternoon course|and its afternoon course
+817|رَاسِيَةٌ|firm mountains|firm mountains ; firmly set mountains
+818|رَاكِدٌ|motionless|motionless
+819|رَوْحٌ|mercy of allah|(the) Mercy of Allah ; Then rest
+820|رَوْضَةٌ|garden|a Garden ; flowering meadows
+821|رَوْعٌ|fright|the fright
+822|رَيْبٌ|doubt|doubt ; a misfortune of time
+823|رَيْحانٌ|bounty|and scented plants ; and bounty
+824|رُبَاعَ|four|or four
+825|رُبُعٌ|fourth|(is) the fourth
+826|رَجْمٌ|missiles|(as) missiles
+827|رُجْعَى|return|(is) the return
+828|رَحِمٌ|affection|(in) affection
+829|رُخَاءٌ|gently|gently
+830|رُشْدٌ|right guidance|sound judgement ; (of) right guidance
+831|رُطَبٌ|fresh dates|fresh dates
+832|رُعْبٌ|terror|[the] terror ; (with) terror
+833|رُفاتٌ|crumbled particles|and crumbled particles
+834|رُقودٌ|asleep|(were) asleep
+835|رُقِيٌّ|ascension|in your ascension
+836|رُكامٌ|mass|(into) a mass
+837|رُكْنٌ|support|a support ; with his supporters
+838|رُمَّانٌ|pomegranates|and the pomegranates ; and pomegranates
+839|رُهْبانٌ|monks|and monks ; and their monks
+840|روحٌ|spirit|the Holy Spirit ; Our Spirit
+841|رَأْيٌ|appearance|and appearance
+842|رِبَا|usury|[the] usury ; the usury
+843|رِبَاطٌ|tethered|tethered
+844|رِبِّيٌّ|religious scholars|(were) religious scholars
+845|رَجُلٌ|men|men ; (are) men
+846|رِجْزٌ|punishment|a punishment ; the punishment
+847|رِجْسٌ|evil|(are an) abomination ; (is) filth 
+848|رِجْلٌ|feet|and your feet ; their feet
+849|رِحْلَةٌ|journey|(with the) journey
+850|رِزْقٌ|provision|provision ; a provision
+851|رِسَالَةٌ|messages|(the) Messages ; the Messages
+852|رِفْدٌ|gift|(is) the gift
+853|رِكابٌ|camels|camels
+854|رُمْحٌ|spears|and your spears
+855|رِهانٌ|pledge|then pledge
+856|رِيبَةٌ|doubt|a (cause of) doubt
+857|ريحٌ|wind|a wind ; the winds
+858|رِيشٌ|adornment|and (as) an adornment
+859|ريعٌ|elevation|elevation
+860|زادٌ|provision|provision
+861|زَارِعٌ|ones who grow|the Ones Who grow
+862|زَاهِدٌ|keen to give up|those keen to give up
+863|زَاهِقٌ|vanishing|vanishing
+864|زَبانِيَةٌ|angels of hell|the Angels of Hell
+865|زَبَدٌ|foam|a foam ; the foam
+866|زَجْرٌ|strongly|strongly
+867|زَحْفٌ|advancing|advancing
+868|زَرابِي|carpets|And carpets
+869|زَرْعٌ|crops|crops ; cultivation
+870|زَعيمٌ|responsible|(is) responsible
+871|زَعْمٌ|claim|by their claim
+872|زَفيرٌ|sighing|(is) sighing ; and roaring
+873|زَكاةٌ|zakah|the zakah ; zakah
+874|زَكِيٌّ|pure|pure
+875|زَلَقٌ|slippery|slippery
+876|زَلْزَلَةٌ|convulsion|(the) convulsion
+877|زَمْهَريرٌ|freezing cold|freezing cold
+878|زَنْجَبيلٌ|zanjabil|(of) Zanjabil
+879|زَهوقٌ|perish|(bound) to perish
+880|زَهْرَةٌ|splendor|(the) splendor
+881|زَوالٌ|end|end
+882|زَوْجٌ|wives|pairs ; kind
+883|زَيْتٌ|oil|its oil
+884|زَيْتونٌ|olives|and the olives ; And olive
+885|زَيْتونَةٌ|olive|an olive
+886|زَيْغٌ|perversity|(is) perversity 
+887|زَبورٌ|scriptures|(into) sects ; (the) Scriptures
+888|زُجاجَةٌ|glass|a glass ; the glass
+889|زُخْرُفٌ|ornament|(with) decorative ; ornament
+890|زَارِعٌ|sowers|the sowers
+891|أَزْرَق|blue-eyed|blue-eyed
+892|زُلْفَةٌ|approaching|approaching ; and (at) the approach
+893|زُلْفَى|position|(in) position ; (in) nearness
+894|زُمْرَةٌ|groups|(in) groups
+895|زُورٌ|lie|and a lie ; false
+896|زِلْزالٌ|shake|(with a) shake ; (with) its earthquake
+897|زِنىً|adultery|adultery
+898|زِيادَةٌ|increase|(is) an increase ; and more
+899|زِينَةٌ|adornment|adornment ; their adornment
+900|سَائِحٌ|go out|those who go out
+901|سَائِغٌ|pleasant|palatable ; pleasant
+902|سَائِقٌ|driver|a driver
+903|سَائِلٌ|ask|a questioner ; for those who ask
+904|سَابِقٌ|foremost|(are) foremost ; outstrip Us
+905|سَاجِدٌ|prostrating|prostrating ; prostrate
+906|سَاحِرٌ|magician|the magicians ; A magician
+907|سَاحِلٌ|bank|on the bank
+908|سَاخِرٌ|mockers|the mockers
+909|سَادِسٌ|sixth of them|the sixth of them ; (the) sixth of them
+910|سَارِبٌ|goes freely|or goes freely
+911|سَارِقٌ|thieves|thieves ; And (for) the male thief
+912|سَارِقَةٌ|female thief|and the female thief 
+913|سَاعَةٌ|hour|the Hour ; an hour
+914|سَافِلٌ|low|(of the) low ; its downside
+915|سَاقٌ|shin|the shin ; her shins
+916|سَاقِطٌ|falling|falling
+917|سَاكِنٌ|stationary|stationary
+918|سَالِمٌ|sound|(were) sound
+919|سَامِدٌ|amuse|amuse (yourselves)
+920|سَامِرٌ|conversing by night|conversing by night
+921|سَاهِي|neglectful|(of) heedlessness ; (are) neglectful
+922|سَبَبٌ|course|a course ; a means
+923|سَبُعٌ|wild animal|the wild animal
+924|سَبِيلٌ|way|(the) way ; a way
+925|سَبْتٌ|sabbath|the (matter of) Sabbath ; the Sabbath
+926|سَبْعٌ|seven|seven ; seventy
+927|سَبْعَةٌ|seven|(are) seven ; (they were) seven
+928|سَبْقٌ|race|(in) a race
+929|سَحَابٌ|clouds|(the) clouds ; clouds 
+930|سَحَرٌ|dawn|[in the] before dawn ; And in the hours before dawn
+931|سَحِيقٌ|far off|far off
+932|سَحَّارٌ|magician|magician
+933|سَدِيدٌ|right|appropriate ; right
+934|سَدٌّ|barrier|a barrier ; the two mountains
+935|سَرِيرَةٌ|secrets|the secrets
+936|سَرَابٌ|mirage|a mirage ; (are) like a mirage
+937|سِرْبَالُ|garments|garments ; Their garments
+938|سَرَاحٌ|release|(with) a release
+939|سَرَبٌ|slipping away|slipping away
+940|سَرِيعٌ|swift|(is) swift ; (is) Swift
+941|سَرِيٌّ|stream|a stream
+942|سَرَّاء|ease|[the] ease ; and the ease
+943|سَرْدٌ|links|the links (of armor)
+944|سَرْمَدٌ|continuous|continuous
+945|سَعَةٌ|abundance|abundance ; (of) ample means
+946|سَعِيدٌ|glad|and (the) glad
+947|سَعِيرٌ|blazing fire|(of) the Blaze ; a Blazing Fire
+948|سَفَاهَةٌ|foolishness|foolishness
+949|سَفَرٌ|journey|a journey ; and a journey
+950|سُفْرَةٌ|scribes|(of) scribes
+951|سَفَهٌ|foolishness|(in) foolishness
+952|سَفِينَةٌ|ship|ship ; the ship
+953|سَفِيهٌ|limited understanding|(of) limited understanding ; the foolish
+954|سَقِيمٌ|ill|sick ; (was) ill
+955|سَقْفٌ|roof|a roof ; roofs
+956|سَكَنٌ|rest|(for) rest ; (are a) reassurance
+957|سَكِينَةٌ|tranquility|(is) tranquility ; His tranquility
+958|سَكْرَةٌ|stupor|(the) stupor ; their intoxication
+959|سَلَفٌ|precedent|a precedent
+960|سَلَمٌ|exclusively|(belonging) exclusively ; [the] peace
+961|سَلِيمٌ|sound|sound
+962|سَلْمٌ|peace|to peace ; peace
+963|سَلْوَى|quails|and the quails ; and [the] quails
+964|سَمَاءٌ|heavens|the heavens ; (of) the heavens
+965|سَمُومٌ|scorching fire|scorching fire ; scorching
+966|سَمِيعٌ|all-hearer|(is) All-Hearer ; (is) All-Hearing
+967|سَمِينٌ|fat|fat
+968|سَمِيٌّ|name|(this) name ; any similarity
+969|سَمٌّ|eye|(the) eye
+970|سَمَّاعٌ|listeners|They (are) listeners ; (and) listeners
+971|سَمْعٌ|hearing|the hearing ; their hearing
+972|سَمْكٌ|ceiling|its ceiling
+973|سَنَةٌ|year|year(s) ; years
+974|سَواءٌ|same|equal ; (It is) same
+975|سَوِيٌّ|even|sound ; well-proportioned
+976|سُوءٌ|evil|evil ; an evil man
+977|سَوْطٌ|scourge|scourge
+978|سَيَّارَةٌ|caravan|a caravan ; and for the travelers
+979|سَيِّئٌ|evil|(that was) evil ; (of) the evil
+980|سَيِّدٌ|noble|and a noble ; her husband
+981|سَيْرٌ|movement|(with an awful) movement ; the journey
+982|سُؤَالٌ|demanding|by demanding
+983|سُبَاتٌ|rest|a rest ; (for) rest
+984|سُجُودٌ|prostrate|prostrate ; and those who prostrate
+985|سُحْتٌ|forbidden|of the forbidden ; the forbidden
+986|سُحْقٌ|away with|so away with
+987|سُخْرِيٌّ|service|(for) service
+988|سُدًى|neglected|neglected
+989|سُدْسٌ|sixth|(is) the sixth ; a sixth
+990|سُرَادِقٌ|walls|its walls
+991|سُرُرٌ|thrones|thrones ; (will be) thrones
+992|سُرُورٌ|happiness|and happiness
+993|سُعُرٌ|madness|and madness
+994|سُفْلَى|lowest|the lowest
+995|سُقْيَا|drink|and her drink
+996|سُلَّمٌ|ladder|a ladder ; (is) a stairway
+997|سُلْطَانٌ|authority|any authority ; an authority
+998|سُنْبُلٌ|ears|its ears
+999|سُنْدُسٌ|fine silk|fine silk ; (of) fine silk
+1000|سُنَّةٌ|way|(the) way ; (Such is the) Way
+1001|سُوءٌ|evil|evil ; (the) evil
+1002|سُودٌ|intensely black|and intensely black
+1003|سورٌ|wall|a wall
+1004|سُورَةٌ|surah|a Surah ; Surahs
+1005|سُوقٌ|markets|the markets ; over the legs
+1006|سَوِيٌّ|even|even
+1007|سُوْأَى|evil|the evil
+1008|سِتْرٌ|shelter|any shelter
+1009|سِجِلٌّ|scroll|(of) a scroll
+1010|سِجِّيلٌ|baked clay|baked clay
+1011|سَجِينٌ|sijjin|Sijjin ; (is) Sijjin
+1012|سِجْنٌ|prison|the prison ; (of) the prison
+1013|سِحْرٌ|magic|a magic ; magic
+1014|سِخْرِيٌّ|mockery|(in) mockery ; (in) ridicule
+1015|سِدْرٌ|lote trees|lote trees
+1016|سِدْرَةٌ|lote tree|(the) Lote Tree ; the Lote Tree
+1017|سِرَاجٌ|lamp|a lamp ; and (as) a lamp
+1018|سَرِيعٌ|rapidly|hurrying ; rapidly
+1019|سِرٌّ|secretly|secretly ; the secret
+1020|سِقَايَةٌ|providing of water|the providing of water ; the drinking cup
+1021|سِكِّينٌ|knife|a knife
+1022|سِلْسلَةٌ|chains|a chain ; chains
+1023|سِنٌّ|tooth|and the tooth ; for the tooth
+1024|شَارِبٌ|drinkers|to the drinkers ; for the drinkers
+1025|شَاطِئٌ|side|(the) side
+1026|شَاعِرٌ|poet|(is) a poet ; A poet
+1027|شَافِعٌ|intercessors|intercessors ; (of) the intercessors
+1028|شَاكِرٌ|grateful|(is) All-Appreciative ; the grateful ones
+1029|شَاهِدٌ|witness|a witness ; (as) a witness
+1030|شَأْنٌ|matter|any situation ; a matter
+1031|شَتِيتٌ|diverse|diverse ; (are) divided
+1032|شَجَرَةٌ|tree|(grows) vegetation ; (the) tree
+1033|شَجَرَةٌ|tree|(the) tree ; [the] tree
+1034|شَدِيدٌ|severe|severe ; (is) severe
+1035|شَرَابٌ|drink|(will be) a drink ; a drink
+1036|شَرَرٌ|sparks|sparks
+1037|شَرِيعَةٌ|ordained way|an ordained way
+1038|شَرِيكٌ|partners|partners ; (are) partners
+1039|شَرٌّ|evil|(the) evil ; (is) bad
+1040|شَرْقِيٌّ|eastern|eastern
+1041|شَطَطٌ|enormity|an enormity ; an excessive transgression
+1042|شَعِيرَة|symbols|(the) Symbols ; (the) symbols
+1043|شَفَا|edge|(the) brink ; edge
+1044|شَفَاعَةٌ|intercession|any intercession ; intercession
+1045|شَفَقٌ|twilight glow|by the twilight glow
+1046|شَفِيعٌ|intercessor|any intercessor ; intercessors
+1047|شَفْعٌ|even|And the even
+1048|شَقِيٌّ|unblessed|unblessed ; (will be the) wretched
+1049|شَقٌّ|splitting|splitting
+1050|شَكُورٌ|grateful|grateful ; (and) grateful
+1051|شَكٌّ|doubt|doubt ; any doubt
+1052|شَكْلٌ|type|its type
+1053|شِمَالٌ|left|their left ; and to the left
+1054|شَمْسٌ|sun|the sun ; and the sun
+1055|شَنَآنٌ|hatred|(the) hatred ; hatred
+1056|شَهَادَةٌ|testimony|and the witnessed ; testimony
+1057|شَهْوَةٌ|lusts|(of) the (things they) desire  ; the passions
+1058|شَهِيدٌ|witness|witnesses ; a witness
+1059|شَهِيقٌ|inhaling|an inhaling ; and wailing
+1060|شَهْرٌ|month|months ; (for) two months
+1061|شَهْوَةٌ|lust|lustfully ; (with) lust
+1062|شَوَى|skin of the head|of the skin of the head
+1063|شَوْكَةٌ|armed|(of) the armed
+1064|شَيْءٌ|thing|thing ; anything
+1065|شَيْبٌ|white|(with) white
+1066|شَيْبَةٌ|gray hair|and gray hair
+1067|شَيْخٌ|old|(is) an old man ; old
+1068|شَيْطَانٌ|devil|devil ; Shaitaan 
+1069|شَحْمَةٌ|fat|their fat
+1070|شُحٌّ|miserly|Miserly ; miserly
+1071|شَارِعٌ|visibly|visibly
+1072|شُرْبٌ|drinking|(as) drinking
+1073|شُعْبَةٌ|columns|columns
+1074|شَعْبٌ|nations|nations
+1075|شُغْلٌ|occupied|will be occupied
+1076|شُقَّةٌ|distance|the distance
+1077|شَكُورٌ|thanks|to be thankful ; thanks
+1078|شُكْرٌ|gratitude|(in) gratitude
+1079|شِهَابٌ|flaming fires|and flaming fires
+1080|شُوَاظٌ|flame|a flame
+1081|شُورَى|consultation|(are conducted by) consultation
+1082|شِتَاءٌ|winter|(of) winter
+1083|شِرْبٌ|drink|(is a share of) drink ; drink
+1084|شِرْذِمَةٌ|certainly a band|(are) certainly a band
+1085|شِرْعَةٌ|law|a law
+1086|شِرْكٌ|share|partnership ; (is) a share
+1087|شِعْرٌ|hair|and their hair ; [the] poetry
+1088|شِفَاءٌ|healing|(is) a healing ; and a healing
+1089|شِقَاقٌ|dissension|schism ; dissension
+1090|شِقٌّ|great trouble|with great trouble
+1091|شِمَالٌ|left|the left ; (of) the left
+1092|شِهَابٌ|burning flame|a burning flame ; a flaming fire
+1093|شِيعَةٌ|sects|(into) sects ; sects
+1094|صَائِمٌ|men who fast|and the men who fast
+1095|صَابِرٌ|patient|the patient ones ; patient
+1096|صَاحِبٌ|companion|to his companion ; O my two companions
+1097|صَاخَّةٌ|deafening blast|the Deafening Blast
+1098|صَادِقٌ|truthful|truthful ; the truthful
+1099|صَارِمٌ|pluck fruit|pluck (the) fruit
+1100|صَاعِقَةٌ|thunderbolt|the thunderbolt ; (of) a thunderbolt
+1101|صَاغِرٌ|abased|humiliated ; (are) subdued
+1102|صَالِحٌ|righteous|righteous (deeds) ; righteous
+1103|صَامِتٌ|remain silent|remain silent
+1104|صَبَاحٌ|morning|(the) morning
+1105|صَبِيٌّ|child|(when he was) a child ; a child
+1106|صَبٌّ|abundance|(in) abundance
+1107|صَبَّارٌ|patient|patient ; (who is) patient
+1108|صَبْرٌ|patience|(to have) patience ; patience
+1109|صَخْرَةٌ|rocks|the rocks
+1110|صَخْرَةٌ|rock|a rock ; the rock
+1111|صَدَقَةٌ|charity|charity ; a charity
+1112|صَدُقَةٌ|dower|their dower
+1113|صَدِيدٌ|purulent|purulent
+1114|صَدِيقٌ|friend|a friend ; your friend
+1115|صَدٌّ|hindering|but hindering (people) ; and for their hindering
+1116|صَدْرٌ|breasts|(the) breasts ; their breasts
+1117|صَدْعٌ|cracks open|cracks open
+1118|صَرِيمٌ|if reaped|as if reaped
+1119|صَرَّةٌ|loud voice|a loud voice
+1120|صَرْحٌ|palace|(is) a palace ; a lofty tower
+1121|صَرْصَرٌ|furious|furious ; screaming
+1122|صَرِيعٌ|fallen|fallen
+1123|صَرْفٌ|avert|(to) avert
+1124|صَعِيدٌ|earth|(with) earth ; soil
+1125|صَغَارٌ|humiliation|a humiliation
+1126|صَغِيرٌ|small|small ; (when I was) small
+1127|صَفٌّ|rows|(in) rows ; (in) a line
+1128|صَفْحٌ|disregarding|disregarding (you) ; (with) forgiveness
+1129|صَفْرَاء|yellow|yellow
+1130|صَفْوَان|smooth rock|(that of a) smooth rock
+1131|صَلاَةٌ|prayer|the prayer ; (the) prayer
+1132|صَلْدٌ|bare|bare
+1133|صَلْصَالٌ|clay|clay ; sounding clay
+1134|صَمَدٌ||the Eternal, the Absolute
+1135|صَنْعَةٌ|making|(the) making
+1136|صَوَابٌ|correct|(what is) correct
+1137|صَوَّافٌ|lined up|(when) lined up
+1138|صَوْمَعَةٌ|monasteries|monasteries
+1139|صَوْتٌ|voice|(the) voice ; with your voice
+1140|صَوْمٌ|fast|a fast
+1141|صَيَاصِي|fortresses|their fortresses
+1142|صَيْحَةٌ|shout|a shout ; the awful cry
+1143|صَيْدٌ|game|game ; (to) hunt
+1144|صَيْفٌ|summer|and summer
+1145|صُبْحٌ|morning|(is) morning ; the morning
+1146|صَحِيفَةٌ|scriptures|pages ; (the) Scriptures
+1147|صَدٌّ|aversion|(in) aversion
+1148|صُفْرٌ|yellow|yellow
+1149|صلْبٌ|loins|your loins ; the backbone
+1150|صُلْحٌ|reconciliation|a reconciliation ; and [the] reconciliation
+1151|صُنْعٌ|work|(in) work ; (The) Work
+1152|صُورٌ|trumpet|the trumpet ; the Trumpet
+1153|صُورَةٌ|form|form ; your forms
+1154|صِبْغٌ|relish|and a relish
+1155|صِبْغَةٌ|color|(The) color (religion) ; at coloring
+1156|صَحْفَةٌ|plates|plates
+1157|صِدِّيقٌ|truthful|a man of truth ; truthful
+1158|صِدْقٌ|truth|sound ; (of) honor
+1159|صِرَاطٌ|path|a path ; (the) Path
+1160|صِرٌّ|frost|(is) frost
+1161|صِنْوٌ|trees from a single root|trees (growing) from a single root
+1162|صِهْرٌ|marriage relationship|and marriage relationship
+1163|صِيَامٌ|fasting|fasting ; (in) fasting
+1164|ضَائِقٌ|straitened|and straitened
+1165|ضَاحِكٌ|laughing|laughing
+1166|ضَاحِكَةٌ|laughing|Laughing
+1167|ضَارٌّ|at all harm|at all [be those who] harm ; he (can) harm them
+1168|ضَالٌّ|astray|astray ; lost
+1169|ضَامِرٌ|lean camel|lean camel
+1170|ضَأْنٌ|sheep|the sheep
+1171|ضَبْحٌ|panting|panting
+1172|ضَرَرٌ|disabled|[the] disabled
+1173|ضَرِيعٌ|bitter thorny plant|a bitter thorny plant
+1174|ضَرٌّ|harm|any harm ; (power to) harm
+1175|ضَرَّاءُ|hardship|adversity ; hardship
+1176|ضَرْبٌ|striking|(to) move about ; striking
+1177|ضَعِيفٌ|weak|weak ; (are) weak
+1178|ضِعْفٌ|weakness|weakness ; (there) is weakness
+1179|ضِفْدَعٌ|frogs|and the frogs
+1180|ضَنْكٌ|straitened|straitened
+1181|ضَنِينٌ|withholder|a withholder
+1182|ضَيِّقٌ|tight|tight ; narrow
+1183|ضَيْرٌ|harm|harm
+1184|ضَيْفٌ|guests|(the) guests ; (of the) guests
+1185|ضَيْقٌ|distress|distress
+1186|ضُحًى|brightness|its brightness ; a morning thereof
+1187|ضِدٌّ|opponents|opponents
+1188|ضَعِيفٌ|weak|weak
+1189|ضِعْفٌ|double|double ; manifolds
+1190|ضِغْثٌ|bunch|Confused ; Muddled
+1191|ضِيَاءٌ|shining light|a shining light ; and a light
+1192|طَائِرٌ|bird|a bird ; their evil omens
+1193|طَائِعٌ|willingly|willingly
+1194|طَائِفٌ|visitation|an evil thought ; a visitation
+1195|طَارِدٌ|one to drive away|going to drive away ; the one to drive away
+1196|طَارِقٌ|night comer|and the night comer ; the night comer (is)
+1197|طَاعَةٌ|obedience|(We pledge) obedience ; Obedience
+1198|طَاعِمٌ|eater|an eater
+1199|طَاغِي|transgressing|transgressing ; transgressors
+1200|طَاغُوتٌ|false deities|the false deities ; in false deities
+1201|طَاقَةٌ|strength|strength ; (the) strength
+1202|طَالِبٌ|seeker|(are) the seeker
+1203|طَامَّةٌ|overwhelming calamity|the Overwhelming Calamity
+1204|طَبَقٌ|stage|one above another ; (in) layers
+1205|طَرَفٌ|part|a part ; (at the) two ends
+1206|طَرِيقٌ|way|(to) a way ; (the) way
+1207|طَرِيقَةٌ|ways|(in) conduct ; paths
+1208|طَرِيٌّ|fresh|fresh
+1209|طَرْفٌ|glance|(will be) companions of modest gaze ; a glance
+1210|طَعَامٌ|food|food ; feed
+1211|طَعْمٌ|taste|its taste
+1212|طَعْنٌ|defaming|and defaming
+1213|طَلَبٌ|find it|to find it
+1214|طَلٌّ|drizzle|then a drizzle
+1215|طَلْحٌ|banana trees|And banana trees
+1216|طَلْعٌ|layers|(are) layers ; its spathe
+1217|طَمَعٌ|hope|and hope ; and a hope
+1218|طَهُورٌ|pure|pure
+1219|طَوِيلٌ|long|prolonged ; long
+1220|طَوَّافٌ|moving about|(as) moving about
+1221|طَوْدٌ|mountain|like the mountain
+1222|طَوْعٌ|willingly|willingly
+1223|طَوْلٌ|afford|afford ; (of) wealth
+1224|طَيٌّ|folding|like (the) folding
+1225|طَيِّبٌ|good|(and) good ; clean
+1226|طَيْرٌ|birds|the birds ; a bird
+1227|طُغْيَانٌ|transgression|(in) rebellion ; their transgression
+1228|طُلُوعٌ|rising|(the) rising
+1229|طوبَى|blessedness|blessedness
+1230|طُورٌ|mount|the mount ; Mount Sinai
+1231|طُوفَانٌ|flood|the flood
+1232|طُولٌ|height|(in) height
+1233|طِفْلٌ|child|(as) a child ; [the] children
+1234|طِينٌ|clay|clay ; (from) clay
+1235|ظَالِمٌ|wrongdoers|the wrongdoers ; wrongdoers
+1236|ظَاهِرٌ|dominant|dominant ; open
+1237|ظاهِرَة|visible|apparent ; visible
+1238|ظَلامٌ|unjust|unjust
+1239|ظَمَأٌ|thirst|thirst
+1240|ظَمْآن|thirsty one|the thirsty one
+1241|ظَنٌّ|assumption|an assumption ; assumption
+1242|ظَهيرٌ|supporter|assistants ; a helper
+1243|ظَهيرَةٌ|noon|noon
+1244|ظَهْرٌ|backs|their backs ; its back
+1245|ظُفْرٌ|claws|claws
+1246|ظُلَّةٌ|coverings|coverings ; (the) shadows
+1247|ظُلْمٌ|injustice|injustice ; wrongfully
+1248|ظِلٌّ|shades|shades ; (in the) shade
+1249|عَائِدٌ|return|(will) return
+1250|عَائِلٌ|need|in need
+1251|عَابِدٌ|worshippers|(are) worshippers ; worshippers
+1252|عَادٌ|transgressor|transgressing ; transgressor
+1253|عَادٌ|keep count|those who keep count
+1254|عَارِضٌ|cloud|(as) a cloud ; (is) a cloud
+1255|عَاصِفٌ|stormy|stormy
+1256|عَاصِمٌ|protector|protector ; defender
+1257|عَافِي|pardon|and those who pardon
+1258|عَاقِبَةٌ|end|(the) end ; (is the) end
+1259|عَاقِرٌ|barren|barren ; (is) [a] barren
+1260|عَاكِفٌ|devoted|devoted ; (are) secluded
+1261|عَالٌ|tyrant|(was) a tyrant
+1262|عَالِي|haughty|haughty ; the exalted ones
+1263|عَالَمٌ|worlds|(of) the worlds ; the worlds
+1264|عَالِمٌ|knower|Knower ; (the) Knower
+1265|عَالِي|arrogant|arrogant ; its upside
+1266|عَامٌ|year|year(s) ; one year
+1267|عَامِلٌ|working|working ; (of the) doer
+1268|عَبَثٌ|uselessly|uselessly
+1269|عَبُوسٌ|harsh|harsh
+1270|عَبْدٌ|slaves|His slaves ; (the) slaves
+1271|عَبْقَرِيٌّ|carpets|and carpets
+1272|عَتِيدٌ|ready|ready
+1273|عَتِيقٌ|ancient|[the] Ancient ; the Ancient
+1274|عَجَبٌ|wonder|a wonder ; amazingly
+1275|عَجَلٌ|haste|haste
+1276|عَجُوزٌ|old woman|an old woman ; An old woman
+1277|عَجُولٌ|ever hasty|ever hasty
+1278|عَجِيبٌ|amazing|amazing
+1279|عَدَاوَةٌ|enmity|[the] enmity ; (in) enmity
+1280|عَدَدٌ|number|(in) number ; (the) number
+1281|عَدَسٌ|lentils|[and] its lentils
+1282|عَدُوٌّ|enemy|an enemy ; enemies
+1283|عَدٌّ|number|a number ; a counting
+1284|عَدْلٌ|just|just ; a compensation
+1285|عَدْوٌ|enmity|(in) enmity ; and enmity
+1286|عَذَابٌ|punishment|(is) a punishment ; a punishment
+1287|عَذْبٌ|fresh|palatable ; (is) fresh
+1288|عَرَاءٌ|onto naked shore|onto the open shore ; onto (the) naked shore
+1289|عَرَبِيٌّ|arabic|(in) Arabic ; Arabic
+1290|عَرَضٌ|goods|goods ; transitory gains
+1291|عَرِمٌ|dam|(of) the dam
+1292|عَرِيضٌ|lengthy|lengthy
+1293|عَرْشٌ|throne|the Throne ; (of) the Throne
+1294|عَرْضٌ|width|(on) display ; its width
+1295|عَزِيزٌ|all-mighty|(is) All-Mighty ; All-Mighty
+1296|عَزْمٌ|determination|the matters ; determination
+1297|عَسَلٌ|honey|honey
+1298|عَسِيرٌ|difficult|difficult
+1299|عَشْرٌ|ten|(and) ten ; (is) twelve
+1300|عَشِيرٌ|friend|friend
+1301|عَشِيٌّ|evening|in the evening ; and the evening
+1302|عَشِيَّةٌ|evening|an evening
+1303|عَشْرٌ|ten|ten ; (is) ten (times)
+1304|عَصًا|staff|with your staff ; his staff
+1305|عَصِيبٌ|distressful|distressful
+1306|عَصِيٌّ|disobedient|disobedient
+1307|عَصْرٌ|time|By the time
+1308|عَصْفٌ|violently|violently ; husk
+1309|عَضُدٌ|helper|(as) helper(s) ; your arm
+1310|عَطَاءٌ|gift|(the) gift ; a bestowal
+1311|عَظِيمٌ|great|great ; Great
+1312|عَظْمٌ|bone|with the bone ; my bones
+1313|عَفُوٌّ|oft-pardoning|Oft-Pardoning ; (is) surely Oft-Pardoning
+1314|عَفْوٌ|surplus|The surplus ; (to) forgiveness
+1315|عَقَبَةٌ|steep path|the steep path ; the steep path (is)
+1316|عَقِبٌ|heels|his heels ; your heels
+1317|عَقِيمٌ|barren|barren ; the barren
+1318|عَلَقٌ|clinging substance|a clinging substance
+1319|عَلَقَةٌ|clinging substance|a clinging substance ; (into) a clinging substance
+1320|عَلِيمٌ|all-knower|(is) All-Knower ; All-Knowing
+1321|عَلِيٌّ|most high|high ; (is) the Most High
+1322|عَمىً|blind|blind ; (are) blind
+1323|عِمَادٌ|pillars|pillars ; columns
+1324|عَمَلٌ|deeds|their deeds ; deeds
+1325|عَمِيقٌ|distant|distant
+1326|عَمٌّ|paternal uncles|(of) your paternal uncles
+1327|عَمَّةٌ|paternal aunts|(of) your paternal aunts ; and your father's sisters
+1328|عَمْرٌ|life|By your life
+1329|عَنْكَبُوتٌ|spider|the spider ; (of) the spider
+1330|عَنِيدٌ|stubborn|obstinate ; stubborn
+1331|عَهْدٌ|covenant|a covenant ; the covenant
+1332|عَوْرَةٌ|exposed|private aspects ; (are) times of privacy
+1333|عَيْلَةٌ|poverty|poverty
+1334|عَيْنٌ|eyes|a spring ; their eyes
+1335|عجَابٌ|curious|curious
+1336|عُدَّةٌ|preparation|(some) preparation
+1337|عُدْوَانٌ|aggression|and [the] transgression ; hostility
+1338|عُدْوَةٌ|side|on side of the valley ; (were) on the side
+1339|عُذْرٌ|excuse|an excuse ; (As) justification
+1340|عُرْبٌ|devoted|Devoted
+1341|عُرْجُونٌ|date stalk|like the date stalk
+1342|عُرْضَةٌ|excuse|an excuse
+1343|عُرْفٌ|one after another|one after another ; the good
+1344|عُرْوَةٌ|handhold|the handhold  ; the handhold
+1345|عُسْرٌ|hardship|(raising) difficulty ; hardship
+1346|عُسْرَةٌ|difficulty|in difficulty ; (of) difficulty
+1347|عُسْرَى|towards the difficulty|towards [the] difficulty
+1348|عُصْبَةٌ|group|(are) a group ; a company (of men)
+1349|عِقْدٌ|contracts|the contracts
+1350|عُقْبٌ|final end|(for) the final end
+1351|عُقْبَى|final attainment|(is) the final attainment ; (is the) end
+1352|عُقْدَةٌ|knot|the knot ; (is the) knot
+1353|عُلُوٌّ|haughtiness|haughtiness ; (by) height
+1354|عُلْيَا|high|[the] high ; the highest
+1355|عُمُرٌ|life|a lifetime ; the life
+1356|عُمْرَةٌ|umrah|and the Umrah ; of the Umrah
+1357|عُنُقٌ|necks|their necks ; (the) necks
+1358|عِبْرَةٌ|lesson|a lesson ; surely (is) a lesson
+1359|عِتِيٌّ|extreme|extreme ; (in) rebellion
+1360|أَعْجَف|lean ones|lean ones
+1361|عِجْلٌ|calf|the calf ; a calf 
+1362|عِدَّةٌ|number|(the) number ; the number
+1363|عِزٌّ|honor|an honor
+1364|عِزَّةٌ|honor|the honor ; self-glory
+1365|عِشَاءٌ|early at night|early at night ; (of) night
+1366|عَشْرَاءُ|full-term she-camels|the full-term she-camels
+1367|عِصْمَةٌ|marriage bonds|to marriage bonds
+1368|عِصِيٌّ|staffs|and their staffs
+1369|عِصْيَانٌ|disobedience|and disobedience
+1370|عِطْفٌ|neck|his neck
+1371|عَظْمٌ|bones|bones ; and bones
+1372|عِفْرِيتٌ|strong one|a strong one
+1373|عِقَابٌ|penalty|(in) the penalty ; My penalty
+1374|عِلِّيٌّ|illiyin|Illiyin ; (is) Illiyun
+1375|عِلْمٌ|knowledge|knowledge ; any knowledge
+1376|عِمَادٌ|lofty pillars|lofty pillars
+1377|عِمَارَةٌ|maintenance|and (the) maintenance
+1378|عِنَبٌ|grapes|grapes ; and grapevines
+1379|عِوَجٌ|crookedness|crookedness ; any crookedness
+1380|عِيدٌ|festival|a festival
+1381|عِيرٌ|caravan|(in) the caravan ; and the caravan
+1382|عِيشَةٌ|life|a life
+1383|عَيُونٌ|large eyes|(with) large eyes ; (having) beautiful eyes
+1384|غَائِبٌ|absent|absent ; the absent
+1385|غَابِرٌ|remain behind|those who remain behind ; those who remained behind
+1386|غَارٌ|cave|the cave
+1387|غَارِمٌ|debt|and for those in debt
+1388|غَاسِقٌ|darkness|(of) darkness
+1389|غَاشِيَةٌ|overwhelming|coverings ; an overwhelming
+1390|غَافِرٌ|forgiver|(The) Forgiver ; (of) Forgivers
+1391|غَافِلٌ|unaware|unaware ; (are) unaware
+1392|غَالِبٌ|overcome|(can) overcome ; victorious
+1393|غَاوِي|astray|astray ; those gone astray
+1394|غَبَرَةٌ|dust|(will be) dust
+1395|غَدٌ|tomorrow|tomorrow ; for tomorrow
+1396|غَدَاءٌ|morning meal|our morning meal
+1397|غَدَاةٌ|morning|in the morning
+1398|غَدَقٌ|abundance|(in) abundance
+1399|غِرْبِيبٌ|intensely black|and intensely black
+1400|غَرَامٌ|inseparable|inseparable
+1401|غَرُورٌ|deceiver|the deceiver ; the Deceiver
+1402|غَرْبِيٌّ|western|western
+1403|غَزْلٌ|spun yarn|her spun yarn
+1404|غَسَقٌ|darkness|(the) darkness
+1405|غَصْبٌ|force|(by) force
+1406|غَضَبٌ|wrath|wrath ; (is) a wrath
+1407|غَضْبَان|angry|angry
+1408|غَفُورٌ|oft-forgiving|(is) Oft-Forgiving ; Oft-Forgiving
+1409|غَفَّارٌ|oft-forgiving|the Oft-Forgiving ; Oft-Forgiving
+1410|غَفْلَةٌ|heedlessness|heedlessness ; (of) inattention
+1411|غَلِيظٌ|severe|severe ; strong
+1412|غَلْيٌ|boiling|Like boiling
+1413|غَمَامَةٌ|clouds|(with) [the] clouds ; [the] clouds
+1414|غَامِرٌ|agonies|agonies
+1415|غَمٌّ|distress|(with) distress ; the distress
+1416|غَمْرَةٌ|confusion|confusion ; flood
+1417|غَنَمٌ|sheep|sheep ; and the sheep
+1418|غَنِيٌّ|self-sufficient|(is) Free of need ; (is) free from need
+1419|غَوِيٌّ|deviator|(are) surely a deviator
+1420|غَوَّاصٌ|diver|and diver
+1421|غَوْرٌ|sunken|sunken
+1422|غَوْلٌ|bad effect|(is) bad effect
+1423|غَيٌّ|evil|evil ; the wrong
+1424|غَيْبٌ|unseen|(of) the unseen ; (the) unseen
+1425|غَيْثٌ|rain|(of) a rain ; the rain
+1426|غَيْرٌ|not|without ; not
+1427|غَيْظٌ|rage|(the) anger ; [the] rage
+1428|غُثَاءٌ|stubble|(as) rubbish of dead leaves ; stubble
+1429|غُدُوٌّ|morning|in the mornings ; morning
+1430|غُرَابٌ|crow|a crow ; [the] crow
+1431|غُرْفَةٌ|high dwellings|the high dwellings
+1432|غُرُوبٌ|setting|its setting ; the setting
+1433|غُرُورٌ|delusion|delusion ; deception
+1434|غُرْفَةٌ|lofty mansions|(in the) hollow ; lofty dwellings
+1435|غُصَّةٌ|chokes|chokes
+1436|غُفْرَانٌ|us your forgiveness|(Grant) us Your forgiveness
+1437|غُلاَمٌ|boy|a son ; a boy
+1438|أغْلَبُ|thick foliage|(of) thick foliage
+1439|غِلاَفٌ|wrapped|(are) wrapped
+1440|غُمَّةٌ|doubt|any doubt
+1441|غَيْبٌ|unseen|(of) the unseen
+1442|غِشَاوَةٌ|veil|(is) a veil ; a veil
+1443|غِطَاءٌ|cover|a cover ; your cover
+1444|غِلٌّ|rancor|malice ; rancor
+1445|غِلْظَةٌ|harshness|harshness
+1446|فَاتِحٌ|decide|(of) those who Decide
+1447|فَاتِنٌ|tempt away|can tempt away (anyone)
+1448|فَاجِرٌ|wicked|a wicked
+1449|فَارِضٌ|old|old
+1450|فَارِغٌ|empty|empty
+1451|فَارِهٌ|skillfully|skillfully
+1452|فَاسِقٌ|defiantly disobedient|defiantly disobedient ; (are) defiantly disobedient
+1453|فَاصِلٌ|deciders|(of) the Deciders
+1454|فَاطِرٌ|creator|Creator ; (the) Creator
+1455|فَاعِلٌ|doers|doers ; doing
+1456|فَاقِعٌ|bright|bright
+1457|فَاكِهٌ|enjoying|(in) amusement ; take delight
+1458|فَاكِهَةٌ|fruits|(are) fruits ; (of) fruit
+1459|فَالِقٌ|cleaver|(is the) Cleaver ; (He is the) Cleaver
+1460|فَتَاةٌ|slave girls|your slave girls  ; your slave girls
+1461|فَتًى|youth|a youth
+1462|فَتِيلٌ|hair on a date-seed|(even as much as) a hair on a date-seed ; (even as much as) a hair on a date seed
+1463|فَتَّاحٌ|judge|(is) the Judge
+1464|فَتْحٌ|victory|a victory ; the victory
+1465|فَتْرَةٌ|interval|(after) an interval (of cessation)
+1466|فَجٌّ|wide|broad passes ; mountain highway
+1467|فَجْرٌ|dawn|[the] dawn ; at dawn
+1468|فَجْوَةٌ|open space|the open space
+1469|فَحْشَاءُ|immorality|the immorality ; and the shameful
+1470|فَخُورٌ|boaster|boaster ; (and) [a] boastful
+1471|فَخَّارَةٌ|pottery|like the pottery
+1472|فَرَاشٌ|moths|like moths
+1473|فَرِحٌ|rejoicing|rejoicing ; Rejoicing
+1474|فَرِيضَةٌ|obligation|an obligation (dower) ; An obligation
+1475|فَرِيقٌ|party|a party ; a group
+1476|فَرِيٌّ|amazing thing|an amazing thing
+1477|فَرْجٌ|chastity|their chastity ; rifts
+1478|فَرْدٌ|alone|alone
+1479|فَرْشٌ|meat|and (some for) meat
+1480|فَرْعٌ|branches|and its branches
+1481|فَرْقٌ|criterion|(by the) Criterion
+1482|فَزَعٌ|terror|(the) terror ; the terror
+1483|فَسَادٌ|corruption|spreading corruption ; corruption
+1484|فَصْلٌ|judgment|decisive ; (of) Judgment
+1485|فَضْلٌ|bounty|His Bounty ; bounty
+1486|فَظٌّ|rude|rude
+1487|فَعَّالٌ|doer|(is) All-Accomplisher ; Doer
+1488|فَقِيرٌ|poor|poor ; (is) poor
+1489|فَقْرٌ|poverty|[the] poverty
+1490|فَكِهٌ|jesting|jesting
+1491|فَكٌّ|freeing|(It is) freeing
+1492|فَلَقٌ|dawn|(of) the dawn
+1493|فَلَكٌ|orbit|an orbit
+1494|فَوَاقٌ|delay|delay
+1495|فَاكِهٌ|fruits|(are) fruits ; Fruits
+1496|فَوْجٌ|troop|a troop ; (is) a company
+1497|فَوْرٌ|suddenly|suddenly
+1498|فَوْزٌ|success|(is) the success ; a success
+1499|فُوقٌ|over|over ; above them
+1500|فُؤَادٌ|hearts|hearts ; (the) heart
+1501|فُتُونٌ|trial|(with) a trial
+1502|فُجُورٌ|wickedness|(to distinguish) its wickedness
+1503|فَاجِرٌ|wicked|like the wicked ; the wicked ones
+1504|فُرَاتٌ|sweet|sweet ; and sweet
+1505|فَرْدٌ|alone|alone ; and (as) individuals
+1506|فُرُطٌ|excess|(in) excess
+1507|فُرْقَانٌ|criterion|the Criterion ; a criterion
+1508|فُسُوقٌ|wickedness|wickedness ; (is) sinful conduct
+1509|فُطُورٌ|flaw|flaw
+1510|فُلْكٌ|ships|the ship ; the ships
+1511|فِئَةٌ|group|a company ; a group
+1512|فِتْنَةٌ|trial|a trial ; (as) a trial
+1513|فِتْيَةٌ|youths|youths ; to his servants
+1514|فِدَاءٌ|ransom|ransom
+1515|فِدْيَةٌ|ransom|a ransom ; any ransom
+1516|فِرَارٌ|flight|(in) flight ; to flee
+1517|فِرَاشٌ|couches|a resting place ; couches
+1518|فِرَاقٌ|parting|(is) parting ; (is) the parting
+1519|فِرْقٌ|part|part
+1520|فِرْقَةٌ|group|group
+1521|فِسْقٌ|grave disobedience|(is) grave disobedience ; (it be) disobedience
+1522|فَصِيلٌ|weaning|weaning ; and his weaning
+1523|فِضَّةٌ|silver|silver ; and [the] silver
+1524|فِعْلٌ|doing|(the) doing
+1525|فِيلٌ|elephant|(of the) Elephant
+1526|قَائِلٌ|speaker|a speaker ; were sleeping at noon
+1527|قَائِمٌ|standing|standing ; (was) standing 
+1528|قَائِمَةٌ|standing|standing ; (was) standing
+1529|قَابٌ|distance|(at) a distance
+1530|قَابِلٌ|acceptor|and (the) Acceptor
+1531|قَادِرٌ|able|(is) Able ; have the power
+1532|قَارِعَةٌ|striking calamity|a disaster ; (is) the Striking Calamity
+1533|قَاسِطٌ|unjust|(are) unjust ; the unjust
+1534|قَاصِدٌ|easy|easy
+1535|قَاصِفٌ|hurricane|a hurricane
+1536|قَاضِيَةٌ|end|the end
+1537|قَاعٌ|level|a level
+1538|قَاعِدٌ|sitting|sitting ; the ones who sit
+1539|قَانِتٌ|obedient|(are) humbly obedient ; devoutly obedient
+1540|قَانِطٌ|despairing|the despairing
+1541|قَانِعٌ|needy who do not ask|the needy who do not ask
+1542|قَاهِرٌ|subjugators|(are) subjugators ; (is) the Subjugator
+1543|قَبِيلَةٌ|tribes|and tribes
+1544|قَبَسٌ|burning|burning ; a burning brand
+1545|قَبُولٌ|acceptance|with acceptance
+1546|قَبِيلٌ|before|before (us) ; and his tribe
+1547|قَبْرٌ|graves|the graves ; his grave
+1548|قَبْضٌ|withdrawal|a withdrawal
+1549|قَبْضَةٌ|handful|a handful ; (will be) in His Grip
+1550|قَبَلٌ|before|before ; before you
+1551|قَاتِرٌ|darkness|darkness
+1552|قَتْلٌ|killing|(to) kill ; (the) killing
+1553|قَتِيلٌ|murdered|(the matter of) the murdered
+1554|قَدَرٌ|measure|the decreed (time) ; in (due) measure
+1555|قَدَمٌ|feet|our feet ; (will be) a respectable position
+1556|قَدِيرٌ|all-powerful|All-Powerful ; (is) All-Powerful
+1557|قَدِيمٌ|ancient|ancient ; old
+1558|قَدْحٌ|striking|striking
+1559|قَدْرٌ|power|a measure ; (of) Power
+1560|قَرَارٌ|abode|stability ; a resting place
+1561|قَرِيبٌ|near|near ; (is) near
+1562|قَرِينٌ|companion|a companion ; (as) companion 
+1563|قَرْحٌ|wound|a wound ; wound
+1564|قَرْضٌ|loan|a loan
+1565|قَرْنٌ|generations|a generation ; generations
+1566|قَرْيَةٌ|town|a town ; town
+1567|قَسَمٌ|oath|(not) an oath ; (is) surely an oath
+1568|قَسْوَةٌ|hardness|(in) hardness
+1569|قَصَصٌ|retracing|retracing ; the story
+1570|قَصِيٌّ|remote|remote
+1571|قَصْدٌ|direction|(is) the direction
+1572|قَصْرٌ|palaces|palaces ; and castle
+1573|قَضْبٌ|green fodder|and green fodder
+1574|قَعِيدٌ|seated|seated
+1575|قَلَمٌ|pens|(were) pens ; their pens
+1576|قَلِيلٌ|little|a little ; little
+1577|قَلْبٌ|hearts|their hearts ; (the) hearts
+1578|قَمَرٌ|moon|and the moon ; the moon
+1579|قَمِيصٌ|shirt|his shirt ; with this shirt of mine
+1580|قَمْطَرِيرٌ|distressful|and distressful
+1581|قَنُوطٌ|despairs|(and) despairs
+1582|قَهَّارٌ|irresistible|the Irresistible
+1583|قَاعِدٌ|foundations|the foundations ; And postmenopausal
+1584|قَوَامٌ|moderate|moderate
+1585|قَوِيٌّ|all-strong|(is) All-Strong ; All-Strong
+1586|قَوَّامٌ|steadfast|(are) protectors ; custodians
+1587|قَوْلٌ|word|a word ; the word
+1588|قَوْمٌ|people|a people ; (are) a people
+1589|قَيُّومٌ|sustainer of all that exists|the Sustainer of all that exists ; the Self-Subsisting
+1590|قَيِّمٌ|straight|Straight ; the upright
+1591|قِيمَةٌ|correct|correct ; the correct
+1592|قُبُلٌ|front|face to face ; the front
+1593|قُدُسٌ|holy|the Holy Spirit ; [the] Holy
+1594|قِدْرٌ|cooking-pots|and cooking-pots
+1595|قُدُّوسٌ|holy|the Holy One ; the Holy
+1596|قِرْبَةٌ|means of nearness|(as) means of nearness
+1597|قُرَّةٌ|comfort|comfort ; A comfort
+1598|قُرْبَانٌ|sacrifice|a sacrifice ; gods as a way of approach
+1599|قُرْبَةٌ|means of nearness|(is) a means of nearness
+1600|قُرْبَى|near of kin|a near relative ; near of kin
+1601|أقْصَى|farther|the farther
+1602|قِطْفٌ|cluster of fruits|Its clusters of fruits ; its cluster of fruits
+1603|قَاعِدٌ|sitting|(were) sitting ; and sitting
+1604|قُمَّلَةٌ|lice|and the lice
+1605|قُوَّةٌ|strength|(in) strength ; power
+1606|قِبَلٌ|resistance|(is) resistance ; facing towards [it]
+1607|قِبْلَةٌ|direction of prayer|(to the) direction of prayer ; (of the) direction of prayer
+1608|قِتَالٌ|fighting|[the] fighting ; (concerning) fighting
+1609|قِدَّةٌ|different|different
+1610|قِرْدٌ|apes|apes ; [the] apes
+1611|قِرْطَاسٌ|parchment|a parchment ; (into) parchments
+1612|قِسِّيسٌ|priests|(are) priests
+1613|قِسْطٌ|justice|in justice ; with justice
+1614|قِسْطَاسٌ|balance|with the balance ; with a balance
+1615|قِسْمَةٌ|division|(is) a division ; (is) to be shared
+1616|قُصَّةٌ|legal retribution|(is) legal retribution ; (is) retribution
+1617|قِطْعَةٌ|pieces|(with) pieces ; are tracks
+1618|قِطٌّ|share|our share
+1619|قُطْرٌ|molten copper|molten copper ; (of) molten copper
+1620|قِطْمِيرٌ|membrane of a date-seed|(as much as) the membrane of a date-seed
+1621|قِنْطَارٌ|heap|heap (of gold) ; and [the] heaps
+1622|قِنْوٌ|clusters of dates|clusters of dates
+1623|قِيَامَةٌ|resurrection|(of) the Resurrection ; (of) Resurrection
+1624|قِيمَةٌ|right|right
+1625|كَاتِبٌ|scribe|a scribe ; (the) scribe
+1626|كَادِحٌ|laboring|(are) laboring
+1627|كَاذِبٌ|liars|the liars ; (are) surely liars
+1628|كَارِهٌ|averse|(are) averse ; (the) ones who hate (it)
+1629|كَاشِفٌ|remover|remover ; (will) remove
+1630|كَاظِمٌ|choked|choked ; and those who restrain
+1631|كَافٌّ|sufficient|sufficient
+1632|كَافُورٌ|kafur|(of) Kafur
+1633|كَافِرٌ|disbelievers|the disbelievers ; (are) disbelievers
+1634|كَافَّةٌ|together|all together ; completely
+1635|كَالِحٌ|grin with displaced lips|(will) grin with displaced lips
+1636|كَاهِنٌ|soothsayer|(of) a soothsayer ; a soothsayer
+1637|كَأْسٌ|cup|a cup ; a cup 
+1638|كَبَدٌ|hardship|hardship
+1639|كَبِيرٌ|great|great ; the Most Great
+1640|كَثِيبٌ|heap of sand|a heap of sand
+1641|كَثِيرٌ|many|many ; much
+1642|كَثْرَةٌ|abundance|abundance ; your multitude
+1643|كَدْحٌ|exertion|(with) exertion
+1644|كَذِبٌ|lie|a lie ; the lie
+1645|كَذَّابٌ|liar|a liar ; (is) a liar
+1646|كَرِيمٌ|noble|noble ; Noble
+1647|كَرَّةٌ|return|a return ; another chance
+1648|كَرْبٌ|distress|distress ; the distress
+1649|كَرْهٌ|unwillingly|unwillingly ; (by) force
+1650|كَسَادٌ|decline it|a decline (in) it
+1651|كَشْفٌ|remove|(to) remove
+1652|كَظِيمٌ|suppressor|a suppressor ; suppresses grief
+1653|كَفُورٌ|ungrateful|ungrateful ; (and) ungrateful
+1654|كَفِيلٌ|surety|a surety
+1655|كَفَّارٌ|disbeliever|ungrateful ; (and) ungrateful
+1656|كَفَّارَةٌ|expiation|an expiation ; (is the) expiation
+1657|كَلالَةٌ|parent or child|(has) no parent or child ; the Kalala
+1658|كَلِمَةٌ|words|the words
+1659|كَلِمَةٌ|word|(the) word ; a word
+1660|كَلٌّ|burden|(is) a burden
+1661|كَلْبٌ|dog|their dog ; (of) the dog
+1662|كَنْزٌ|treasure|a treasure ; their treasure
+1663|كَهْفٌ|cave|the cave ; their cave
+1664|كَهْلٌ|maturity|and (in) maturity
+1665|كَاعِبٌ|splendid companions|And splendid companions
+1666|كَافِرٌ|disbelieving women|(with) disbelieving women
+1667|كَوْثَرٌ|al-kauthar|Al-Kauthar
+1668|كَوْكَبٌ|star|a star ; stars
+1669|كَيْدٌ|plot|a plot ; a plan
+1670|كَيْلٌ|measure|measure ; [the] measure
+1671|كَبِيرٌ|great men|and our great men
+1672|كُبَّارٌ|great|great
+1673|كُبْرَى|greatest|the Greatest ; the great
+1674|كُرْسِيٌّ|seat|His Seat ; his throne
+1675|كُرْهٌ|hardship|(with) hardship ; (is) hateful
+1676|كُفُؤٌ|equivalent|equivalent
+1677|كَفْرٌ|disbelief|disbelief
+1678|كُفْرٌ|disbelief|(in) disbelief ; [the] disbelief
+1679|كُفْرَانٌ|rejected|(will be) rejected
+1680|كَانِسٌ|disappear|(and) disappear
+1681|كِبَرٌ|old age|the old age ; [the] old age
+1682|كِبْرٌ|greatness|greatness ; took upon himself a greater share of it
+1683|كِبْرِيَاءُ|greatness|the greatness ; (is) the greatness
+1684|كِتَابٌ|book|the Book ; (of) the Book
+1685|كِذَّابٌ|denial|(with) denial ; any falsehood
+1686|كِفْلٌ|portion|a portion ; double portion
+1687|لَائِمٌ|critic|(of) a critic
+1688|لَابِثٌ|remaining|(They will) be remaining
+1689|لَازِبٌ|sticky|sticky
+1690|لَاعِبٌ|play|(for) playing ; (in) play
+1691|لَاعِنٌ|ones who curse|the ones who curse
+1692|لَبَنٌ|milk|milk
+1693|لَبُوسٌ|coats of armor|(of) coats of armor
+1694|لَبْسٌ|doubt|doubt
+1695|لَحْمٌ|flesh|(with) flesh ; (the) flesh
+1696|لَحْنٌ|tone|(the) tone
+1697|لَذَّةٌ|delicious|delicious
+1698|لَطِيفٌ|subtle|(is) Most Subtle ; (is) surely Subtle
+1699|لَعِبٌ|play|(is) play ; a play
+1700|لَعْنَةٌ|curse|(is the) curse ; the curse
+1701|لَغْوٌ|vain talk|vain talk ; ill speech
+1702|لَفِيفٌ|mixed crowd|(as) a mixed crowd
+1703|لَمْحٌ|twinkling|as a twinkling ; like the twinkling
+1704|لَهَبٌ|lahab|Lahab ; Blazing Flames
+1705|لَهْوٌ|amusement|and amusement ; (as) an amusement
+1706|لَوْحٌ|tablet|(ark) made of planks ; a Tablet
+1707|لَوْمَةٌ|blame|the blame
+1708|لَوْنٌ|colors|colors ; [their] colors
+1709|لَيِّنٌ|gentle|gentle
+1710|لَيْلٌ|night|the night ; (of) the night
+1711|لُؤْلُؤٌ|pearls|pearls ; (to be) pearls
+1712|لُبَدٌ|abundant|abundant
+1713|لُجَّةٌ|pool|(was) a pool
+1714|أَلَدُّ|hostile|hostile
+1715|لُمَزَةٌ|backbiter|backbiter
+1716|لِبَاسٌ|garments|(are) garments ; clothing
+1717|لِبْدٌ|compacted mass|a compacted mass
+1718|لِزَامٌ|obligation|an obligation ; the inevitable (punishment)
+1719|لِسَانٌ|tongue|their tongues ; (the) tongue
+1720|لِقَاءٌ|meeting|(the) meeting ; (of the) meeting
+1721|لِينَةٌ|palm-trees|(the) palm-trees
+1722|مَاءٌ|water|water ; the water
+1723|مَائِدَةٌ|table spread|a table spread
+1724|مَارِجٌ|smokeless flame|a smokeless flame
+1725|مَارِدٌ|rebellious|rebellious
+1726|مَاعُونٌ|small kindnesses|[the] small kindnesses
+1727|مَاكِثٌ|abide|(They will) abide ; (will) remain
+1728|مَاكِرٌ|planners|(of) the planners ; (of) the Planners
+1729|مَالٌ|wealth|wealth ; their wealth
+1730|مَالِكٌ|owner|(The) Master ; Owner
+1731|مَاهِدٌ|spreaders|(are) the Spreaders
+1732|مَآبٌ|place of return|place of return ; (is) my return
+1733|مَأْتًى|sure to come|sure to come
+1734|مَأْكُولٌ|eaten up|eaten up
+1735|مَأْمَنٌ|place of safety|(to) his place of safety
+1736|مَأْمُونٌ|felt secure|to be felt secure (of) 
+1737|مَبْعُوثٌ|resurrected|(will be) resurrected ; surely (be) resurrected
+1738|مَبْلَغٌ|sum|(is) their sum
+1739|مَتَاعٌ|enjoyment|An enjoyment ; (is) a provision
+1740|مَتِينٌ|firm|(is) firm ; the Strong
+1741|مَثَابَةٌ|place of return|a place of return
+1742|مَثَلٌ|example|an example ; example
+1743|مَثُوبَةٌ|recompense|(as) recompense ; surely (the) reward
+1744|مَثْنَى|two|two ; (in) pairs
+1745|مَثْوًى|abode|an abode ; (is the) abode
+1746|مَجْلِسٌ|assemblies|the assemblies
+1747|مَجِيدٌ|glorious|All-Glorious ; Glorious
+1748|مَجْرىً|course|(is) its course
+1749|مَجْمَعٌ|junction|the junction
+1750|مَجْمُوعٌ|gathered|(will) be gathered ; Surely, will be gathered
+1751|مَجْنُونٌ|madman|a madman ; mad
+1752|مِحْرَابٌ|elevated chambers|elevated chambers
+1753|مَحَبَّةٌ|love|love
+1754|مَحَلٌّ|place|(to) its destination ; their place of sacrifice
+1755|مَحِيصٌ|place of escape|place of escape ; any escape
+1756|مَحْجُوبٌ|partitioned|surely will be partitioned
+1757|مَحْجُورٌ|forbidden|forbidden
+1758|مَحْرُومٌ|deprived|(are) deprived ; and the deprived
+1759|مَحْظُورٌ|restricted|restricted
+1760|مَحْفُوظٌ|guarded|protected ; Guarded
+1761|مَحْمُودٌ|praiseworthy|praiseworthy
+1762|مَخَاضٌ|pains of childbirth|the pains of childbirth
+1763|مَخْتُومٌ|sealed|sealed
+1764|مَخْذُولٌ|forsaken|forsaken
+1765|مَخْرَجٌ|way out|a way out
+1766|مَدِينَةٌ|cities|the cities
+1767|مَدَدٌ|supplement|(as) a supplement
+1768|مَدِينٌ|recompensed|to be recompensed ; surely be brought to Judgment
+1769|مَدِينَةٌ|city|the city ; (of) the city
+1770|مَدٌّ|extension|an extension ; extensively
+1771|مَذْكُورٌ|mentioned|mentioned
+1772|مَذْمُومٌ|disgraced|disgraced ; (was) blamed
+1773|مِرْضَعَةٌ|wet nurses|the wet nurses
+1774|مَرْفِقٌ|elbows|the elbows
+1775|مَرَحٌ|insolence|(with) insolence ; exultantly
+1776|مَرَدٌّ|return|turning away ; (for) return
+1777|مَرَضٌ|disease|(is) a disease ; (was) a disease
+1778|مَرِيدٌ|rebellious|rebellious
+1779|مَرِيضٌ|sick|sick ; ill
+1780|مَرٌّ|passing|(as the) passing
+1781|مَرَّةٌ|time|time ; twice
+1782|مَرْجَانٌ|coral|and the coral ; and coral
+1783|مَرْجِعٌ|return|(is) your return ; (is) their return
+1784|مَرْحَبٌ|welcome|welcome
+1785|مَرْحَمَةٌ|compassion|to compassion
+1786|مَرْدُودٌ|repelled|(be) repelled ; indeed be returned
+1787|مَرْصَدٌ|place of ambush|place of ambush
+1788|مَرْصُوصٌ|joined firmly|joined firmly
+1789|مَرْعًى|pasture|and its pasture ; the pasture
+1790|مَرْفُوعٌ|raised high|raised high
+1791|مَرْقَدٌ|sleeping place|our sleeping place
+1792|مَرْقُومٌ|written|written
+1793|مَزِيدٌ|more|more ; (is) more
+1794|مَسَدٌ|palm-fiber|palm-fiber
+1795|مَسٌّ|touch|(the) touch ; (his) touch
+1796|مَسْتُورٌ|hidden|hidden
+1797|مَسْجُونٌ|imprisoned|those imprisoned
+1798|مَسْجِدٌ|masjid|masjid ; (the) masajid of Allah
+1799|مَسْحٌ|pass|(to) pass (his hand)
+1800|مَسْحُورٌ|bewitched|bewitched ; (you are) bewitched
+1801|مَسْرُورٌ|happy|happily ; happy
+1802|مَسْغَبَةٌ|severe hunger|severe hunger
+1803|مَسْفُوحٌ|poured forth|poured forth
+1804|مَسْكَنٌ|dwellings|their dwellings ; the dwellings
+1805|مَسْكَنَةٌ|misery|and the misery ; the poverty
+1806|مَسْنُونٌ|altered|altered
+1807|مَشَّاءٌ|going about|going about
+1808|مَشْأَمَةٌ|left|(of) the left ; (of) the left (hand)
+1809|مَشْحُونٌ|laden|laden
+1810|مَشْرَبٌ|drinking place|their drinking place ; and drinks
+1811|مَشْرِقٌ|east|(the) eastern (parts) ; (is) the east
+1812|مَشْعَر|monument|the Monument
+1813|مَشْهَدٌ|witnessing|(the) witnessing
+1814|مَشْهُودٌ|witnessed|witnessed ; ever witnessed
+1815|مَشْيٌ|pace|your pace
+1816|مَصْنَعٌ|strongholds|strongholds
+1817|مَصِيرٌ|destination|(is) the destination ; (is) the final return
+1818|مَصْرُوفٌ|averted|(will be) averted
+1819|مَصْرِفٌ|way of escape|a way of escape
+1820|مَضْجَعٌ|bed|their places of death ; the bed
+1821|مَطَرٌ|rain|a rain ; rain
+1822|مَطْلَعٌ|emergence|(the) emergence
+1823|مَطْلُوبٌ|one who is sought|and the one who is sought
+1824|مَطْلِعٌ|rising place|(the) rising place
+1825|مَظْلُومٌ|wrongfully|wrongfully
+1826|مَعَادٌ|place of return|a place of return
+1827|مَعَاذٌ|allah forbid|I seek refuge in Allah ; Allah forbid
+1828|مَعْذِرَةٌ|excuses|his excuses
+1829|مِعْرَاجٌ|stairways|and stairways ; (of) the ways of ascent
+1830|مَعَاشٌ|livelihood|(for) livelihood
+1831|مَعَاشٌ|livelihood|livelihood ; means of living
+1832|مَعِيشَةٌ|life|(is) a life ; (in) its means of livelihood
+1833|مَعِينٌ|flowing|a flowing spring ; a flowing stream
+1834|مَعْدُودٌ|limited|limited
+1835|مَعْذِرَةٌ|absolved|To be absolved ; their excuses
+1836|مَعْرُوفٌ|kindness|in a fair manner ; kind
+1837|مَعْزٌ|goats|the goats
+1838|مَعْزُولٌ|banished|(are) surely banished
+1839|مَعْزِلٌ|apart|apart
+1840|مَعْشَرٌ|o assembly|O assembly ; (and will say), "O assembly
+1841|مَعْلُومٌ|known|known ; well-known
+1842|مَعْمُورٌ|frequented|frequented
+1843|مَغَارَةٌ|caves|caves
+1844|مَغْنَمٌ|spoils of war|(are) booties ; (the) spoils of war
+1845|مَغْرِبٌ|west|and the west ; (the) setting place
+1846|مَغْشِيٌّ|one fainting|(of) one fainting
+1847|مَغْضُوبٌ|earned wrath|those who earned (Your) wrath
+1848|مَغْفِرَةٌ|forgiveness|(is) forgiveness ; forgiveness
+1849|مَغْلُوبٌ|one overpowered|one overpowered
+1850|مَفَازَة|escape|(will) escape ; to their place of salvation
+1851|مَفَرٌّ|escape|(is) the escape
+1852|مَفْتُونٌ|afflicted one|(is) the afflicted one
+1853|مَفْرُوضٌ|appointed|obligatory ; appointed
+1854|مَفْعُولٌ|fulfilled|(always) executed ; destined
+1855|مَقْبَرَةٌ|graves|the graves
+1856|مِقْلاَدٌ|keys|(are the) keys ; (the) keys
+1857|مَقَامٌ|place|(the) standing place ; standing place
+1858|مِقْمَعَةٌ|hooked rods|(are) hooked rods
+1859|مَقِيلٌ|resting-place|resting-place
+1860|مَقْتٌ|hatred|(in) hatred ; hateful
+1861|مَقْدُورٌ|destined|destined
+1862|مَقْسُومٌ|assigned|assigned
+1863|مَقْصُورَةٌ|restrained|restrained
+1864|مَقْطُوعٌ|cut off|would be cut off
+1865|مَقْطُوعَةٌ|limited|limited
+1866|مَقْعَدٌ|positions|(to take) positions ; a seat
+1867|مَكَانٌ|place|a place ; (in) position
+1868|مَكِينٌ|firm|firmly established ; firm
+1869|مَكْتُوبٌ|written|written
+1870|مَكْرٌ|plan|(from the) plan ; a plot
+1871|مَكْرُوهٌ|hateful|hateful
+1872|مَكْظُومٌ|distressed|(was) distressed
+1873|مَكْنُونٌ|well-protected|well-protected ; well protected
+1874|مَلأٌ|chiefs|the chiefs ; and his chiefs
+1875|مَلَكٌ|angels|the Angels ; an Angel
+1876|مَلَكُوتٌ|dominion|the kingdom ; (the) dominion
+1877|مَلُومٌ|blameworthy|blameworthy ; (are) to be blamed
+1878|مَلِكٌ|king|a king ; (as) a king
+1879|مَلِيكٌ|king|a King
+1880|مَلِيٌّ|prolonged time|(for) a prolonged time
+1881|مَلْجَأٌ|refuge|refuge ; a refuge
+1882|مَلْعُونٌ|accursed|Accursed
+1883|مَلَكٌ|will|by our will
+1884|مَمَاتٌ|death|and my dying ; (after) the death
+1885|مَمْدُودٌ|extended|extended ; extensive
+1886|مَمْلُوكٌ|owned|(who is) owned
+1887|مَمْنُونٌ|ending|ending ; never ending
+1888|مَنْزِلٌ|phases|phases
+1889|مَنَاصٌ|escape|(for) escape
+1890|مَنْفَعَةٌ|benefits|(are) benefits ; benefits
+1891|مَنَاكِبُ|paths thereof|(the) paths thereof
+1892|مَنَامٌ|dream|your dream ; (is) your sleep
+1893|مَنْثُورٌ|dispersed|dispersed ; scattered
+1894|مَنْسَك|rite|a rite ; rite(s)
+1895|مَنْسِيٌّ|forgotten|forgotten
+1896|مَنْشُورٌ|unrolled|wide open ; unrolled
+1897|مَنْضُودٌ|layers|(in) layers ; layered
+1898|مَنْطِقٌ|language|(the) language
+1899|مَنْفُوشٌ|fluffed up|fluffed up
+1900|مَنُونٌ|misfortune of time|a misfortune of time
+1901|مَنِيٌّ|semen|semen
+1902|مَنٌّ|manna|(with) reminders of generosity ; a favor
+1903|مَنَّاعٌ|forbidder|Forbidder ; A preventer
+1904|مَهِينٌ|despised|despised ; (is) insignificant
+1905|مَهْجُورٌ|forsaken thing|(as) a forsaken thing
+1906|مَهْدٌ|bed|the cradle ; (as) a bed
+1907|مَهْزُومٌ|defeated|(they will be) defeated
+1908|مَاخِرَةٌ|cleaving|ploughing ; cleaving
+1909|مَوْضِعٌ|places|their places ; their context
+1910|مَوْطِنٌ|regions|regions
+1911|مَوْقِعٌ|setting|by setting
+1912|مَوَالِي|heirs|heirs ; the successors
+1913|مَوَدَّةٌ|love|love ; any affection
+1914|مَوْتٌ|death|[the] death ; the death
+1915|مَوْثِقٌ|promise|a promise ; their promise
+1916|مَوْجٌ|wave|a wave ; the waves
+1917|مَوْزُونٌ|well-balanced|well-balanced
+1918|مَوْضُوعَةٌ|put in place|put in place
+1919|مَوْطِئٌ|step|any step
+1920|مَوْعُودٌ|promised|Promised
+1921|مَوْعِدٌ|appointment|an appointment ; (is) an appointment
+1922|مَوْعِظَةٌ|admonition|an instruction ; and an admonition
+1923|مَوْفُورٌ|ample|ample
+1924|مَوْقُوتٌ|fixed times|(at) fixed times
+1925|مَوْقُوفٌ|made to stand|will be made to stand
+1926|مَوْلًى|protector|a relation ; protector
+1927|مَوْلُودٌ|father|(the) father ; a son
+1928|مَيْتٌ|dead|the dead ; dead
+1929|مَيْتٌ|dead|dead
+1930|مَيْتَةٌ|dead|dead ; (born) dead
+1931|مَيْسَرَةٌ|ease|ease
+1932|مَيْسُورٌ|gentle|gentle
+1933|مَيْسِرٌ|games of chance|and [the] games of chance ; and gambling
+1934|مَيْلٌ|deviation|(into) a deviation ; the inclination
+1935|مَيْمَنَةٌ|right|(of) the right ; (of) the right (hand)
+1936|مُؤَجَّلٌ|determined|determined
+1937|مُؤَذِّنٌ|announcer|an announcer
+1938|مُؤْمِنٌ|believers|believers ; the believers
+1939|مُبَارَكٌ|blessed|blessed
+1940|مُبَارَكَةٌ|blessed|blessed ; blessed 
+1941|مُبَدِّلٌ|change|one (can) alter ; one can change
+1942|مُبَذِّرٌ|spendthrifts|the spendthrifts
+1943|مُبَشِّرٌ|bearer of glad tidings|(as) bearers of glad tidings ; (as) a bearer of glad tidings
+1944|مُبْدِي|disclose|(was to) disclose
+1945|مُبْرِمٌ|determined|(are) determined
+1946|مُبْصِرٌ|giving visibility|giving visibility ; (are) those who see (aright)
+1947|مُبْطِلٌ|falsifiers|the falsifiers ; falsifiers
+1948|مُبْعَدٌ|removed far|(will be) removed far
+1949|مُتَحَيِّزٌ|join|(to) join
+1950|مُتَرَبِّصٌ|waiting|(are) waiting ; (is) waiting
+1951|مُتَشَابِهٌ|similar|similar ; (things) in resemblance
+1952|مُتَشَاكِسٌ|quarreling|quarreling
+1953|مُتَصَدِّعٌ|breaking asunder|breaking asunder
+1954|مُتَصَدِّقٌ|charitable|the charitable ; and the men who give charity
+1955|مُتَطَهِّرٌ|purify themselves|those who purify themselves
+1956|مُتَعَمِّدٌ|intentionally|intentionally
+1957|مُتَفَرِّقٌ|separate|separate
+1958|مُتَقَابِلٌ|facing each other|facing each other
+1959|مُتَكَبِّرٌ|arrogant|(of) the arrogant ; arrogant one
+1960|مُتَكَلِّفٌ|ones who pretend|the ones who pretend
+1961|مُتَنَافِسٌ|aspirers|the aspirers
+1962|مُتَوَسِّمٌ|discern|for those who discern
+1963|مُتَوَفِّي|take you|(will) take you
+1964|مُتَوَكِّلٌ|ones who put trust|the ones who put trust (in Him) ; the ones who put trust
+1965|مُتَّبَعٌ|followed|(will be) followed
+1966|مُتَّخِذٌ|take|those who take ; ones (who are) taking
+1967|مُتَّكَأٌ|banquet|a banquet
+1968|مُتَّكِئٌ|reclining|Reclining ; reclining
+1969|مُتْرَفٌ|indulging in affluence|indulging in affluence ; its wealthy people
+1970|مُثْقَلٌ|burdened|(are) overburdened ; (are) burdened
+1971|مُثْلى|exemplary|the exemplary
+1972|مُجَاهِدٌ|ones who strive|the ones who strive ; and the ones who strive
+1973|مُجِيبٌ|all-responsive|All-Responsive ; (are We as) Responders
+1974|مُجْتَمِعٌ|assemble|assemble
+1975|مُجْرِمٌ|criminals|the criminals ; criminals
+1976|مُحَرَّرٌ|dedicated|dedicated
+1977|مُحَرَّمٌ|forbidden|(was) forbidden ; (anything) forbidden
+1978|مَحْرَمَةٌ|forbidden|(will be) forbidden
+1979|مُحَلِّقٌ|having shaved|having shaved
+1980|مُحِيطٌ|all-encompassing|(is) All-Encompassing ; All-Encompassing
+1981|مُحْتَضَرٌ|attended|attended
+1982|مُحْدَثٌ|new|anew ; new
+1983|مُحْسِنٌ|good-doers|the good-doers ; (is) a good-doer
+1984|مَحْضَرٌ|brought|(will be) brought ; presented
+1985|مَحْكَمَةٌ|precise|absolutely clear  ; precise
+1986|مُخَلَّدٌ|immortal|immortal ; made eternal
+1987|مُخَلَّفٌ|remained behind|those who remained behind ; to those who remained behind
+1988|مُخْتَلِفٌ|various|(of) varying ; (of) various
+1989|مَخْرَجٌ|exit|an exit ; (will be) brought forth
+1990|مُخْرِجٌ|bring forth|(is) the One Who brought forth ; (will) bring forth
+1991|مُخْلِصٌ|sincere|(being) sincere ; (are) sincere
+1992|مُدَّثِّرٌ|covers himself|who covers himself
+1993|مَدْخَلٌ|place to enter|a place to enter
+1994|مُدْبِرٌ|flight|fleeing ; (in) flight
+1995|مَدْخَلٌ|entrance|(to) an entrance ; an entrance
+1996|مُدْرَكٌ|overtaken|(are) surely to be overtaken
+1997|مُذَبْذَبٌ|wavering|Wavering
+1998|مُذْعِنٌ|promptly obedient|(as) promptly obedient
+1999|مُرِيبٌ|suspicious|suspicious ; disquieting
+2000|مُرْتَقِبٌ|watching|(too are) watching
+2001|مُرْدِفٌ|one after another|one after another
+2002|مُرْسَلٌ|messengers|the Messengers ; (is the) one sent
+2003|مَرْسًى|arrival|its appointed time ; and its anchorage
+2004|مُرْسِلٌ|sending|the Senders ; (can) release
+2005|مُرْشِدٌ|guide|a guide
+2006|مِرْضَعَةٌ|nursing mother|nursing mother
+2007|مُزَحْزِحٌ|remove him|(will) remove him
+2008|مُزَّمِّلٌ|wraps himself|who wraps himself
+2009|مَسْبَحٌ|glorify|those who glorify ; glorify (Allah)
+2010|مُسَخَّرٌ|controlled|[the] controlled
+2011|مَسْخَرَةٌ|subjected|subjected ; (are) subjected
+2012|مُسَلَّمَةٌ|paid|(is to be) paid ; sound
+2013|مُسَوِّمٌ|having marks|[the ones] having marks
+2014|مُسِيءٌ|evildoer|the evildoer
+2015|مُسْتَبْصِرٌ|endowed with insight|endowed with insight
+2016|مُسْتَسْلِمٌ|surrender|(will) surrender
+2017|مُسْتَضْعَفٌ|oppressed|oppressed ; (and) deemed weak
+2018|مُسْتَطِيرٌ|widespread|widespread
+2019|مُسْتَعَانٌ|one sought for help|(is) the One sought for help ; the One Whose help is sought
+2020|مُسْتَغْفِرٌ|seek forgiveness|and those who seek forgiveness
+2021|مُسْتَقَرٌّ|dwelling place|(is) a dwelling place ; abode
+2022|مُسْتَقِرٌّ|placed|placed ; (will be a) settlement
+2023|مُسْتَقِيمٌ|straight|straight ; Straight
+2024|مُسْتَقْبِلٌ|approaching|approaching
+2025|مُسْتَقْدِمٌ|preceding ones|the preceding ones
+2026|مُسْتَكْبِرٌ|arrogant|(are) arrogant ; arrogantly
+2027|مُسْتَمِرٌّ|continuing|continuing ; continuous
+2028|مُسْتَمِعٌ|listening|listening ; their listener
+2029|مُسْتَمْسِكٌ|holding fast|(are) holding fast
+2030|مُسْتَوْدَعٌ|resting place|and a resting place ; and its place of storage
+2031|مُسْتَيْقِنٌ|convinced|(are) convinced
+2032|مُسْرِفٌ|transgressor|transgressing ; (is) a transgressor
+2033|مُسْلِمٌ|muslims|Muslims ; (are) submissive
+2034|مَسْمَعٌ|heard|to be heard
+2035|مُسْمِعٌ|make hear|can make hear
+2036|مُسْوَدٌّ|dark|dark
+2037|مُسْوَدَّةٌ|blackened|(will be) blackened
+2038|مُشْتَبِهٌ|resembling|resembling
+2039|مُشْتَرِكٌ|sharers|(will be) sharers ; sharing
+2040|مُشْرِقٌ|sunrise|at sunrise ; (at) sunrise
+2041|مُشْرِكٌ|polytheists|the polytheists ; a polytheistic man
+2042|مُشْفِقٌ|fearful|fearful ; stand in awe
+2043|مُصَدِّقٌ|confirming|confirming ; And confirming
+2044|مُصَلَّى|pray|those who pray  ; those who prayed
+2045|مُصَلَّى|place of prayer|(as) a place of prayer
+2046|مُصَوِّرٌ|fashioner|the Fashioner
+2047|مُصِيبٌ|strike her|will strike her
+2048|مُصِيبَةٌ|disaster|disaster ; a disaster
+2049|مُصْبِحٌ|morning|(in the) morning ; (by) early morning
+2050|مُصْفَرٌّ|turn yellow|turn yellow ; turning yellow
+2051|مُصْلِحٌ|reformers|(are) reformers ; (were) reformers
+2052|مُضَاعَفَةٌ|multiplied|multiplied
+2053|مُضِلٌّ|misleader|one who misleads ; misleader
+2054|مُضِيٌّ|proceed|to proceed
+2055|مُضْطَرٌّ|distressed one|(to) the distressed one
+2056|مُضْغَةٌ|embryonic lump|an embryonic lump ; (into) an embryonic lump
+2057|مُطَاعٌ|one to be obeyed|One to be obeyed
+2058|مطفف|give less|to those who give less
+2059|مُطَهَّرٌ|purified|the purified
+2060|مَطْهَرَةٌ|purified|purified ; pure
+2061|مُطَهِّرٌ|purify you|and purify you
+2062|مُطَّلِعٌ|looking|be looking
+2063|مُطْمَئِنٌّ|content|(is) content ; securely
+2064|مُظْلِمٌ|darkness|the darkness (of) night ; (are) those in darkness
+2065|مُعَذَّبٌ|punished|will be punished ; (are) the ones to be punished
+2066|مُعَذِّبٌ|punish|are to punish ; punish them
+2067|مُعَقِّبٌ|adjuster|adjuster
+2068|مُعَلَّمٌ|one taught|One taught
+2069|مُعَمَّرٌ|aged person|aged person
+2070|مُعَوِّقٌ|hinder|those who hinder
+2071|مُعْتَدٌّ|transgressor|transgressor
+2072|مُعْتَدِي|transgressors|the transgressors ; of the transgressors
+2073|مُعْجِزٌ|escape|escape ; (can) escape
+2074|مَعْرِضٌ|turn away|turn away ; turning away
+2075|مَعْصَرَةٌ|rain clouds|the rain clouds
+2076|مُغَيِّرٌ|one who changes|One Who changes
+2077|مُغْتَسَلٌ|water to bathe|(is a spring of) water to bathe
+2078|مُغْرَمٌ|laden with debt|surely are laden with debt
+2079|مَغْنًى|avert|the one who avails ; avert
+2080|مُفَصَّلٌ|explained in detail|explained in detail
+2081|مُفْسِدٌ|corrupters|spreading corruption ; the corrupters
+2082|مُفْلِحٌ|successful ones|(are) the successful ones ; (are) the successful
+2083|مُقَامٌ|stand|stand ; and resting place
+2084|مُقَدَّسٌ|sacred|the sacred
+2085|مُقَرَّبٌ|brought near|those brought near ; those brought near (to Allah)
+2086|مُقَصِّرٌ|shortened|and shortened
+2087|مُقِيمٌ|lasting|lasting ; enduring
+2088|مُقْتَحِمٌ|bursting|bursting
+2089|مُقْتَرِفٌ|committing|(are) committing
+2090|مُقْتَرِنٌ|accompanying|accompanying (him)
+2091|مُقْتَسِمٌ|divided|those who divided
+2092|مُقْتَصِدٌ|moderate|(some are) moderate ; (is he who is) moderate
+2093|مُقْتِرٌ|poor|the poor
+2094|مُقْرِنٌ|capable|capable
+2095|مُقْسِطٌ|act justly|those who act justly ; the ones who are just
+2096|مُكَاءٌ|whistling|whistling
+2097|مَكْرُمَةٌ|honored|honored
+2098|مُكِبٌّ|fallen|fallen
+2099|مُكْثٌ|intervals|intervals
+2100|مُلَاقِي|meet you|(will) meet you ; and you (will) meet Him
+2101|مَلْقًى|throw|(wish to) throw ; (are) going to throw
+2102|مُلْكٌ|dominion|(is the) dominion ; the dominion
+2103|مُمْسِكٌ|withhold|(can) withhold
+2104|مُمْطِرٌ|bringing us rain|bringing us rain
+2105|مُنَادِي|caller|a caller
+2106|مُنَافِقٌ|hypocrites|the hypocrites ; the hypocrite men
+2107|مُنْبَثٌّ|dispersing|dispersing
+2108|مُنْتَشِرٌ|spreading|spreading
+2109|مُنْتَصِرٌ|helping|(he) supported ; help themselves
+2110|مُنْتَقِمٌ|take retribution|(will) take retribution
+2111|مُنْتَهِي|ones who abstain|(be) the ones who abstain
+2112|مُنْتَهَى|finality|(of) the utmost boundary ; (is) the final goal
+2113|مُنْذِرٌ|warner|a warner ; (are) a warner
+2114|مُنْزَلٌ|sent down|[the ones] sent down ; (at) a landing place
+2115|مَنْزِلٌ|send down|(will) bring down ; (to) send down
+2116|مُنْشَآتٌ|elevated|elevated
+2117|مَنْشَرٌ|raised again|(will be) raised again
+2118|مُنْشِئٌ|producers|(are) the Producers
+2119|مَنْظَرٌ|given respite|given respite ; (to be) reprieved
+2120|مُنْفَطِرٌ|break apart|(will) break apart
+2121|مُنْفِقٌ|spend|and those who spend
+2122|مُنْقَعِرٌ|uprooted|uprooted
+2123|مُنْقَلَبٌ|return|(as) a return ; return
+2124|مُنْقَلِبٌ|return|(will) return ; will surely return
+2125|مُنْكَرٌ|wrong|the wrong ; unknown
+2126|مُنْكِرٌ|rejecters|knew him not ; rejecters
+2127|مَنْزِلٌ|sent down|(is) sent down
+2128|مَنْزِلٌ|send it down|(will) send it down
+2129|مُنِيبٌ|turning|turning ; and oft-returning
+2130|مُنِيرٌ|enlightening|enlightening ; shining
+2131|مُنْهَمِرٌ|pouring down|pouring down
+2132|مُهَاجِرٌ|emigrants|(as) an emigrant ; and the emigrants
+2133|مُهَانٌ|humiliated|humiliated
+2134|مُهَيْمِنٌ|guardian|and a guardian ; the Guardian
+2135|مَهِينٌ|humiliating|humiliating ; the humiliating
+2136|مُهْتَدِي|guided-ones|guided-ones ; (are) rightly guided
+2137|مُهْتَدِي|guided one|(is) the guided one
+2138|مُهْلِكٌ|one to destroy|one who destroys ; (the) one to destroy
+2139|مُوقِنٌ|certain|convinced ; (are now) certain
+2140|مُوهِنٌ|one who makes weak|one who makes weak
+2141|مَوْلًى|turns towards it|turns towards it
+2142|مِثْقَالٌ|weight|(the) weight ; (equal to the) weight
+2143|مِثْلٌ|like|like ; (the) like
+2144|مِحَالٌ|strength|(in) Strength
+2145|مِحْرَابٌ|prayer chamber|the prayer chamber ; [the] prayer chamber
+2146|مُدٌّ|ink|ink
+2147|مِدْرَارٌ|abundance|(in) abundance ; showering abundantly
+2148|مِرَاءٌ|argument|(with) an argument
+2149|مِرَّةٌ|possessor of soundness|Possessor of soundness
+2150|مِرْصَادٌ|lying in wait|lying in wait ; (is) surely Ever Watchful
+2151|مِرْفَقٌ|ease|(in) ease
+2152|مِزَاجٌ|mixture|its mixture ; And its mixture
+2153|مِسَاسٌ|touch|touch
+2154|مِسْكٌ|musk|(will be of) musk
+2155|مِسْكِينٌ|needy|and the needy ; needy people
+2156|مِشْكَاةٌ|niche|(is) like a niche
+2157|مِصْبَاحٌ|lamp|(is) a lamp ; with lamps
+2158|مِصْرٌ|city|(to) a city
+2159|مِقْدَارٌ|measure|(is) in due proportion ; (the) measure of which is
+2160|مِكْيَالٌ|measure|(from) the measure ; measure
+2161|مِلَّةٌ|religion|(the) religion ; religion
+2162|مِلْءٌ|full|full
+2163|مِلْحٌ|salty|salty
+2164|مِنْهَاجٌ|clear way|and a clear way
+2165|مِهَادٌ|resting place|(is) a bed ; a resting place
+2166|مِيثَاقٌ|covenant|a Covenant ; (is) a treaty
+2167|مِيرَاثٌ|heritage|(is the) heritage
+2168|مِيزَانٌ|scales|his scales ; the balance
+2169|مِيعَادٌ|promise|(is the) appointment ; the Promise
+2170|مِيقَاتٌ|appointment|(are) indicators of periods ; (the) set term
+2171|نَائِمٌ|asleep|(were) asleep ; were asleep
+2172|نَادِمٌ|regretful|regretful ; the regretful
+2173|نَادِي|meetings|your meetings ; his associates
+2174|نَارٌ|fire|the Fire ; fire
+2175|إِنْسِيٌّ|people|the people ; the mankind
+2176|نَاصِبَة|exhausted|exhausted
+2177|نَاصِحٌ|adviser|an adviser  ; (will be) sincere
+2178|نَاصِرٌ|helpers|helpers ; helper
+2179|نَاصِيَةٌ|forelock|A forelock ; of its forelock
+2180|نَاظِرٌ|awaiting|for the observers ; awaiting
+2181|نَافِلَةٌ|addition|(as) additional ; (in) addition
+2182|نَاقَة|she-camel|(is) a she-camel ; the she-camel
+2183|نَاقُورٌ|trumpet|the trumpet
+2184|نَاكِبٌ|deviating|surely (are) deviating
+2185|نَاهِي|forbid|and those who forbid
+2186|نَبَاتٌ|vegetation|a rearing ; vegetation
+2187|نَبَأٌ|news|(the) news ; the news
+2188|نَبِيٌّ|prophet|a Prophet ; Prophet
+2189|نَجَاةٌ|salvation|the salvation
+2190|نَجَسٌ|unclean|(are) unclean
+2191|نَجِيٌّ|conversation|(in) private consultation ; (for) conversation
+2192|نَجْمٌ|stars|the stars ; and the stars
+2193|نَجْوَى|private conversation|(are) in private conversation ; secret counsel
+2194|نَحْبٌ|vow|his vow
+2195|نَحْسٌ|misfortune|(of) misfortune
+2196|نَحْلٌ|bee|the bee
+2197|نَخْلَةٌ|date-palms|date-palms ; of date-palms
+2198|نَخْلٌ|date-palms|(of) date-palms ; and date-palms
+2199|نَخْلَةٌ|date-palm|(of) the date-palm
+2200|نَدَامَةٌ|regret|the regret
+2201|نَدِيٌّ|assembly|(in) assembly
+2202|نَذِيرٌ|warner|a warner ; warner
+2203|نَذْرٌ|vow|vow(s) ; the vows
+2204|نَزْغٌ|evil suggestion|[an evil suggestion] ; an evil suggestion
+2205|نَزْلَةٌ|descent|(in) descent
+2206|نَسَبٌ|relationship|(there) will be relationship ; blood relationship
+2207|نَسِيٌّ|forgetful|forgetful
+2208|نَسْلٌ|progeny|and progeny ; his progeny
+2209|نَسْيٌ|oblivion|(in) oblivion
+2210|نَشْأَةٌ|creation|the creation ; (is) the bringing forth
+2211|نَشْرٌ|far and wide|far and wide
+2212|نَصَبٌ|fatigue|fatigue ; any fatigue
+2213|نَصُوحٌ|sincere|sincere
+2214|نَصِيبٌ|portion|a portion ; (is) a share
+2215|نَصِيرٌ|helper|any helper ; helpers
+2216|نَصْرٌ|help|(to) help ; [will] (the) help
+2217|نَضِيدٌ|arranged|arranged
+2218|نَضْرَةٌ|radiance|radiance ; (the) radiance
+2219|نَظَرٌ|look|a look
+2220|نَظِرَةٌ|postponement|then postponement
+2221|نَظْرَةٌ|glance|a glance
+2222|نَعَمٌ|cattle|the cattle ; cattle
+2223|نَعِيمٌ|bliss|(of) Delight ; bliss
+2224|نَعْجَةٌ|ewe|ewe(s) ; ewe
+2225|نَعْمَاءُ|favor|(of) favor
+2226|نَعْمَةٌ|ease|And pleasant things ; (of) the ease
+2227|نَفَادٌ|depletion|depletion
+2228|نَفَرٌ|men|(in) men ; a party
+2229|نَفَقٌ|tunnel|a tunnel
+2230|نَفَقَةٌ|spending|(your) expenditures ; any spending
+2231|نَفِيرٌ|numerous|numerous
+2232|نَفْحَةٌ|whiff|a whiff
+2233|نَفْخَةٌ|blast|a blast
+2234|نَفْسٌ|soul|soul ; a soul
+2235|نَفْعٌ|benefit|any benefit ; (to) benefit
+2236|نَقِيبٌ|leaders|leaders
+2237|نَقِيرٌ|speck on a date seed|(even as much as the) speck on a date seed ; (even as much as) the speck on a date-seed
+2238|نَقْبٌ|penetration|(to do) any penetration
+2239|نَقْصٌ|loss|and loss ; and a deficit
+2240|نَقْضٌ|breaking|their breaking
+2241|نَقْعٌ|dust|dust
+2242|نَكَالٌ|exemplary|a deterrent punishment ; (as) an exemplary (punishment)
+2243|نَكِدٌ|difficulty|(with) difficulty
+2244|نَكِيرٌ|denial|My rejection ; denial
+2245|نُمْرُقٌ|cushions|And cushions
+2246|نَمِيمٌ|malicious gossip|with malicious gossip
+2247|نَمْلَةٌ|ants|(of) the ants ; ants
+2248|نَمْلَةٌ|ant|an ant
+2249|نَهَارٌ|day|and the day ; the day
+2250|نَهْرٌ|rivers|the rivers ; rivers
+2251|نَوَاصِي|forelocks|by the forelocks
+2252|نَوىً|date-seed|and the date-seed
+2253|نَوْمٌ|sleep|sleep ; and the sleep
+2254|نَيْلٌ|infliction|an infliction
+2255|نُبُوَّةٌ|prophethood|and the Prophethood ; the Prophethood
+2256|نُحَاسٌ|smoke|and smoke
+2257|نَذْرٌ|vows|their vows
+2258|نَذْرٌ|warning|warning
+2259|نُزُلٌ|hospitality|(as) a lodging ; (as) hospitality
+2260|نُسُكٌ|sacrifice|sacrifice ; and my rites of sacrifice
+2261|نُشُورٌ|resurrection|resurrection ; Resurrection
+2262|نَشْزٌ|ill-conduct|ill-conduct ; their ill-conduct
+2263|نِصَابٌ|goal|a goal ; the stone altars
+2264|نُصْبٌ|distress|with distress
+2265|نُطْفَةٌ|semen-drop|a semen-drop ; a minute quantity of semen
+2266|نُعَاسٌ|slumber|slumber ; with [the] slumber
+2267|نُفُورٌ|aversion|(in) aversion ; and aversion
+2268|نُكْرٌ|terrible|terrible
+2269|نُكْرٌ|terrible|terrible ; evil
+2270|نُهًى|intelligence|(of) intelligence
+2271|نُورٌ|light|a light ; light
+2272|نُونٌ|dhun-nun|And Dhun-Nun
+2273|نِحْلَةٌ|graciously|graciously
+2274|نِدَاءٌ|call|a call  ; and cries 
+2275|اِمْرَأَةٌ|women|the women ; your women
+2276|نِصْفٌ|half|(is) half ; (is) a half
+2277|نِعْمَةٌ|favor|(the) Favor ; a favor
+2278|نِفَاقٌ|hypocrisy|(with) hypocrisy ; and hypocrisy
+2279|نِكَاحٌ|marriage|(means for) marriage ; (for) marriage
+2280|هَادٌّ|guide|guide ; (is) a guide
+2281|هَادِي|guide|guide ; (as) a Guide
+2282|هَالِكٌ|destroyed|(will be) destroyed ; those who perish
+2283|هَبَاءٌ|dust|(as) dust ; dust particles
+2284|هَجْرٌ|avoidance|an avoidance
+2285|هَدِيَّةٌ|gift|a gift ; in your gift
+2286|هَدٌّ|devastation|(in) devastation
+2287|هَدْيٌ|offering|the sacrificial animal ; (as) an offering
+2288|هَزْلٌ|amusement|(is) for amusement
+2289|هَشِيمٌ|dry stalks|dry stalks ; like dry twig fragments
+2290|هَضِيمٌ|soft|soft
+2291|هَضْمٌ|deprivation|deprivation
+2292|هَلُوعٌ|anxious|anxious 
+2293|هَامِزٌ|suggestions|(the) suggestions
+2294|هَمَّازٌ|defamer|Defamer
+2295|هَمْسٌ|faint sound|a faint sound
+2296|هَوَاءٌ|desire|the desire ; (are) empty
+2297|هَوْنٌ|humbleness|(in) humbleness
+2298|هَيِّنٌ|easy|(is) easy for Me ; easy
+2299|هَيْئَةٌ|form|like the form ; like the shape
+2300|هُدْهُدٌ|hoopoe|the hoopoe
+2301|هُونٌ|humiliating|humiliating ; humiliation
+2302|أهْيَم|thirsty camels|(of) the thirsty camels
+2303|وَابِلٌ|heavy rain|heavy rain
+2304|وَاحِدٌ|one|One ; one
+2305|وَأْدٌ|valley|valley ; (the) valley
+2306|وَادِي|valley|a valley
+2307|وَارِثٌ|inheritors|(the) inheritors ; (are) the inheritors
+2308|وَارِدٌ|come|will come ; their water drawer
+2309|وَاسِعٌ|all-encompassing|(is) All-Encompassing ; All-Encompassing
+2310|وَاعِظٌ|advisors|the advisors
+2311|وَاقِعٌ|fall|(would) fall ; (will) befall
+2312|وَاقِعَةٌ|event|the Event ; the Occurrence
+2313|وَأْلٌ|protector|protector
+2314|وَالِدٌ|parents|a father ; (by) the parents
+2315|وَبَالٌ|consequence|(the bad) consequence ; (the) consequence
+2316|وَبِيلٌ|ruinous|ruinous
+2317|وَتِينٌ|aorta|the aorta
+2318|وَتْرٌ|odd|and the odd
+2319|وَثَاقٌ|bond|the bond ; (as) His binding
+2320|وَجِلٌ|afraid|afraid
+2321|وَجِيهٌ|honored|honored ; honorable
+2322|وَجْهٌ|faces|their faces ; Faces
+2323|وَحِيدٌ|alone|alone
+2324|وَحْدٌ|alone|Alone
+2325|وَحْيٌ|revelation|(by) revelation ; a revelation
+2326|وَدُودٌ|most loving|Most Loving ; the Most Loving
+2327|وَدْقٌ|rain|the rain
+2328|وَرَقٌ|leaves|(the) leaves
+2329|وَرَقَةٌ|leaf|any leaf
+2330|وَرِقٌ|silver coin of yours|with this silver coin of yours
+2331|وَرِيدٌ|jugular vein|(his) jugular vein
+2332|وَرْدَةٌ|rose-colored|rose-colored
+2333|وِزْرٌ|refuge|refuge
+2334|وَزِيرٌ|minister|a minister ; (as) an assistant
+2335|وَزْنٌ|weight|any weight ; And the weighing
+2336|وَسَطٌ|middle way|(of the) middle way
+2337|وَسِيلَةٌ|means|the means ; the means of access
+2338|وَسْوَاسٌ|whisperer|(of) the whisperer
+2339|وَصِيدٌ|at the entrance|at the entrance
+2340|وَصِيلَةٌ|wasilah|a Wasilah
+2341|وَصِيَّةٌ|will|any will ; (should make) a will
+2342|وَصْفٌ|attribution|(for) their attribution
+2343|وَطَرٌ|necessary|necessary (formalities)
+2344|وَطْءٌ|most potent|and most potent
+2345|وَعِيدٌ|threat|My Threat ; the warnings
+2346|وَعْدٌ|promise|(the) Promise ; a promise
+2347|وَفْدٌ|delegation|(as) a delegation
+2348|وَقَارٌ|grandeur|grandeur
+2349|وَقُودٌ|fuel|(the) fuel ; [its] fuel
+2350|وَقْتٌ|time|(of) the time ; its time
+2351|وَقْرٌ|deafness|(is) deafness ; deafness
+2352|وَكِيلٌ|guardian|(as) a Disposer of affairs ; a Guardian
+2353|وَلَدٌ|son|a son ; a child
+2354|وَلِيجَةٌ|intimates|(as) intimates
+2355|وَلِيدٌ|children|(as) a child ; boys
+2356|وَلِيٌّ|protector|protector ; protectors
+2357|وَهَّابٌ|bestower|(are) the Bestower ; the Bestower
+2358|وَهَّاجٌ|burning|burning
+2359|وَهْنٌ|weakness|(in) weakness ; weakness
+2360|وَيْلٌ|woe|Woe ; O woe to us
+2361|وُثْقَى|firm|[the] firm ; the most trustworthy
+2362|وُجْدٌ|means|your means
+2363|وُحُوشٌ|wild beasts|the wild beasts
+2364|وُسْطَى|middle|[the] middle
+2365|وُسْعٌ|capacity|(to) its capacity ; its capacity
+2366|وِجْهَةٌ|direction|(is) a direction 
+2367|وِرْدٌ|thirsty|thirsty ; (is) the place
+2368|وِزْرٌ|burden|burden ; (the) burden
+2369|وِعَاءٌ|bag|(the) bag ; with their bags
+2370|وِفَاقٌ|appropriate|appropriate
+2371|وِقْرٌ|load|a load
+2372|يَابِسٌ|dry|dry
+2373|يَاقُوتٌ|rubies|rubies
+2374|يَبَسٌ|dry|dry
+2375|يَتِيمٌ|orphans|and the orphans ; the orphans
+2376|يَحْمُومٌ|black smoke|black smoke
+2377|يَدٌ|hands|their hands ; before
+2378|يَسِيرٌ|easy|easy ; (is) easy
+2379|يَقِينٌ|certainty|certain ; certainly
+2380|يَقْطِينٌ|gourd|gourd
+2381|يَمِينٌ|oaths|their oaths ; oaths
+2382|يَمٌّ|sea|the sea ; the river
+2383|يَنْبُوعٌ|spring|a spring ; (as) springs
+2384|يَوْمٌ|day|(the) Day ; (on the) Day
+2385|يُسْرٌ|ease|(with) ease ; ease
+2386|يُسْرَى|ease|to the ease ; towards [the] ease

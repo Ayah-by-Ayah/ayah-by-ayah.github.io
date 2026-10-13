@@ -1,0 +1,760 @@
+0|كُلّ|358||every
+1|مَن|221||whoever
+2|أَيّ|214||o you
+3|ذُو|154|ADJ|possessor
+4|مُبِين|119|ACT_PCPL,ADJ|clear
+5|ما|117||what
+6|هُدًى|85||guidance
+7|كَيْف|83||how
+8|بُنَىّ|80||children
+9|آخَر|70|ADJ|another
+10|صالِحَة|62|ACT_PCPL|righteous deeds
+11|سَيِّئَة|58|ADJ,F|evil
+12|رَحْمٰن|57|ADJ|most gracious
+13|جَمِيع|53||all
+14|مُتَّقي|49|ACT_PCPL|righteous
+15|تَحْت|48||underneath it
+16|سَلام|42|ADJ|peace
+17|سُبْحان|41||glory be
+18|ضَلال|38||error
+19|عِند|37||from
+20|حِين|31||time
+21|واحِدَة|31|ADJ,F|one
+22|طَيِّبَة|30|ADJ|good things
+23|مُؤْمِنَة|28|ACT_PCPL,ADJ,F|believing
+24|أَنَّى|28||how
+25|ماذا|26||what
+26|آل|26||people
+27|جَحِيم|26|F|hellfire
+28|امْرَأَت|26|F|wife
+29|طائِفَة|24|ADJ,F|group
+30|ظُلُمَة|23|ADJ|darkness
+31|مَأْوَى|22||abode
+32|كَم|21||how many
+33|مُسَمًّى|21|ADJ,PASS_PCPL|appointed
+34|مُكَذِّب|21|ACT_PCPL|deniers
+35|ضُرّ|19||adversity
+36|تَأْوِيل|17|VN|interpretation
+37|لَدُن|17||yourself
+38|فاحِشَة|17|F|immorality
+39|أَظْلَم|16||more unjust
+40|رِضْوان|13||pleasure
+41|اثْنَيْن|13||two
+42|وَراء|12||behind
+43|هُزُو|11||ridicule
+44|رَءُوف|11|ADJ|full of kindness
+45|كَثِيرَة|11|ADJ|many
+46|سِنِين|11||years
+47|مِائَة|10|F|hundred
+48|سَعْي|10||effort
+49|جِنَّة|10|F|madness
+50|والِدَي|10||parents
+51|ضَلالَة|9|F|error
+52|مَتَى|9||when
+53|عِبادَت|9|F|worship
+54|أَضَلّ|9||more astray
+55|مُخْلَص|9|ADJ,PASS_PCPL|chosen
+56|مُحْصَنَة|8|PASS_PCPL|chaste women
+57|كَبِيرَة|7||great
+58|لَيْلَة|7|F|night
+59|اثْنَتَيْن|7||two
+60|ذِلَّة|7|F|humiliation
+61|اخْتِلاف|7|VN|alternation
+62|كَأَيِّن|7||how many
+63|أَبَوان|7||parents
+64|أَهْدَى|7||better guided
+65|سَوْءَة|7|F|dead body
+66|سِتَّة|7|F|six
+67|رُءْيا|7|F|vision
+68|أَبْقَى|7||more lasting
+69|بَقَرَة|6|F|cow
+70|أُمْنِيَّت|6|F|wishful thinking
+71|مَعْدُودَة|6|ADJ,PASS_PCPL|numbered
+72|خَلاق|6||share
+73|سِيما|6||marks
+74|أُنثَيَيْن|6||two females
+75|مُبَيِّنَة|6|ACT_PCPL,ADJ,F|clear
+76|خِلاف|6||opposite sides
+77|مُنتَظِر|6|ACT_PCPL|ones who wait
+78|خَبِيثَة|6|F|evil
+79|أَيّان|6||when
+80|أَوّاب|6|ADJ|repeatedly turning
+81|مُدَّكِر|6|ACT_PCPL|receive admonition
+82|خالِصَة|5|ACT_PCPL,F|exclusively
+83|أَسْباط|5||tribes
+84|خَصِيم|5||opponent
+85|مَرْضات|5|VN|pleasure
+86|مُشْرِكَة|5|ACT_PCPL,F|polytheist woman
+87|خاوِيَة|5|ACT_PCPL,ADJ,F|fell
+88|مَكانَت|5|F|position
+89|وازِرَة|5|ACT_PCPL,F|bearer of burdens
+90|مُنافِقَة|5|ACT_PCPL|hypocrite women
+91|مُنذَر|5|PASS_PCPL|warned
+92|مِرْيَة|5|F|doubt
+93|مَسْئُول|5|PASS_PCPL|questioned
+94|مُكْرَم|5|ADJ,PASS_PCPL|honored
+95|امْرِئ|5||person
+96|بَلْدَة|5|F|land
+97|مُلاقُوا|4|ACT_PCPL|meet
+98|كَلام|4||words
+99|مَرْء|4||man
+100|مُمْتَري|4|ACT_PCPL|doubters
+101|أَزْكَى|4||purer
+102|أَطْهَر|4||purer
+103|سُنبُلَة|4|F|ears
+104|عَلانِيَة|4|F|openly
+105|هَنِيئ|4||satisfaction
+106|جَهالَة|4|F|ignorance
+107|واسِعَة|4|ACT_PCPL,ADJ,F|spacious
+108|أَسْلِحَت|4||arms
+109|قِيل|4||saying
+110|عَلّام|4|ADJ|all-knower
+111|مُبْلِس|4|ACT_PCPL|despair
+112|صاحِبَة|4|F|wife
+113|أَرْحَم|4||most merciful
+114|فائِز|4|ACT_PCPL|successful ones
+115|مُغْرَق|4|PASS_PCPL|drowned
+116|ظالِمَة|4|ACT_PCPL,F|doing wrong
+117|داخِر|4|ACT_PCPL|humble
+118|كِسَف|4||fragments
+119|إِسْتَبْرَق|4||brocade
+120|مُقْتَدِر|4|ACT_PCPL|able
+121|خَزَنَت|4||keepers
+122|راضِيَة|4|ACT_PCPL,ADJ,F|pleasant
+123|جَهْرَة|3|F|manifestly
+124|عَشْرَة|3|F|ten
+125|مُسْلِمَة|3|ACT_PCPL,ADJ,F|submissive
+126|باغ|3|ACT_PCPL|disobedient
+127|داع|3|ACT_PCPL|caller
+128|مَحِيض|3|PASS_PCPL|menstruation
+129|والِدَة|3|ACT_PCPL,F|mother
+130|بَقِيَّت|3|F|remains
+131|رِئاء|3|VN|seen
+132|إِصْر|3||burden
+133|مُسَوَّمَة|3|ADJ,F,PASS_PCPL|marked
+134|رَبّانِيِّن|3||worshippers of the lord
+135|خالَة|3||maternal aunts
+136|قانِتَة|3|ACT_PCPL,ADJ|obedient
+137|مُخْتال|3|ADJ|proud
+138|سُكارَى|3||intoxicated
+139|حِذْر|3|VN|precautions
+140|خُسْران|3||loss
+141|قاسِيَة|3|ACT_PCPL,F|hard
+142|مَفاتِح|3||keys
+143|دانِيَة|3|ACT_PCPL,ADJ,F|hanging low
+144|بالِغَة|3|ACT_PCPL,ADJ,F|perfect
+145|مَدْحُور|3|PASS_PCPL|expelled
+146|عَشِيرَت|3|F|kindred
+147|أَحَبّ|3|ADJ|more beloved
+148|مُؤْتَفِكَة|3|ACT_PCPL,F|overturned cities
+149|مَغْرَم|3||debt
+150|رادّ|3|ACT_PCPL|repeller
+151|يَئُوس|3||despair
+152|فَتَى|3||boy
+153|واق|3|ACT_PCPL|defender
+154|مُهْطِع|3|ACT_PCPL|racing ahead
+155|مُقَرَّن|3|ADJ,PASS_PCPL|bound
+156|إِيتاء|3|VN|giving
+157|أَقْصا|3|ADJ|farthest end
+158|مُبْصِرَة|3|ACT_PCPL,F|visible
+159|عاجِلَة|3|ACT_PCPL,F|immediate
+160|أُفّ|3||uff
+161|مَسْطُور|3|PASS_PCPL|written
+162|خَسار|3||loss
+163|مُهْتَد|3|ACT_PCPL|guided one
+164|أَذْقان|3||faces
+165|مُهْل|3||murky oil
+166|مُعاجِز|3|ACT_PCPL|cause failure
+167|زانِيَة|3|ACT_PCPL,F|fornicatress
+168|زان|3|ACT_PCPL|fornicator
+169|صافَّة|3|ACT_PCPL|spreading
+170|قَوارِيرا|3||glass
+171|قاصِرَة|3|ACT_PCPL|companions of modest gaze
+172|مَوْتَت|3|F|death
+173|مَرْفُوعَة|3|ADJ,F,PASS_PCPL|raised
+174|حاقَّة|3|ACT_PCPL,F|inevitable reality
+175|مُسْتَهْزِء|2|ACT_PCPL|mockers
+176|حِطَّة|2|F|repentance
+177|حَيْث|2||wherever
+178|رَفَث|2||sexual relations
+179|عَشَرَة|2|F|ten
+180|كامِلَة|2|ACT_PCPL,ADJ,F|all
+181|مَعْلُومَة|2|ADJ|known
+182|جِدال|2||quarrelling
+183|طَلاق|2||divorce
+184|مُطَلَّقَة|2|PASS_PCPL|divorced women
+185|ضِرار|2|VN|hurt
+186|كِسْوَت|2|F|clothing
+187|تَراض|2|VN|mutual consent
+188|مُوسِع|2|ACT_PCPL|wealthy
+189|بَصطَة|2||abundantly
+190|مُبْتَلِي|2|ACT_PCPL|testing
+191|تَثْبِيت|2|VN|strengthen
+192|أَقْسَط|2||more just
+193|حاضِرَة|2|ACT_PCPL,ADJ,F|present
+194|أَمانَت|2|F|trust
+195|أَكْمَه|2||blind
+196|أَعْلَوْن|2||superior
+197|أَمَنَة|2||security
+198|مُحْصِن|2|ACT_PCPL|chaste
+199|مُسافِح|2|ACT_PCPL|lewd
+200|غائِط|2||toilet
+201|ظَلِيل|2|ADJ|thick
+202|مُتَتابِعَيْن|2|ACT_PCPL,ADJ|consecutively
+203|ظالِمِي|2||wronging
+204|كُسالَى|2||lazy
+205|قَلائِد|2||garlands
+206|أَزْلام|2||divining arrows
+207|مَخْمَصَة|2|F|hunger
+208|خائِنَة|2|ACT_PCPL,F|treachery
+209|مَغْلُولَة|2|F,PASS_PCPL|chained
+210|خُفْيَة|2|F|secretly
+211|مَعْرُوشَة|2|ADJ,PASS_PCPL|trellised
+212|هَلُمّ|2||come
+213|مَحْيا|2||life
+214|بَيات|2||night
+215|مُفْتَري|2|ACT_PCPL|inventors
+216|صابِرَة|2|ACT_PCPL,ADJ,F|steadfast
+217|وَلايَت|2|F|protection
+218|بَراءَة|2|F|exemption
+219|إِلّ|2||kinship
+220|مُحِيطَة|2|ACT_PCPL,F|surround
+221|خَوالِف|2||stay behind
+222|أَوْفَى|2|ADJ|more faithful
+223|أَوّاه|2||imploring
+224|صَغِيرَة|2|ADJ,F|small
+225|قِطْع|2||part
+226|غَيابَت|2|F|bottom
+227|حاش|2||forbid
+228|يابِسَة|2|ADJ|dry
+229|كَفَّي|2||hands
+230|سَيْل|2||flood
+231|مَتاب|2||repentance
+232|تَبَع|2||followers
+233|مُصْرِخ|2|ACT_PCPL|helper
+234|ظَلُوم|2||unjust
+235|مُنَجُّو|2|ACT_PCPL|save you
+236|خَلّاق|2||creator
+237|مَثانِي|2||oft-repeated
+238|واصِب|2|ACT_PCPL|perpetual
+239|مُطْمَئِنَّة|2|ACT_PCPL,ADJ,F|content
+240|تَتْبِير|2|VN|destruction
+241|مَشْكُور|2|PASS_PCPL|appreciated
+242|مَنصُور|2|PASS_PCPL|helped
+243|تارَة|2|F|time
+244|باخِع|2|ACT_PCPL|kill
+245|مُلْتَحَد|2|PASS_PCPL|refuge
+246|مُرْتَفَق|2|PASS_PCPL|resting place
+247|مَهْلِك|2||destruction
+248|جِدار|2||wall
+249|خَرْج|2||payment
+250|مَقْضِيّ|2|ADJ,PASS_PCPL|decreed
+251|جِثِيّ|2|VN|bent knees
+252|أَضْعَف|2||weaker
+253|طُوًى|2||tuwa
+254|نَسْف|2||particles
+255|إِقام|2|VN|establishing
+256|عاصِفَة|2|ACT_PCPL|forcefully
+257|مُخَلَّقَة|2|F,PASS_PCPL|formed
+258|سُلالَة|2|F|essence
+259|هَيْهات|2||far-
+260|خامِسَة|2|F|fifth
+261|عُتُوّ|2||pride
+262|مُسَحَّر|2|PASS_PCPL|bewitched
+263|أَفّاك|2|ACT_PCPL|liar
+264|ناظِرَة|2|ACT_PCPL,F|looking
+265|ابْنَت|2|F|daughter
+266|مُفْتَرًى|2|PASS_PCPL|invented
+267|خِيَرَة|2|F|choice
+268|وَيْ|2||
+269|خَمْسِين|2||fifty
+270|مُحْى|2|ACT_PCPL|he give life
+271|مُمَزَّق|2|PASS_PCPL|dispersion
+272|لُغُوب|2||fatigue
+273|زَجْرَة|2|F|cry
+274|ذائِقُوا|2|ACT_PCPL|taste
+275|مالِئ|2|ACT_PCPL|fill
+276|مُلِيم|2|ACT_PCPL|blameworthy
+277|أَيْيد|2||strength
+278|غَسّاق|2||purulence
+279|صالُوا|2|ACT_PCPL|burn
+280|كاشِفَة|2|ACT_PCPL,F|remover
+281|عَمًى|2||blindness
+282|أَعْلام|2||mountains
+283|بَطْشَة|2|F|seizure
+284|أَتْقَى|2||righteous
+285|ذَنُوب|2||portion
+286|مَصْفُوفَة|2|ADJ,F,PASS_PCPL|lined up
+287|تَأْثِيم|2|VN|sin
+288|مُصَيْطِر|2|ACT_PCPL|controller
+289|أَشِر|2|ADJ|insolent
+290|جَلال|2||majesty
+291|مَسْبُوق|2|PASS_PCPL|outrun
+292|مَعْصِيَت|2|F|disobedience
+293|جُنَّة|2|F|cover
+294|أَذَلّ|2||more humble
+295|خُسْر|2||loss
+296|خاطِئَة|2|ACT_PCPL,ADJ,F|sinful
+297|عالِيَة|2|ACT_PCPL,ADJ,F|elevated
+298|عِهْن|2||wool
+299|سَبْح|2||swimming
+300|قُرْءان|2||recitation
+301|مُؤْصَدَة|2|ADJ,F|closed in
+302|إِلاف|2|VN|familiarity
+303|صَيِّب|1||rainstorm
+304|قِثّائ|1||cucumbers
+305|فُوم|1||garlic
+306|عَوان|1||middle aged
+307|شِيَة|1|F|blemish
+308|أَحْرَص|1||most greedy
+309|تِلاوَت|1|F|recitation
+310|مُوفي|1|ACT_PCPL|fulfill
+311|مُوص|1|ACT_PCPL|testator
+312|جَنَف|1||error
+313|حاضِرِي|1||present
+314|قُرُوء|1||monthly periods
+315|كامِلَيْن|1|ACT_PCPL,ADJ|complete
+316|رُكْبان|1||riding
+317|قَلِيلَة|1|ADJ,F|small
+318|سِنَة|1|F|slumber
+319|مَقْبُوضَة|1|ADJ,F,PASS_PCPL|hand
+320|كافِرَة|1|ACT_PCPL,ADJ,F|disbelievers
+321|مُقَنطَرَة|1|ADJ,F,PASS_PCPL|stored up
+322|تُقاة|1|VN|precaution
+323|حَصُور|1||chaste
+324|حِجّ|1||pilgrimage
+325|غُزًّى|1||fighting
+326|سَخَط|1||wrath
+327|حُوب|1||sin
+328|مَرِيئ|1||ease
+329|بِدار|1|VN|hastily
+330|مُضارّ|1|ACT_PCPL|harmful
+331|حَلائِل|1||wives
+332|مُسافِحَة|1|ACT_PCPL|commit immorality
+333|عَنَت|1||committing sin
+334|عابِرِي|1||passing
+335|لَيّ|1|VN|twisting
+336|جِبْت|1||superstition
+337|ثُبَة|1||groups
+338|مُشَيَّدَة|1|F,PASS_PCPL|lofty
+339|مُقِيت|1|ACT_PCPL|keeper
+340|مُراغَم|1|PASS_PCPL|place of refuge
+341|مَيْلَة|1|F|attack
+342|مُعَلَّقَة|1|F,PASS_PCPL|suspended one
+343|دَرْك|1||depths
+344|مُؤْتي|1|ACT_PCPL|ones who give
+345|امْرُؤٌا|1||man
+346|مُحِلِّي|1|ACT_PCPL|permitted
+347|آمّ|1|ACT_PCPL|coming
+348|مُنْخَنِقَة|1|ACT_PCPL,F|strangled
+349|مَوْقُوذَة|1|F,PASS_PCPL|hit fatally
+350|مُتَرَدِّيَة|1|ACT_PCPL,F|fatal fall
+351|نَطِيحَة|1|F|gored by horns
+352|مُتَجانِف|1|ACT_PCPL|inclining
+353|مُكَلِّب|1|ACT_PCPL|ones who train animals to hunt
+354|كَعْبَيْن|1||ankles
+355|أَحِبّاؤ|1||beloved
+356|مُقَدَّسَة|1|ADJ,F,PASS_PCPL|holy
+357|أَكّال|1||devourers
+358|جُرُوح|1||wounds
+359|مَبْسُوطَتان|1|PASS_PCPL|stretched out
+360|مُقْتَصِدَة|1|ACT_PCPL,ADJ,F|moderate
+361|صِدِّيقَة|1|F|truthful
+362|بَحِيرَة|1|F|bahirah
+363|سائِبَة|1|ACT_PCPL,F|saibah
+364|حام|1||hami
+365|عَلَى|1||you
+366|أَوْلَيان|1||former two
+367|حَسْرَت|1|F|
+368|بازِغَة|1|ACT_PCPL,F|rising
+369|مُتَراكِب|1|ACT_PCPL,ADJ|thick clustered
+370|يَنْع|1||ripening
+371|حَمُولَة|1|F|burden
+372|حَوايا|1||entrails
+373|دِراسَت|1|F|study
+374|مَذْءُوم|1|PASS_PCPL|disgraced
+375|سُهُول|1||plains
+376|مَهْما|1||whatever
+377|مُفَصَّلَة|1|ADJ|manifest
+378|مُتَبَّر|1|PASS_PCPL|destroyed
+379|صَعِق|1||unconscious
+380|نُسْخَت|1|F|inscription
+381|مُمِدّ|1|ACT_PCPL|going to reinforce you
+382|مُتَحَرِّف|1|ACT_PCPL|strategy
+383|فِئَت|1|F|forces
+384|تَصْدِيَة|1|F,VN|clapping
+385|بَطَر|1||boastfully
+386|عِشْرُون|1||twenty
+387|مُخْزِي|1|ACT_PCPL|one who disgrace
+388|مُدَّت|1|F|term
+389|نَسِيء|1||postponing
+390|حُسْنَيَيْن|1|ADJ|two best
+391|مُؤَلَّفَة|1|F,PASS_PCPL|ones inclined
+392|مُطَّوِّع|1|ACT_PCPL|ones who give willingly
+393|مُعَذِّر|1|ACT_PCPL|ones who make excuses
+394|أَجْدَر|1||more likely
+395|مُرْجَوْن|1|PASS_PCPL|deferred
+396|مُطَّهِّر|1|ACT_PCPL|ones who purify themselves
+397|هار|1||collapse
+398|مَوْعِدَة|1|F|promise
+399|قَتَر|1||dust
+400|تَذْكِير|1||reminding
+401|غَرَق|1||drowning
+402|مُبَوَّأ|1|PASS_PCPL|settlement
+403|مُفْتَرَيَة|1|PASS_PCPL|fabricated
+404|نُصْح|1||advice
+405|مَرْجُوّ|1|PASS_PCPL|one in whom hope was placed
+406|مَكْذُوب|1|PASS_PCPL|belied
+407|حَنِيذ|1|ADJ|roasted
+408|ظِهْرِيّ|1||backs
+409|مَوْرُود|1|PASS_PCPL|led
+410|مَرْفُود|1|PASS_PCPL|given
+411|تَتْبِيب|1|VN|ruin
+412|مَجْذُوذ|1|PASS_PCPL|interrupted
+413|مُوَفُّو|1|ACT_PCPL|pay them in full
+414|مَنقُوص|1|PASS_PCPL|diminished
+415|هَيْتَ|1||come on
+416|فَتَيان|1||two young men
+417|ناج|1|ACT_PCPL|saved
+418|دَأَب|1||usual
+419|أَمّارَة|1|F|certain enjoiner
+420|مُتَفَرِّقَة|1|ACT_PCPL,F|different
+421|صُواع|1||cup
+422|حَرَض|1||fatally ill
+423|مُزْجاة|1|PASS_PCPL|little value
+424|مُتَجاوِرَة|1||neighboring
+425|مَثُلَة|1||similar punishments
+426|مُتَعال|1|ACT_PCPL|most high
+427|مُسْتَخْف|1|ACT_PCPL|hidden
+428|مُعَقِّبَة|1|ACT_PCPL|successive
+429|فا|1||mouth
+430|رابِي|1|ACT_PCPL|rising
+431|جُفاء|1||scum
+432|أَشَقّ|1|ADJ|harder
+433|دائِبَيْن|1|ACT_PCPL|both constantly pursuing their courses
+434|مُقْنِعِي|1||raised up
+435|مُخْلِف|1|ACT_PCPL|fail
+436|قَطِران|1||tar
+437|رُب|1||perhaps
+438|لَواقِح|1||fertilizing
+439|مُسْتَأْخِر|1|ACT_PCPL|later ones
+440|عِضِين|1||parts
+441|عَلامَة|1||landmarks
+442|مُنكِرَة|1|ACT_PCPL,F|refuse
+443|مُفْرَط|1|PASS_PCPL|abandoned
+444|فَرْث|1||bowels
+445|سَكَر|1||intoxicant
+446|رادِّي|1||hand over
+447|حَفَدَة|1||grandsons
+448|ظَعْن|1||travel
+449|إِقامَت|1|VN|encampment
+450|أَكْنان|1||shelters
+451|تِبْيان|1||clarification
+452|باق|1|ACT_PCPL|remaining
+453|مُفْتَر|1|ACT_PCPL|inventor
+454|آمِنَة|1|ACT_PCPL,F|secure
+455|كِلا|1||both of them
+456|مَحْسُور|1|PASS_PCPL|insolvent
+457|مَحْذُور|1|PASS_PCPL|feared
+458|مَلْعُونَة|1|F,PASS_PCPL|accursed
+459|تَبِيع|1||avenger
+460|دُلُوك|1|VN|at the decline
+461|شاكِلَت|1|F|manner
+462|قَتُور|1|ADJ|stingy
+463|مَثْبُور|1|PASS_PCPL|destroyed
+464|أَحْصَى|1||best calculated
+465|كِلْتا|1||each
+466|بارِزَة|1|ACT_PCPL,F|leveled plain
+467|مَوْبِق|1||barrier
+468|مُواقِعُو|1|ACT_PCPL|fall in it
+469|مَوْئِل|1||escape
+470|زَكِيَّة|1|F|pure
+471|حَمِئَة|1|ADJ|dark mud
+472|زُبَر|1||sheets
+473|صَدَفَيْن|1||two cliffs
+474|دَكّاء|1||level
+475|امْرَأ|1||evil man
+476|مَرْضِيّ|1|PASS_PCPL|pleasing
+477|بُكِيّ|1||weeping
+478|صِلِيّ|1||burnt
+479|أَزّ|1||incitement
+480|إِدّ|1|ADJ|atrocious
+481|وُدّ|1||affection
+482|رِكْز|1||sound
+483|نَعْلَي|1||shoes
+484|مَآرِب|1||uses
+485|سِيرَت|1|F|state
+486|سُؤْل|1||request
+487|قاض|1|ACT_PCPL|decreeing
+488|لِحْيَت|1|F|beard
+489|صَفْصَف|1|ADJ|plain
+490|أَمْت|1||curve
+491|لاهِيَة|1|ACT_PCPL,F|distracted
+492|مُغاضِب|1|ACT_PCPL|angry
+493|رَغَب|1||hope
+494|رَهَب|1||fear
+495|شاخِصَة|1|ACT_PCPL,F|staring
+496|هامِدَة|1|ACT_PCPL,F|barren
+497|مُكْرِم|1|ACT_PCPL|bestower of honor
+498|باد|1|ACT_PCPL|visitor
+499|تَفَث|1||prescribed duties
+500|مُخْبِت|1|ACT_PCPL|humble ones
+501|مُعْتَرّ|1||needy who ask
+502|مُعَطَّلَة|1|F,PASS_PCPL|abandoned
+503|مَشِيد|1|PASS_PCPL|lofty
+504|مُخْضَرَّة|1|ACT_PCPL,F|green
+505|ناسِكُو|1|ACT_PCPL|perform it
+506|تَتْرا|1|F|succession
+507|مُهْلَك|1|PASS_PCPL|destroyed
+508|وَجِلَة|1|ADJ|fearful
+509|شِقْوَت|1|F|wretchedness
+510|ثَمانِين|1||eighty
+511|غافِلَة|1|ACT_PCPL,ADJ|unaware women
+512|مُبَرَّء|1|PASS_PCPL|innocent
+513|مَسْكُونَة|1|F,PASS_PCPL|inhabited
+514|أَيامَى|1||single
+515|دُرِّيّ|1|ADJ|brilliant
+516|شَرْقِيَّة|1|F|east
+517|غَرْبِيَّة|1|F|west
+518|قِيعَة|1|F|lowland
+519|لُجِّيّ|1|ADJ|deep
+520|سَنا|1||flash
+521|مَعْرُوفَة|1|F,PASS_PCPL|known
+522|مُتَبَرِّجَة|1|ACT_PCPL|displaying
+523|لِواذ|1||under shelter
+524|تَغَيُّظ|1|VN|raging
+525|فُلان|1||one
+526|خِلْفَة|1|F|succession
+527|فَعْلَت|1|VN|deed
+528|غائِظ|1|ACT_PCPL|enraging
+529|حاذِر|1|ACT_PCPL|forewarned
+530|مَرْجُوم|1|PASS_PCPL|stoned
+531|قالي|1|ACT_PCPL|detest
+532|مُخْسِر|1|ACT_PCPL|cause loss
+533|أَعْجَمِين|1||non-arabs
+534|كِتابِي|1||letter
+535|قاطِعَة|1|ACT_PCPL,F|one to decide
+536|مُرْسِلَة|1|ACT_PCPL,F|going to send
+537|مُمَرَّد|1|PASS_PCPL|made smooth
+538|غائِبَة|1|ACT_PCPL,F|hidden
+539|جامِدَة|1|ACT_PCPL,F|firmly fixed
+540|رِعاء|1|VN|shepherds
+541|رَهْب|1||fear
+542|رِدْء|1||helper
+543|مَقْبُوح|1|PASS_PCPL|despised
+544|ثاوِي|1|ACT_PCPL|dweller
+545|مُهْلِكِي|1||one to destroy
+546|لاقِي|1|ACT_PCPL|meet it
+547|أَوْهَن|1||weakest
+548|غَلَب|1||defeat
+549|فِطْرَت|1|F|nature
+550|رِب|1||usury
+551|مُضْعِف|1|ACT_PCPL|get manifold
+552|مُبَشِّرَة|1||bearers of glad tidings
+553|أَنكَر|1||harshest
+554|باطِنَة|1|ACT_PCPL,F|hidden
+555|ناكِسُوا|1|ACT_PCPL|hang
+556|مُحْسِنَة|1|ACT_PCPL|good-doers
+557|صادِقَة|1|ACT_PCPL|truthful women
+558|مُتَصَدِّقَة|1|ACT_PCPL|women who give charity
+559|صائِمَة|1|ACT_PCPL|women who fast
+560|مُسْتَأْنِس|1|ACT_PCPL|seeking to remain
+561|جَلابِيب|1||outer garments
+562|مُرْجِف|1|ACT_PCPL|spread rumors
+563|لَعْن|1||curse
+564|سابِغَة|1||full coats of mail
+565|مِنسَأَت|1|F|staff
+566|خَمْط|1|ADJ|bitter
+567|مِعْشار|1||tenth
+568|فَوْت|1||escape
+569|تَناوُش|1|VN|receiving
+570|مُثْقَلَة|1|F,PASS_PCPL|heavily laden
+571|مُقامَة|1|F,PASS_PCPL|eternity
+572|مُقْمَح|1|PASS_PCPL|heads raised up
+573|صَرِيخ|1||responder to a cry
+574|زاجِرَة|1|ACT_PCPL|drive
+575|تالِيَة|1|ACT_PCPL|recite
+576|دُحُور|1|VN|repelled
+577|بَيْض|1||eggs
+578|شَوْب|1||mixture
+579|مُسْتَبِين|1|ACT_PCPL,ADJ|clear
+580|مُدْحَض|1|PASS_PCPL|losers
+581|صال|1|ACT_PCPL|burn
+582|صافّ|1|ACT_PCPL|stand in rows
+583|ساحَت|1|F|territory
+584|اخْتِلاق|1|VN|fabrication
+585|مَحْشُورَة|1|F,PASS_PCPL|assembled
+586|صافِنَة|1|ACT_PCPL|excellent bred steeds
+587|مُصْطَفَيْن|1|PASS_PCPL|chosen ones
+588|مُفَتَّحَة|1|F,PASS_PCPL|opened
+589|مَبْنِيَّة|1|F,PASS_PCPL|built high
+590|مُمْسِكَة|1|ACT_PCPL|withholders
+591|حَسْرَتَى|1|F|
+592|مَطْوِيَّة|1|PASS_PCPL|folded
+593|تَوْب|1||repentance
+594|تَلاق|1|VN|meeting
+595|مُرْتاب|1|ADJ|doubter
+596|تَباب|1||ruin
+597|نَحِسَة|1|ADJ|misfortune
+598|أَخْزَى|1||more disgracing
+599|مُعْتَب|1|PASS_PCPL|receive favor
+600|داحِضَة|1|ACT_PCPL,F|invalid
+601|مُقْتَدي|1|ACT_PCPL|following
+602|جاثِيَة|1|ACT_PCPL,F|kneeling
+603|مُصَفًّى|1|PASS_PCPL|purified
+604|مُتَقَلَّب|1|PASS_PCPL|movement
+605|ظانّ|1|ACT_PCPL,ADJ|assume
+606|مَعْكُوف|1|PASS_PCPL|prevented
+607|مَعَرَّة|1|F|harm
+608|شَطْء|1||shoot
+609|حُجُرَة|1||private chambers
+610|مَرِيج|1|ADJ|confused
+611|تَبْصِرَة|1|F,VN|giving insight
+612|باسِقَة|1||tall
+613|مُتَلَقِّيان|1|ACT_PCPL|two receivers
+614|مُناد|1|ACT_PCPL|caller
+615|ذَرْو|1||dispersing
+616|حامِلَة|1|ACT_PCPL|carrying
+617|مُقَسِّمَة|1|ACT_PCPL|distributing
+618|حُبُك|1||pathways
+619|مَسْجُور|1|PASS_PCPL|filled
+620|مَوْر|1||shake
+621|دَعّ|1|VN|thrust
+622|مَكِيد|1|PASS_PCPL|plot
+623|كِسْف|1||portion
+624|مَرْكُوم|1|PASS_PCPL|heaped up
+625|قَوْسَيْن|1||two bow-
+626|ثالِثَة|1|F|third
+627|ضِيزَى|1|ADJ,F|unfair
+628|تَسْمِيَة|1|F,VN|name
+629|لَمَم|1||small faults
+630|أَقْنَى|1||suffices
+631|أَطْغَى|1||more rebellious
+632|مُزْدَجَر|1|PASS_PCPL|deterrence
+633|عَسِر|1|ADJ|difficult
+634|مُحْتَظِر|1|ACT_PCPL|fence builder
+635|مُسْتَطَر|1|PASS_PCPL|written down
+636|فان|1|ACT_PCPL|perish
+637|آن|1|ACT_PCPL|heated
+638|دان|1|ACT_PCPL|near
+639|مُدْهامَّتان|1|ACT_PCPL|dark green
+640|نَضّاخَتان|1|ADJ|gushing forth
+641|وَقْعَت|1|F|at its occurrence
+642|خافِضَة|1|ACT_PCPL,F|bringing down
+643|بَسّ|1||crumbling
+644|مَوْضُونَة|1|ADJ,F,PASS_PCPL|decorated
+645|أَبارِيق|1||jugs
+646|مَخْضُود|1|ADJ,PASS_PCPL|thornless
+647|مَسْكُوب|1|PASS_PCPL|poured forth
+648|مَمْنُوعَة|1|F,PASS_PCPL|forbidden
+649|مُزْن|1||rain clouds
+650|مُقْوي|1|ACT_PCPL|wayfarers in the desert
+651|مُدْهِن|1|ACT_PCPL|indifferent
+652|تَصْلِيَة|1|F,VN|burning
+653|مُسْتَخْلَف|1|PASS_PCPL|trustees
+654|مُصَّدِّق|1|ACT_PCPL|men who give charity
+655|مُصَّدِّقَة|1|ACT_PCPL|women who give charity
+656|رِعايَت|1|F,VN|observance
+657|سِتِّين|1||sixty
+658|مانِعَت|1|ACT_PCPL,F|defend them
+659|جَلاء|1||exile
+660|مُحَصَّنَة|1|ADJ,F,PASS_PCPL|fortified
+661|مُهاجِرَة|1||emigrants
+662|مُتِمّ|1|ACT_PCPL|perfect
+663|مُسَنَّدَة|1|ADJ,F,PASS_PCPL|propped up
+664|تَحِلَّة|1|F,VN|dissolution
+665|تائِبَة|1|ADJ|repentant
+666|عابِدَة|1|ADJ|worship
+667|سائِحَة|1|ADJ|fast
+668|ثَيِّبَة|1|ADJ|previously married
+669|حَلّاف|1||habitual swearer
+670|عُتُلّ|1|ADJ|cruel
+671|زَنِيم|1||utterly useless
+672|طاغِيَة|1|ACT_PCPL,F|overpowering
+673|عاتِيَة|1|ACT_PCPL,ADJ,F|violent
+674|واعِيَة|1|ACT_PCPL,ADJ,F|conscious
+675|واهِيَة|1|ACT_PCPL,F|frail
+676|أَرْجائ|1||edges
+677|خافِيَة|1|ACT_PCPL,F|secret
+678|هاؤُم|1||here
+679|مُلاق|1|ACT_PCPL|meet
+680|خالِيَة|1|ACT_PCPL,ADJ,F|past
+681|غِسْلِين|1||discharge of wounds
+682|فَصِيلَت|1|F|nearest kindred
+683|نَزّاعَة|1||remover
+684|مَنُوع|1||withholding
+685|عِزِين|1||separate groups
+686|تَبار|1||destruction
+687|جَدّ|1||majesty
+688|هَرَب|1||flight
+689|صَعَد|1|ADJ|severe
+690|ناشِئَة|1|ACT_PCPL,F|rising
+691|تَبْتِيل|1|VN|devotion
+692|مَهِيل|1|ADJ,PASS_PCPL|pouring down
+693|شِيب|1||gray-haired
+694|رُجْز|1||uncleanliness
+695|صَعُود|1||laborious punishment
+696|لَوّاحَة|1||scorching
+697|خائِض|1|ACT_PCPL|vain talkers
+698|مُسْتَنفِرَة|1|ACT_PCPL,ADJ,F|frightened
+699|قَسْوَرَة|1|F|lion
+700|مُنَشَّرَة|1|ADJ,F,PASS_PCPL|spread out
+701|لَوّامَة|1|ADJ,F|self-accusing
+702|ناضِرَة|1|ACT_PCPL,F|radiant
+703|باسِرَة|1|ACT_PCPL,F|distorted
+704|فاقِرَة|1|ACT_PCPL,F|backbreaking
+705|راق|1|ACT_PCPL|cure
+706|مَساق|1||driving
+707|مُرْسَلَة|1|PASS_PCPL|ones sent forth
+708|ناشِرَة|1|ACT_PCPL|ones that scatter
+709|فارِقَة|1|ACT_PCPL|separate
+710|مُلْقِيَة|1|ACT_PCPL|bring down
+711|كِفات|1|VN|receptacle
+712|شامِخَة|1|ADJ|lofty
+713|جِمالَت|1||camels
+714|مَفاز|1||success
+715|نازِعَة|1|ACT_PCPL|extract
+716|غَرْق|1||violently
+717|ناشِطَة|1|ACT_PCPL|draw out
+718|نَشْط|1||gently
+719|سابِحَة|1|ACT_PCPL|glide
+720|سابِقَة|1|ACT_PCPL|race each other
+721|مُدَبِّرَة|1|ACT_PCPL|arrange
+722|راجِفَة|1|ACT_PCPL,F|quaking one
+723|واجِفَة|1|ACT_PCPL,ADJ,F|palpitate
+724|حافِرَة|1|F|former state
+725|نَخِرَة|1|ADJ|decayed
+726|خاسِرَة|1|ACT_PCPL,ADJ,F|losing
+727|ساهِرَة|1|F|awakened
+728|أَبّ|1||grass
+729|مُسْفِرَة|1|ACT_PCPL,F|bright
+730|مُسْتَبْشِرَة|1|ACT_PCPL,F|rejoicing at good news
+731|مَوْءُدَة|1|F,PASS_PCPL|female infant buried alive
+732|خُنَّس|1||retreating planets
+733|رَحِيق|1||pure wine
+734|رُوَيْد|1||little
+735|أَحْوَى|1|ADJ|dark
+736|عامِلَة|1|ACT_PCPL,ADJ,F|laboring
+737|ناعِمَة|1|ACT_PCPL,F|joyful
+738|لاغِيَة|1|ACT_PCPL,F|vain talk
+739|مَبْثُوثَة|1|ADJ,F,PASS_PCPL|spread out
+740|مُذَكِّر|1|ACT_PCPL|reminder
+741|لَمّ|1|ADJ,VN|altogether
+742|مَرْضِيَّة|1|F,PASS_PCPL|pleasing
+743|شَفَتَيْن|1||two lips
+744|نَجْدَيْن|1||two ways
+745|مَقْرَبَة|1|F|near relationship
+746|مَتْرَبَة|1|F|misery
+747|طَغْوَى|1||transgression
+748|مُنفَكّ|1|ACT_PCPL|abandoned
+749|عادِيَة|1|ACT_PCPL|racers
+750|مُورِيَة|1|ACT_PCPL|producers of sparks
+751|مُغِيرَة|1|ACT_PCPL|chargers
+752|كَنُود|1||ungrateful
+753|مَبْثُوث|1|ADJ,PASS_PCPL|scattered
+754|هاوِيَة|1|ACT_PCPL,F|pit
+755|هُمَزَة|1||slanderer
+756|مُوقَدَة|1|ADJ,F,PASS_PCPL|kindled
+757|مُمَدَّدَة|1|ADJ,F,PASS_PCPL|extended
+758|شانِئ|1|ACT_PCPL|enemy
+759|نَفّاثَة|1||blowers

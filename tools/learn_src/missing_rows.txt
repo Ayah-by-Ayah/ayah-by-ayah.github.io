@@ -1,0 +1,760 @@
+0|-
+1|-
+2|-
+3|ذُو||ذَوُو|possessor of
+4|مُبِينٌ|||clear, manifest
+5|-
+6|هُدًى|هُدَاةٌ||guidance
+7|-
+8|ابْنٌ|أَبْنَاءٌ|بَنُونَ|son
+9|آخَرُ|آخَرُونَ|أُخَرُ|another, other
+10|صَالِحَةٌ|صَالِحَاتٌ||righteous (f.); good deed
+11|سَيِّئَةٌ|سَيِّئَاتٌ||evil deed
+12|رَحْمَنُ|||the Most Gracious
+13|جَمِيعٌ|||all, altogether
+14|مُتَّقٍ|مُتَّقُونَ||God-fearing
+15|-
+16|سَلَامٌ|||peace
+17|سُبْحَانَ|||glory be to
+18|ضَلَالٌ|||error, straying
+19|-
+20|-
+21|وَاحِدَةٌ|||one (f.)
+22|طَيِّبَةٌ|طَيِّبَاتٌ||good, pure (f.)
+23|مُؤْمِنَةٌ|مُؤْمِنَاتٌ||believing woman
+24|-
+25|-
+26|-
+27|جَحِيمٌ|||blazing fire, hellfire
+28|امْرَأَةٌ|نِسَاءٌ|نِسْوَةٌ|woman, wife
+29|طَائِفَةٌ|طَوَائِفُ||group
+30|ظُلُمَاتٌ|||darkness
+31|مَأْوًى|||abode, refuge
+32|-
+33|مُسَمًّى|||appointed, named
+34|مُكَذِّبٌ|مُكَذِّبُونَ||denier
+35|ضُرٌّ|||harm, adversity
+36|تَأْوِيلٌ|||interpretation, final outcome
+37|-
+38|فَاحِشَةٌ|فَوَاحِشُ||indecency, immorality
+39|أَظْلَمُ|||more unjust
+40|رِضْوَانٌ|||pleasure, approval
+41|اثْنَانِ|||two
+42|وَرَاءٌ|||behind, beyond
+43|هُزُوٌ|||mockery, ridicule
+44|رَءُوفٌ|||full of kindness
+45|كَثِيرَةٌ|||many (f.)
+46|سِنِينَ|||years
+47|مِائَةٌ|||hundred
+48|سَعْيٌ|||striving, effort
+49|جِنَّةٌ|||madness
+50|وَالِدٌ|وَالِدُونَ||parent
+51|ضَلَالَةٌ|||misguidance
+52|-
+53|عِبَادَةٌ|||worship
+54|أَضَلُّ|||more astray
+55|مُخْلَصٌ|مُخْلَصُونَ||chosen, sincere one
+56|مُحْصَنَةٌ|مُحْصَنَاتٌ||chaste, protected woman
+57|كَبِيرَةٌ|كَبَائِرُ||great; major sin
+58|لَيْلَةٌ|لَيَالٍ||night
+59|اثْنَتَانِ|||two (f.)
+60|ذِلَّةٌ|||humiliation
+61|اخْتِلَافٌ|||difference, alternation
+62|-
+63|أَبَوَانِ|||two parents
+64|أَهْدَى|||better guided
+65|سَوْءَةٌ|سَوْآتٌ||private part; shame
+66|سِتَّةٌ|||six
+67|رُؤْيَا|||vision, dream
+68|أَبْقَى|||more lasting
+69|بَقَرَةٌ|بَقَرٌ||cow
+70|أُمْنِيَّةٌ|أَمَانِيُّ||wish, wishful thinking
+71|مَعْدُودَةٌ|||numbered, few
+72|خَلَاقٌ|||share, portion
+73|سِيمَا|||mark, sign
+74|اثْنَتَانِ|||two (f.)
+75|مُبَيِّنَةٌ|||clear, manifest (f.)
+76|خِلَافٌ|||opposite sides; opposition
+77|مُنْتَظِرٌ|مُنْتَظِرُونَ||one who waits
+78|خَبِيثَةٌ|||evil, impure (f.)
+79|-
+80|أَوَّابٌ|||repeatedly turning (to God)
+81|مُدَّكِرٌ|||one who takes heed
+82|خَالِصَةٌ|||exclusively, pure (f.)
+83|أَسْبَاطٌ|||tribes
+84|خَصِيمٌ|||adversary, disputant
+85|مَرْضَاةٌ|||approval, pleasure
+86|مُشْرِكَةٌ|مُشْرِكَاتٌ||polytheist woman
+87|خَاوِيَةٌ|||fallen, empty
+88|مَكَانَةٌ|||position, place
+89|وَازِرَةٌ|||bearer of a burden
+90|مُنَافِقَةٌ|مُنَافِقَاتٌ||hypocrite woman
+91|مُنْذَرٌ|مُنْذَرُونَ||one warned
+92|مِرْيَةٌ|||doubt
+93|مَسْؤُولٌ|||one questioned
+94|مُكْرَمٌ|مُكْرَمُونَ||honored one
+95|امْرُؤٌ|||person, man
+96|بَلْدَةٌ|||land, town
+97|مُلَاقٍ|مُلَاقُو||one who meets
+98|كَلَامٌ|||speech, words
+99|مَرْءٌ|||man, person
+100|مُمْتَرٍ|مُمْتَرُونَ||one who doubts
+101|أَزْكَى|||purer
+102|أَطْهَرُ|||purer
+103|سُنْبُلَةٌ|سَنَابِلُ||ear of grain
+104|عَلَانِيَةٌ|||openly
+105|هَنِيءٌ|||wholesome
+106|جَهَالَةٌ|||ignorance
+107|وَاسِعَةٌ|||spacious, vast (f.)
+108|أَسْلِحَةٌ|||weapons
+109|قِيلٌ|||saying, speech
+110|عَلَّامٌ|||all-knowing
+111|مُبْلِسٌ|مُبْلِسُونَ||one in despair
+112|صَاحِبَةٌ|||female companion, wife
+113|أَرْحَمُ|||most merciful
+114|فَائِزٌ|فَائِزُونَ||successful one
+115|مُغْرَقٌ|مُغْرَقُونَ||one drowned
+116|ظَالِمَةٌ|||wrongdoing (f.)
+117|دَاخِرٌ|دَاخِرُونَ||humbled one
+118|كِسْفٌ|كِسَفٌ||fragment, piece
+119|إِسْتَبْرَقٌ|||heavy brocade
+120|مُقْتَدِرٌ|||all-powerful
+121|خَازِنٌ|خَزَنَةٌ||keeper
+122|رَاضِيَةٌ|||pleased, content (f.)
+123|جَهْرَةٌ|||openly
+124|عَشْرَةٌ|||ten
+125|مُسْلِمَةٌ|مُسْلِمَاتٌ||Muslim woman
+126|بَاغٍ|||one who transgresses
+127|دَاعٍ|||caller
+128|مَحِيضٌ|||menstruation
+129|وَالِدَةٌ|||mother
+130|بَقِيَّةٌ|||remnant, what remains
+131|رِئَاءٌ|||showing off
+132|إِصْرٌ|||burden, covenant
+133|مُسَوَّمَةٌ|||marked (f.)
+134|رَبَّانِيٌّ|رَبَّانِيُّونَ||devoted to the Lord
+135|خَالَةٌ|خَالَاتٌ||maternal aunt
+136|قَانِتَةٌ|قَانِتَاتٌ||devoutly obedient woman
+137|مُخْتَالٌ|||arrogant
+138|سَكْرَانُ|سُكَارَى||intoxicated
+139|حِذْرٌ|||precaution
+140|خُسْرَانٌ|||loss
+141|قَاسِيَةٌ|||hard (f.)
+142|مِفْتَاحٌ|مَفَاتِحُ||key
+143|دَانِيَةٌ|||near, hanging low (f.)
+144|بَالِغَةٌ|||far-reaching (f.)
+145|مَدْحُورٌ|||driven away
+146|عَشِيرَةٌ|||kindred, clan
+147|أَحَبُّ|||more beloved
+148|مُؤْتَفِكَةٌ|مُؤْتَفِكَاتٌ||overturned (city)
+149|مَغْرَمٌ|||debt, burden
+150|رَادٌّ|||one who repels
+151|يَئُوسٌ|||despairing
+152|فَتًى|فِتْيَانٌ|فِتْيَةٌ|young man
+153|وَاقٍ|||protector
+154|مُهْطِعٌ|مُهْطِعُونَ||one rushing ahead
+155|مُقَرَّنٌ|||bound together
+156|إِيتَاءٌ|||giving
+157|أَقْصَى|||farthest
+158|مُبْصِرَةٌ|||visible, giving sight
+159|عَاجِلَةٌ|||immediate (this world)
+160|أُفٍّ|||ugh! (expression of disgust)
+161|مَسْطُورٌ|||written
+162|خَسَارٌ|||loss
+163|مُهْتَدٍ|مُهْتَدُونَ||rightly guided one
+164|ذَقَنٌ|أَذْقَانٌ||chin
+165|مُهْلٌ|||molten metal, dregs
+166|مُعَاجِزٌ|مُعَاجِزِينَ||one who tries to frustrate
+167|زَانِيَةٌ|||adulteress
+168|زَانٍ|||adulterer
+169|صَافَّةٌ|صَافَّاتٌ||spreading (wings), ranged
+170|قَارُورَةٌ|قَوَارِيرُ||glass vessel
+171|قَاصِرَةٌ|قَاصِرَاتٌ||one with restrained gaze
+172|مَوْتَةٌ|||death
+173|مَرْفُوعَةٌ|||raised (f.)
+174|حَاقَّةٌ|||inevitable reality
+175|مُسْتَهْزِئٌ|مُسْتَهْزِئُونَ||mocker
+176|حِطَّةٌ|||(prayer for) relief, forgiveness
+177|-
+178|رَفَثٌ|||sexual relations
+179|عَشَرَةٌ|||ten
+180|كَامِلَةٌ|||complete (f.)
+181|مَعْلُومَةٌ|||known (f.)
+182|جِدَالٌ|||disputing
+183|طَلَاقٌ|||divorce
+184|مُطَلَّقَةٌ|مُطَلَّقَاتٌ||divorced woman
+185|ضِرَارٌ|||harm
+186|كِسْوَةٌ|||clothing
+187|تَرَاضٍ|||mutual consent
+188|مُوسِعٌ|||well-off
+189|بَسْطَةٌ|||abundance, stature
+190|مُبْتَلٍ|||one who tests
+191|تَثْبِيتٌ|||strengthening
+192|أَقْسَطُ|||more just
+193|حَاضِرَةٌ|||present (f.)
+194|أَمَانَةٌ|أَمَانَاتٌ||trust
+195|أَكْمَهُ|||born blind
+196|أَعْلَوْنَ|||superior ones
+197|أَمَنَةٌ|||security, calm
+198|مُحْصِنٌ|مُحْصِنِينَ||chaste man
+199|مُسَافِحٌ|مُسَافِحِينَ||fornicator
+200|غَائِطٌ|||low ground; relieving oneself
+201|ظَلِيلٌ|||thick (shade)
+202|مُتَتَابِعٌ|||consecutive
+203|ظَالِمٌ|ظَالِمُونَ||wrongdoer
+204|كَسْلَانُ|كُسَالَى||lazy
+205|قِلَادَةٌ|قَلَائِدُ||garland, collar
+206|زَلَمٌ|أَزْلَامٌ||divining arrow
+207|مَخْمَصَةٌ|||hunger
+208|خَائِنَةٌ|||treachery
+209|مَغْلُولَةٌ|||chained (f.)
+210|خُفْيَةٌ|||secretly
+211|مَعْرُوشَةٌ|||trellised (f.)
+212|-
+213|مَحْيًا|||life
+214|بَيَاتٌ|||by night
+215|مُفْتَرٍ|مُفْتَرُونَ||fabricator
+216|صَابِرَةٌ|صَابِرَاتٌ||patient woman
+217|وَلَايَةٌ|||protection, guardianship
+218|بَرَاءَةٌ|||disassociation
+219|إِلٌّ|||kinship, pledge
+220|مُحِيطَةٌ|||encompassing (f.)
+221|خَالِفَةٌ|خَوَالِفُ||one who stays behind
+222|أَوْفَى|||more faithful
+223|أَوَّاهٌ|||tender-hearted, imploring
+224|صَغِيرَةٌ|صَغَائِرُ||small; minor sin
+225|قِطْعٌ|||part (of the night)
+226|غَيَابَةٌ|||depth (of a well)
+227|-
+228|يَابِسَةٌ|||dry (f.)
+229|كَفٌّ|كَفَّانِ||palm, hand
+230|سَيْلٌ|||flood
+231|مَتَابٌ|||repentance
+232|تَابِعٌ|تَبَعٌ||follower
+233|مُصْرِخٌ|||helper, one who responds to a cry
+234|ظَلُومٌ|||very unjust
+235|مُنَجٍّ|||one who saves
+236|خَلَّاقٌ|||all-creating
+237|مَثَانِي|||oft-repeated
+238|وَاصِبٌ|||constant, perpetual
+239|مُطْمَئِنَّةٌ|||content, at rest (f.)
+240|تَتْبِيرٌ|||utter destruction
+241|مَشْكُورٌ|||appreciated
+242|مَنْصُورٌ|||helped
+243|تَارَةٌ|تَارَاتٌ||time, occasion
+244|بَاخِعٌ|||one who consumes himself
+245|مُلْتَحَدٌ|||refuge
+246|مُرْتَفَقٌ|||resting place
+247|مَهْلِكٌ|||destruction
+248|جِدَارٌ|جُدُرٌ||wall
+249|خَرْجٌ|||payment, tribute
+250|مَقْضِيٌّ|||decreed
+251|جِثِيٌّ|||kneeling
+252|أَضْعَفُ|||weaker
+253|طُوًى|||Ṭuwā (a valley)
+254|نَسْفٌ|||scattering
+255|إِقَامَةٌ|||establishing
+256|عَاصِفَةٌ|||violent (wind)
+257|مُخَلَّقَةٌ|||fully formed
+258|سُلَالَةٌ|||essence, extract
+259|هَيْهَاتَ|||far be it!
+260|خَامِسَةٌ|||fifth (f.)
+261|عُتُوٌّ|||insolence, pride
+262|مُسَحَّرٌ|||bewitched
+263|أَفَّاكٌ|||habitual liar
+264|نَاظِرَةٌ|||looking (f.)
+265|ابْنَةٌ|بَنَاتٌ||daughter
+266|مُفْتَرًى|||fabricated
+267|خِيَرَةٌ|||choice
+268|-
+269|خَمْسُونَ|||fifty
+270|مُحْيٍ|||giver of life
+271|مُمَزَّقٌ|||scattered piece
+272|لُغُوبٌ|||fatigue
+273|زَجْرَةٌ|||single cry, rebuke
+274|ذَائِقٌ|ذَائِقُونَ||one who tastes
+275|مَالِئٌ|مَالِئُونَ||one who fills
+276|مُلِيمٌ|||blameworthy
+277|أَيْدٌ|||strength
+278|غَسَّاقٌ|||dark, foul discharge
+279|صَالٍ|صَالُو||one who burns (in the fire)
+280|كَاشِفَةٌ|||remover
+281|عَمًى|||blindness
+282|عَلَمٌ|أَعْلَامٌ||mountain; landmark
+283|بَطْشَةٌ|||seizing
+284|أَتْقَى|||most God-fearing
+285|ذَنُوبٌ|||share (bucket)
+286|مَصْفُوفَةٌ|||arranged in rows
+287|تَأْثِيمٌ|||accusing of sin
+288|مُصَيْطِرٌ|||controller
+289|أَشِرٌ|||insolent
+290|جَلَالٌ|||majesty
+291|مَسْبُوقٌ|||outstripped
+292|مَعْصِيَةٌ|||disobedience
+293|جُنَّةٌ|||shield, cover
+294|أَذَلُّ|||more abased
+295|خُسْرٌ|||loss
+296|خَاطِئَةٌ|||sinful (f.)
+297|عَالِيَةٌ|||elevated (f.)
+298|عِهْنٌ|||dyed wool
+299|سَبْحٌ|||swimming, activity
+300|قُرْآنٌ|||recitation; the Qurʾān
+301|مُؤْصَدَةٌ|||sealed
+302|إِيلَافٌ|||familiarity, security
+303|صَيِّبٌ|||rainstorm
+304|قِثَّاءٌ|||cucumber
+305|فُومٌ|||garlic
+306|عَوَانٌ|||middle-aged
+307|شِيَةٌ|||blemish
+308|أَحْرَصُ|||most eager
+309|تِلَاوَةٌ|||recitation
+310|مُوفٍ|مُوفُونَ||one who fulfils
+311|مُوصٍ|||one who bequeaths
+312|جَنَفٌ|||deviation, partiality
+313|حَاضِرٌ|حَاضِرِي||one present
+314|قُرْءٌ|قُرُوءٌ||menstrual period
+315|كَامِلَانِ|||complete (dual)
+316|رَاكِبٌ|رُكْبَانٌ||rider
+317|قَلِيلَةٌ|||little, few (f.)
+318|سِنَةٌ|||drowsiness
+319|مَقْبُوضَةٌ|||taken in hand
+320|كَافِرَةٌ|||disbelieving (f.)
+321|مُقَنْطَرَةٌ|||piled up
+322|تُقَاةٌ|||guarding oneself
+323|حَصُورٌ|||one who restrains himself
+324|حِجٌّ|||pilgrimage
+325|غَازٍ|غُزًّى||fighter
+326|سَخَطٌ|||displeasure
+327|حُوبٌ|||grave sin
+328|مَرِيءٌ|||pleasant, wholesome
+329|بِدَارٌ|||haste
+330|مُضَارٌّ|||one who causes harm
+331|حَلِيلَةٌ|حَلَائِلُ||wife
+332|مُسَافِحَةٌ|||fornicatress
+333|عَنَتٌ|||hardship, sin
+334|عَابِرٌ|عَابِرِي||traveller
+335|لَيٌّ|||twisting
+336|جِبْتٌ|||idol, falsehood
+337|ثُبَةٌ|||group, detachment
+338|مُشَيَّدَةٌ|||lofty, built firm
+339|مُقِيتٌ|||sustainer, watcher
+340|مُرَاغَمٌ|||place of refuge
+341|مَيْلَةٌ|||sudden attack
+342|مُعَلَّقَةٌ|||suspended
+343|دَرْكٌ|دَرَكَاتٌ||depth, level
+344|مُؤْتٍ|مُؤْتُونَ||one who gives
+345|امْرُؤٌ|||man
+346|مُحِلٌّ|مُحِلِّي||one who declares lawful
+347|آمٌّ|آمِّينَ||one who heads for
+348|مُنْخَنِقَةٌ|||strangled
+349|مَوْقُوذَةٌ|||beaten to death
+350|مُتَرَدِّيَةٌ|||fallen to death
+351|نَطِيحَةٌ|||gored to death
+352|مُتَجَانِفٌ|||inclining (to sin)
+353|مُكَلِّبٌ|مُكَلِّبِينَ||trainer of hunting dogs
+354|كَعْبٌ|كَعْبَانِ||ankle
+355|حَبِيبٌ|أَحِبَّاءُ||beloved
+356|مُقَدَّسَةٌ|||sacred (f.)
+357|أَكَّالٌ|||great devourer
+358|جُرْحٌ|جُرُوحٌ||wound
+359|مَبْسُوطَةٌ|||outstretched
+360|مُقْتَصِدَةٌ|||moderate (f.)
+361|صِدِّيقَةٌ|||truthful woman
+362|بَحِيرَةٌ|||baḥīrah (pagan camel)
+363|سَائِبَةٌ|||sāʾibah (pagan camel)
+364|حَامٍ|||ḥām (pagan camel)
+365|-
+366|أَوْلَيَانِ|||the two nearest
+367|حَسْرَةٌ|||regret
+368|بَازِغَةٌ|||rising (f.)
+369|مُتَرَاكِبٌ|||densely layered
+370|يَنْعٌ|||ripening
+371|حَمُولَةٌ|||beast of burden
+372|حَوِيَّةٌ|حَوَايَا||intestine
+373|دِرَاسَةٌ|||study, reading
+374|مَذْؤُومٌ|||disgraced
+375|سَهْلٌ|سُهُولٌ||plain
+376|-
+377|مُفَصَّلَةٌ|||detailed (f.)
+378|مُتَبَّرٌ|||destroyed
+379|صَعِقٌ|||thunderstruck
+380|نُسْخَةٌ|||copy, inscription
+381|مُمِدٌّ|||one who reinforces
+382|مُتَحَرِّفٌ|||one who maneuvers
+383|فِئَةٌ|||group, force
+384|تَصْدِيَةٌ|||clapping
+385|بَطَرٌ|||arrogance
+386|عِشْرُونَ|||twenty
+387|مُخْزٍ|||one who disgraces
+388|مُدَّةٌ|||term, period
+389|نَسِيءٌ|||postponing
+390|حُسْنَيَانِ|||the two best things
+391|مُؤَلَّفَةٌ|||those whose hearts are reconciled
+392|مُطَّوِّعٌ|مُطَّوِّعِينَ||volunteer
+393|مُعَذِّرٌ|مُعَذِّرُونَ||one who makes excuses
+394|أَجْدَرُ|||more fitting
+395|مُرْجَى|مُرْجَوْنَ||one whose affair is deferred
+396|مُطَّهِّرٌ|مُطَّهِّرِينَ||one who purifies himself
+397|هَارٍ|||crumbling
+398|مَوْعِدَةٌ|||promise
+399|قَتَرٌ|||dust, gloom
+400|تَذْكِيرٌ|||reminding
+401|غَرَقٌ|||drowning
+402|مُبَوَّأٌ|||settlement
+403|مُفْتَرَيَاتٌ|||fabricated (f. pl.)
+404|نُصْحٌ|||sincere advice
+405|مَرْجُوٌّ|||one in whom hope is placed
+406|مَكْذُوبٌ|||falsified
+407|حَنِيذٌ|||roasted
+408|ظِهْرِيٌّ|||behind one's back
+409|مَوْرُودٌ|||place arrived at
+410|مَرْفُودٌ|||gift given
+411|تَتْبِيبٌ|||ruin
+412|مَجْذُوذٌ|||cut off
+413|مُوَفٍّ|مُوَفُّو||one who pays in full
+414|مَنْقُوصٌ|||diminished
+415|-
+416|فَتَيَانِ|||two young men
+417|نَاجٍ|||one saved
+418|دَأَبٌ|||habit, continuous effort
+419|أَمَّارَةٌ|||inciting (f.)
+420|مُتَفَرِّقَةٌ|||scattered (f.)
+421|صُوَاعٌ|||drinking cup
+422|حَرَضٌ|||worn out by illness
+423|مُزْجَاةٌ|||of little worth
+424|مُتَجَاوِرَةٌ|||adjoining (f.)
+425|مَثُلَةٌ|مَثُلَاتٌ||exemplary punishment
+426|مُتَعَالٍ|||most high
+427|مُسْتَخْفٍ|||one hiding
+428|مُعَقِّبَةٌ|مُعَقِّبَاتٌ||successive (angels)
+429|فَمٌ|||mouth
+430|رَابٍ|||swelling, rising
+431|جُفَاءٌ|||scum, froth
+432|أَشَقُّ|||harder
+433|دَائِبٌ|دَائِبَيْنِ||constantly pursuing
+434|مُقْنِعٌ|||one with raised head
+435|مُخْلِفٌ|||one who breaks
+436|قَطِرَانٌ|||tar
+437|-
+438|لَاقِحٌ|لَوَاقِحُ||fertilizing
+439|مُسْتَأْخِرٌ|مُسْتَأْخِرِينَ||one who lags behind
+440|عِضَةٌ|عِضِينَ||part, fragment
+441|عَلَامَةٌ|||landmark, sign
+442|مُنْكِرَةٌ|||denying (f.)
+443|مُفْرَطٌ|||one left behind
+444|فَرْثٌ|||partly digested food
+445|سَكَرٌ|||intoxicant
+446|رَادٌّ|||one who returns
+447|حَفِيدٌ|حَفَدَةٌ||grandson
+448|ظَعْنٌ|||travelling
+449|إِقَامَةٌ|||staying
+450|كِنٌّ|أَكْنَانٌ||shelter
+451|تِبْيَانٌ|||clear exposition
+452|بَاقٍ|||remaining
+453|مُفْتَرٍ|||fabricator
+454|آمِنَةٌ|||secure (f.)
+455|-
+456|مَحْسُورٌ|||exhausted
+457|مَحْذُورٌ|||feared
+458|مَلْعُونَةٌ|||accursed (f.)
+459|تَبِيعٌ|||defender, one who follows up
+460|دُلُوكٌ|||declining (of the sun)
+461|شَاكِلَةٌ|||manner, way
+462|قَتُورٌ|||miserly
+463|مَثْبُورٌ|||ruined
+464|أَحْصَى|||more precise
+465|-
+466|بَارِزَةٌ|||manifest (f.)
+467|مَوْبِقٌ|||barrier of destruction
+468|مُوَاقِعٌ|||one who falls into
+469|مَوْئِلٌ|||refuge
+470|زَكِيَّةٌ|||pure (f.)
+471|حَمِئَةٌ|||muddy
+472|زُبْرَةٌ|زُبَرٌ||piece (of iron)
+473|صَدَفٌ|||mountain slope
+474|دَكَّاءُ|||leveled
+475|امْرَأٌ|||man
+476|مَرْضِيٌّ|||well-pleasing
+477|بُكِيٌّ|||weeping
+478|صِلِيٌّ|||burning
+479|أَزٌّ|||incitement
+480|إِدٌّ|||monstrous thing
+481|وُدٌّ|||affection
+482|رِكْزٌ|||faint sound
+483|نَعْلٌ|||sandal
+484|مَأْرَبَةٌ|مَآرِبُ||use, need
+485|سِيرَةٌ|||state, way
+486|سُؤْلٌ|||request
+487|قَاضٍ|||decider, judge
+488|لِحْيَةٌ|||beard
+489|صَفْصَفٌ|||level plain
+490|أَمْتٌ|||unevenness
+491|لَاهِيَةٌ|||distracted (f.)
+492|مُغَاضِبٌ|||angry
+493|رَغَبٌ|||longing
+494|رَهَبٌ|||fear
+495|شَاخِصَةٌ|||staring (f.)
+496|هَامِدَةٌ|||barren, lifeless
+497|مُكْرِمٌ|||one who honors
+498|بَادٍ|||desert dweller
+499|تَفَثٌ|||rites, untidiness
+500|مُخْبِتٌ|مُخْبِتِينَ||humble one
+501|مُعْتَرٌّ|||one who asks without begging
+502|مُعَطَّلَةٌ|||abandoned (f.)
+503|مَشِيدٌ|||lofty, plastered
+504|مُخْضَرَّةٌ|||green (f.)
+505|نَاسِكٌ|||worshipper, one who performs rites
+506|تَتْرَى|||in succession
+507|مُهْلَكٌ|||destruction
+508|وَجِلَةٌ|||fearful (f.)
+509|شِقْوَةٌ|||wretchedness
+510|ثَمَانُونَ|||eighty
+511|غَافِلَةٌ|غَافِلَاتٌ||heedless woman
+512|مُبَرَّأٌ|||acquitted
+513|مَسْكُونَةٌ|||inhabited (f.)
+514|أَيِّمٌ|أَيَامَى||unmarried person
+515|دُرِّيٌّ|||brilliant like a pearl
+516|شَرْقِيَّةٌ|||eastern (f.)
+517|غَرْبِيَّةٌ|||western (f.)
+518|قِيعَةٌ|||plain, flat land
+519|لُجِّيٌّ|||deep
+520|سَنًا|||gleam
+521|مَعْرُوفَةٌ|||known, right (f.)
+522|مُتَبَرِّجَةٌ|||one who displays herself
+523|لِوَاذٌ|||slipping away under cover
+524|تَغَيُّظٌ|||raging
+525|-
+526|خِلْفَةٌ|||succession
+527|فَعْلَةٌ|||deed
+528|غَائِظٌ|غَائِظُونَ||one who angers
+529|حَاذِرٌ|حَاذِرُونَ||one on guard
+530|مَرْجُومٌ|مَرْجُومِينَ||stoned
+531|قَالٍ|||one who detests
+532|مُخْسِرٌ|مُخْسِرِينَ||one who causes loss
+533|أَعْجَمُ|أَعْجَمِينَ||non-Arab
+534|كِتَابٌ|||letter, book
+535|قَاطِعَةٌ|||decisive (f.)
+536|مُرْسِلَةٌ|||one who sends (f.)
+537|مُمَرَّدٌ|||smooth, paved
+538|غَائِبَةٌ|||hidden (f.)
+539|جَامِدَةٌ|||solid, motionless (f.)
+540|رَاعٍ|رِعَاءٌ||shepherd
+541|رَهْبٌ|||fear
+542|رِدْءٌ|||support, helper
+543|مَقْبُوحٌ|||despised
+544|ثَاوٍ|||dweller
+545|مُهْلِكٌ|||destroyer
+546|لَاقٍ|||one who meets
+547|أَوْهَنُ|||weakest
+548|غَلَبٌ|||victory
+549|فِطْرَةٌ|||natural disposition
+550|رِبًا|||usury
+551|مُضْعِفٌ|مُضْعِفُونَ||one who multiplies
+552|مُبَشِّرَةٌ|||bearer of glad tidings (f.)
+553|أَنْكَرُ|||harshest
+554|بَاطِنَةٌ|||hidden (f.)
+555|نَاكِسٌ|نَاكِسُو||one who hangs (his head)
+556|مُحْسِنَةٌ|مُحْسِنَاتٌ||doer of good (f.)
+557|صَادِقَةٌ|صَادِقَاتٌ||truthful woman
+558|مُتَصَدِّقَةٌ|مُتَصَدِّقَاتٌ||woman who gives charity
+559|صَائِمَةٌ|صَائِمَاتٌ||fasting woman
+560|مُسْتَأْنِسٌ|||one seeking company
+561|جِلْبَابٌ|جَلَابِيبُ||outer garment
+562|مُرْجِفٌ|مُرْجِفُونَ||rumor-monger
+563|لَعْنٌ|||cursing
+564|سَابِغَةٌ|سَابِغَاتٌ||full coat of mail
+565|مِنْسَأَةٌ|||staff
+566|خَمْطٌ|||bitter fruit
+567|مِعْشَارٌ|||a tenth
+568|فَوْتٌ|||escape
+569|تَنَاوُشٌ|||reaching out
+570|مُثْقَلَةٌ|||heavily burdened (f.)
+571|مُقَامَةٌ|||abode
+572|مُقْمَحٌ|مُقْمَحُونَ||one with head raised
+573|صَرِيخٌ|||one who helps (cry for help)
+574|زَاجِرَةٌ|زَاجِرَاتٌ||one that drives away
+575|تَالِيَةٌ|تَالِيَاتٌ||one that recites
+576|دُحُورٌ|||repelling
+577|بَيْضٌ|||eggs
+578|شَوْبٌ|||mixture
+579|مُسْتَبِينٌ|||clear
+580|مُدْحَضٌ|مُدْحَضِينَ||one defeated
+581|صَالٍ|||one who burns
+582|صَافٌّ|صَافُّونَ||one who stands in ranks
+583|سَاحَةٌ|||courtyard, territory
+584|اخْتِلَاقٌ|||fabrication
+585|مَحْشُورَةٌ|||gathered (f.)
+586|صَافِنَةٌ|صَافِنَاتٌ||standing (steed)
+587|مُصْطَفًى|مُصْطَفَيْنَ||chosen one
+588|مُفَتَّحَةٌ|||opened (f.)
+589|مَبْنِيَّةٌ|||built (f.)
+590|مُمْسِكَةٌ|||one who withholds (f.)
+591|حَسْرَةٌ|||regret
+592|مَطْوِيَّاتٌ|||rolled up
+593|تَوْبٌ|||repentance
+594|تَلَاقٍ|||meeting
+595|مُرْتَابٌ|||doubter
+596|تَبَابٌ|||ruin
+597|نَحِسَةٌ|||ill-omened
+598|أَخْزَى|||more disgraceful
+599|مُعْتَبٌ|مُعْتَبِينَ||one granted favor
+600|دَاحِضَةٌ|||null, void
+601|مُقْتَدٍ|مُقْتَدُونَ||follower
+602|جَاثِيَةٌ|||kneeling (f.)
+603|مُصَفًّى|||purified
+604|مُتَقَلَّبٌ|||movement
+605|ظَانٌّ|ظَانِّينَ||one who thinks
+606|مَعْكُوفٌ|||held back
+607|مَعَرَّةٌ|||harm, blame
+608|شَطْءٌ|||shoot (of a plant)
+609|حُجْرَةٌ|حُجُرَاتٌ||chamber, room
+610|مَرِيجٌ|||confused
+611|تَبْصِرَةٌ|||insight
+612|بَاسِقَةٌ|||tall (f.)
+613|مُتَلَقٍّ|مُتَلَقِّيَانِ||receiver
+614|مُنَادٍ|||caller
+615|ذَرْوٌ|||scattering
+616|حَامِلَةٌ|حَامِلَاتٌ||carrying (f.)
+617|مُقَسِّمَةٌ|مُقَسِّمَاتٌ||distributing (f.)
+618|حَبِيكَةٌ|حُبُكٌ||path, track
+619|مَسْجُورٌ|||swollen, kindled
+620|مَوْرٌ|||shaking
+621|دَعٌّ|||thrusting
+622|مَكِيدٌ|||plotted against
+623|كِسْفٌ|||piece
+624|مَرْكُومٌ|||heaped up
+625|قَوْسٌ|قَوْسَيْنِ||bow
+626|ثَالِثَةٌ|||third (f.)
+627|ضِيزَى|||unfair
+628|تَسْمِيَةٌ|||naming
+629|لَمَمٌ|||minor lapses
+630|أَقْنَى|||gave wealth
+631|أَطْغَى|||more rebellious
+632|مُزْدَجَرٌ|||deterrent
+633|عَسِرٌ|||difficult
+634|مُحْتَظِرٌ|||one who builds an enclosure
+635|مُسْتَطَرٌ|||written down
+636|فَانٍ|||perishing
+637|آنٍ|||boiling hot
+638|دَانٍ|||near
+639|مُدْهَامَّتَانِ|||two dark-green
+640|نَضَّاخَتَانِ|||two gushing
+641|وَقْعَةٌ|||event, occurrence
+642|خَافِضَةٌ|||one that brings down
+643|بَسٌّ|||crumbling
+644|مَوْضُونَةٌ|||interwoven
+645|إِبْرِيقٌ|أَبَارِيقُ||jug
+646|مَخْضُودٌ|||thornless
+647|مَسْكُوبٌ|||poured out
+648|مَمْنُوعَةٌ|||withheld (f.)
+649|مُزْنَةٌ|مُزْنٌ||rain cloud
+650|مُقْوٍ|مُقْوِينَ||desert traveller
+651|مُدْهِنٌ|مُدْهِنُونَ||one who compromises
+652|تَصْلِيَةٌ|||burning
+653|مُسْتَخْلَفٌ|||one made successor
+654|مُصَّدِّقٌ|مُصَّدِّقِينَ||man who gives charity
+655|مُصَّدِّقَةٌ|مُصَّدِّقَاتٌ||woman who gives charity
+656|رِعَايَةٌ|||observance, care
+657|سِتُّونَ|||sixty
+658|مَانِعَةٌ|||one that protects (f.)
+659|جَلَاءٌ|||exile
+660|مُحَصَّنَةٌ|||fortified (f.)
+661|مُهَاجِرَةٌ|مُهَاجِرَاتٌ||emigrating woman
+662|مُتِمٌّ|||one who completes
+663|مُسَنَّدَةٌ|||propped up
+664|تَحِلَّةٌ|||dissolution (of an oath)
+665|تَائِبَةٌ|تَائِبَاتٌ||repentant woman
+666|عَابِدَةٌ|عَابِدَاتٌ||worshipping woman
+667|سَائِحَةٌ|سَائِحَاتٌ||woman who travels/fasts
+668|ثَيِّبٌ|ثَيِّبَاتٌ||previously married woman
+669|حَلَّافٌ|||habitual swearer
+670|عُتُلٌّ|||harsh, cruel
+671|زَنِيمٌ|||ignoble
+672|طَاغِيَةٌ|||overwhelming (f.)
+673|عَاتِيَةٌ|||violent (f.)
+674|وَاعِيَةٌ|||retentive (f.)
+675|وَاهِيَةٌ|||frail (f.)
+676|رَجًا|أَرْجَاءٌ||edge, side
+677|خَافِيَةٌ|||hidden thing
+678|هَاؤُمُ|||here, take!
+679|مُلَاقٍ|||one who meets
+680|خَالِيَةٌ|||past (f.)
+681|غِسْلِينٌ|||pus from washing wounds
+682|فَصِيلَةٌ|||nearest kin
+683|نَزَّاعَةٌ|||one that strips away
+684|مَنُوعٌ|||withholding
+685|عِزَةٌ|عِزِينَ||group
+686|تَبَارٌ|||destruction
+687|جَدٌّ|||majesty
+688|هَرَبٌ|||flight
+689|صَعَدٌ|||severe
+690|نَاشِئَةٌ|||rising (at night)
+691|تَبْتِيلٌ|||devotion
+692|مَهِيلٌ|||poured, loose (sand)
+693|أَشْيَبُ|شِيبٌ||gray-haired
+694|رُجْزٌ|||uncleanliness
+695|صَعُودٌ|||steep ascent
+696|لَوَّاحَةٌ|||scorching
+697|خَائِضٌ|خَائِضِينَ||one who plunges in (idle talk)
+698|مُسْتَنْفِرَةٌ|||frightened (f.)
+699|قَسْوَرَةٌ|||lion; hunter
+700|مُنَشَّرَةٌ|||spread out (f.)
+701|لَوَّامَةٌ|||self-reproaching
+702|نَاضِرَةٌ|||radiant (f.)
+703|بَاسِرَةٌ|||frowning (f.)
+704|فَاقِرَةٌ|||backbreaking calamity
+705|رَاقٍ|||one who heals by charm
+706|مَسَاقٌ|||driving
+707|مُرْسَلَةٌ|مُرْسَلَاتٌ||one sent forth
+708|نَاشِرَةٌ|نَاشِرَاتٌ||one that spreads
+709|فَارِقَةٌ|فَارِقَاتٌ||one that separates
+710|مُلْقِيَةٌ|مُلْقِيَاتٌ||one that conveys
+711|كِفَاتٌ|||receptacle
+712|شَامِخَةٌ|شَامِخَاتٌ||lofty (f.)
+713|جِمَالَةٌ|||camels
+714|مَفَازٌ|||success
+715|نَازِعَةٌ|نَازِعَاتٌ||one that pulls out
+716|غَرْقٌ|||drowning, with force
+717|نَاشِطَةٌ|نَاشِطَاتٌ||one that draws out gently
+718|نَشْطٌ|||gentleness
+719|سَابِحَةٌ|سَابِحَاتٌ||one that glides
+720|سَابِقَةٌ|سَابِقَاتٌ||one that outstrips
+721|مُدَبِّرَةٌ|مُدَبِّرَاتٌ||one that arranges
+722|رَاجِفَةٌ|||quaking one
+723|وَاجِفَةٌ|||trembling (f.)
+724|حَافِرَةٌ|||former state
+725|نَخِرَةٌ|||decayed
+726|خَاسِرَةٌ|||losing (f.)
+727|سَاهِرَةٌ|||open ground
+728|أَبٌّ|||pasture
+729|مُسْفِرَةٌ|||bright (f.)
+730|مُسْتَبْشِرَةٌ|||rejoicing (f.)
+731|مَوْءُودَةٌ|||girl buried alive
+732|خَانِسٌ|خُنَّسٌ||retreating
+733|رَحِيقٌ|||sealed pure wine
+734|رُوَيْدٌ|||gently, a little
+735|أَحْوَى|||dark green
+736|عَامِلَةٌ|||laboring (f.)
+737|نَاعِمَةٌ|||joyful (f.)
+738|لَاغِيَةٌ|||idle talk
+739|مَبْثُوثَةٌ|||scattered (f.)
+740|مُذَكِّرٌ|||one who reminds
+741|لَمٌّ|||wholly
+742|مَرْضِيَّةٌ|||well-pleasing (f.)
+743|شَفَةٌ|شَفَتَانِ||lip
+744|نَجْدٌ|نَجْدَانِ||path
+745|مَقْرَبَةٌ|||kinship
+746|مَتْرَبَةٌ|||destitution
+747|طَغْوَى|||transgression
+748|مُنْفَكٌّ|||one who departs
+749|عَادِيَةٌ|عَادِيَاتٌ||one that runs
+750|مُورِيَةٌ|مُورِيَاتٌ||one that strikes sparks
+751|مُغِيرَةٌ|مُغِيرَاتٌ||one that raids
+752|كَنُودٌ|||ungrateful
+753|مَبْثُوثٌ|||scattered
+754|هَاوِيَةٌ|||abyss
+755|هُمَزَةٌ|||backbiter
+756|مُوقَدَةٌ|||kindled (f.)
+757|مُمَدَّدَةٌ|||extended (f.)
+758|شَانِئٌ|||hater
+759|نَفَّاثَةٌ|نَفَّاثَاتٌ||blower

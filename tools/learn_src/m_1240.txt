@@ -1,0 +1,233 @@
+1240|to claim, to call for|t
+1241|to run away, to flee|i
+1242|to swallow|t
+1243|to lay down, to throw down|t
+1244|to help one another|i
+1245|to turn aside stealthily|i
+1246|to cast lots|i
+1247|to go around, to circulate|i
+1248|to ransom|t
+1249|to hasten|i
+1250|to listen in|t
+1251|to ridicule|t
+1252|to be intoxicated, to be exhausted|t
+1253|to entrust|t
+1254|to break an oath|i
+1255|to climb over (a wall)|t
+1256|to be unjust, to go to excess|i
+1257|to overpower, to prevail|t
+1258|to not be (no longer)|i
+1259|to climb, to ascend|t
+1260|to shine, to be radiant|i
+1261|to shrink with aversion|i
+1262|to shiver, to shudder|i
+1263|to faint, to be struck dead|i
+1264|to wrap, to roll up|t
+1265|to reckon, to take into account|t
+1266|to dry up, to wither|i
+1267|to entrust|t
+1268|to be exultant, to be insolent|i
+1269|to dispute with one another|i
+1270|to be set ablaze|t
+1271|to be dragged|t
+1272|to receive glad tidings|i
+1273|to make speak|t
+1274|to talk idly, to make noise|i
+1275|to cover oneself, to conceal oneself|i
+1276|to assign, to appoint|t
+1277|to become, to come to|i
+1278|to dispute, to doubt|i
+1279|to ordain, to prescribe|t
+1280|to destroy, to ruin|t
+1281|to anger, to provoke|t
+1282|to determine, to decide firmly|t
+1283|to be pleasant, to delight|i
+1284|to distribute, to divide|t
+1285|to recline|i
+1286|to turn away, to be blind|i
+1287|to make clear|t
+1288|to subside, to cease|i
+1289|to meet|t
+1290|to be brought up|t
+1291|to drag by force|t
+1292|to boil|i
+1293|to commit (evil deeds), to acquire|t
+1294|to transcribe, to have copied|t
+1295|to be wearied, to be unable|i
+1296|to overlook, to pass over|t
+1297|to anger, to displease|t
+1298|to make deaf|t
+1299|to make known|t
+1300|to change, to alter|i
+1301|to deprive, to diminish|t
+1302|to press, to pester|t
+1303|to strengthen, to support|t
+1304|to give victory over|t
+1305|to become thick, to grow stout|i
+1306|to be separated|i
+1307|to go ahead, to precede|i
+1308|to respect, to revere|t
+1309|to occupy, to keep busy|t
+1310|to test, to examine|t
+1311|to spy, to pry|t
+1312|to call one another names|i
+1313|to endear|t
+1314|to make hateful|t
+1315|to backbite|t
+1316|to deprive, to diminish|t
+1317|to cause to transgress|t
+1318|to be filled|i
+1319|to avoid, to shun|t
+1320|to explore, to search|i
+1321|to utter, to cast out|t
+1322|to exhort one another|i
+1323|to strike, to smite|t
+1324|to spread out|t
+1325|to sleep at night|i
+1326|to deprive, to diminish|t
+1327|to fabricate (words)|t
+1328|to shake, to sway|i
+1329|to push away, to thrust|t
+1330|to make weep|t
+1331|to draw near|i
+1332|to make laugh|t
+1333|to give little, to withhold|i
+1334|to come down, to hang down|i
+1335|to emit, to discharge|t
+1336|to be repelled, to be rebuked|t
+1337|to take in hand, to undertake|t
+1338|to come upon in the morning|t
+1339|to penetrate, to pass through|t
+1340|to turn to, to finish|i
+1341|to touch (sexually)|t
+1342|to cause loss, to give less|t
+1343|to be crumbled|t
+1344|to plough, to till|t
+1345|to marvel, to jest|i
+1346|to kindle, to strike (fire)|t
+1347|to be shaken violently|t
+1348|to choose|t
+1349|to suffer headache|i
+1350|to innovate, to invent|t
+1351|to seek|t
+1352|to race, to vie|t
+1353|to create, to bring into being|t
+1354|to take a flame, to acquire|t
+1355|to be time, to be due|i
+1356|to rise up|i
+1357|to complain|i
+1358|to make room|i
+1359|to confide in one another|i
+1360|to confide in, to consult privately|t
+1361|to touch one another|i
+1362|to make room|i
+1363|to oppose, to resist|t
+1364|to spur on, to gallop|t
+1365|to take a lesson|i
+1366|to ruin, to demolish|t
+1367|to be hostile to|t
+1368|to invent, to fabricate|t
+1369|to twist, to turn aside|t
+1370|to be self-sufficient, to do without|i
+1371|to be at odds with one another|i
+1372|to distress, to constrain|t
+1373|to part with, to separate from|t
+1374|to menstruate|i
+1375|to make great|t
+1376|to burst, to be distinguished|i
+1377|to call one another|i
+1378|to brand, to mark|t
+1379|to blame one another|i
+1380|to make an exception|i
+1381|to write, to inscribe|t
+1382|to pluck, to harvest|t
+1383|to compromise, to be lenient|i
+1384|to make slip|t
+1385|to retain, to be conscious of|t
+1386|to be crushed, to be levelled|t
+1387|to burn, to roast|t
+1388|to urge, to encourage|t
+1389|to turn one's back|i
+1390|to hoard, to keep within|t
+1391|to be made to see|t
+1392|to hasten|i
+1393|to seek out, to aim for|t
+1394|to devote oneself|i
+1395|to quake|i
+1396|to be easy|i
+1397|to give respite to|t
+1398|to brighten, to become light|i
+1399|to scowl|i
+1400|to let remain|t
+1401|to frown|i
+1402|to think, to reflect|i
+1403|to spread out, to smooth|t
+1404|to be blown (the Trumpet)|t
+1405|to be handed down, to be transmitted|t
+1406|to be wound together|i
+1407|to be dazzled|i
+1408|to move|t
+1409|to strut, to swagger|i
+1410|to be set to a time|t
+1411|to be split open|t
+1412|to make firm|t
+1413|to darken|t
+1414|to spread out|t
+1415|to provide a grave for|t
+1416|to be ungrateful|i
+1417|to attend to, to give attention|i
+1418|to be distracted|i
+1419|to fall scattering|i
+1420|to breathe|i
+1421|to be made to overflow, to be set ablaze|t
+1422|to be set ablaze|t
+1423|to depart, to darken|i
+1424|to be neglected|t
+1425|to be stripped away|t
+1426|to be scattered|i
+1427|to be split|i
+1428|to be overturned|t
+1429|to assemble, to put together|t
+1430|to be rewarded|t
+1431|to cover (as rust)|t
+1432|to wink at one another|i
+1433|to compete, to aspire|i
+1434|to take in full|t
+1435|to become full (of the moon)|i
+1436|to empty oneself, to be void|i
+1437|to envelop, to gather|t
+1438|to return|i
+1439|to give respite to|t
+1440|to make recite|t
+1441|to avoid|t
+1442|to be spread out|t
+1443|to labour, to toil|i
+1444|to nourish, to fatten|t
+1445|to urge one another|i
+1446|to carve out, to cut|t
+1447|to bless with favours|t
+1448|to travel by night, to pass|i
+1449|to bind firmly|t
+1450|to attempt, to rush into|t
+1451|to inspire|t
+1452|to rise up, to be sent forth|i
+1453|to bury|t
+1454|to destroy utterly|t
+1455|to spread out|t
+1456|to fall down, to perish|i
+1457|to blaze|i
+1458|to be kept away|t
+1459|to oppress, to subdue|t
+1460|to be still, to cover with darkness|i
+1461|to be displeased with, to hate|t
+1462|to forsake, to leave|t
+1463|to weigh down, to break|t
+1464|to drag, to seize|t
+1465|to proceed, to come forth|i
+1466|to be made apparent, to be extracted|t
+1467|to penetrate the middle of|t
+1468|to visit|t
+1469|to count, to enumerate|t
+1470|to sacrifice (an animal)|t
+1471|to perish|i
+1472|to spread (darkness), to settle|i

@@ -1,0 +1,200 @@
+200|to pay heed to, to look after|t
+201|to see|t
+202|to profit|i
+203|to return|i
+204|to have mercy on|t
+205|to turn back, to return|t
+206|to provide for|t
+207|to be pleased with|t
+208|to raise|t
+209|to increase|t
+210|to cease|i
+211|to purify|t
+212|to slip|i
+213|to beautify, make attractive|t
+214|to shake violently|t
+215|to ask|t
+216|to glorify|t
+217|to prostrate|i
+218|to ridicule|i
+219|to release, send away|t
+220|to strive, hasten|i
+221|to be foolish|i
+222|to give (someone) drink|t
+223|to dwell, be still|i
+224|to pass, to have gone before|i
+225|to greet with peace, to hand over|t
+226|to hear|t
+227|to fashion, make level|t
+228|to will, to want|t
+229|to sell|t
+230|to drink|t
+231|to be grateful|i
+232|to witness, to testify|t
+233|to be patient|i
+234|to speak the truth, to be truthful|t
+235|to become, to turn into|i
+236|to strike, to set forth (a parable)|t
+237|to go astray|i
+238|to taste, to eat|t
+239|to divorce|t
+240|to purify|t
+241|to wrong, to do wrong|t
+242|to shade|t
+243|to think, to suppose|t
+244|to return|i
+245|to make a covenant with|t
+246|to punish|t
+247|to present, to display|t
+248|to know, to recognize|t
+249|to hint at|t
+250|to resolve, to be determined|t
+251|to be hoped, may it be that|i
+252|to disobey|t
+253|to pardon|t
+254|to understand, to use reason|t
+255|to know|t
+256|to teach|t
+257|to do, to work|t
+258|to take a pledge, to charge|t
+259|to seek refuge|i
+260|to forgive|t
+261|to overcome, to defeat|t
+262|to return, to turn back|i
+263|to open, to decide|t
+264|to make obligatory, to ordain|t
+265|to separate, to make distinct|t
+266|to divide, to separate|t
+267|to become corrupt|i
+268|to disobey, to transgress|i
+269|to separate, to judge between|t
+270|to favour, to prefer|t
+271|to do|t
+272|to fight|t
+273|to say|t
+274|to stand, to rise|i
+275|to hold back, to grasp|t
+276|to kill|t
+277|to be able, to measure out|t
+278|to put forward, to send ahead|t
+279|to become hard|i
+280|to decree, to decide|t
+281|to follow up, to send after|t
+282|to cut off|t
+283|to be about to, to almost|i
+284|to be|i
+285|to magnify, to declare great|t
+286|to write, to prescribe|t
+287|to hide, to conceal|t
+288|to lie|i
+289|to deny, to call false|t
+290|to dislike|t
+291|to earn|t
+292|to clothe|t
+293|to disbelieve|i
+294|to suffice|t
+295|to expiate, to remove (sins)|t
+296|to speak to|t
+297|to confuse, to mix up|t
+298|to stay, to remain|i
+299|to curse|t
+300|to meet, to find|t
+301|to not be|i
+302|to die|i
+303|to let enjoy, to provide for|t
+304|to extend, to prolong|t
+305|to pass|i
+306|to touch|t
+307|to walk|i
+308|to prevent, to forbid|t
+309|to throw away, to cast aside|t
+310|to save, to rescue|t
+311|to vow|t
+312|to send down (in stages)|t
+313|to forget|t
+314|to help, to give victory|t
+315|to look, to wait for|t
+316|to benefit|t
+317|to break, to violate|t
+318|to marry|t
+319|to sanctify|t
+320|to raise up, to set up|t
+321|to be excellent|i
+322|to bring|t
+323|to emigrate|i
+324|to become a Jew, to repent|i
+325|to defeat|t
+326|to fall, to perish|i
+327|to make an appointment with|t
+328|to find|t
+329|to wish, to love|t
+330|to encompass, to be spacious|t
+331|to enjoin, to bequeath|t
+332|to promise|t
+333|to admonish, to advise|t
+334|to pay in full, to fulfil|t
+335|to protect, to shield|t
+336|to turn (away), to turn (to)|t
+337|to burden, to tire|t
+338|to diminish, to cheat|t
+339|to exchange, to change|t
+340|to confound, to strike down|t
+341|to return to one another|i
+342|to change with time, to rot|i
+343|to transgress|i
+344|to learn|t
+345|to gush forth|i
+346|to reflect, to ponder|i
+347|to wish for, to long for|t
+348|to beware|t
+349|to grieve|i
+350|to betray, to deceive|t
+351|to choose, to single out|t
+352|to deceive|t
+353|to leave, to let be|t
+354|to hope, to expect|t
+355|to be rightly guided|i
+356|to desire, to turn away from|i
+357|to bow down|i
+358|to fear, to dread|t
+359|to afflict, to impose upon|t
+360|to grow tired|i
+361|to replace, to exchange|t
+362|to feel shy, to spare|t
+363|to shed|t
+364|to split open|i
+365|to perceive, to be aware|t
+366|to intercede|i
+367|to fast|i
+368|to join, to connect|t
+369|to overlook, to forgive|t
+370|to harm|t
+371|to circumambulate|i
+372|to desire, to hope|t
+373|to be purified, to be clean|i
+374|to wander blindly|i
+375|to accept|t
+376|to approach, to come near|t
+377|to destroy, to blot out|t
+378|to reach, to attain|t
+379|to abrogate, to abolish|t
+380|to shout (at livestock)|i
+381|to go down, to descend|i
+382|to take to task, to seize|t
+383|to discharge, to deliver|t
+384|to swear (an oath)|i
+385|to reveal, to make apparent|t
+386|to nullify, to prove false|t
+387|to guard, to safeguard|t
+388|to distort, to alter|t
+389|to deceive|t
+390|to slaughter|t
+391|to suckle, to nurse|t
+392|to harm, to injure|t
+393|to multiply, to double|t
+394|to be able to bear|t
+395|to grant a long life|t
+396|to burden, to charge|t
+397|to dictate|t
+398|to give respite|t
+399|to be certain|i

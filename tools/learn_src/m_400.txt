@@ -1,0 +1,200 @@
+400|to reward, to repay|t
+401|to perceive, to sense|t
+402|to disgrace|t
+403|to cause to deviate|t
+404|to persist, to insist|i
+405|to become, to enter the morning|i
+406|to enrich, to avail|t
+407|to unite, to bring together|t
+408|to aid, to reinforce|t
+409|to give more time, to prolong|t
+410|to save, to rescue|t
+411|to worry, to concern|t
+412|to reveal, to inspire|t
+413|to admit, to cause to enter|t
+414|to seek refuge for|t
+415|to be harmed, to be hurt|t
+416|to turn white|i
+417|to choose, to select|t
+418|to dispute, to quarrel|i
+419|to increase|i
+420|to cause to slip|t
+421|to submit, to give in|i
+422|to turn black|i
+423|to hold fast|i
+424|to fabricate, to invent|t
+425|to meet|i
+426|to disperse, to break away|i
+427|to be miserly|i
+428|to appear, to become manifest|i
+429|to transgress, to oppress|i
+430|to settle, to lodge|t
+431|to kill, to perceive|t
+432|to store, to hoard|t
+433|to rise high, to come up|i
+434|to be divided|i
+435|to dispute with one another|i
+436|to rely on, to put trust in|i
+437|to cure, to heal|t
+438|to humble, to humiliate|t
+439|to go up, to flee uphill|i
+440|to honour, to make mighty|t
+441|to gather, to collect|t
+442|to last, to continue|i
+443|to study|t
+444|to repel, to defend|t
+445|to taste|t
+446|to be steadfast, to remain at a post|i
+447|to be drawn away|t
+448|to be bad, to grieve|i
+449|to travel, to walk|i
+450|to name|t
+451|to consult|t
+452|to be patient together, to persevere|i
+453|to turn away, to hinder|t
+454|to turn away, to avert|t
+455|to pray, to bless|i
+456|to form, to shape|t
+457|to be weak|i
+458|to bite|t
+459|to be in distress, to suffer hardship|i
+460|to go early in the morning|i
+461|to deceive|t
+462|to cover, to overwhelm|t
+463|to defraud, to take unlawfully|t
+464|to escape, to pass by|t
+465|to succeed, to triumph|i
+466|to rejoice|i
+467|to lose heart, to fail|i
+468|to sit, to lie in wait|i
+469|to put in the care of|t
+470|to humiliate, to subdue|t
+471|to be gentle, to be soft|i
+472|to plot, to scheme|i
+473|to bestow a favour, to be gracious|i
+474|to call, to cry out|t
+475|to be a hypocrite|i
+476|to inform|t
+477|to supplicate earnestly, to invoke a curse|i
+478|to pull out, to remove|t
+479|to blow|i
+480|to forbid|t
+481|to alternate, to rotate|t
+482|to intend, to be determined|t
+483|to put down, to place|t
+484|to grant, to give|t
+485|to become weak|i
+486|to spare, to be remiss|t
+487|to forsake, to abandon|t
+488|to be hidden|i
+489|to repel, to ward off|t
+490|to rejoice at good news|i
+491|to be devoutly obedient|i
+492|to take charge of, to guarantee|t
+493|to twist, to distort|t
+494|to join, to catch up with|t
+495|to separate, to distinguish|t
+496|to test, to try|t
+497|to warn|t
+498|to be praised|i
+499|to frighten, to threaten|t
+500|to hasten, to vie|i
+501|to be encircled, to be made a collar|t
+502|to inform, to disclose|t
+503|to purify, to refine|t
+504|to cause to enter|t
+505|to perceive, to sense|t
+506|to protect, to guard, to marry|t
+507|to bring, to present|t
+508|to delay, to postpone|t
+509|to be sincere, to purify|t
+510|to overtake, to reach|t
+511|to spread (news), to broadcast|t
+512|to take away, to remove|t
+513|to nurse, to suckle|t
+514|to cast back, to overturn|t
+515|to prepare|t
+516|to turn away|i
+517|to reach, to go out to|i
+518|to enjoin, to bequeath|t
+519|to cast into, to roast|t
+520|to avoid, to keep away from|t
+521|to bear, to carry|t
+522|to gain mastery over|t
+523|to enjoy|i
+524|to disdain, to be too proud|i
+525|to wipe|t
+526|to leave, to forsake|t
+527|to plan by night|t
+528|to know, to be aware|t
+529|to be unjust, to be burdened|i
+530|to wash oneself, to bathe|i
+531|to be heedless, to neglect|i
+532|to exceed, to go to extremes|i
+533|to shorten|t
+534|to be levelled|t
+535|to act justly|i
+536|to argue, to debate|t
+537|to be eager, to desire|i
+538|to urge, to encourage|t
+539|to envy|t
+540|to be good, to be excellent|i
+541|to constrain, to confine|t
+542|to guard, to preserve|t
+543|to swear|i
+544|to greet|t
+545|to plunge into, to wade into|i
+546|to lose|i
+547|to throw, to cast, to accuse|t
+548|to claim|t
+549|to give power over|t
+550|to oppose, to be hostile to|t
+551|to arise (a dispute)|i
+552|to be made to appear similar|t
+553|to crucify|t
+554|to be pleasant, to be good|i
+555|to seal|t
+556|to obliterate, to efface|t
+557|to live with, to associate with|t
+558|to be just, to balance|i
+559|to tie, to pledge|t
+560|to be angry|i
+561|to put to trial, to tempt|t
+562|to relate, to narrate|t
+563|to be little, to be few|i
+564|to be great, to be hard|i
+565|to be many|i
+566|to restrain, to hold back|t
+567|to touch|t
+568|to possess, to own|t
+569|to be cooked, to be roasted|i
+570|to go forth|i
+571|to perish, to die|i
+572|to inherit|t
+573|to fall, to occur|i
+574|to suffer pain|i
+575|to go for judgment|i
+576|to ponder|t
+577|to question one another|i
+578|to hide oneself|i
+579|to abstain, to refrain|i
+580|to ask for a ruling|t
+581|to deduce, to infer|t
+582|to burn, to enter the fire|i
+583|to transgress, to pass beyond|i
+584|to understand|t
+585|to incline, to lean|i
+586|to cut off|t
+587|to lag behind, to hold back|i
+588|to make (someone) a judge|t
+589|to show off|t
+590|to be obeyed|t
+591|to change|t
+592|to give a ruling|t
+593|to arouse desires in, to wish|t
+594|to enjoin, to instruct|t
+595|to grant success, to reconcile|t
+596|to feed|t
+597|to extinguish|t
+598|to incite, to set upon|t
+599|to swear|i

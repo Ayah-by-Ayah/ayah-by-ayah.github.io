@@ -1,0 +1,200 @@
+800|to pile up, to heap|t
+801|to confirm, to establish|t
+802|to establish as true, to vindicate|t
+803|to frustrate, to escape|t
+804|to make few|t
+805|to found, to lay a foundation|t
+806|to make manifest, to make prevail|t
+807|to give|t
+808|to cause as a consequence, to requite|t
+809|to hasten, to ride swiftly|i
+810|to cling heavily, to be sluggish|i
+811|to ask permission|t
+812|to seek protection|t
+813|to prefer|t
+814|to be upright, to stand firm|i
+815|to acknowledge, to confess|t
+816|to be harsh, to be stern|i
+817|to turn away, to depart|i
+818|to collapse|i
+819|to pledge allegiance to|t
+820|to be far, to be distant|i
+821|to weep|i
+822|to build|t
+823|to be branded|t
+824|to make slow, to discourage|t
+825|to oppose, to resist|t
+826|to mix|t
+827|to leave, to let go|t
+828|to be left behind|t
+829|to be spacious|i
+830|to swerve, to deviate|i
+831|to perish, to vanish|i
+832|to travel about, to roam|i
+833|to be narrow, to be constrained|i
+834|to laugh|i
+835|to defame, to pierce|t
+836|to support, to back|t
+837|to maintain, to inhabit|t
+838|to hoard, to treasure|t
+839|to persist in rebellion|i
+840|to stay behind|i
+841|to waver|i
+842|to gain understanding|i
+843|to be unruly, to run wild|i
+844|to adopt a religion, to acknowledge|t
+845|to regard, to respect|t
+846|to heal|t
+847|to tread, to step on|t
+848|to make excuses|i
+849|to enrage, to anger|t
+850|to be near, to be a guardian|t
+851|to criticise, to defame|t
+852|to grant protection|t
+853|to be heated|t
+854|to please, to satisfy|t
+855|to imitate|t
+856|to decrease, to lessen|i
+857|to adjust, to agree with|t
+858|to resolve, to agree upon|t
+859|to make (someone) know|t
+860|to send ahead, to do previously|t
+861|to bring back, to repeat|t
+862|to compel, to force|t
+863|to be adorned|i
+864|to turn aside, to turn away|t
+865|to separate, to set apart|t
+866|to cause to travel|t
+867|to harden, to bind firmly|t
+868|to hasten, to hurry|t
+869|to measure out, to determine|t
+870|to settle, to take up residence|t
+871|to know one another|i
+872|to cover, to overtake|t
+873|to ask for information|t
+874|to escape, to be absent|i
+875|to arrange, to manage|t
+876|to be humble, to submit humbly|i
+877|to travel by night|t
+878|to cease, to withhold|i
+879|to do much, to increase|t
+880|to make adhere, to impose|t
+881|to turn in repentance|i
+882|to take refuge, to retire to|i
+883|to feel (fear)|t
+884|to lead (to water), to bring to|t
+885|to be given luxury|t
+886|to make firm, to perfect|t
+887|to swallow|t
+888|to watch, to wait for|t
+889|to settle, to make (people) inhabit|t
+890|to cover oneself|i
+891|to befall, to seize|t
+892|to be distressed|i
+893|to incline, to rely on|i
+894|to look down on, to despise|t
+895|to address|t
+896|to stone|t
+897|to ride, to embark|t
+898|to be happy, to be fortunate|i
+899|to be wretched|i
+900|to transgress, to exceed bounds|i
+901|to be made obscure|t
+902|to subside, to sink|i
+903|to boil over, to gush forth|i
+904|to go before, to precede|t
+905|to find strange, to be unfamiliar with|t
+906|to give birth, to beget|t
+907|to speak|i
+908|to fold, to bend|t
+909|to turn around, to look back|i
+910|to oppose, to differ from|t
+911|to rush|i
+912|to prefer|t
+913|to cease, to leave|i
+914|to choose exclusively|t
+915|to complain|i
+916|to incline (towards)|i
+917|to approach, to turn toward|i
+918|to esteem greatly|t
+919|to honour, to be generous to|t
+920|to join, to unite|t
+921|to remember|t
+922|to bring out, to extract|t
+923|to refrain, to keep oneself safe|i
+924|to lose hope, to despair|i
+925|to cast, to throw|t
+926|to take by measure|t
+927|to pick up|t
+928|to clear, to absolve|t
+929|to search out, to inquire|t
+930|to sow, to plant|t
+931|to interpret, to cross over|t
+932|to cease|i
+933|to miss, to lose|t
+934|to consider feeble-minded|t
+935|to furnish, to equip|t
+936|to reap, to harvest|t
+937|to become manifest|i
+938|to be sincere, to withdraw in private|i
+939|to seek to seduce|t
+940|to steal|t
+941|to entice, to make appear attractive|t
+942|to impassion, to captivate|t
+943|to lock, to close|t
+944|to tear|t
+945|to blame|t
+946|to be saved|i
+947|to provide food|t
+948|to roam freely, to enjoy|i
+949|to press (juice)|t
+950|to imprison|t
+951|to be given rain, to be relieved|t
+952|to proclaim openly|t
+953|to flow|i
+954|to subject, to put to service|t
+955|to be righteous|i
+956|to be hindered, to be barred|t
+957|to erase, to blot out|t
+958|to stay, to remain|i
+959|to deny, to disapprove|t
+960|to count, to enumerate|t
+961|to make dwell, to lodge|t
+962|to be uprooted|t
+963|to keep away|t
+964|to be intense, to blow fiercely|i
+965|to stare|i
+966|to be impatient, to lament|i
+967|to be disappointed, to fail|i
+968|to cease, to move away|i
+969|to count|t
+970|to sip|t
+971|to swallow easily|t
+972|to give (someone) drink|t
+973|to distract, to divert|t
+974|to lower|t
+975|to steal (by eavesdropping)|t
+976|to proclaim openly|t
+977|to disgrace, to shame|t
+978|to enter, to thread, to cause to enter|t
+979|to be dazzled, to be dazed|t
+980|to remain, to continue|i
+981|to despair|i
+982|to ascend|i
+983|to make light of, to treat as foolish|t
+984|to desire|t
+985|to send out to pasture|t
+986|to shake, to sway|i
+987|to hide oneself|i
+988|to bring in (the herds) in the evening|t
+989|to pasture|t
+990|to cause to sink, to cave in|t
+991|to retaliate, to punish in return|t
+992|to be exhausted, to run out|i
+993|to incline (of shadows)|i
+994|to cry out (for help)|i
+995|to bury|t
+996|to be asked to make amends|t
+997|to assault, to cry out against|t
+998|to destroy utterly, to lead by the jaw|t
+999|to do evil|i

@@ -1,0 +1,200 @@
+600|to kindle, to light|t
+601|to be deluded, to be turned away|i
+602|to deserve, to have a right to|t
+603|to be entrusted with|t
+604|to hunt|t
+605|to wash|t
+606|to take revenge|i
+607|to convey, to deliver|t
+608|to grieve|i
+609|to seek to divide by lots|t
+610|to help one another|i
+611|to overflow|i
+612|to war against, to fight|t
+613|to slaughter properly|t
+614|to be angry, to be displeased|i
+615|to become deaf|i
+616|to make, to craft|t
+617|to look up, to gain knowledge of|t
+618|to prompt, to make easy|t
+619|to be unable|i
+620|to honour, to support|t
+621|to contract, to bind|t
+622|to be blind|i
+623|to be discovered|t
+624|to bring near|t
+625|to cut into pieces|t
+626|to kill in great numbers|t
+627|to resent, to take revenge|t
+628|to bind by a covenant|t
+629|to conceal, to bury|t
+630|to despair|i
+631|to scratch, to dig|t
+632|to forbid one another|i
+633|to wander, to be lost|i
+634|to incite, to drive|t
+635|to detain, to hold back|t
+636|to protect|t
+637|to be crucified|t
+638|to be exiled|t
+639|to cause, to bring about|t
+640|to bear fruit|i
+641|to postpone, to appoint a term|t
+642|to commit a crime|i
+643|to make (someone) taste|t
+644|to ruin, to destroy|t
+645|to be extravagant, to transgress|i
+646|to set (of a star)|i
+647|to produce, to bring into being|t
+648|to give over to destruction|t
+649|to mingle|i
+650|to make (someone) successor|t
+651|to ask to hasten|t
+652|to seek more of, to take in great numbers|t
+653|to listen|t
+654|to entice, to lure|t
+655|to contain, to comprise|t
+656|to follow, to take as an example|t
+657|to commit, to earn|t
+658|to be hidden, to be inward|i
+659|to become clear|i
+660|to humble oneself, to supplicate|i
+661|to be exalted|i
+662|to be completed|i
+663|to reject, to deny|t
+664|to commit, to wound|t
+665|to cover (with darkness)|t
+666|to surround, to befall|t
+667|to pierce, to falsely attribute|t
+668|to bestow|t
+669|to create, to multiply|t
+670|to fall|i
+671|to expand, to open (the chest)|t
+672|to turn away|i
+673|to vary, to explain in various ways|t
+674|to incline|i
+675|to drive away|t
+676|to appear, to gain the upper hand|i
+677|to neglect, to fall short|i
+678|to explain in detail|t
+679|to create, to originate|t
+680|to turn over, to overturn|t
+681|to remove, to uncover|t
+682|to establish, to empower|t
+683|to keep away, to withdraw|i
+684|to direct, to turn (the face)|t
+685|to be made to stand, to stop|t
+686|to put in charge|t
+687|to humble oneself|i
+688|to be ignorant|i
+689|to guess, to conjecture|t
+690|to bear (a burden)|t
+691|to insult, to revile|t
+692|to describe, to attribute|t
+693|to ascend, to climb|i
+694|to fly|i
+695|to play|i
+696|to dispute, to doubt|i
+697|to wait|t
+698|to make aware|t
+699|to convey, to escort|t
+700|to become heavy|i
+701|to cling, to incline|i
+702|to announce, to proclaim|i
+703|to avail, to suffice|i
+704|to lead astray|t
+705|to recover, to regain consciousness|i
+706|to carry, to lift|t
+707|to be silent, to pay attention|i
+708|to cause to inherit|t
+709|to cover, to envelop|t
+710|to rain down|t
+711|to choose|t
+712|to overtake one another, to be exhausted|i
+713|to terrify|t
+714|to consider weak, to oppress|t
+715|to seek refuge|i
+716|to settle, to be firm|i
+717|to see an evil omen in|t
+718|to draw near|i
+719|to detach oneself, to slip out|i
+720|to gush forth|i
+721|to bless|t
+722|to begin, to originate|t
+723|to seize, to strike|t
+724|to become void|i
+725|to proclaim|i
+726|to be blessed|i
+727|to manifest oneself, to reveal|i
+728|to cover, to envelop|t
+729|to swallow up|t
+730|to postpone, to defer|t
+731|to make (enemies) rejoice|t
+732|to be opened|t
+733|to threaten|t
+734|to be heavy|i
+735|to display, to reveal|t
+736|to be due, to be proven true|i
+737|to live|i
+738|to be bad, to be corrupt|i
+739|to fall down|i
+740|to be light|i
+741|to succeed, to take the place of|t
+742|to lead on, to cause to fall|t
+743|to destroy utterly|t
+744|to precede, to outstrip|t
+745|to bewitch|t
+746|to become calm|i
+747|to be driven|t
+748|to begin, to start to|i
+749|to be insolent, to rebel|i
+750|to wonder, to be amazed|i
+751|to hasten, to be hasty|i
+752|to hamstring|t
+753|to swear to|t
+754|to read, to recite|t
+755|to increase in number|t
+756|to plot against|t
+757|to be filled|t
+758|to shake, to raise up|t
+759|to incite, to cause discord|t
+760|to lead step by step|t
+761|to advise sincerely|t
+762|to break (an oath)|t
+763|to whisper|i
+764|to be arrogant|i
+765|to drag, to pull|t
+766|to stitch together, to cover|t
+767|to keep the Sabbath|i
+768|to delay, to lag behind|i
+769|to advance|i
+770|to seek, to pursue|t
+771|to build, to erect|t
+772|to be devoted, to cling|i
+773|to enter, to penetrate|i
+774|to pant, to loll the tongue|i
+775|to carve, to hew|t
+776|to cease, to desist|i
+777|to deviate, to pervert|i
+778|to hold fast|t
+779|to shelter|t
+780|to subdue, to battle strenuously|i
+781|to make hear|t
+782|to enable, to give power|t
+783|to be firm|i
+784|to call for help|t
+785|to seek help from|t
+786|to see one another|i
+787|to make an appointment with one another|i
+788|to terrify|t
+789|to incline|i
+790|to intervene, to come between|i
+791|to betray|t
+792|to bind, to strengthen|t
+793|to scatter, to disperse|t
+794|to cover, to overwhelm|t
+795|to gain as spoils|t
+796|to pass, to proceed|i
+797|to turn on one's heels|i
+798|to be afraid|i
+799|to snatch away|t

@@ -1,0 +1,1473 @@
+0|أَنْعَمَ|VF4|نعم|has bestowed (His) Favor
+1|اِسْتَعَانَ|VF10|عون|And seek help
+2|عَبَدَ|VF1|عبد|so worship Him / and (who) worshipped
+3|هَدَى|VF1|هدي|Guide us / guided
+4|آتَى|VF4|أتي|Grant us / was given
+5|آمَنَ|VF4|أمن|Believe / believed
+6|أَبَى|VF1|أبي|He refused / (should) refuse
+7|أَبْصَرَ|VF4|بصر|How clearly He sees / sees
+8|أَتَمَّ|VF4|تمم|Perfect / and he fulfilled them
+9|أَتَى|VF1|أتي|so you bring / came to them
+10|أَتْبَعَ|VF4|تبع|so followed him / And they were followed
+11|أَثَارَ|VF4|ثور|and they dug
+12|أَحاطَ|VF4|حوط|are surrounded / you are surrounded
+13|أَحَلَّ|VF4|حلل|Permitted / and he makes lawful
+14|أَحَبَّ|VF4|حبب|like / They love them
+15|أَحْسَنَ|VF4|حسن|And do good / did good
+16|أَحْيَا|VF4|حيي|then He gave you life / He will give you life
+17|أَخَذَ|VF1|أخذ|Then take / so seized them
+18|أَخْرَجَ|VF4|خرج|take us out / then brought forth
+19|أَخْطَأَ|VF4|خطأ|we err / you made a mistake
+20|أَخْلَفَ|VF4|خلف|will break / they broke
+21|أَدْلَى|VF4|دلو|then he let down
+22|أَذِنَ|VF1|أذن|Grant me leave / permitted
+23|أَرَادَ|VF4|رود|(did) intend / Intends
+24|أَرَى|VF4|رأي|And show us / and shows you
+25|أَرْبَى|VF4|ربو|more numerous / and (gives) increase
+26|أَرْسَلَ|VF4|رسل|so send / were sent
+27|أَزَلَّ|VF4|زلل|Then made [both of] them slip
+28|أَسَرَّ|VF4|سرر|But Yusuf kept it secret / And conceal
+29|أَسْلَمَ|VF4|سلم|Submit (yourself) / submits
+30|أَشْرَكَ|VF4|شرك|And make him share / partners (were) associated (with Allah)
+31|أَشْهَدَ|VF4|شهد|and made them testify / and he calls to witness
+32|أَصَابَ|VF4|صوب|then fell on it / fall (on) it
+33|أَصْلَحَ|VF4|صلح|and do right / then reconciles
+34|أَضَاءَ|VF4|ضوأ|it flashes / glow
+35|أَضَاعَ|VF4|ضيع|let go waste / who neglected
+36|أَضَلَّ|VF4|ضلل|is let astray / He lets go astray
+37|أَطَاعَ|VF4|طوع|he obeyed / obeys
+38|أَظْلَمَ|VF4|ظلم|it darkens
+39|أَعَدَّ|VF4|عدد|and He has prepared / And prepare
+40|أَعْجَبَ|VF4|عجب|he pleases you / pleases you
+41|أَعْلَنَ|VF4|علن|they declare
+42|أَعْنَتَ|VF4|عنت|surely He (could have) put you in difficulties
+43|أَفَاضَ|VF4|فيض|depart / depart
+44|أَفْرَغَ|VF4|فرغ|Pour
+45|أَفْسَدَ|VF4|فسد|will spread corruption / they ruin it
+46|أَفْلَحَ|VF4|فلح|(will be) successful / will be successful
+47|أَقَامَ|VF4|قوم|Direct / and (who) establish
+48|أَقَرَّ|VF4|قرر|you ratified / We affirm
+49|أَقْرَضَ|VF4|قرض|will lend / and loan
+50|أَكَلَ|VF1|أكل|ate (it) / then let him eat (of it)
+51|أَكْمَلَ|VF4|كمل|so that you complete / I have perfected
+52|أَكَنَّ|VF4|كنن|you conceal it / conceals
+53|أَلْفَى|VF4|لفو|found
+54|أَلْقَى|VF4|لقي|Throw / offers
+55|أَماتَ|VF4|موت|Then he was made to die / He will cause you to die
+56|أَمَرَ|VF1|أمر|and order / has ordered
+57|أَمِنَ|VF1|أمن|entrusts / feel secure
+58|أَمْسَكَ|VF4|مسك|Keep / can uphold them
+59|أَنْجَى|VF4|نجو|He saves us / it (could) save him
+60|أَنْذَرَ|VF4|نذر|And warn / were warned
+61|أَنْزَلَ|VF4|نزل|send down / (is) sent down
+62|أَنْسَى|VF4|نسي|But made him forget / causes you to forget
+63|أَنْفَقَ|VF4|نفق|he (had) spent / spends
+64|أَنْبَأَ|VF4|نبأ|Inform them / he had informed them
+65|أَنۢبَتَ|VF4|نبت|and reared her  / He causes to grow
+66|أَهْلَكَ|VF4|هلك|destroyed / and destroys
+67|أَوْفَى|VF4|وفي|but pay (in) full / fulfills
+68|أَيَّدَ|VF2|أيد|and strengthened you / supports
+69|أَجَابَ|VF4|جوب|responds / Respond
+70|أَحْصَرَ|VF4|حصر|are wrapped up
+71|أُخْفِيَ|VF4|خفي|is hidden / They hide
+72|أُشْرِبَ|VF4|شرب|And they were made to drink
+73|أَغْرَقَ|VF4|غرق|and drown you / they were drowned
+74|أُهِلَّ|VF4|هلل|has been dedicated
+75|اُؤْتُمِنَ|VF8|أمن|is entrusted
+76|اِبْتَغَى|VF8|بغي|but seek / seeks
+77|اِبْتَلَى|VF8|بلو|tried / so that He may test you
+78|ٱتَّبَعَ|VF8|تبع|Follow / follow me
+79|ٱتَّخَذَ|VF8|أخذ|so take Him / has taken
+80|ٱتَّقَى|VF8|وقي|Fear / fears (Allah)
+81|اِحْتَرَقَ|VF8|حرق|then it is burnt
+82|اِخْتَلَفَ|VF8|خلف|differ[ed] / who differed
+83|اِدَّارَأَ|VF6|درأ|then you disputed
+84|اِرْتَابَ|VF8|ريب|surely (would) have doubted / may doubt
+85|اِرْتَدَّ|VF8|ردد|then returned (his) sight / turns away
+86|اِسْتَبَقَ|VF8|سبق|so race / then they (would) race
+87|اِسْتَجَابَ|VF10|جوب|Then responded / respond
+88|اِسْتَسْقَى|VF10|سقي|asked (for) water
+89|اِسْتَشْهَدَ|VF10|شهد|And call for evidence
+90|اِسْتَطَاعَ|VF10|طوع|is able / capable
+91|اِسْتَغْفَرَ|VF10|غفر|and ask forgiveness / and asked forgiveness
+92|اِسْتَفْتَحَ|VF10|فتح|And they sought victory / (that), pray for victory
+93|اِسْتَكْبَرَ|VF10|كبر|and was arrogant / and is arrogant
+94|اِسْتَمْسَكَ|VF10|مسك|So hold fast / he grasped
+95|اِسْتَوَى|VF8|سوي|He turned / (are) equal
+96|اِسْتَوْقَدَ|VF10|وقد|kindled
+97|اِسْتَيْسَرَ|VF10|يسر|(can be) obtained with ease
+98|اسْتُهْزِئَ|VF10|هزأ|were mocked / mocks
+99|اشْتَرَى|VF8|شري|buys it / purchases
+100|اِصْطَفَى|VF8|صفو|has chosen / chooses
+101|اُضْطُرَّ|VF8|ضرر|(is) forced by necessity
+102|اِطْمَأَنَّ|VF4|طمأن|he is content / to satisfy
+103|اعْتَدَى|VF8|عدو|transgresses / then you transgress
+104|اِعْتَزَلَ|VF8|عزل|he left them / so keep away (from)
+105|اِعْتَمَرَ|VF8|عمر|performs Umrah
+106|اِغْتَرَفَ|VF8|غرف|takes
+107|اِفْتَدَى|VF8|فدي|he offered as ransom / he (could be) ransomed
+108|اِقْتَتَلَ|VF8|قتل|(would have) fought each other / they (would have) fought each other
+109|اِكْتَسَبَ|VF8|كسب|he earned / they earned
+110|انتَهَى|VF8|نهي|and he refrained / cease
+111|اِنْفَجَرَ|VF7|فجر|Then gushed forth
+112|انقَلَبَ|VF7|قلب|he turns / turns back
+113|اِهْتَدَى|VF8|هدي|(is) guided / guide
+114|بَاءَ|VF1|بوأ|draws / and they drew on themselves
+115|بَاشَرَ|VF3|بشر|have relations with them
+116|بَثَّ|VF1|بثث|and dispersing / He disperses
+117|بَدَّلَ|VF2|بدل|change it / But changed
+118|بَرَزَ|VF1|برز|surely (would have) come out / they went forth
+119|بَسَطَ|VF1|بسط|Allah extends / and grants abundance
+120|بَعَثَ|VF1|بعث|[And] raise up / then raised up
+121|بَقِيَ|VF1|بقي|remained / But will remain
+122|بَلَغَ|VF1|بلغ|has reached me / reaches
+123|بَلَا|VF1|بلو|to test you
+124|بَيَّنَ|VF2|بين|to make clear / and openly declar[ed]
+125|بُشِّرَ|VF2|بشر|And give good news / is given good news
+126|بَهَتَ|VF1|بهت|So became dumbfounded
+127|بِئْسَ|VF1|بأس|Evil (is) that
+128|تَابَ|VF1|توب|and turn / So (his Lord) turned
+129|تَأَخَّرَ|VF5|أخر|delays / stay behind
+130|تَبَايَعَ|VF6|بيع|you make commercial transaction
+131|تَبَرَّأَ|VF5|برأ|will disown / they disown
+132|بَرَّ|VF1|برر|you do good
+133|تَبَيَّنَ|VF5|بين|became clear / becomes distinct
+134|تَبِعَ|VF1|تبع|follows / followed [it]
+135|حَلَقَ|VF1|حلق|shave
+136|تَدَايَنَ|VF6|دين|you contract with one another
+137|تَذَكَّرَ|VF5|ذكر|receives admonition / remembers
+138|تَرَاضَى|VF6|رضو|they agree
+139|تَرَبَّصَ|VF5|ربص|and he awaits / then wait
+140|تَرَكَ|VF1|ترك|And leave / and left them
+141|تَزَوَّدَ|VF5|زود|And take provision
+142|سَرَّ|VF1|سرر|pleasing
+143|اِسْتَرْضَعَ|VF10|رضع|ask another women to suckle
+144|تَشَابَهَ|VF6|شبه|look alike
+145|تَصَدَّقَ|VF5|صدق|and be charitable / gives charity
+146|تَطَهَّرَ|VF5|طهر|then purify yourselves / who keep themselves pure
+147|تَطَوَّعَ|VF5|طوع|voluntarily does
+148|تَظَاهَرَ|VF6|ظهر|you support one another / you backup each other
+149|تَعَجَّلَ|VF5|عجل|hurries
+150|عَثِيَ|VF1|عثو|act wickedly
+151|عَضَلَ|VF1|عضل|hinder them
+152|تَقَبَّلَ|VF5|قبل|Accept / So accepted her
+153|تَقَطَّعَ|VF5|قطع|have been severed (bonds) / But they cut off
+154|تَلَقَّى|VF5|لقي|Then received / receive
+155|تَلَا|VF1|تلو|And recite / it follows it
+156|تَمَتَّعَ|VF5|متع|Enjoy / took advantage
+157|تَوَفَّى|VF5|وفي|and cause us to die / take them (in death)
+158|تَوَلَّى|VF5|ولي|turn away / he turns away
+159|تَيَمَّمَ|VF5|يمم|then do tayammum
+160|حَدَّثَ|VF2|حدث|narrate
+161|خَالَطَ|VF3|خلط|you associate with them
+162|أَدَارَ|VF4|دور|you carry out
+163|أَغْمَضَ|VF4|غمض|(with) close(d) eyes
+164|فَادَى|VF3|فدي|you ransom them
+165|أَنْكَحَ|VF4|نكح|And marry
+166|ثَبَّتَ|VF2|ثبت|and make firm / and make firm
+167|ثَقِفَ|VF1|ثقف|they are found / they gain dominance over you
+168|جَاءَ|VF1|جيأ|came to you / (who) came
+169|جَاهَدَ|VF3|جهد|Strive (against) / and strives
+170|جَاوَزَ|VF3|جوز|he crossed it
+171|جَرَى|VF1|جري|running
+172|جَزَى|VF1|جزي|And will reward them / And will reward
+173|جَعَلَ|VF1|جعل|make / made
+174|حَاجَّ|VF3|حجج|argued / they argue with you
+175|حَاسَبَ|VF3|حسب|will call you to account
+176|حَبِطَ|VF1|حبط|(are) wasted / surely, will become worthless
+177|حَجَّ|VF1|حجج|performs Hajj
+178|حَرَّمَ|VF2|حرم|He has forbidden / and makes unlawful
+179|حَسِبَ|VF1|حسب|Do then think / Think (about) them
+180|حَشَرَ|VF1|حشر|And were gathered / then He will gather them
+181|حَضَرَ|VF1|حضر|came to / they attended it
+182|حَكَمَ|VF1|حكم|then judge / has judged
+183|حَلَّ|VF1|حلل|And untie / lawful
+184|حَمَلَ|VF1|حمل|Load / carried
+185|حَمَّلَ|VF2|حمل|(is) placed on him / were entrusted
+186|خَافَ|VF1|خوف|fears / fears Him
+187|خَتَمَ|VF1|ختم|Has set a seal / He would seal
+188|خَرَجَ|VF1|خرج|So get out / Then he came out
+189|خَشِيَ|VF1|خشي|fears / And let fear 
+190|خَطِفَ|VF1|خطف|snatches / snatches away
+191|خَفَّفَ|VF2|خفف|has (been) lightened / will be lightened
+192|خَلَا|VF1|خلو|meet in private / so will be free
+193|خَلَقَ|VF1|خلق|created you / creates
+194|دَخَلَ|VF1|دخل|Enter / entered
+195|دَعَا|VF1|دعو|so pray / invoked
+196|ذَكَرَ|VF1|ذكر|And remember / (is) mentioned
+197|ذَهَبَ|VF1|ذهب|So go / took away
+198|ذَبَحَ|VF1|ذبح|is sacrificed / So they slaughtered it
+199|ذُكِّرَ|VF2|ذكر|But remind / is reminded
+200|رَاعَى|VF3|رعي|Raina
+201|رَأَى|VF1|رأي|He (had) shown you / would see
+202|رَبِحَ|VF1|ربح|profited
+203|رَجَعَ|VF1|رجع|Return / returned
+204|رَحِمَ|VF1|رحم|and have mercy on us / He had Mercy on him
+205|رَدَّ|VF1|ردد|And Allah turned back / will be turned back
+206|رَزَقَ|VF1|رزق|and provide / (has) provided them
+207|رَضِيَ|VF1|رضو|is pleased / (does) he approve
+208|رَفَعَ|VF1|رفع|and He raised / (was) raising
+209|زَادَ|VF1|زيد|Increase me / so has increased them
+210|زَالَ|VF1|زيل|(will) cease / they will cease
+211|زَكَّى|VF2|زكو|purifies it / and purify them
+212|زَلَّ|VF1|زلل|you slip / lest, should slip
+213|زَيَّنَ|VF2|زين|Beautified / (who) made fair-seeming
+214|زُلْزِلَ|VF1|زلزل|and they were shaken
+215|سَأَلَ|VF1|سأل|Ask / was asked
+216|سَبَّحَ|VF2|سبح|and glorify (Him) / Glorifies
+217|سَجَدَ|VF1|سجد|prostrate / So prostrated
+218|سَخِرَ|VF1|سخر|Allah will ridicule / ridicule
+219|سَرَّحَ|VF2|سرح|release them
+220|سَعَى|VF1|سعي|and strives / running
+221|سَفِهَ|VF1|سفه|fooled
+222|سَقَى|VF1|سقي|So he watered / he will give drink
+223|سَكَنَ|VF1|سكن|Dwell / dwells
+224|سَلَفَ|VF1|سلف|(has) passed
+225|سَلَّمَ|VF2|سلم|saved (you) / then greet
+226|سَمِعَ|VF1|سمع|and "Hear / he (has) heard [it]
+227|سَوَّى|VF2|سوي|and fashioned them
+228|شَاءَ|VF1|شيأ|had willed / He wills
+229|شَرَى|VF1|شري|sells / they sold
+230|شَرِبَ|VF1|شرب|drinks / and he drinks
+231|شَكَرَ|VF1|شكر|Be grateful / (is) grateful
+232|شَهِدَ|VF1|شهد|and bear witness / witnesses
+233|صَبَرَ|VF1|صبر|and be patient / their endurance
+234|صَدَقَ|VF1|صدق|(has) spoken the truth / are true
+235|صَارَ|VF1|صور|and incline them
+236|ضَرَبَ|VF1|ضرب|Strike / Allah sets forth
+237|ضَلَّ|VF1|ضلل|he went astray (from) / strays
+238|طَعِمَ|VF1|طعم|taste it / they ate
+239|طَلَّقَ|VF2|طلق|he divorces her / then divorce them
+240|طَهَّرَ|VF2|طهر|and purify / and purified you
+241|ظَلَمَ|VF1|ظلم|he wronged / wrong
+242|ظَلَّلَ|VF2|ظلل|And We shaded
+243|ظَنَّ|VF1|ظنن|and think / thinks
+244|عادَ|VF1|عود|repeated / certainly they (would) return
+245|عَاهَدَ|VF3|عهد|made a covenant / they took
+246|عَذَّبَ|VF2|عذب|and He punished / and He will punish
+247|عَرَضَ|VF1|عرض|He displayed them / will be exposed
+248|عَرَفَ|VF1|عرف|and he recognized them / Will be known
+249|عَرَّضَ|VF2|عرض|you hint
+250|عَزَمَ|VF1|عزم|(is) determined / they resolve
+251|عَسَى|VF1|عسي|But perhaps
+252|عَصَى|VF1|عصي|disobeys me / disobeys
+253|عَفَا|VF1|عفو|And pardon / is pardoned
+254|عَقَلَ|VF1|عقل|will understand them / they understood it
+255|عَلِمَ|VF1|علم|And know / knew
+256|عَلَّمَ|VF2|علم|And He taught / and will teach them
+257|عَمِلَ|VF1|عمل|make / and did
+258|عَهِدَ|VF1|عهد|(has) taken promise
+259|عَاذَ|VF1|عوذ|who sought refuge
+260|غَفَرَ|VF1|غفر|and forgive / Then He forgave
+261|غَلَبَ|VF1|غلب|achieves victory / So they were defeated
+262|فَاءَ|VF1|فيأ|they return 
+263|فَتَحَ|VF1|فتح|Decide / has
+264|فَرَضَ|VF1|فرض|undertakes
+265|فَرَقَ|VF1|فرق|so (make a) separation / is made distinct
+266|فَرَّقَ|VF2|فرق|divide / [they] causes separation
+267|فَسَدَ|VF1|فسد|certainly (would have) corrupted / surely they (would) have been ruined
+268|فَسَقَ|VF1|فسق|and he rebelled / defiantly disobeyed
+269|فَصَلَ|VF1|فصل|set out / will judge
+270|فَضَّلَ|VF2|فضل|(has) bestowed / were favored
+271|فَعَلَ|VF1|فعل|Do / did
+272|قَاتَلَ|VF3|قتل|So fight / fought
+273|قَالَ|VF1|قول|Say / it is said
+274|قَامَ|VF1|قوم|Stand / stood up
+275|قَبَضَ|VF1|قبض|withholds / and they close
+276|قَتَلَ|VF1|قتل|and killed / are slain
+277|قَدَرَ|VF1|قدر|predestined / and restricts
+278|قَدَّمَ|VF2|قدم|brought / and send forth (good deeds)
+279|قَسَا|VF1|قسو|hardened
+280|قَضَى|VF1|قضي|So decree / He decrees
+281|قَفَّى|VF2|قفو|and We followed up
+282|قُطِعَ|VF1|قطع|So was cut off / That He may cut off
+283|كَادَ|VF1|كود|had nearly / Almost
+284|كَانَ|VF1|كون|Be / and became
+285|كَبَّرَ|VF2|كبر|And magnify Him
+286|كَتَبَ|VF1|كتب|then write us / Prescribed
+287|كَتَمَ|VF1|كتم|concealed / conceals it
+288|كَذَبَ|VF1|كذب|lies / they lied
+289|كَذَّبَ|VF2|كذب|were rejected / deny
+290|كَرِهَ|VF1|كره|disliked (it) / and they disliked
+291|كَسَبَ|VF1|كسب|earned / earns
+292|كَسَا|VF1|كسو|and clothe them
+293|كَفَرَ|VF1|كفر|Disbelieve / disbelieved
+294|كَفَى|VF1|كفي|And is sufficient / So will suffice you against them
+295|كَفَّرَ|VF2|كفر|and remove / He will remove
+296|كَلَّمَ|VF2|كلم|spoke / speaks to us
+297|لَبَسَ|VF1|لبس|(to) confuse you / they are obscuring
+298|لَبِثَ|VF1|لبث|and not he delayed / (they had) remained
+299|لَعَنَ|VF1|لعن|and curse them / has cursed them
+300|لَقِيَ|VF1|لقي|which he will find / they meet
+301|لَيْسَ|VF1|ليس|It is not / They are not
+302|مَاتَ|VF1|موت|he died / then dies
+303|مَتَّعَ|VF2|متع|He will let you / And make provision for them 
+304|مَدَّ|VF1|مدد|spread / and prolongs them
+305|مَرَّ|VF1|مرر|passed / they pass
+306|مَسَّ|VF1|مسس|(has) touched / touch(ed) me
+307|مَشَى|VF1|مشي|he walks / Continue
+308|مَنَعَ|VF1|منع|prevents / And they deny
+309|نَبَذَ|VF1|نبذ|throw back / threw it away
+310|نَجَّى|VF2|نجو|And save us / saved us
+311|نَذَرَ|VF1|نذر|they are warned
+312|نَزَّلَ|VF2|نزل|brought it down / sends down
+313|نَسِيَ|VF1|نسي|so He has forgotten them / forgets
+314|نَصَرَ|VF1|نصر|and help us / helped you
+315|نَظَرَ|VF1|نظر|Unzurna / look
+316|نَفَعَ|VF1|نفع|and benefited it / profits them
+317|نَقَضَ|VF1|نقض|break
+318|نَكَحَ|VF1|نكح|married / marry
+319|قَدَّسَ|VF2|قدس|and we sanctify
+320|أَنْشَزَ|VF4|نشز|We raise them
+321|نِعْمَ|VF1|نعم|then good
+322|هَاتَى|VF1|هات|Bring
+323|هاجَرَ|VF3|هجر|emigrated / emigrates
+324|هَادَ|VF1|هود|became Jews
+325|هَزَمَ|VF1|هزم|Soon will be defeated / So they defeated them
+326|هَوَى|VF1|هوي|he (has) perished
+327|وَاعَدَ|VF3|وعد|We appointed / promise them (widows)
+328|وَجَدَ|VF1|وجد|he found / find 
+329|وَدَّ|VF1,3|ودد|Wish[ed] / Loves
+330|وَسِعَ|VF1|وسع|Extends
+331|وَصَّى|VF2|وصي|And enjoined
+332|وَعَدَ|VF1|وعد|and promise them / promised
+333|وَعَظَ|VF1|وعظ|and admonish them / He instructs you
+334|وَفَّى|VF2|وفي|He will pay him in full / will be repaid in full
+335|وَقَى|VF1|وقي|and save us / So Allah protected him
+336|وَلَّى|VF2|ولي|So turn / (has) turned them
+337|آدَ|VF1|أود|tires Him
+338|بَخَسَ|VF1|بخس|diminish / will not be lessened
+339|تَبَدَّلَ|VF5|بدل|exchanges
+340|تَخَبَّطَ|VF5|خبط|confounds him
+341|تَرَاجَعَ|VF6|رجع|they return to each other
+342|تَسَنَّهَ|VF5|سنه|change with time
+343|تَعَدَّى|VF5|عدو|transgresses
+344|تَعَلَّمَ|VF5|علم|But they learn
+345|تَفَجَّرَ|VF5|فجر|gush forth
+346|تَفَكَّرَ|VF5|فكر|and they reflect
+347|تَمَنَّى|VF5|مني|then wish / they wish for it
+348|حَذِرَ|VF1|حذر|and beware of them / Fear
+349|حَزَنَ|VF1|حزن|grieve you / will grieve
+350|اِخْتَانَ|VF8|خون|deceive
+351|اِخْتَصَّ|VF8|خصص|chooses
+352|خَدَعَ|VF1|خدع|they deceive
+353|يَذَرَ|VF1|وذر|And leave / to leave
+354|رَجَا|VF1|رجو|hoping / and expect
+355|رَشَدَ|VF1|رشد|(be) led aright
+356|رَغِبَ|VF1|رغب|turn your attention / will turn away
+357|رَكَعَ|VF1|ركع|and bow down / they bow
+358|رَهِبَ|VF1|رهب|fear [Me] / (are) fearful
+359|سَامَ|VF1|سوم|would afflict them / (who were) afflicting you (with)
+360|سَئِمَ|VF1|سأم|get tired / tire
+361|اِسْتَبْدَلَ|VF10|بدل|and will replace you
+362|اِسْتَحْيَا|VF10|حيي|ashamed / and let live
+363|سَفَكَ|VF1|سفك|and will shed
+364|تَشَقَّقَ|VF5|شقق|split
+365|شَعَرَ|VF1|شعر|they realize (it)
+366|شَفَعَ|VF1|شفع|can intercede / so (that) they intercede
+367|صَامَ|VF1|صوم|then he should fast in it
+368|وَصَلَ|VF1|وصل|be joined / join
+369|صَفَحَ|VF1|صفح|and overlook / and overlook
+370|ضَرَّ|VF1|ضرر|harms them / will they harm you
+371|تَطَوَّفَ|VF5|طوف|he walks / and circumambulate
+372|طَمِعَ|VF1|طمع|lest should be moved with desire / hope
+373|طَهَرَ|VF1|طهر|they are cleansed
+374|عَمِهَ|VF1|عمه|they wander blindly
+375|قَبِلَ|VF1|قبل|will be accepted
+376|قَرِبَ|VF1|قرب|so let them not come near
+377|مَحَقَ|VF1|محق|Destroys
+378|نَالَ|VF1|نيل|reach / they could attain
+379|نَسَخَ|VF1|نسخ|But Allah abolishes
+380|نَعَقَ|VF1|نعق|shouts
+381|هَبَطَ|VF1|هبط|Then go down / fall down
+382|آخَذَ|VF3|أخذ|will take you to task
+383|أَدَّى|VF2|أدي|then let discharge / Deliver
+384|آلَى|VF4|ألو|swear (off)
+385|أَبْدَى|VF4|بدو|to make apparent / they reveal
+386|أَبْطَلَ|VF4|بطل|and prove false
+387|حَافَظَ|VF3|حفظ|Guard strictly / (are) guarding
+388|حَرَّفَ|VF2|حرف|they distort it
+389|خَادَعَ|VF3|خدع|They seek to deceive
+390|ذَبَّحَ|VF2|ذبح|slaughtering / slaughtering
+391|أَرْضَعَ|VF4|رضع|shall suckle
+392|ضَارَّ|VF3|ضرر|(should) be harmed
+393|ضَاعَفَ|VF3|ضعف|so (that) He multiplies it
+394|أَطَاقَ|VF4|طوق|can afford it
+395|عَمَّرَ|VF2|عمر|he could be granted a life
+396|كَلَّفَ|VF2|كلف|burden
+397|أَمَلَّ|VF4|ملل|and let dictate
+398|أُنْظِرَ|VF4|نظر|Give me respite / will be reprieved
+399|أَيْقَنَ|VF4|يقن|firmly believe
+400|أَثَابَ|VF4|ثوب|So (He) repaid you
+401|أَحَسَّ|VF4|حسس|perceived / they perceived
+402|أَخْزَى|VF4|خزي|and disgrace them
+403|أَزَاغَ|VF4|زيغ|(was caused to) deviate
+404|أَصَرَّ|VF4|صرر|persists / and persisted
+405|أَصْبَحَ|VF4|صبح|and became / will become
+406|أَغْنَى|VF4|غني|will be enriched / will avail
+407|أَلَّفَ|VF2|ألف|then He made friendship / joins
+408|أَمَدَّ|VF4|مدد|has aided you / reinforces you
+409|أَمْلَى|VF4|ملو|and prolonged hope
+410|أَنْقَذَ|VF4|نقذ|then He saved you / they (can) save me
+411|أَهَمَّ|VF4|همم|worried [them]
+412|أَوْحَى|VF4|وحي|and has been revealed / is revealed
+413|أُدْخِلَ|VF4|دخل|and admit us / and admitted
+414|أَعَاذَ|VF4|عوذ|[I] seek refuge for her
+415|أُوذِيَ|VF4|أذي|he is harmed / troubling
+416|اِبْيَضَّ|VF9|بيض|would become white / turn white
+417|اِجْتَبَى|VF8|جبي|He chose him / chooses
+418|اِخْتَصَمَ|VF8|خصم|dispute / they (were) disputing
+419|اِزْدَادَ|VF8|زيد|and may increase / they increased
+420|اِسْتَزَلَّ|VF10|زلل|made them slip
+421|اِسْتَكَانَ|VF10|كين|they gave in
+422|اِسْوَدَّ|VF9|سود|and would become black / turn black
+423|اِعْتَصَمَ|VF8|عصم|holds firmly / And hold firmly
+424|ٱفْتَرَى|VF8|فري|fabricates / (it could be) produced
+425|اِلْتَقَى|VF8|لقي|met
+426|اِنْفَضَّ|VF7|فضض|surely they (would have) dispersed / they disband
+427|بَخِلَ|VF1|بخل|withholds / withhold
+428|بَدَا|VF1|بدو|became manifest
+429|بَغَى|VF1|بغي|he was oppressed / certainly oppress
+430|بَوَّأَ|VF2|بوأ|and settled you
+431|حَسَّ|VF1|حسس|you were killing them
+432|اِدَّخَرَ|VF8|ذخر|you store
+433|تَعَالَى|VF4|علو|Come
+434|تَفَرَّقَ|VF5|فرق|became divided / became divided
+435|تَنَازَعَ|VF6|نزع|Then they disputed / they disputed
+436|تَوَكَّلَ|VF5|وكل|then put trust / let put (their) trust
+437|أَبْرَأَ|VF4|برأ|And I cure / and you heal
+438|أَذَلَّ|VF4|ذلل|and You humiliate
+439|أَصْعَدَ|VF4|صعد|you were running uphill
+440|أَعَزَّ|VF4|عزز|and You honor
+441|جَمَعَ|VF1|جمع|surely He (would) have gathered them / surely He will gather you
+442|دَامَ|VF1|دوم|as long as they are
+443|دَرَسَ|VF1|درس|while they studied / which they could study
+444|دَفَعَ|VF1|دفع|Repel / defend
+445|ذَاقَ|VF1|ذوق|Taste / that he may taste
+446|رَابَطَ|VF3|ربط|and [be] constant
+447|زُحْزِحَ|VF1|زحزح|is drawn away
+448|سَاءَ|VF1|سوأ|and (an) evil / to sadden
+449|سارَ|VF1|سير|and was traveling / then travel
+450|سَمَّى|VF2|سمو|named you / Name them
+451|شَاوَرَ|VF3|شور|and consult them
+452|صَابَرَ|VF3|صبر|and [be] patient
+453|صَدَّ|VF1|صدد|turned away / and hinders you
+454|صَرَفَ|VF1|صرف|Avert / He diverted you
+455|صَلَّى|VF2|صلو|and bless / he prayed
+456|صَوَّرَ|VF2|صور|and He formed you / shapes you
+457|ضَعُفَ|VF1|ضعف|So weak / they weakened
+458|عَضَّ|VF1|عضض|will bite / they bite
+459|عَنِتَ|VF1|عنت|distresses you
+460|غَدَا|VF1|غدو|Go early / And they went early
+461|غَرَّ|VF1|غرر|And deceived them / deceive you
+462|غَشِيَ|VF1|غشو|but covered them / overcoming
+463|غَلَّ|VF1|غلل|he had defrauded / he defrauds
+464|فَاتَ|VF1|فوت|escaped you
+465|فَازَ|VF1|فوز|he is successful
+466|فَرِحَ|VF1|فرح|Rejoice / will rejoice
+467|فَشِلَ|VF1|فشل|they lost heart / you lost courage
+468|قَعَدَ|VF1|قعد|and sat / and sit (in wait)
+469|كَفَّلَ|VF2|كفل|and put her in (the) care
+470|كَبَتَ|VF1|كبت|were disgraced / suppress them
+471|لَانَ|VF1|لين|you dealt gently / relax
+472|مَكَرَ|VF1|مكر|and planned / plotted
+473|مَنَّ|VF1|منن|so grant / bestowed a Favor
+474|نَادَى|VF3|ندي|And called them both / calling
+475|نَافَقَ|VF3|نفق|(are) hypocrites
+476|نَبَّأَ|VF2|نبأ|Inform us / Allah (has) informed us
+477|اِبْتَهَلَ|VF8|بهل|let us pray humbly
+478|نَزَعَ|VF1|نزع|And he drew out / stripping
+479|نَفَخَ|VF1|نفخ|and (will be) blown / will be blown
+480|نَهَى|VF1|نهي|and forbid / forbid you both
+481|دَاوَلَ|VF3|دول|We alternate them
+482|هَمَّ|VF1|همم|determined / and determined
+483|وَضَعَ|VF1|وضع|set up / and he relieves
+484|وَهَبَ|VF1|وهب|and grant / has granted
+485|وَهَنَ|VF1|وهن|(have) weakened / they lost heart
+486|أَلَا|VF1|ألو|they will spare you
+487|خَذَلَ|VF1|خذل|He forsakes you
+488|خَفِيَ|VF1|خفي|is hidden / hidden
+489|دَرَأَ|VF1|درأ|But it would prevent / Then avert
+490|اِسْتَبْشَرَ|VF10|بشر|So rejoice / and they receive good tidings
+491|قَنَتَ|VF1|قنت|is obedient
+492|كَفَلَ|VF1|كفل|takes charge (of) / who will rear him
+493|لَوَى|VF1|لوي|they distort
+494|لَحِقَ|VF1|لحق|yet joined
+495|مَازَ|VF1|ميز|He separates
+496|أَبْلَى|VF4|بلو|and that He may test
+497|حَذَّرَ|VF2|حذر|And warns you
+498|حُمِدَ|VF1|حمد|they be praised
+499|خَوَّفَ|VF2|خوف|frightens (you) / And they threaten you
+500|سَارَعَ|VF3|سرع|And hasten / and they hasten
+501|طُوِّقَ|VF2|طوق|Their necks will be encircled
+502|أَطْلَعَ|VF4|طلع|to inform you
+503|مَحَّصَ|VF2|محص|And so that may purify
+504|أَوْلَجَ|VF4|ولج|causes to enter
+505|آنَسَ|VF4|أنس|he saw
+506|أَحْصَنَ|VF4|حصن|they are married / you (will) store
+507|أَحْضَرَ|VF4|حضر|And are swayed / surely, We will bring them
+508|أَخَّرَ|VF2|أخر|Respite us / and kept back
+509|أَخْلَصَ|VF4|خلص|and are sincere
+510|أَدْرَكَ|VF4|درك|overtook him / will overtake you
+511|أَذَاعَ|VF4|ذيع|they spread
+512|أَذْهَبَ|VF4|ذهب|(has) removed / He can take you away
+513|أَرْضَعَ|VF4|رضع|nursed you / she was nursing
+514|أَرْكَسَ|VF4|ركس|cast them back / they are plunged
+515|أَعْتَدَ|VF4|عتد|We have prepared / and she prepared
+516|أَعْرَضَ|VF4|عرض|so turn away / he turns away
+517|أَفْضَى|VF4|فضو|has gone 
+518|أَوْصَى|VF4|وصي|and has enjoined (on) me / Instructs you
+519|أَصْلَى|VF4|صلي|We (will) cast him / Soon I will drive him
+520|اِجْتَنَبَ|VF8|جنب|so avoid it / avoid
+521|اِحْتَمَلَ|VF8|حمل|he (has) burdened (himself) / they bear
+522|اِسْتَحْوَذَ|VF10|حوذ|Has overcome
+523|اِسْتَمْتَعَ|VF10|متع|profited / So they enjoyed
+524|اِسْتَنْكَفَ|VF10|نكف|will disdain / disdained
+525|مَسَحَ|VF1|مسح|and wipe (with it)
+526|هَجَرَ|VF1|هجر|so leave me / and forsake them
+527|بَيَّتَ|VF2|بيت|plan by night / they plan by night
+528|دَرَى|VF1|دري|you know / I know
+529|عَالَ|VF1|عول|you oppress
+530|اِغْتَسَلَ|VF8|غسل|you have bathed
+531|غَفَلَ|VF1|غفل|you neglect
+532|غَلَا|VF1|غلو|commit excess
+533|قَصَرَ|VF1|قصر|you shorten
+534|سُوِّيَ|VF1|سوي|was leveled
+535|أَقْسَطَ|VF4|قسط|and act justly
+536|جَادَلَ|VF3|جدل|and discuss with them / will argue
+537|حَرَصَ|VF1|حرص|you desired / you desire
+538|حَرَّضَ|VF2|حرض|And encourage
+539|حَسَدَ|VF1|حسد|he envies / are they jealous
+540|حَسُنَ|VF1|حسن|And excellent
+541|حَصِرَ|VF1|حصر|and besiege them
+542|حَفِظَ|VF1|حفظ|(orders) them to guard / And guard
+543|حَلَفَ|VF1|حلف|swearing
+544|حَيَّا|VF2|حيي|greets you / then greet
+545|خَاضَ|VF1|خوض|indulges (in idle talk) / they engage
+546|خَسِرَ|VF1|خسر|he (has) lost  / will lose
+547|رَمَى|VF1|رمي|threw / throws
+548|زَعَمَ|VF1|زعم|Claim / claim
+549|سَلَّطَ|VF2|سلط|surely He (would have) given them power / gives power
+550|شَاقَّ|VF3|شقق|opposes / opposed
+551|شَجَرَ|VF1|شجر|arises
+552|شُبِّهَ|VF2|شبه|it was made to appear (so)
+553|صَلَبَ|VF1|صلب|he will be crucified / they crucified him
+554|طَابَ|VF1|طيب|seems suitable
+555|طَبَعَ|VF1|طبع|(has) set a seal / (has been) put a seal
+556|طَمَسَ|VF1|طمس|Destroy
+557|عَاشَرَ|VF3|عشر|And live with them
+558|عَدَلَ|VF1|عدل|then balanced you / Be just
+559|عَقَدَ|VF1|عقد|pledged
+560|غَضِبَ|VF1|غضب|and will fall the wrath / they are angry
+561|فَتَنَ|VF1|فتن|(may) harm you / they had been put to trials
+562|قَصَّ|VF1|قصص|So relate / and narrated
+563|قَلَّ|VF1|قلل|(is) little
+564|كَبُرَ|VF1|كبر|difficult / (is) great
+565|كَثُرَ|VF1|كثر|much 
+566|كَفَّ|VF1|كفف|but He restrained / restrain
+567|لَمَسَ|VF1|لمس|and they touched it
+568|مَلَكَ|VF1|ملك|has power / they have power
+569|نَضِجَ|VF1|نضج|are roasted
+570|نَفَرَ|VF1|نفر|go forth / and advance
+571|هَلَكَ|VF1|هلك|died / that (might be) destroyed
+572|وَرِثَ|VF1|ورث|and inherit[ed] him / (whose wealth) is to be inherited
+573|وَقَعَ|VF1|وقع|(became) incumbent / then fall down
+574|أَلِمَ|VF1|ألم|are (also) suffering
+575|تَحَاكَمَ|VF6|حكم|go for judgment
+576|تَدَبَّرَ|VF5|دبر|they ponder
+577|تَسَاءَلَ|VF6|سأل|that they might question
+578|اِسْتَخْفَى|VF10|خفي|They seek to hide
+579|اِسْتَعَفَّ|VF10|عفف|then he should refrain
+580|اِسْتَفْتَى|VF10|فتي|Then ask them / And they seek your ruling
+581|اِسْتَنْبَطَ|VF10|نبط|draw correct conclusion (from) it
+582|صَلِيَ|VF1|صلي|he will burn / Burn therein
+583|عَدَا|VF1|عدو|they transgressed
+584|فَقِهَ|VF1|فقه|(to) understand
+585|مَالَ|VF1|ميل|so (that) they (can) assault
+586|بَتَّكَ|VF2|بتك|so they will surely cut off
+587|بَطَّأَ|VF2|بطأ|lags behind
+588|حَكَّمَ|VF2|حكم|they make you judge
+589|رَاءَى|VF3|رأي|showing off
+590|أُطِيعَ|VF1|طوع|to be obeyed
+591|غَيَّرَ|VF2|غير|change / so they will surely change
+592|أَفْتَى|VF4|فتي|Explain to us / gives you the ruling
+593|مَنَّى|VF2|مني|and arouses desires in them
+594|أَوْصَى|VF4|وصي|they have made
+595|وَفَّقَ|VF2|وفق|will cause reconciliation
+596|أَطْعَمَ|VF4|طعم|He would have fed him / Who feeds
+597|أَطْفَأَ|VF4|طفأ|it (was) extinguished / extinguish
+598|أَغْرَى|VF4|غرو|So We aroused / We will let you overpower them
+599|أَقْسَمَ|VF4|قسم|will swear / swore
+600|أَوْقَدَ|VF4|وقد|So kindle / (which) is lit
+601|أُفِكَ|VF1|أفك|is deluded / were deluded
+602|اِسْتَحَقَّ|VF10|حقق|have a lawful right
+603|اُسْتُحْفِظَ|VF10|حفظ|they were entrusted
+604|اِصْطَادَ|VF8|صيد|then (you may) hunt
+605|غَسَلَ|VF1|غسل|then wash
+606|اِنْتَقَمَ|VF8|نقم|then will take retribution
+607|بَلَّغَ|VF2|بلغ|Convey / convey
+608|أَسِيَ|VF1|أسو|grieve / I grieve
+609|اِسْتَقْسَمَ|VF10|قسم|you seek division
+610|تَعَاوَنَ|VF6|عون|And help one another
+611|فَاضَ|VF1|فيض|overflowing
+612|حَارَبَ|VF3|حرب|warred / wage war
+613|ذَكَّى|VF2|ذكو|you slaughtered
+614|سَخِطَ|VF1|سخط|became angry / (are) enraged
+615|صَمَّ|VF1|صمم|and they became deaf
+616|صَنَعَ|VF1|صنع|And construct / make
+617|اِطَّلَعَ|VF8|طلع|Has he looked
+618|طَوَّعَ|VF2|طوع|Then prompted
+619|عَجَزَ|VF1|عجز|Am I unable
+620|عَزَّرَ|VF2|عزر|and honor him
+621|عَقَّدَ|VF2|عقد|you contracted
+622|عَمِيَ|VF1|عمي|(is) blind / so they became blind
+623|عُثِرَ|VF1|عثر|it is discovered
+624|قَرَّبَ|VF2|قرب|And he placed it near / that they may bring us near
+625|قَطَّعَ|VF2|قطع|so it cuts into pieces
+626|قَتَّلَ|VF2|قتل|and massacred completely / they be killed
+627|نَقَمَ|VF1|نقم|they were resentful
+628|وَاثَقَ|VF3|وثق|He bound you
+629|وَارَى|VF3|وري|was concealed / to hide
+630|يَئِسَ|VF1|يأس|(have) despaired / despairs
+631|بَحَثَ|VF1|بحث|it (was) scratching
+632|تَنَاهَى|VF6|نهي|forbidding each other
+633|تَاهَ|VF1|تيه|they will wander
+634|جَرَمَ|VF1|جرم|incite you
+635|حَبَسَ|VF1|حبس|detains it
+636|عَصَمَ|VF1|عصم|will protect you
+637|صَلَّبَ|VF2|صلب|they be crucified
+638|نُفِيَ|VF1|نفي|they be exiled
+639|أَوْقَعَ|VF4|وقع|cause
+640|أَثْمَرَ|VF4|ثمر|it bears fruit
+641|أَجَّلَ|VF2|أجل|You appointed / are (these) postponed
+642|أَجْرَمَ|VF4|جرم|committed crimes
+643|أَذاقَ|VF4|ذوق|so Allah made it taste / and make (you) taste 
+644|أَرْدَى|VF4|ردي|It has ruined you / so that they may ruin them
+645|أَسْرَفَ|VF4|سرف|transgresses / he should exceed
+646|أَفَلَ|VF1|أفل|it set
+647|أَنشَأَ|VF4|نشأ|(has) produced you / and brings up
+648|أَبْسَلَ|VF4|بسل|are given to destruction
+649|اِخْتَلَطَ|VF8|خلط|(is) joined
+650|اِسْتَخْلَفَ|VF10|خلف|He gave succession / and grant succession
+651|اسْتَعْجَلَ|VF10|عجل|of it would (wish to) hasten / And they ask you to hasten
+652|اِسْتَكْثَرَ|VF10|كثر|you have (misled) many / surely I could have multiplied
+653|اسْتَمَعَ|VF8|سمع|so listen / listened
+654|اِسْتَهْوَى|VF10|هوي|whom (has been) enticed
+655|اِشْتَمَلَ|VF8|شمل|contains
+656|اِقْتَدَى|VF8|قدو|you follow
+657|اِقْتَرَفَ|VF8|قرف|earns / and so that they may commit
+658|بَطَنَ|VF1|بطن|(is) concealed
+659|اِسْتَبَانَ|VF10|بين|so that becomes manifest
+660|تَضَرَّعَ|VF1|ضرع|they humbled themselves
+661|تَعَالَى|VF6|علو|and Exalted
+662|تَمَّ|VF1|تمم|so was completed
+663|جَحَدَ|VF1|جحد|reject / they rejected
+664|جَرَحَ|VF1|جرح|you committed
+665|جَنَّ|VF1|جنن|covered
+666|حَاقَ|VF1|حيق|but surrounded / encompasses
+667|خَرَقَ|VF1|خرق|he made a hole in it / and they falsely attribute
+668|خَوَّلَ|VF2|خول|He bestows on him
+669|ذَرَأَ|VF1|ذرأ|He produced / He multiplies you
+670|سَقَطَ|VF1|سقط|(it was made to) fall / they have fallen
+671|شَرَحَ|VF1|شرح|Expand / opens
+672|صَدَفَ|VF1|صدف|and turns away / turn away
+673|صَرَّفَ|VF2|صرف|We explain / We have explained
+674|صَغَا|VF1|صغو|And so that incline / (are) inclined
+675|طَرَدَ|VF1|طرد|send away / I drove them away
+676|ظَهَرَ|VF1|ظهر|(is) apparent / they gain dominance
+677|فَرَّطَ|VF2|فرط|fail
+678|فَصَّلَ|VF2|فصل|He (has) explained in detail / He explains
+679|فَطَرَ|VF1|فطر|created
+680|قَلَّبَ|VF2|قلب|twisting / and had upset
+681|كَشَفَ|VF1|كشف|Remove / He removes
+682|مَكَّنَ|VF2|مكن|has established me / and that He will surely establish
+683|نَأَى|VF1|نأي|and becomes remote / and they keep away
+684|وَجَّهَ|VF2|وجه|he directs him
+685|وُقِفَ|VF1|وقف|And stop them / they are made to stand
+686|وَكَّلَ|VF2|وكل|has been put in charge
+687|تَضَرَّعَ|VF5|ضرع|humble themselves
+688|جَهِلَ|VF1|جهل|(are) ignorant
+689|خَرَصَ|VF1|خرص|guess
+690|وَزَرَ|VF1|وزر|they bear
+691|سَبَّ|VF1|سبب|lest they insult
+692|وَصَفَ|VF1|وصف|they attribute
+693|تَصَعَّدَ|VF5|صعد|he (were) climbing
+694|طَارَ|VF1|طير|(that) flies
+695|لَعِبَ|VF1|لعب|and play / playing
+696|اِمْتَرَى|VF8|مري|disputing
+697|اِنْتَظَرَ|VF8|نظر|and wait / awaits
+698|أَشْعَرَ|VF4|شعر|will make you perceive
+699|أَبْلَغَ|VF4|بلغ|escort him / they have conveyed
+700|أَثْقَلَ|VF4|ثقل|she grows heavy
+701|أَخْلَدَ|VF4|خلد|adhered
+702|أَذَّنَ|VF2|أذن|And proclaim / Then will announce
+703|أَغْنَى|VF1|غني|(has) availed / they (had) lived
+704|أَغْوَى|VF4|غوي|let you go astray
+705|أَفَاقَ|VF4|فوق|he recovered
+706|أَقَلَّ|VF4|قلل|they have carried
+707|أَنْصَتَ|VF4|نصت|and pay attention
+708|أَوْرَثَ|VF4|ورث|And He caused you to inherit / He causes to inherit it
+709|أَغْشَى|VF4|غشو|He covers
+710|أَمْطَرَ|VF4|مطر|then (send) rain
+711|اِخْتَارَ|VF8|خير|And chose / and chooses
+712|اِدَّارَكَ|VF6|درك|is arrested / they had overtaken one another
+713|اِسْتَرْهَبَ|VF10|رهب|and terrified them
+714|اِسْتَضْعَفَ|VF10|ضعف|oppressing / were oppressed 
+715|اِسْتَعَاذَ|VF10|عوذ|then seek refuge
+716|اِسْتَقَرَّ|VF10|قرر|it remains
+717|تَطَيَّرَ|VF5|طير|they ascribe evil omens
+718|اِقْتَرَبَ|VF8|قرب|and draw near (to Allah) / come near 
+719|اِنْسَلَخَ|VF7|سلخ|but he detached
+720|اِنْبَجَسَ|VF7|بجس|Then gushed forth
+721|بَارَكَ|VF3|برك|Blessed is
+722|بَدَأَ|VF1|بدأ|He originated you / originates
+723|بَطَشَ|VF1|بطش|strike / (to) hold
+724|بَطَلَ|VF1|بطل|and became futile
+725|تَأَذَّنَ|VF5|أذن|declared
+726|تَبَارَكَ|VF6|برك|blessed
+727|تَجَلَّى|VF1|جلو|revealed (His) Glory
+728|تَغَشَّى|VF5|غشو|he covers her
+729|لَقِفَ|VF1|لقف|swallow(ed)
+730|أَرْجَى|VF4|رجو|Postpone him
+731|أَشْمَتَ|VF4|شمت|rejoice
+732|فُتِّحَ|VF2|فتح|be opened
+733|أَوْعَدَ|VF4|وعد|threatening
+734|ثَقُلَ|VF1|ثقل|(will be) heavy
+735|جَلَّى|VF2|جلو|it displays it / can reveal [it]
+736|حَقَّ|VF1|حقق|deserved  / and may be proved true
+737|حَيَّ|VF1|حيي|(were to) live / and (might) live
+738|خَبُثَ|VF1|خبث|is bad 
+739|خَرَّ|VF1|خرر|and fell down / and they fell down
+740|خَفَّ|VF1|خفف|(will be) light
+741|خَلَفَ|VF1|خلف|Take my place / Then succeeded
+742|دَلَّ|VF1|دلل|So he made both of them fall
+743|دَمَّرَ|VF2|دمر|Allah destroyed
+744|سَبَقَ|VF1|سبق|has preceded you / they can outstrip
+745|سَحَرَ|VF1|سحر|they bewitched
+746|سَكَتَ|VF1|سكت|was calmed
+747|سِيقَ|VF1|سوق|And (will) be driven / they were driven
+748|طَفِقَ|VF1|طفق|Then he began
+749|عَتَا|VF1|عتو|and (were) insolent
+750|عَجِبَ|VF1|عجب|And they wonder
+751|عَجِلَ|VF1|عجل|Were you impatient / make haste
+752|عَقَرَ|VF1|عقر|and hamstrung / Then they hamstrung
+753|قَاسَمَ|VF3|قسم|And he swore (to) both of them
+754|قَرَأَ|VF1|قرأ|Read / is recited
+755|كَثَّرَ|VF2|كثر|and He increased you
+756|كَادَ|VF1|كيد|scheme against me / So plot against me
+757|مُلِئَ|VF1|ملأ|surely, I will fill / and surely you would have been filled
+758|نَتَقَ|VF1|نتق|We raised
+759|نَزَغَ|VF1|نزغ|had caused discord / an evil suggestion comes to you
+760|اِسْتَدْرَجَ|VF10|درج|We will gradually lead them
+761|نَصَحَ|VF1|نصح|they (are) sincere
+762|نَكَثَ|VF1|نكث|breaks (his oath) / he breaks
+763|وَسْوَسَ|VF1|وسوس|Then whispered / whispers
+764|تَكَبَّرَ|VF5|كبر|are arrogant
+765|جَرَّ|VF1|جرر|dragging him
+766|خَصَفَ|VF1|خصف|(to) fasten
+767|سَبَتَ|VF1|سبت|they had Sabbath
+768|اِسْتَأْخَرَ|VF10|أخر|seek to delay
+769|اِسْتَقْدَمَ|VF10|قدم|seek to advance (it)
+770|طَلَبَ|VF1|طلب|seeking it
+771|عَرَشَ|VF1|عرش|erect
+772|عَكَفَ|VF1|عكف|devoted
+773|وَلَجَ|VF1|ولج|passes
+774|لَهَثَ|VF1|لهث|he lolls out his tongue
+775|نَحَتَ|VF1|نحت|carve
+776|أَقْصَرَ|VF4|قصر|they cease
+777|أَلْحَدَ|VF4|لحد|deviate
+778|مَسَّكَ|VF2|مسك|hold fast
+779|آوَى|VF4|أوي|then He sheltered you / gave shelter
+780|أَثْخَنَ|VF4|ثخن|he has battled strenuously
+781|أَسْمَعَ|VF4|سمع|And how clearly He hears / surely, He (would) have made them hear
+782|أَمْكَنَ|VF4|مكن|So He gave (you) power
+783|ثَبَتَ|VF1|ثبت|then be firm
+784|اِسْتَغَاثَ|VF10|غوث|And called him for help / they call for relief
+785|اِسْتَنْصَرَ|VF10|نصر|sought his help / they seek your help
+786|تَرَاءَى|VF6|رأي|came in sight / saw each other
+787|تَوَاعَدَ|VF6|وعد|you (had) made an appointment
+788|أَرْهَبَ|VF4|رهب|(to) terrify
+789|جَنَحَ|VF1|جنح|then you (also) incline / they incline
+790|حَالَ|VF1|حول|And came / comes
+791|خَانَ|VF1|خون|they have betrayed
+792|رَبَطَ|VF1|ربط|And to strengthen
+793|شَرَّدَ|VF2|شرد|disperse
+794|غَشَّى|VF2|غشو|So covered them / He covered you
+795|غَنِمَ|VF1|غنم|you obtain (as) spoils of war
+796|مَضَى|VF1|مضي|and has passed / and go on
+797|نَكَصَ|VF1|نكص|he turned away
+798|وَجِلَ|VF1|وجل|feel fear / be afraid
+799|تَخَطَّفَ|VF5|خطف|might do away with you
+800|رَكَمَ|VF1|ركم|and heap them
+801|أَثْبَتَ|VF4|ثبت|and confirms / that they restrain you
+802|أَحَقَّ|VF4|حقق|justify
+803|أَعْجَزَ|VF4|عجز|that can escape (from) Him / escape
+804|قَلَّلَ|VF2|قلل|and He made you (appear) as few
+805|أَسَّسَ|VF2|أسس|founded
+806|أَظْهَرَ|VF4|ظهر|and made it apparent / to manifest it
+807|أَعْطَى|VF4|عطو|gave / will give you
+808|أَعْقَبَ|VF4|عقب|So He penalized them
+809|أَوْضَعَ|VF4|وضع|and would have been active
+810|اِثَّاقَلَ|VF6|ثقل|you cling heavily
+811|اِسْتَأْذَنَ|VF10|أذن|ask your permission / (Would) not ask your permission
+812|اِسْتَجَارَ|VF10|جور|seek your protection
+813|اِسْتَحَبَّ|VF10|حبب|they prefer / love more
+814|اِسْتَقَامَ|VF10|قوم|So stand firm / take a straight way
+815|اِعْتَرَفَ|VF8|عرف|(who have) acknowledged
+816|غَلُظَ|VF1|غلظ|and be stern
+817|اِنْصَرَفَ|VF7|صرف|they turn away
+818|اِنْهَارَ|VF7|هور|so it collapsed
+819|بَايَعَ|VF3|بيع|then accept their pledge / pledge allegiance to you
+820|بَعُدَ|VF1|بعد|was long
+821|بَكَى|VF1|بكي|and let them weep
+822|بَنَى|VF1|بني|Construct / He constructed it
+823|كُوِيَ|VF1|كوي|and will be branded
+824|ثَبَّطَ|VF2|ثبط|so He made them lag behind
+825|حَادَّ|VF3|حدد|oppose / opposes
+826|خَلَطَ|VF1|خلط|They had mixed
+827|خَلَّى|VF2|خلو|then leave
+828|خُلِّفَ|VF2|خلف|were left behind
+829|رَحُبَ|VF1|رحب|(in spite) of its vastness
+830|زَاغَ|VF1|زيغ|swerved / deviated
+831|زَهَقَ|VF1|زهق|and perished
+832|سَاحَ|VF1|سيح|So move about
+833|ضَاقَ|VF1|ضيق|and felt straitened / (is) straitened
+834|ضَحِكَ|VF1|ضحك|So let them laugh
+835|طَعَنَ|VF1|طعن|and defame
+836|ظَاهَرَ|VF3|ظهر|backed them / they have supported
+837|عَمَرَ|VF1|عمر|will maintain / and built (on) it
+838|كَنَزَ|VF1|كنز|hoard
+839|مَرَدَ|VF1|مرد|They persist
+840|تَخَلَّفَ|VF5|خلف|they remain behind
+841|تَرَدَّدَ|VF5|ردد|they waver
+842|تَفَقَّهَ|VF5|فقه|that they may obtain understanding
+843|جَمَحَ|VF1|جمح|run wild
+844|دَانَ|VF1|دين|they acknowledge
+845|رَقَبَ|VF1|رقب|they do not regard (the ties)
+846|شَفَى|VF1|شفي|and will heal
+847|وَطِئَ|VF1|وطأ|they step
+848|اِعْتَذَرَ|VF8|عذر|They will make excuses
+849|غَاظَ|VF1|غيظ|that angers
+850|وَلِيَ|VF1|ولي|(are) close to you
+851|لَمَزَ|VF1|لمز|criticizes you / criticize
+852|أَجَارَ|VF4|جور|then grant him protection / protects
+853|حُمِيَ|VF1|حمي|it will be heated [on it]
+854|أَرْضَى|VF4|رضو|They satisfy you
+855|ضَاهَأَ|VF3|ضهأ|they imitate
+856|نَقَصَ|VF1|نقص|lessen / is lessened
+857|وَاطَأَ|VF3|وطأ|to adjust
+858|أَجْمَعَ|VF4|جمع|So you all resolve / and agreed
+859|أَدْرَى|VF4|دري|He (would) have made it known to you / will make you know
+860|أَسْلَفَ|VF4|سلف|it did previously / you sent before you
+861|أَعَادَ|VF4|عود|He repeats it / they will be returned
+862|أَكْرَهَ|VF4|كره|is forced / compels them
+863|اِزَّيَّنَ|VF5|زين|and is beautified
+864|لَفَتَ|VF1|لفت|to turn us away
+865|زَيَّلَ|VF2|زيل|Then We will separate
+866|سَيَّرَ|VF2|سير|enables you to travel
+867|شَدَّ|VF1|شدد|and harden / then bind firmly
+868|عَجَّلَ|VF2|عجل|Hasten / surely, He (would) have hastened
+869|قَدَّرَ|VF2|قدر|and measure precisely / and determined for it
+870|تَبَوَّأَ|VF5|بوأ|to settle / settled
+871|تَعَارَفَ|VF6|عرف|they will recognize each other
+872|رَهِقَ|VF1|رهق|(will) cover
+873|اِسْتَنْبَأَ|VF10|نبأ|And they ask you to inform
+874|عَزَبَ|VF1|عزب|escapes
+875|دَبَّرَ|VF2|دبر|disposing
+876|أَخْبَتَ|VF4|خبت|and humble themselves
+877|أَسْرَى|VF4|سري|So travel / took
+878|أَقْلَعَ|VF4|قلع|Withhold
+879|أَكْثَرَ|VF4|كثر|And (made) much
+880|أَلْزَمَ|VF4|لزم|and made them adhere
+881|أَنَابَ|VF4|نوب|turns back / turns
+882|أَوَى|VF1|أوي|retreated / then retreat
+883|أَوْجَسَ|VF4|وجس|and felt apprehension
+884|أَوْرَدَ|VF4|ورد|and lead them
+885|أُتْرِفَ|VF4|ترف|luxury they were given
+886|أَحْكَمَ|VF4|حكم|Allah will establish
+887|بَلَعَ|VF1|بلع|Swallow
+888|اِرْتَقَبَ|VF8|رقب|Then watch / And watch
+889|اِسْتَعْمَرَ|VF10|عمر|and settled you
+890|اِسْتَغْشَى|VF10|غشو|and covered themselves / they cover (themselves)
+891|اِعْتَرَى|VF8|عرو|have seized you
+892|اِبْتَأَسَ|VF8|بأس|(be) distressed / grieve
+893|رَكَنَ|VF1|ركن|incline / (would) have inclined
+894|اِزْدَرَى|VF8|زري|look down upon
+895|خَاطَبَ|VF3|خطب|address Me / address them
+896|رَجَمَ|VF1|رجم|they will stone you
+897|رَكِبَ|VF1|ركب|Embark / Embark
+898|سُعِدَ|VF1|سعد|were glad
+899|شَقِيَ|VF1|شقو|suffer / were wretched
+900|طَغَى|VF1|طغي|(has) transgressed / he will transgress
+901|عُمِّيَ|VF2|عمي|but (it) has been obscured
+902|غَاضَ|VF1|غيض|And subsided
+903|فَارَ|VF1|فور|and overflowed
+904|قَدَمَ|VF1|قدم|He will precede
+905|نَكِرَ|VF1|نكر|he felt unfamiliar of them
+906|وَلَدَ|VF1|ولد|he was born / He begets
+907|تَكَلَّمَ|VF5|كلم|speaks / they will speak
+908|ثَنَى|VF1|ثني|fold up
+909|اِلْتَفَتَ|VF8|لفت|look back
+910|خَالَفَ|VF3|خلف|oppose
+911|أُهْرِعَ|VF1|هرع|rushing
+912|آثَرَ|VF4|أثر|Allah has preferred you / but prefer
+913|بَرِحَ|VF1|برح|will I leave / we will cease
+914|اِسْتَخْلَصَ|VF10|خلص|I will select him
+915|شَكَا|VF1|شكو|I complain
+916|صَبَا|VF1|صبو|I might incline
+917|أَقْبَلَ|VF4|قبل|Draw near / And will approach
+918|أَكْبَرَ|VF4|كبر|they greatly admired him
+919|أَكْرَمَ|VF4|كرم|and is generous to him
+920|أَلْحَقَ|VF4|لحق|and join me
+921|اِدَّكَرَ|VF8|ذكر|and remembered
+922|اِسْتَخْرَجَ|VF10|خرج|he brought it out
+923|اِسْتَعْصَمَ|VF10|عصم|but he saved himself
+924|اِسْتَيْأَسَ|VF10|يأس|gave up hope / they despaired
+925|طَرَحَ|VF1|طرح|cast him
+926|اِكْتَالَ|VF8|كيل|they take a measure
+927|اِلْتَقَطَ|VF8|لقط|Then picked him up / will pick him
+928|بَرَّأَ|VF2|برأ|then Allah cleared him
+929|تَحَسَّسَ|VF5|حسس|and inquire
+930|زَرَعَ|VF1|زرع|You will sow
+931|عَبَرَ|VF1|عبر|interpret
+932|فَتِئَ|VF1|فتأ|you will not cease
+933|فَقَدَ|VF1|فقد|you miss / We are missing
+934|فَنَّدَ|VF2|فند|you think me weakened in mind
+935|جَهَّزَ|VF2|جهز|he had furnished them
+936|حَصَدَ|VF1|حصد|you reap
+937|حَصْحَصَ|VF1|حصحص|(is) manifest
+938|خَلَصَ|VF1|خلص|they secluded themselves
+939|رَاوَدَ|VF3|رود|they demanded from him
+940|سَرَقَ|VF1|سرق|stole / he steals 
+941|سَوَّلَ|VF2|سول|enticed
+942|شَغَفَ|VF1|شغف|he has impassioned her
+943|غَلَّقَ|VF2|غلق|And she closed
+944|قَدَّ|VF1|قدد|(is) torn
+945|لَامَ|VF1|لوم|but blame
+946|نَجَا|VF1|نجو|was saved
+947|مَارَ|VF1|مير|And we will get provision
+948|رَتَعَ|VF1|رتع|(to) enjoy
+949|عَصَرَ|VF1|عصر|they will press
+950|سَجَنَ|VF1|سجن|he be imprisoned / surely they should imprison him
+951|أُغِيثَ|VF4|غوث|will be given abundant rain / they will be relieved
+952|جَهَرَ|VF1|جهر|publicizes / proclaim
+953|سَالَ|VF1|سيل|and flows
+954|سَخَّرَ|VF2|سخر|and subjected
+955|صَلَحَ|VF1|صلح|(were) righteous
+956|صُدَّ|VF2|صدد|and they are hindered
+957|مَحَا|VF1|محو|(Is) eliminated
+958|مَكَثَ|VF1|مكث|So he stayed / remains
+959|أَنْكَرَ|VF4|نكر|deny / they deny it
+960|أَحْصَى|VF4|حصي|has enumerated it / and keep count
+961|أَسْكَنَ|VF4|سكن|He can cause the wind to become still / Lodge them
+962|اجْتُثَّ|VF8|جثث|uprooted
+963|جَنَبَ|VF1|جنب|and keep me away
+964|اشْتَدَّ|VF8|شدد|blows furiously
+965|شَخَصَ|VF1|شخص|will stare
+966|جَزِعَ|VF1|جزع|whether we show intolerance
+967|خَابَ|VF1|خيب|and disappointed
+968|زَالَ|VF1|زول|that should be moved / they cease
+969|عَدَّ|VF1|عدد|and counted them
+970|تَجَرَّعَ|VF5|جرع|He will sip it
+971|أَسَاغَ|VF4|سوغ|(to) swallowing it
+972|أَسْقَى|VF4|سقي|And they will be given to drink
+973|أَلْهَى|VF4|لهو|Diverts you / and diverted them
+974|خَفَضَ|VF1|خفض|And lower
+975|اسْتَرَقَ|VF8|سرق|steals
+976|صَدَعَ|VF1|صدع|So proclaim
+977|فَضَحَ|VF1|فضح|shame me
+978|سَلَكَ|VF1|سلك|then put / and inserted
+979|سُكِّرَ|VF2|سكر|have been dazzled
+980|ظَلَّ|VF1|ظلل|turns / and they were to continue
+981|قَنَطَ|VF1|قنط|despairs / they have despaired
+982|عَرَجَ|VF1|عرج|it will ascend / (to) ascend
+983|اِسْتَخَفَّ|VF10|خفف|So he bluffed / take you in light estimation
+984|اِشْتَهَى|VF8|شهو|they desire
+985|سَرَحَ|VF1|سرح|you take them out
+986|مَادَ|VF1|ميد|it should shake
+987|تَوَارَى|VF6|وري|He hides himself
+988|أَرَاحَ|VF4|روح|you bring them in
+989|أَسَامَ|VF4|سوم|you pasture your cattle
+990|خَسَفَ|VF1|خسف|He would have caused it to swallow us / Allah will cave
+991|عَاقَبَ|VF3|عقب|has retaliated / then retaliate
+992|نَفِدَ|VF1|نفد|surely (would be) exhausted / will be exhausted
+993|تَفَيَّأَ|VF5|فيأ|Incline
+994|جَأَرَ|VF1|جأر|cry for help
+995|دَسَّ|VF1|دسس|bury it
+996|اِسْتَعْتَبَ|VF10|عتب|will be asked to make amends
+997|أَجْلَبَ|VF4|جلب|and assault
+998|اِحْتَنَكَ|VF8|حنك|I will surely destroy
+999|أَسَاءَ|VF4|سوأ|does evil / did evil 
+1000|أَصْفَى|VF4|صفو|Then has your Lord chosen (for) you
+1001|اِجْتَمَعَ|VF8|جمع|they gathered together
+1002|تَبَّرَ|VF2|تبر|and to destroy
+1003|رَقِيَ|VF1|رقي|you ascend
+1004|قَفَا|VF1|قفو|pursue
+1005|نَهَرَ|VF1|نهر|repel them
+1006|تَهَجَّدَ|VF5|هجد|arise from sleep for prayer
+1007|بَذَّرَ|VF2|بذر|spend
+1008|خَافَتَ|VF3|خفت|be silent
+1009|أَسْقَطَ|VF4|سقط|Then cause to fall
+1010|جَاسَ|VF1|جوس|and they entered
+1011|خَبَا|VF1|خبو|it subsides
+1012|رَبَّى|VF2|ربو|they brought me up / we bring you up
+1013|شَارَكَ|VF3|شرك|and be a partner
+1014|عَلَا|VF1|علو|and surely would have overpowered / they had conquered
+1015|فَجَّرَ|VF2|فجر|causing it to gush forth
+1016|كَالَ|VF1|كيل|they give by measure (to) them
+1017|كَرَّمَ|VF2|كرم|You have honored / We have honored
+1018|نَزَلَ|VF1|نزل|it descended / descends
+1019|وَزَنَ|VF1|وزن|and weigh / they weigh (for) them
+1020|اِسْتَفَزَّ|VF10|فزز|And incite / drive them out
+1021|فَجَرَ|VF1|فجر|to give (the) lie
+1022|أَزْجَى|VF4|زجو|drives
+1023|أَنْغَضَ|VF4|نغض|Then they will shake
+1024|أَعَانَ|VF4|عون|and helped him / but assist me
+1025|عَابَ|VF1|عيب|I cause defect (in) it
+1026|أَعْثَرَ|VF4|عثر|We made known
+1027|أَغْفَلَ|VF4|غفل|We have made heedless
+1028|اسْتَطْعَمَ|VF10|طعم|they asked for food
+1029|اِنْطَلَقَ|VF7|طلق|And went forth / expresses well
+1030|بَادَ|VF1|بيد|will perish
+1031|ذَرَا|VF1|ذرو|it (is) scattered
+1032|تَزَاوَرَ|VF6|زور|inclining away
+1033|قَرَضَ|VF1|قرض|passing away from them
+1034|صَاحَبَ|VF3|صحب|But accompany them
+1035|مَارَى|VF3|مري|argue
+1036|حَفَّ|VF1|حفف|and We bordered them
+1037|حَلَّى|VF2|حلي|And they will be adorned / They will be adorned
+1038|سَاوَى|VF3|سوي|he (had) leveled
+1039|طَلَعَ|VF1|طلع|it rose / rising
+1040|غَرَبَ|VF1|غرب|it set / setting
+1041|نَشَرَ|VF1|نشر|Will spread
+1042|تَلَطَّفَ|VF5|لطف|and let him be cautious
+1043|شَوَى|VF1|شوي|(which) scalds
+1044|مَاجَ|VF1|موج|to surge
+1045|اِنْقَضَّ|VF7|قضض|collapse
+1046|أَبْدَلَ|VF4|بدل|would change for them
+1047|حَاوَرَ|VF3|حور|(was) talking with him
+1048|أَحْدَثَ|VF4|حدث|it may cause
+1049|أَدْحَضَ|VF4|دحض|to refute
+1050|أَرْهَقَ|VF4|رهق|he would overburden them
+1051|ضَيَّفَ|VF2|ضيف|offer them hospitality
+1052|غَادَرَ|VF3|غدر|leaves
+1053|هَيَّأَ|VF2|هيأ|and facilitate / and will facilitate
+1054|أَشَارَ|VF4|شور|Then she pointed
+1055|اشْتَعَلَ|VF8|شعل|and flared
+1056|اِصْطَبَرَ|VF8|صبر|and be constant
+1057|اِنْتَبَذَ|VF8|نبذ|she withdrew
+1058|اِنْشَقَّ|VF7|شقق|and has split
+1059|أَزَّ|VF1|أزز|inciting them
+1060|قَرَّ|VF1|قرر|and cool / may be cooled
+1061|تَمَثَّلَ|VF5|مثل|then he assumed for her the likeness
+1062|تَنَزَّلَ|VF5|نزل|Descends
+1063|سَاقَطَ|VF3|سقط|it will drop
+1064|هَزَّ|VF1|هزز|And shake
+1065|يَسَّرَ|VF2|يسر|And ease / He made easy for him
+1066|اِنْبَغَى|VF7|بغي|is appropriate
+1067|تَوَكَّأَ|VF5|وكأ|I lean
+1068|أَعْجَلَ|VF4|عجل|made you hasten
+1069|هَشَّ|VF1|هشش|and I bring down leaves
+1070|خَلَعَ|VF1|خلع|so remove
+1071|اسْتَعْلَى|VF10|علو|overcomes
+1072|اصْطَنَعَ|VF8|صنع|And I (have) chosen you
+1073|ضَمَّ|VF1|ضمم|And draw near
+1074|بَصُرَ|VF1|بصر|they perceive
+1075|جَاعَ|VF1|جوع|you will be hungry
+1076|رَدِيَ|VF1|ردي|lest you perish
+1077|تَزَكَّى|VF5|زكو|purifies himself / he purifies
+1078|ضَحِيَ|VF1|ضحو|exposed to the sun's heat
+1079|ظَمِئَ|VF1|ظمأ|will suffer from thirst
+1080|عَرِيَ|VF1|عري|you will be unclothed
+1081|وَنَى|VF1|وني|slacken
+1082|حَرَّقَ|VF2|حرق|Burn him
+1083|خَشَعَ|VF1|خشع|And (will be) humbled / become humble
+1084|رَعَى|VF1|رعي|and pasture / they observed it
+1085|طَالَ|VF1|طول|Then, did seem long
+1086|عَنَا|VF1|عنو|And (will be) humbled
+1087|غَوَى|VF1|غوي|and erred
+1088|قَذَفَ|VF1|قذف|and cast / projects
+1089|خَزِيَ|VF1|خزي|and disgraced
+1090|ذَلَّ|VF1|ذلل|we were humiliated
+1091|نَسَفَ|VF1|نسف|Will blast them
+1092|تَخَافَتَ|VF6|خفت|They are murmuring
+1093|فَرَطَ|VF1|فرط|he will hasten
+1094|خُيِّلَ|VF2|خيل|seemed
+1095|أَسْحَتَ|VF4|سحت|lest He will destroy you
+1096|آذَنَ|VF4|أذن|I (have) announced to you / We announce (to) You
+1097|أَنْشَرَ|VF4|نشر|He will resurrect him / raise (the dead)
+1098|اِرْتَضَى|VF8|رضو|He approves
+1099|فَتَقَ|VF1|فتق|then We parted them
+1100|فَهَّمَ|VF2|فهم|And We gave understanding of it
+1101|قَصَمَ|VF1|قصم|We (have) shattered
+1102|طَوَى|VF1|طوي|We will fold
+1103|نَفَشَ|VF1|نفش|pastured
+1104|نُكِسَ|VF1|نكس|they were turned
+1105|وَرَدَ|VF1|ورد|he came / they (would) have come to it
+1106|دَمَغَ|VF1|دمغ|and it breaks its head
+1107|رَكَضَ|VF1|ركض|Strike / were fleeing
+1108|سَبَحَ|VF1|سبح|floating
+1109|اسْتَحْسَرَ|VF10|حسر|they tire
+1110|غَاصَ|VF1|غوص|would dive
+1111|فَتَرَ|VF1|فتر|they slacken
+1112|كَلَأَ|VF1|كلأ|(can) protect you
+1113|نَسَلَ|VF1|نسل|descend
+1114|نَطَقَ|VF1|نطق|(which) speaks / speak
+1115|صُحِبَ|VF1|صحب|can be protected
+1116|أَهَانَ|VF4|هون|(has) humiliated me / Allah humiliates
+1117|اِهْتَزَّ|VF8|هزز|it gets stirred / moving
+1118|ذَهَلَ|VF1|ذهل|will forget
+1119|تَمَنَّى|VF1|مني|he recited / (had) wished
+1120|رَبَا|VF1|ربو|to increase
+1121|صَبَّ|VF1|صبب|So poured / Will be poured
+1122|هُدِّمَ|VF2|هدم|surely (would) have been demolished
+1123|وَجَبَ|VF1|وجب|are down
+1124|اِسْتَنْقَذَ|VF10|نقذ|they (could) take it back
+1125|سَطَا|VF1|سطو|attack
+1126|سَلَبَ|VF1|سلب|snatched away from them
+1127|دَافَعَ|VF3|دفع|defends
+1128|صُهِرَ|VF1|صهر|Will be melted
+1129|عَظَّمَ|VF2|عظم|honors
+1130|نَازَعَ|VF3|نزع|So let them not dispute with you
+1131|خَسَأَ|VF1|خسأ|Remain despised
+1132|لَفَحَ|VF1|لفح|Will burn
+1133|نَبَتَ|VF1|نبت|(which) produces
+1134|لَجَّ|VF1|لجج|surely they would persist
+1135|تَفَضَّلَ|VF5|فضل|assert (his) superiority
+1136|جَلَدَ|VF1|جلد|[then] flog
+1137|تَقَلَّبَ|VF5|قلب|will turn about
+1138|اِسْتَأْنَسَ|VF10|أنس|you have asked permission
+1139|شَاعَ|VF1|شيع|(should) spread
+1140|زَكَا|VF1|زكو|(would) have been pure
+1141|كَاتَبَ|VF3|كتب|then give them (the) writing
+1142|اِئْتَلَى|VF8|ألو|let swear
+1143|تَسَلَّلَ|VF5|سلل|slip away
+1144|حَافَ|VF1|حيف|Allah will be unjust
+1145|غَضَّ|VF1|غضض|and lower / they should lower
+1146|اِكْتَتَبَ|VF8|كتب|which he has had written
+1147|رَتَّلَ|VF2|رتل|and recite
+1148|لَقَّى|VF2|لقي|and will cause them to meet / it is granted
+1149|مَرَجَ|VF1|مرج|(has) released
+1150|بَاتَ|VF1|بيت|spend (the) night
+1151|خَلَدَ|VF1|خلد|and he will abide forever
+1152|زَنَى|VF1|زني|commit unlawful sexual intercourse
+1153|عَبَأَ|VF1|عبأ|will care
+1154|قَتَرَ|VF1|قتر|and are not stingy
+1155|أَزْلَفَ|VF4|زلف|And We brought near / And (will be) brought near
+1156|اِنْتَصَرَ|VF8|نصر|so help / defends himself
+1157|اِنْفَلَقَ|VF7|فلق|So it parted
+1158|بُرِّزَ|VF2|برز|And (will be) made manifest
+1159|عَبَثَ|VF1|عبث|amusing yourselves
+1160|عَبَّدَ|VF2|عبد|you have enslaved
+1161|فَرَّ|VF1|فرر|will flee / So flee
+1162|كُبْكِبَ|VF1|كبكب|Then they will be overturned
+1163|مَرِضَ|VF1|مرض|I am ill
+1164|هَامَ|VF1|هيم|[they] roam
+1165|أَتْقَنَ|VF4|تقن|perfected
+1166|أَوْزَعَ|VF4|وزع|Grant me (the) power
+1167|اِسْتَيْقَنَ|VF10|يقن|that may be certain
+1168|تَبَسَّمَ|VF5|بسم|So he smiled 
+1169|اِصْطَلَى|VF8|صلي|warm yourselves
+1170|تَفَقَّدَ|VF5|فقد|And he inspected
+1171|تَقَاسَمَ|VF6|قسم|Swear to each other
+1172|رَدِفَ|VF1|ردف|close behind
+1173|فَزِعَ|VF1|فزع|and will be terrified / they will be terrified
+1174|كُبَّ|VF1|كبب|will be cast down
+1175|نَكَّرَ|VF2|نكر|Disguise
+1176|حَطَمَ|VF1|حطم|lest not crush you
+1177|عَقَّبَ|VF2|عقب|look back
+1178|وَزَعَ|VF1|وزع|(were) set in rows
+1179|اِسْتَأْجَرَ|VF10|أجر|Hire him
+1180|بَطِرَ|VF1|بطر|which exulted
+1181|أَجَرَ|VF1|أجر|you serve me
+1182|ذَادَ|VF1|ذود|keeping back
+1183|تَطَاوَلَ|VF6|طول|and prolonged
+1184|نَاءَ|VF1|نوأ|would burden
+1185|تَوَجَّهَ|VF5|وجه|he turned his face
+1186|شَقَّ|VF1|شقق|make it difficult / We cleaved
+1187|صَدَّقَ|VF2|صدق|found true / who will confirm me
+1188|وَصَّلَ|VF2|وصل|We have conveyed
+1189|وَكَزَ|VF1|وكز|so Musa struck him with his fist
+1190|اِئْتَمَرَ|VF8|أمر|and consult / are taking counsel
+1191|تَرَقَّبَ|VF5|رقب|(and) was vigilant
+1192|اِسْتَصْرَخَ|VF10|صرخ|cried out to him for help
+1193|جُبِيَ|VF1|جبي|are brought
+1194|أَصْدَرَ|VF4|صدر|take away
+1195|خَطَّ|VF1|خطط|(did) you write it
+1196|قُلِبَ|VF1|قلب|you will be returned
+1197|أَبْدَأَ|VF4|بدأ|Allah originates
+1198|اِنْتَشَرَ|VF8|نشر|then disperse
+1199|أَمْسَى|VF4|مسو|you reach the evening
+1200|تَصَدَّعَ|VF5|صدع|they will be divided
+1201|مَهَدَ|VF1|مهد|they are preparing
+1202|أَبْلَسَ|VF4|بلس|will (be in) despair
+1203|حُبِرَ|VF1|حبر|will be delighted
+1204|أَسْبَغَ|VF4|سبغ|and amply bestowed
+1205|قَصَدَ|VF1|قصد|And be moderate
+1206|صَعَّرَ|VF2|صعر|turn
+1207|تَجَافَى|VF1|جفو|Forsake
+1208|أَحْبَطَ|VF4|حبط|so Allah made worthless / and He will make worthless
+1209|أَشْفَقَ|VF4|شفق|and they feared / Are you afraid
+1210|أَفَاءَ|VF4|فيأ|Allah has given
+1211|أَسَرَ|VF1|أسر|and you took captive
+1212|تَبَرَّجَ|VF5|برج|display yourselves
+1213|خَضَعَ|VF1|خضع|be soft
+1214|دَارَ|VF1|دور|revolving
+1215|تَعَمَّدَ|VF5|عمد|intended
+1216|اِعْتَدَّ|VF8|عدد|(to) count concerning them
+1217|وَدَعَ|VF1|ودع|and disregard
+1218|دَنَا|VF1,4|دنو|he approached
+1219|زَوَّجَ|VF2|زوج|He grants them
+1220|سَلَقَ|VF1|سلق|they smite you
+1221|عَزَلَ|VF1|عزل|you (had) set aside 
+1222|اِسْتَنْكَحَ|VF10|نكح|marry her 
+1223|جَاوَرَ|VF3|جور|they will remain your neighbors
+1224|أَسَالَ|VF4|سيل|and We caused to flow
+1225|أَلَانَ|VF4|لين|And We made pliable
+1226|أَوَّبَ|VF2|أوب|Repeat praises
+1227|بَاعَدَ|VF3|بعد|lengthen (the distance)
+1228|فُزِّعَ|VF2|فزع|fear is removed
+1229|مَزَّقَ|VF2|مزق|you have disintegrated / and We dispersed them
+1230|جَازَى|VF3|جزي|We recompense
+1231|بَارَ|VF1|بور|(will) perish
+1232|اِصْطَرَخَ|VF8|صرخ|will cry
+1233|صَعِدَ|VF1|صعد|ascends
+1234|اِمْتَازَ|VF8|ميز|But stand apart
+1235|ذُلِّلَ|VF2|ذلل|And We have tamed them / and will hang low
+1236|عَزَّزَ|VF2|عزز|so We strengthened them
+1237|مَسَخَ|VF1|مسخ|surely, We (would have) transformed them
+1238|سَلَخَ|VF1|سلخ|We withdraw
+1239|نَكَّسَ|VF2|نكس|We reverse him
+1240|اِدَّعَى|VF8|دعو|they call for
+1241|أَبَقَ|VF1|أبق|he ran away
+1242|اِلْتَقَمَ|VF8|لقم|Then swallowed him
+1243|تَلَّ|VF1|تلل|and he put him down
+1244|تَنَاصَرَ|VF6|نصر|you help one another
+1245|رَاغَ|VF1|روغ|Then he turned
+1246|سَاهَمَ|VF3|سهم|Then he drew lots
+1247|طَافَ|VF1|طوف|So there came / Will be circulated
+1248|فَدَى|VF1|فدي|And We ransomed him
+1249|زَفَّ|VF1|زفف|hastening
+1250|تَسَمَّعَ|VF5|سمع|they may listen
+1251|اِسْتَسْخَرَ|VF10|سخر|they mock
+1252|أُنْزِفَ|VF4|نزف|will be intoxicated
+1253|أَكْفَلَ|VF4|كفل|Entrust her to me
+1254|حَنِثَ|VF1|حنث|break (your) oath
+1255|تَسَوَّرَ|VF5|سور|they climbed over the wall
+1256|أَشَطَّ|VF4|شطط|be unjust
+1257|عَزَّ|VF1|عزز|and he overpowered me
+1258|لَاتَ|VF1|لوت|when there (was) no longer
+1259|اِرْتَقَى|VF8|رقي|Then let them ascend
+1260|أَشْرَقَ|VF4|شرق|And (will) shine
+1261|اِشْمَأَزَّ|VF8|شمز|shrink with aversion
+1262|اِقْشَعَرَّ|VF4|قشعر|Shiver
+1263|صَعِقَ|VF1|صعق|then (will) fall dead / they will faint
+1264|كَوَّرَ|VF2|كور|He wraps
+1265|اِحْتَسَبَ|VF8|حسب|he thinks / taken into account
+1266|هَاجَ|VF1|هيج|they wither
+1267|فَوَّضَ|VF2|فوض|and I entrust
+1268|مَرِحَ|VF1|مرح|be insolent
+1269|تَحَاجَّ|VF6|حجج|they will dispute
+1270|سَجَرَ|VF1|سجر|they will be burned
+1271|سُحِبَ|VF1|سحب|they will be dragged
+1272|أَبْشَرَ|VF4|بشر|but receive the glad tidings
+1273|أَنْطَقَ|VF4|نطق|Allah made us speak
+1274|لَغِيَ|VF1|لغو|and make noise
+1275|اِسْتَتَرَ|VF8|ستر|covering yourselves
+1276|قَيَّضَ|VF2|قيض|And We have destined / We appoint
+1277|صَارَ|VF1|صير|reach
+1278|تَمَارَى|VF1,3|مري|but they disputed / dispute
+1279|شَرَعَ|VF1|شرع|He has ordained / who have ordained
+1280|أَوْبَقَ|VF4|وبق|He could destroy them
+1281|آسَفَ|VF4|أسف|they angered Us
+1282|أَبْرَمَ|VF4|برم|have they determined
+1283|لَذَّ|VF1|لذذ|and delights
+1284|قَسَمَ|VF1|قسم|distribute
+1285|اِتَّكَأَ|VF8|وكأ|they recline
+1286|عَشَا|VF1|عشو|turns away
+1287|أَبَانَ|VF4|بين|clear
+1288|فَتَّرَ|VF2|فتر|will it subside
+1289|لَاقَى|VF3|لقي|they meet
+1290|نَشَّأَ|VF2|نشأ|is brought up
+1291|عَتَلَ|VF1|عتل|and drag him
+1292|غَلَى|VF1|غلي|it will boil
+1293|اِجْتَرَحَ|VF8|جرح|commit
+1294|اِسْتَنْسَخَ|VF10|نسخ|transcribe
+1295|عَيِيَ|VF1|عيي|tired
+1296|تَجَاوَزَ|VF6|جوز|and We will overlook
+1297|أَسْخَطَ|VF4|سخط|angered
+1298|أَصَمَّ|VF4|صمم|so He made them deaf
+1299|عَرَّفَ|VF2|عرف|He has made it known
+1300|تَغَيَّرَ|VF5|غير|changes
+1301|وَتَرَ|VF1|وتر|will deprive you
+1302|أَحْفَى|VF4|حفو|and press you
+1303|آزَرَ|VF4|أزر|then strengthens it
+1304|أَظْفَرَ|VF4|ظفر|He gave you victory
+1305|اِسْتَغْلَظَ|VF10|غلظ|then it becomes thick
+1306|تَزَيَّلَ|VF5|زيل|they had been apart
+1307|تَقَدَّمَ|VF5|قدم|preceded / proceed
+1308|وَقَّرَ|VF2|وقر|and respect him
+1309|شَغَلَ|VF1|شغل|Kept us busy
+1310|اِمْتَحَنَ|VF8|محن|Allah has tested / then examine them
+1311|تَجَسَّسَ|VF5|جسس|spy
+1312|تَنَابَزَ|VF6|نبز|call each other
+1313|حَبَّبَ|VF2|حبب|has endeared
+1314|كَرَّهَ|VF2|كره|and has made hateful
+1315|اِغْتَابَ|VF8|غيب|backbite
+1316|لَاتَ|VF1|ليت|He will deprive you
+1317|أَطْغَى|VF4|طغي|I made him transgress
+1318|اِمْتَلَأَ|VF8|ملأ|you filled
+1319|حَادَ|VF1|حيد|avoiding
+1320|نَقَّبَ|VF2|نقب|so they explored
+1321|لَفَظَ|VF1|لفظ|he utters
+1322|تَوَاصَى|VF6|وصي|Have they transmitted it to them
+1323|صَكَّ|VF1|صكك|and struck
+1324|فَرَشَ|VF1|فرش|We have spread it
+1325|هَجَعَ|VF1|هجع|sleep
+1326|أَلَتَ|VF1|ألت|We will deprive them
+1327|تَقَوَّلَ|VF5|قول|He has made it up
+1328|مَارَ|VF1|مور|will shake
+1329|دَعَّ|VF1|دعع|repulses / they will be thrust
+1330|أَبْكَى|VF4|بكي|and makes (one) weep
+1331|أَزِفَ|VF1|أزف|Has approached
+1332|أَضْحَكَ|VF4|ضحك|makes (one) laugh
+1333|أَكْدَى|VF4|كدي|and withheld
+1334|تَدَلَّى|VF1|دلو|and came down
+1335|أَمْنَى|VF4|مني|emitted
+1336|اُزْدُجِرَ|VF8|زجر|and he was repelled
+1337|تَعَاطَى|VF1|عطو|and he took
+1338|صَبَّحَ|VF2|صبح|seized them in the morning
+1339|نَفَذَ|VF1|نفذ|then pass
+1340|فَرَغَ|VF1|فرغ|Soon We will attend / you have finished
+1341|طَمَثَ|VF1|طمث|has touched them
+1342|أَخْسَرَ|VF4|خسر|they give less
+1343|بُسَّ|VF1|بسس|And will be crumbled
+1344|حَرَثَ|VF1|حرث|you sow
+1345|تَفَكَّهَ|VF5|فكه|wondering
+1346|أَوْرَى|VF4|وري|you ignite
+1347|رُجَّ|VF1|رجج|will be shaken
+1348|تَخَيَّرَ|VF5|خير|they select
+1349|صُدِّعَ|VF2|صدع|they will get headache
+1350|اِبْتَدَعَ|VF8|بدع|they innovated 
+1351|اِلْتَمَسَ|VF8|لمس|and seek
+1352|سَابَقَ|VF3|سبق|Race
+1353|بَرَأَ|VF1|برأ|We bring it into existence
+1354|اِقْتَبَسَ|VF8|قبس|we may acquire
+1355|أَنَى|VF1|أني|come (the) time
+1356|نَشَزَ|VF1|نشز|Rise up
+1357|اِشْتَكَى|VF8|شكو|and she directs her complaint
+1358|تَفَسَّحَ|VF5|فسح|Make room
+1359|تَنَاجَى|VF6|نجو|but hold secret counsel / and they hold secret counsels
+1360|نَاجَى|VF3|نجو|you privately consult
+1361|تَمَاسَّ|VF6|مسس|they touch each other
+1362|فَسَحَ|VF1|فسح|Allah will make room / then make room
+1363|حَادَّ|VF3|حدد|oppose
+1364|أَوْجَفَ|VF4|وجف|you made expedition
+1365|اِعْتَبَرَ|VF8|عبر|So take a lesson
+1366|أَخْرَبَ|VF4|خرب|they destroyed
+1367|عَادَى|VF3|عدو|you have been enemies
+1368|اِفْتَرَى|VF1|فري|they invent it
+1369|لَوَّى|VF2|لوي|They turn aside
+1370|اِسْتَغْنَى|VF10|غني|And can do without them
+1371|تَعَاسَرَ|VF6|عسر|you disagree
+1372|ضَيَّقَ|VF2|ضيق|to distress
+1373|فَارَقَ|VF3|فرق|part with them
+1374|حَاضَ|VF1|حيض|[they] menstruated
+1375|أَعْظَمَ|VF4|عظم|and make great
+1376|تَمَيَّزَ|VF5|ميز|bursts
+1377|تَنَادَى|VF1|ندي|And they called one another
+1378|وَسَمَ|VF1|وسم|We will brand him
+1379|تَلَاوَمَ|VF6|لوم|blaming each other
+1380|اِسْتَثْنَى|VF10|ثني|making exception
+1381|سَطَرَ|VF1|سطر|they write
+1382|صَرَمَ|VF1|صرم|to pluck its fruit
+1383|أَدْهَنَ|VF4|دهن|so they would compromise
+1384|أَزْلَقَ|VF4|زلق|surely make you slip
+1385|وَعَى|VF1|وعي|and would be conscious of it
+1386|دُكَّ|VF1|دكك|and crushed / is leveled
+1387|صَلَّى|VF2|صلي|burn him
+1388|حَضَّ|VF1|حضض|feel the urge
+1389|أَدْبَرَ|VF4|دبر|turned his back
+1390|أَوْعَى|VF4|وعي|and hoarded / they keep within themselves
+1391|بُصِّرَ|VF2|بصر|They will be made to see each other
+1392|أَوْفَضَ|VF4|وفض|hastening
+1393|تَحَرَّى|VF1|حري|have sought
+1394|تَبَتَّلَ|VF5|بتل|and devote yourself
+1395|رَجَفَ|VF1|رجف|will quake
+1396|تَيَسَّرَ|VF5|يسر|is easy
+1397|مَهَّلَ|VF2|مهل|and allow them respite 
+1398|أَسْفَرَ|VF4|سفر|it brightens
+1399|بَسَرَ|VF1|بسر|and scowled
+1400|أَبْقَى|VF4|بقي|it lets remain
+1401|عَبَسَ|VF1|عبس|he frowned
+1402|فَكَّرَ|VF2|فكر|thought
+1403|مَهَّدَ|VF2|مهد|And I spread
+1404|نُقِرَ|VF1|نقر|is blown
+1405|أُثِرَ|VF1|أثر|imitated
+1406|اِلْتَفَّ|VF8|لفف|And is wound
+1407|بَرِقَ|VF1|برق|is dazzled
+1408|حَرَّكَ|VF2|حرك|move
+1409|تَمَطَّى|VF5|مطو|swaggering
+1410|أُقِّتَ|VF2|وقت|are gathered to their appointed time
+1411|فُرِجَ|VF1|فرج|is cleft asunder
+1412|أَرْسَى|VF1|رسو|He made them firm
+1413|أَغْطَشَ|VF4|غطش|And He darkened
+1414|دَحَا|VF1|دحو|He spread it
+1415|أَقْبَرَ|VF4|قبر|and provides a grave for him
+1416|أَكْفَرَ|VF4|كفر|ungrateful is he
+1417|تَصَدَّى|VF5|صدي|give attention
+1418|تَلَهَّى|VF1|لهو|(are) distracted
+1419|اِنْكَدَرَ|VF7|كدر|fall, losing their luster
+1420|تَنَفَّسَ|VF5|نفس|it breathes
+1421|سُجِّرَ|VF2|سجر|are made to overflow
+1422|سُعِّرَ|VF2|سعر|is set ablaze
+1423|عَسْعَسَ|VF1|عسعس|it departs
+1424|عُطِّلَ|VF2|عطل|(are) left untended
+1425|كُشِطَ|VF1|كشط|is stripped away
+1426|اِنْتَثَرَ|VF8|نثر|scatter
+1427|اِنْفَطَرَ|VF7|فطر|(is) cleft asunder
+1428|بُعْثِرَ|VF1|بعثر|will be scattered
+1429|رَكَّبَ|VF2|ركب|He assembled you
+1430|ثُوِّبَ|VF2|ثوب|been rewarded
+1431|رَانَ|VF1|رين|(the) stain has covered
+1432|تَغَامَزَ|VF6|غمز|they winked at one another
+1433|تَنَافَسَ|VF6|نفس|let aspire
+1434|اِسْتَوْفَى|VF10|وفي|they take in full
+1435|اِتَّسَقَ|VF8|وسق|it becomes full
+1436|تَخَلَّى|VF5|خلو|and becomes empty
+1437|وَسَقَ|VF1|وسق|it envelops
+1438|حَارَ|VF1|حور|he would return
+1439|أَمْهَلَ|VF4|مهل|Give respite to them 
+1440|أَقْرَأَ|VF4|قرأ|We will make you recite
+1441|تَجَنَّبَ|VF5|جنب|And will avoid it
+1442|سُطِحَ|VF1|سطح|it is spread out
+1443|نُصِبَ|VF1|نصب|then labor hard
+1444|أَسْمَنَ|VF4|سمن|it nourishes
+1445|تَحَاضَّ|VF6|حضض|you feel the urge
+1446|جَابَ|VF1|جوب|carved out
+1447|نَعَّمَ|VF2|نعم|and favors him
+1448|سَرَى|VF1|سري|it passes
+1449|أَوْثَقَ|VF4|وثق|will bind
+1450|اِقْتَحَمَ|VF8|قحم|he has attempted
+1451|أَلْهَمَ|VF4|لهم|And He inspired it
+1452|اِنْبَعَثَ|VF7|بعث|(was) sent forth
+1453|دَسَّى|VF1|دسو|buries it
+1454|دَمْدَمَ|VF1|دمدم|So destroyed
+1455|طَحَا|VF1|طحو|spread it
+1456|تَرَدَّى|VF5|ردي|he falls
+1457|تَلَظَّى|VF1|لظي|blazing
+1458|جُنِّبَ|VF2|جنب|But will be removed from it
+1459|قَهَرَ|VF1|قهر|oppress
+1460|سَجَا|VF1|سجو|it covers with darkness
+1461|قَلَى|VF1|قلي|He is displeased
+1462|وَدَّعَ|VF2|ودع|has forsaken you
+1463|أَنْقَضَ|VF4|نقض|weighed upon
+1464|سَفَعَ|VF1|سفع|surely We will drag him
+1465|صَدَرَ|VF1|صدر|will proceed
+1466|حُصِّلَ|VF2|حصل|And is made apparent
+1467|وَسَطَ|VF1|وسط|Then penetrate (in the) center
+1468|زَارَ|VF1|زور|you visit
+1469|عَدَّدَ|VF2|عدد|and counts it
+1470|نَحَرَ|VF1|نحر|and sacrifice
+1471|تَبَّ|VF1|تبب|and perish he
+1472|وَقَبَ|VF1|وقب|it spreads

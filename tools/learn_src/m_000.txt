@@ -1,0 +1,200 @@
+0|to bestow a favour on|t
+1|to seek help|t
+2|to worship|t
+3|to guide|t
+4|to give, bring|t
+5|to believe|i
+6|to refuse|i
+7|to see clearly, to make see|t
+8|to complete, perfect|t
+9|to bring|t
+10|to follow up with, to cause to follow|t
+11|to stir up, raise|t
+12|to surround, encompass|t
+13|to make lawful, permit|t
+14|to love|t
+15|to do good|i
+16|to give life to|t
+17|to take, seize|t
+18|to bring out, take out|t
+19|to err, make a mistake|i
+20|to break (a promise)|t
+21|to let down, to lower|t
+22|to permit, give leave|i
+23|to want, intend|t
+24|to show|t
+25|to be more, to take interest|t
+26|to send|t
+27|to make slip|t
+28|to keep secret, conceal|t
+29|to submit, surrender|i
+30|to associate (partners with)|t
+31|to make (someone) witness|t
+32|to befall, strike, hit|t
+33|to set right, reconcile|t
+34|to light up, illuminate|i
+35|to waste, neglect|t
+36|to lead astray|t
+37|to obey|t
+38|to become dark|i
+39|to prepare|t
+40|to please, impress|t
+41|to declare openly|t
+42|to put in difficulty|t
+43|to pour forth, depart|i
+44|to pour out|t
+45|to spread corruption, ruin|t
+46|to succeed, prosper|i
+47|to establish, set up|t
+48|to affirm, acknowledge|t
+49|to lend|t
+50|to eat|t
+51|to complete, perfect|t
+52|to conceal, hide in the heart|t
+53|to find|t
+54|to throw, cast|t
+55|to cause to die|t
+56|to command, order|t
+57|to be secure, to feel safe|i
+58|to hold, hold back|t
+59|to save, rescue|t
+60|to warn|t
+61|to send down, reveal|t
+62|to make (someone) forget|t
+63|to spend|t
+64|to inform|t
+65|to cause to grow|t
+66|to destroy|t
+67|to fulfil, pay in full|t
+68|to strengthen, support|t
+69|to respond, answer|t
+70|to be besieged, to be prevented|t
+71|to hide, conceal|t
+72|to make (someone) drink in|t
+73|to drown|t
+74|to dedicate, invoke (a name over)|t
+75|to be entrusted|t
+76|to seek|t
+77|to test, try|t
+78|to follow|t
+79|to take (as)|t
+80|to fear, be mindful of|t
+81|to burn, be burnt|i
+82|to differ|i
+83|to dispute, quarrel|i
+84|to doubt|i
+85|to turn back|i
+86|to race|i
+87|to respond, answer a call|i
+88|to ask for water|t
+89|to call to witness|t
+90|to be able|i
+91|to ask forgiveness|t
+92|to seek victory|t
+93|to be arrogant|i
+94|to hold fast|i
+95|to be equal, to settle on|i
+96|to kindle (a fire)|t
+97|to be easy, to be obtainable|i
+98|to mock|t
+99|to buy, purchase|t
+100|to choose|t
+101|to be compelled by necessity|t
+102|to be at ease, to be content|i
+103|to transgress|i
+104|to withdraw, keep away from|t
+105|to perform the Umrah|t
+106|to scoop up, take (with the hand)|t
+107|to ransom|t
+108|to fight one another|i
+109|to earn, acquire|t
+110|to refrain, stop|i
+111|to gush forth|i
+112|to turn back, turn over|i
+113|to be guided|i
+114|to return with, to bear (a burden)|t
+115|to have relations with, to deal directly with|t
+116|to scatter, spread|t
+117|to change, replace|t
+118|to come out, go forth|i
+119|to extend, spread out|t
+120|to raise, send|t
+121|to remain|i
+122|to reach|t
+123|to test|t
+124|to make clear, explain|t
+125|to give good news|t
+126|to be dumbfounded|i
+127|to be evil|i
+128|to repent, turn (to)|i
+129|to lag behind, be delayed|i
+130|to trade with one another|i
+131|to disown, be free of|i
+132|to be dutiful, to do good|i
+133|to become clear|i
+134|to follow|t
+135|to shave|t
+136|to contract a debt with one another|i
+137|to remember, take heed|i
+138|to agree mutually|i
+139|to wait, lie in wait|i
+140|to leave, abandon|t
+141|to take provision|t
+142|to please, gladden|t
+143|to seek a wet nurse for|t
+144|to resemble one another|i
+145|to give charity|i
+146|to purify oneself|i
+147|to volunteer|t
+148|to support one another|i
+149|to hasten|t
+150|to act wickedly|i
+151|to hinder, prevent|t
+152|to accept|t
+153|to be cut apart|i
+154|to receive|t
+155|to follow, recite|t
+156|to enjoy, benefit|i
+157|to take in death, cause to die|t
+158|to turn away|i
+159|to do tayammum|t
+160|to narrate, tell|t
+161|to mix with, associate with|t
+162|to run, carry out|t
+163|to close the eyes, overlook|t
+164|to ransom|t
+165|to marry (someone) to|t
+166|to make firm|t
+167|to overtake, gain mastery over|t
+168|to come|i
+169|to strive|i
+170|to cross, pass beyond|t
+171|to flow, run|i
+172|to reward, repay|t
+173|to make, appoint|t
+174|to argue with|t
+175|to call to account|t
+176|to become void, be wasted|i
+177|to perform the Hajj|t
+178|to forbid, make unlawful|t
+179|to think, suppose|t
+180|to gather|t
+181|to attend, be present|t
+182|to judge, rule|t
+183|to be lawful, to untie|i
+184|to carry|t
+185|to burden, entrust|t
+186|to fear|t
+187|to seal|t
+188|to go out|i
+189|to fear|t
+190|to snatch|t
+191|to lighten|t
+192|to be alone, be empty|i
+193|to create|t
+194|to enter|t
+195|to call, invoke|t
+196|to mention, remember|t
+197|to go, go away|i
+198|to slaughter|t
+199|to remind|t

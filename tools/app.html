@@ -181,6 +181,7 @@ nav.tabs button[hidden]{display:none}
 .vtbl td.ar.dim{color:var(--muted)}
 .learn-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
 .learn-bar select{width:auto;max-width:100%}
+.ayah-sel{width:auto;min-width:64px}
 .vtbl td.refs{white-space:nowrap}
 
 .admin-bar .btn{font-size:13px}
@@ -865,9 +866,10 @@ function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] ||
 /* Tables read right to left (dir="rtl"): the first column listed here is the rightmost. */
 const VOC_ISM = [["Meaning",""],["Singular","مفرد"],["Plural 1","جمع ١"],["Plural 2","جمع ٢"],["Ayah",""]];
 const VOC_FIL = [["Meaning",""],["Māḍī","ماضٍ"],["Muḍāriʿ","مضارع"],["Maṣdar","مصدر"],["Amr","أمر"],["Ism fāʿil","اسم فاعل"],["Ism mafʿūl","اسم مفعول"],["Ayah",""]];
+function ayahSelect(id, n, val){ return `<select id="${id}" class="ayah-sel" aria-label="Ayah">${Array.from({length: n}, (_, i) => i + 1).map(a => `<option value="${a}" ${a === val ? "selected" : ""}>${a}</option>`).join("")}</select>`; }
 function vocabRefs(s, arr){ return (arr||[]).map(a => `<button type="button" class="reflink" data-go="${s}:${a}">${a}</button>`).join(", "); }
-function vocabTables(s, lo, hi){
-  const v = S.vocab[s] || {};
+function vocabTables(s, lo, hi, doc){
+  const v = doc || S.vocab[s] || {};
   const inR = r => (r.ayahs||[]).some(a => a >= lo && a <= hi);
   const cut = r => ({...r, ayahs: (r.ayahs||[]).filter(a => a >= lo && a <= hi)});
   const ar = x => x ? `<td class="ar" lang="ar" dir="rtl">${esc(x)}</td>` : `<td class="muted">—</td>`;
@@ -881,22 +883,37 @@ function vocabTables(s, lo, hi){
     fil: fil ? `<h3>Fiʿl (verbs)</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""
   };
 }
+/* Generated Ism/Fiʿl tables (learn/<s>.json, built by tools/build_learn.py). A document saved in the database (S.vocab) wins. */
+const LEARN = {};
+function hasRows(d){ return !!(d && ((d.ism||[]).length || (d.fil||[]).length)); }
+function vocDoc(s){
+  if (hasRows(S.vocab[s])) return S.vocab[s];
+  const g = LEARN[s];
+  if (g && g.doc) return g.doc;
+  if (!g) {
+    LEARN[s] = {};
+    fetch(`learn/${s}.json`).then(r => { if (!r.ok) throw 0; return r.json(); })
+      .then(d => { LEARN[s] = {doc: d}; }).catch(() => { LEARN[s] = {fail: true}; })
+      .then(() => { if (!M && ((S.view === "learn" && S.learn && S.learn.s === s) || (S.view === "surah" && S.surah === s && S.vocabOpen))) render(); });
+  }
+  return null;
+}
 function vocabNotice(s, v){
   return v.ai ? `<div class="row small" style="margin-top:10px"><span class="notice">Unreviewed draft. ${esc(v.note || "Plural, maṣdar and amr forms are not in the corpus; gaps were filled by AI and still need checking.")}</span>${S.admin ? `<button type="button" class="btn small" data-vreviewed="${s}">Mark as reviewed</button>` : ""}</div>` : "";
 }
 function vocabHTML(s){
-  const v = S.vocab[s];
-  if (!v || (!(v.ism||[]).length && !(v.fil||[]).length)) return "";
+  const v = S.vocabOpen ? vocDoc(s) : S.vocab[s];
   const nAy = surahOf(s).v.length;
   const vr = S.vrange && S.vrange.s === s ? S.vrange : null;
   const lo = vr ? vr.from : 1, hi = vr ? vr.to : nAy;
-  const T = vocabTables(s, lo, hi);
+  const T = hasRows(v) ? vocabTables(s, lo, hi, v) : {ism: "", fil: ""};
   return `<section class="vocab" id="vocab">
     <div class="row"><h2>Vocabulary · Ism and Fiʿl</h2><span class="spacer"></span>
       <button type="button" class="btn small" data-vtoggle aria-expanded="${S.vocabOpen}">${S.vocabOpen ? "Hide tables" : "Show tables"}</button></div>
-    ${S.vocabOpen ? `
+    ${S.vocabOpen && !hasRows(v) ? `<p class="muted">${LEARN[s] && LEARN[s].fail ? "No tables for this surah." : "Loading…"}</p>` : ""}
+    ${S.vocabOpen && hasRows(v) ? `
     ${vocabNotice(s, v)}
-    <form class="row small" id="vrange" autocomplete="off" style="margin-top:10px;gap:8px"><label class="flabel" for="vfrom">Ayah from</label><input type="text" id="vfrom" inputmode="numeric" style="width:64px" placeholder="1" value="${vr ? lo : ""}"><label class="flabel" for="vto">to</label><input type="text" id="vto" inputmode="numeric" style="width:64px" placeholder="${nAy}" value="${vr ? hi : ""}"><button class="btn small" type="submit">Filter</button>${vr ? `<button type="button" class="btn small ghost" data-vall>Show all</button><span class="muted">Ayahs ${lo}–${hi}</span>` : ""}</form>
+    <form class="row small" id="vrange" autocomplete="off" style="margin-top:10px;gap:8px"><label class="flabel" for="vfrom">Ayah from</label>${ayahSelect("vfrom", nAy, lo)}<label class="flabel" for="vto">to</label>${ayahSelect("vto", nAy, hi)}${vr ? `<button type="button" class="btn small ghost" data-vall>Show all</button><span class="muted">Ayahs ${lo}–${hi}</span>` : ""}</form>
     ${!T.ism && !T.fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in this table.</p>` : ""}
     ${T.ism}${T.fil}
     <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>` : ""}
@@ -905,22 +922,21 @@ function vocabHTML(s){
 
 /* ---------- Learn tab: Ism and Fiʿl tables for any surah, limited to an ayah range ---------- */
 function viewLearn(){
-  const have = Object.keys(S.vocab).map(Number).filter(n => n >= 1 && n <= 114 && ((S.vocab[n].ism||[]).length || (S.vocab[n].fil||[]).length)).sort((a, b) => a - b);
-  if (!S.learn) S.learn = {s: have[0] || 1, from: null, to: null};
+  if (!S.learn) S.learn = {s: S.surah || 1, from: null, to: null};
   const L = S.learn, s = L.s, nAy = surahOf(s).v.length;
-  const lo = L.from || 1, hi = L.to || nAy, ranged = !!(L.from || L.to) && !(lo === 1 && hi === nAy);
-  const v = S.vocab[s], ok = v && ((v.ism||[]).length || (v.fil||[]).length);
-  const opts = Array.from({length: 114}, (_, i) => i + 1).map(n => `<option value="${n}" ${n === s ? "selected" : ""}>${n} · ${esc(surahOf(n).tl)}${have.includes(n) ? "" : " (no tables yet)"}</option>`).join("");
-  const T = ok ? vocabTables(s, lo, hi) : null;
+  const lo = Math.min(L.from || 1, nAy), hi = Math.min(L.to || nAy, nAy), ranged = !(lo === 1 && hi === nAy);
+  const v = vocDoc(s), ok = hasRows(v), failed = LEARN[s] && LEARN[s].fail && !ok;
+  const opts = Array.from({length: 114}, (_, i) => i + 1).map(n => `<option value="${n}" ${n === s ? "selected" : ""}>${n} · ${esc(surahOf(n).tl)}</option>`).join("");
+  const T = ok ? vocabTables(s, lo, hi, v) : null;
   return `<div class="phead"><h1>Learn</h1></div>
   <p class="muted small" style="margin:0">Word tables for study. Choose a surah and an ayah range: only the words of that part are shown. Tables read from right to left.</p>
-  <form class="learn-bar" id="learnform" autocomplete="off">
+  <div class="learn-bar" id="learnform">
     <label class="flabel" for="learn-s">Surah</label><select id="learn-s">${opts}</select>
-    <label class="flabel" for="learn-from">Ayah from</label><input type="text" id="learn-from" inputmode="numeric" style="width:64px" placeholder="1" value="${ranged ? lo : ""}">
-    <label class="flabel" for="learn-to">to</label><input type="text" id="learn-to" inputmode="numeric" style="width:64px" placeholder="${nAy}" value="${ranged ? hi : ""}">
-    <button class="btn small primary" type="submit">Show</button>${ranged ? `<button type="button" class="btn small ghost" data-learnall>Whole surah</button><span class="muted small">Ayahs ${lo}–${hi}</span>` : ""}
-  </form>
-  ${!ok ? `<div class="empty"><b>No tables for this surah yet</b>${have.length ? `Surahs with tables: ${have.map(n => `<button type="button" class="btn small ghost" data-learnpick="${n}">${n} · ${esc(surahOf(n).tl)}</button>`).join(" ")}` : ""}</div>` : `
+    <label class="flabel" for="learn-from">Ayah from</label>${ayahSelect("learn-from", nAy, lo)}
+    <label class="flabel" for="learn-to">to</label>${ayahSelect("learn-to", nAy, hi)}
+    ${ranged ? `<button type="button" class="btn small ghost" data-learnall>Whole surah</button><span class="muted small">Ayahs ${lo}–${hi}</span>` : ""}
+  </div>
+  ${failed ? `<div class="empty"><b>The tables for this surah could not be loaded</b>Check the connection and choose the surah again.</div>` : !ok ? `<p class="muted">Loading…</p>` : `
   ${vocabNotice(s, v)}
   ${!T.ism && !T.fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in these tables.</p>` : ""}
   ${T.ism}${T.fil}
@@ -3350,9 +3366,17 @@ document.addEventListener("click", async (ev) => {
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.learnall !== undefined) { if (S.learn) { S.learn.from = S.learn.to = null; } render(); return; }
-  if (d.learnpick !== undefined) { S.learn = {s: +d.learnpick, from: null, to: null}; render(); return; }
   if (d.vall !== undefined) { S.vrange = null; render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
-  if (d.vreviewed) { if (!S.admin || !S.db) return; try { await S.db.doc("vocab/" + d.vreviewed).update({ai: false, updatedAt: Date.now()}); toast("Marked as reviewed."); } catch (e) { toast("Couldn't save. Try again."); } return; }
+  if (d.vreviewed) {
+    if (!S.admin || !S.db) return;
+    try {
+      const gen = !hasRows(S.vocab[d.vreviewed]) && LEARN[d.vreviewed] && LEARN[d.vreviewed].doc;
+      if (gen) await S.db.doc("vocab/" + d.vreviewed).set({...gen, ai: false, note: "Generated from the corpus; reviewed by the editor.", updatedAt: Date.now()});
+      else await S.db.doc("vocab/" + d.vreviewed).update({ai: false, updatedAt: Date.now()});
+      toast("Marked as reviewed.");
+    } catch (e) { toast("Couldn't save. Try again."); }
+    return;
+  }
   if (d.compare) { S.compare.has(d.compare) ? S.compare.delete(d.compare) : S.compare.add(d.compare); return render(); }
   if (d.toggle) { S.open.has(d.toggle) ? S.open.delete(d.toggle) : S.open.add(d.toggle); return render(); }
   if (d.grammar) return openGrammar(d.grammar);
@@ -3533,20 +3557,26 @@ document.addEventListener("change", (ev) => {
   if (t.id === "qfont") { S.qfont = t.value; store.set("aba.qfont", t.value); applyQFont(); }
   if (t.id === "ai-scope" && M) { captureFields(); M.aiScope = t.value; drawWriteEditor(); $("#ai-notes")?.focus(); return; }
   if (t.id === "learn-s") { S.learn = {s: +t.value, from: null, to: null}; render(); return; }
+  if (t.id === "learn-from" || t.id === "learn-to") {
+    const n = surahOf(S.learn.s).v.length;
+    let from = +$("#learn-from").value, to = +$("#learn-to").value;
+    if (from > to) { if (t.id === "learn-from") to = from; else from = to; }
+    S.learn = {s: S.learn.s, from: (from === 1 && to === n) ? null : from, to: (from === 1 && to === n) ? null : to};
+    render(); return;
+  }
+  if (t.id === "vfrom" || t.id === "vto") {
+    const n = surahOf(S.surah).v.length;
+    let from = +$("#vfrom").value, to = +$("#vto").value;
+    if (from > to) { if (t.id === "vfrom") to = from; else from = to; }
+    S.vrange = (from === 1 && to === n) ? null : {s: S.surah, from, to};
+    render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"}));
+    return;
+  }
   if (t.id === "w-src" && M) { captureFields(); if (M.tab !== M.it.src) M.tab = M.it.src; drawWriteEditor(); }
   if (t.id === "w-ref" && M && (M.type === "note" || M.type === "word")) { captureFields(); if (M.type === "word") loadEditorWords(); drawWriteEditor(); }
   if (t.id === "w-cat" && M && M.type === "note") { captureFields(); if (M.it.cat === "__new" && M.catNew === undefined) M.catNew = ""; drawWriteEditor(); if (M.it.cat === "__new") $("#w-newcat")?.focus(); }
 });
 document.addEventListener("submit", (ev) => {
-  if (ev.target.id === "learnform") {
-    ev.preventDefault();
-    const s = +$("#learn-s").value, n = surahOf(s).v.length, f = $("#learn-from").value.trim(), e = $("#learn-to").value.trim();
-    let from = f === "" ? 1 : parseInt(f, 10), to = e === "" ? n : parseInt(e, 10);
-    if (!(from >= 1 && from <= n && to >= 1 && to <= n)) { toast(`Enter ayah numbers from 1 to ${n}.`); return; }
-    if (from > to) [from, to] = [to, from];
-    S.learn = {s, from: (from === 1 && to === n) ? null : from, to: (from === 1 && to === n) ? null : to};
-    render(); return;
-  }
   if (ev.target.id === "vrange") {
     ev.preventDefault();
     const n = surahOf(S.surah).v.length;

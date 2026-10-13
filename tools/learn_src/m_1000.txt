@@ -1,0 +1,240 @@
+1000|to choose exclusively|t
+1001|to gather together|i
+1002|to destroy utterly|t
+1003|to ascend|i
+1004|to pursue, to follow|t
+1005|to repel, to scold|t
+1006|to keep vigil in prayer at night|i
+1007|to squander|t
+1008|to speak in a low voice|i
+1009|to cause to fall|t
+1010|to search through, to roam|t
+1011|to subside, to die down|i
+1012|to raise, to bring up|t
+1013|to share with, to be partner|t
+1014|to rise above, to overpower|i
+1015|to cause to gush forth|t
+1016|to measure|t
+1017|to honour|t
+1018|to descend, to come down|i
+1019|to weigh|t
+1020|to incite, to drive out|t
+1021|to commit immorality, to lie|i
+1022|to drive gently|t
+1023|to shake (the head)|t
+1024|to help, to assist|t
+1025|to damage, to make defective|t
+1026|to make known, to cause to find out|t
+1027|to make heedless|t
+1028|to ask for food|t
+1029|to go forth|i
+1030|to perish|i
+1031|to scatter, to winnow|t
+1032|to incline away|i
+1033|to pass by, to turn away from|t
+1034|to accompany|t
+1035|to argue, to dispute|t
+1036|to surround, to border|t
+1037|to adorn|t
+1038|to level, to make equal|t
+1039|to rise (of the sun)|i
+1040|to set (of the sun)|i
+1041|to spread out, to resurrect|t
+1042|to be gentle, to be cautious|i
+1043|to scorch, to roast|t
+1044|to surge|i
+1045|to collapse|i
+1046|to exchange, to replace|t
+1047|to converse with|t
+1048|to bring about, to produce|t
+1049|to refute|t
+1050|to overburden|t
+1051|to show hospitality to|t
+1052|to leave behind|t
+1053|to prepare, to facilitate|t
+1054|to point, to signal|i
+1055|to blaze, to flare up|i
+1056|to be patient, to persevere|i
+1057|to withdraw|i
+1058|to split open|i
+1059|to incite, to stir up|t
+1060|to be cool, to be at rest|i
+1061|to take the form of|i
+1062|to descend|i
+1063|to drop, to let fall|t
+1064|to shake|t
+1065|to make easy|t
+1066|to be fitting, to be proper|i
+1067|to lean on|i
+1068|to make hasten|t
+1069|to beat down (leaves)|t
+1070|to take off, to remove|t
+1071|to overcome, to prevail|i
+1072|to choose for oneself, to fashion|t
+1073|to draw close, to press|t
+1074|to perceive, to see|t
+1075|to be hungry|i
+1076|to perish|i
+1077|to purify oneself|i
+1078|to be exposed to the sun|i
+1079|to be thirsty|i
+1080|to be unclothed|i
+1081|to slacken, to tire|i
+1082|to burn|t
+1083|to be humble, to be lowered|i
+1084|to pasture, to observe|t
+1085|to be long|i
+1086|to be humbled, to submit|i
+1087|to go astray|i
+1088|to cast, to hurl|t
+1089|to be disgraced|i
+1090|to be humiliated|i
+1091|to blast away, to scatter|t
+1092|to speak in whispers|i
+1093|to hasten, to exceed|i
+1094|to seem, to appear|i
+1095|to destroy utterly|t
+1096|to announce|t
+1097|to resurrect|t
+1098|to approve, to be pleased with|t
+1099|to split, to part|t
+1100|to give understanding of|t
+1101|to shatter|t
+1102|to fold up|t
+1103|to graze at night|i
+1104|to be turned upside down|t
+1105|to come, to arrive at (water)|t
+1106|to crush the head of, to overwhelm|t
+1107|to strike, to flee|t
+1108|to float, to swim|i
+1109|to grow weary|i
+1110|to dive|i
+1111|to slacken, to flag|i
+1112|to guard, to protect|t
+1113|to descend, to rush down|i
+1114|to speak|i
+1115|to be protected|t
+1116|to humiliate|t
+1117|to quiver, to stir|i
+1118|to be distracted, to forget|i
+1119|to wish, to recite|t
+1120|to swell, to increase|i
+1121|to pour|t
+1122|to be demolished|t
+1123|to fall (down), to be due|i
+1124|to rescue, to take back|t
+1125|to attack|t
+1126|to snatch away|t
+1127|to defend|t
+1128|to be melted|t
+1129|to honour, to glorify|t
+1130|to dispute with|t
+1131|to be despised, to be driven away|i
+1132|to scorch|t
+1133|to grow, to sprout|i
+1134|to persist obstinately|i
+1135|to claim superiority|i
+1136|to flog|t
+1137|to turn about, to move to and fro|i
+1138|to seek permission, to be at ease|i
+1139|to spread|i
+1140|to be pure|i
+1141|to write an agreement with|t
+1142|to swear (an oath)|i
+1143|to slip away|i
+1144|to be unjust|i
+1145|to lower (the gaze, the voice)|t
+1146|to have written down|t
+1147|to recite slowly|t
+1148|to cause to meet, to grant|t
+1149|to let loose, to release|t
+1150|to spend the night|i
+1151|to remain forever|i
+1152|to commit unlawful intercourse|i
+1153|to care, to pay heed|i
+1154|to be stingy|i
+1155|to bring near|t
+1156|to defend oneself, to help|i
+1157|to split|i
+1158|to be made manifest|t
+1159|to play, to amuse oneself|i
+1160|to enslave|t
+1161|to flee|i
+1162|to be overturned|t
+1163|to be ill|i
+1164|to roam|i
+1165|to perfect|t
+1166|to inspire, to grant the power|t
+1167|to be certain|i
+1168|to smile|i
+1169|to warm oneself|i
+1170|to inspect, to look for|t
+1171|to swear to one another|i
+1172|to be close behind|i
+1173|to be terrified|i
+1174|to be cast down|t
+1175|to disguise|t
+1176|to crush|t
+1177|to turn back, to look back|i
+1178|to be held in ranks|t
+1179|to hire|t
+1180|to exult, to be insolent|i
+1181|to hire, to serve for pay|t
+1182|to keep back|t
+1183|to be prolonged|i
+1184|to weigh down|t
+1185|to turn one's face|i
+1186|to be hard, to cleave|t
+1187|to confirm, to believe|t
+1188|to convey, to connect|t
+1189|to strike with the fist|t
+1190|to take counsel, to conspire|i
+1191|to be watchful|i
+1192|to cry out for help|t
+1193|to be brought|t
+1194|to send away, to withdraw|t
+1195|to write|t
+1196|to be returned|t
+1197|to begin, to originate|t
+1198|to disperse, to spread|i
+1199|to reach the evening|i
+1200|to be divided|i
+1201|to prepare, to make smooth|t
+1202|to despair|i
+1203|to be delighted|t
+1204|to bestow amply|t
+1205|to be moderate|i
+1206|to turn away (the cheek) in pride|t
+1207|to forsake, to draw away|i
+1208|to make void|t
+1209|to be afraid|i
+1210|to bestow as spoils|t
+1211|to take captive|t
+1212|to display oneself|i
+1213|to be soft, to submit|i
+1214|to revolve, to go around|i
+1215|to do on purpose, to intend|t
+1216|to count, to reckon|t
+1217|to leave, to disregard|t
+1218|to approach, to draw near|i
+1219|to pair, to join in marriage|t
+1220|to smite, to assail|t
+1221|to set aside, to remove|t
+1222|to marry|t
+1223|to live as a neighbour|t
+1224|to cause to flow|t
+1225|to make soft|t
+1226|to repeat, to echo|i
+1227|to make distant|t
+1228|to be relieved of fear|t
+1229|to tear apart, to scatter|t
+1230|to recompense|t
+1231|to perish|i
+1232|to cry out loudly|i
+1233|to ascend|i
+1234|to stand apart|i
+1235|to be tamed, to be made submissive|t
+1236|to strengthen|t
+1237|to transform|t
+1238|to withdraw, to strip off|t
+1239|to reverse, to turn upside down|t
