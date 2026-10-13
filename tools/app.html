@@ -177,7 +177,10 @@ nav.tabs button[hidden]{display:none}
 .vtbl th,.vtbl td{border:1px solid var(--line);padding:7px 10px;text-align:center;vertical-align:middle}
 .vtbl th{background:var(--sunk);font-weight:600;font-size:13px;white-space:nowrap}
 .vtbl td.ar{font-size:21px;line-height:1.9;white-space:nowrap}
-.vtbl td.mean{text-align:left}
+.vtbl td.mean{text-align:right}
+.vtbl td.ar.dim{color:var(--muted)}
+.learn-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
+.learn-bar select{width:auto;max-width:100%}
 .vtbl td.refs{white-space:nowrap}
 
 .admin-bar .btn{font-size:13px}
@@ -425,6 +428,7 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
       <button type="button" data-nav="notes">Notes</button>
       <button type="button" data-nav="lessons">Lessons</button>
       <button type="button" data-nav="words">Word analysis</button>
+      <button type="button" data-nav="learn">Learn</button>
       <button type="button" data-nav="commentary">Commentary</button>
       <button type="button" data-nav="qa" id="nav-qa" hidden>Q&amp;A</button>
       <button type="button" data-nav="research" id="nav-research" hidden>Research</button>
@@ -677,8 +681,8 @@ function goRef(ref){
       S.ret = {view: "article", art: Object.assign({}, S.art), y, label: t ? `Back to “${t.length > 48 ? t.slice(0, 46) + "…" : t}”` : `Back to the ${kindL}`};
     } else if (S.view === "surah") {
       if (!S.ret || S.ret.view !== "surah" || S.ret.surah !== S.surah || Math.abs(S.ret.y - y) > 40) S.ret = {view: "surah", surah: S.surah, y, label: `Back to where you were in ${surahOf(S.surah).tl}`};
-    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa" || S.view === "commentary" || S.view === "research") {
-      S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view === "qa" ? "Q&A" : S.view[0].toUpperCase() + S.view.slice(1)}`};
+    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa" || S.view === "commentary" || S.view === "research" || S.view === "learn") {
+      S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view === "learn" ? "Learn" : S.view === "qa" ? "Q&A" : S.view[0].toUpperCase() + S.view.slice(1)}`};
     }
     S.keepRet = true; if (S.onlyMarked && !hasMarks(s,a)) S.onlyMarked = false; S.open.add(key(s,a)); go("surah",{s,a}); }
 }
@@ -686,7 +690,7 @@ function fromHash(){
   const h = (location.hash||"").slice(1);
   let m;
   if (h === "" || h === "surahs") S.view = "surahs";
-  else if (h === "notes" || h === "lessons" || h === "words" || h === "qa" || h === "commentary" || h === "research") S.view = h;
+  else if (h === "notes" || h === "lessons" || h === "words" || h === "qa" || h === "commentary" || h === "research" || h === "learn") S.view = h;
   else if ((m = h.match(/^([nlw])-([A-Za-z0-9_.~-]+)$/))) { S.view = "article"; S.art = {kind: m[1], id: m[2], from: m[1]==="n" ? "notes" : m[1]==="w" ? "words" : "lessons"}; }
   else if ((m = h.match(/^s(\d{1,3})(?:-(\d{1,3}))?$/)) && +m[1]>=1 && +m[1]<=114) { S.view = "surah"; S.surah = +m[1]; if (m[2]) { S.pendingAyah = +m[2]; S.open.add(key(+m[1],+m[2])); } }
 }
@@ -804,6 +808,7 @@ function render(){
   else if (S.view === "qa") app.innerHTML = viewQA();
   else if (S.view === "commentary") app.innerHTML = viewCommentary();
   else if (S.view === "research") app.innerHTML = viewResearch();
+  else if (S.view === "learn") app.innerHTML = viewLearn();
   else if (S.view === "article") app.innerHTML = viewArticle();
   window.scrollTo(0, y);
   if (S.pendingAyah) { const a = S.pendingAyah; S.pendingAyah = null; S.flashKey = key(S.surah,a); render(); requestAnimationFrame(()=> document.getElementById(`a-${S.surah}-${a}`)?.scrollIntoView({block:"start"})); }
@@ -857,32 +862,69 @@ function viewSurahs(){
 
 function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] || IDX.lessons[k] || S.cmIx[k]); }
 
-const VOC_ISM = [["Ayah",""],["Meaning",""],["Plural 2","جمع ٢"],["Plural 1","جمع ١"],["Singular","مفرد"]];
-const VOC_FIL = [["Ayah",""],["Meaning",""],["Amr","أمر"],["Maṣdar","مصدر"],["Muḍāriʿ","مضارع"],["Māḍī","ماضٍ"]];
+/* Tables read right to left (dir="rtl"): the first column listed here is the rightmost. */
+const VOC_ISM = [["Meaning",""],["Singular","مفرد"],["Plural 1","جمع ١"],["Plural 2","جمع ٢"],["Ayah",""]];
+const VOC_FIL = [["Meaning",""],["Māḍī","ماضٍ"],["Muḍāriʿ","مضارع"],["Maṣdar","مصدر"],["Amr","أمر"],["Ism fāʿil","اسم فاعل"],["Ism mafʿūl","اسم مفعول"],["Ayah",""]];
 function vocabRefs(s, arr){ return (arr||[]).map(a => `<button type="button" class="reflink" data-go="${s}:${a}">${a}</button>`).join(", "); }
+function vocabTables(s, lo, hi){
+  const v = S.vocab[s] || {};
+  const inR = r => (r.ayahs||[]).some(a => a >= lo && a <= hi);
+  const cut = r => ({...r, ayahs: (r.ayahs||[]).filter(a => a >= lo && a <= hi)});
+  const ar = x => x ? `<td class="ar" lang="ar" dir="rtl">${esc(x)}</td>` : `<td class="muted">—</td>`;
+  const head = cols => `<tr>${cols.map(c => `<th>${esc(c[0])}${c[1] ? ` <span lang="ar">${esc(c[1])}</span>` : ""}</th>`).join("")}</tr>`;
+  const mean = r => `<td class="mean" dir="ltr">${esc(r.mean||"")}</td>`;
+  const refs = r => `<td class="refs">${vocabRefs(s, r.ayahs)}</td>`;
+  const ism = (v.ism||[]).filter(inR).map(cut).map(r => `<tr>${mean(r)}${ar(r.sg)}${ar(r.p1)}${ar(r.p2)}${refs(r)}</tr>`).join("");
+  const fil = (v.fil||[]).filter(inR).map(cut).map(r => `<tr>${mean(r)}${ar(r.madi)}${ar(r.mud)}${ar(r.masdar)}${ar(r.amr)}${ar(r.fa)}${ar(r.mf)}${refs(r)}</tr>`).join("");
+  return {
+    ism: ism ? `<h3>Ism (nouns)</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_ISM)}</thead><tbody>${ism}</tbody></table></div>` : "",
+    fil: fil ? `<h3>Fiʿl (verbs)</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""
+  };
+}
+function vocabNotice(s, v){
+  return v.ai ? `<div class="row small" style="margin-top:10px"><span class="notice">Unreviewed draft. ${esc(v.note || "Plural, maṣdar and amr forms are not in the corpus; gaps were filled by AI and still need checking.")}</span>${S.admin ? `<button type="button" class="btn small" data-vreviewed="${s}">Mark as reviewed</button>` : ""}</div>` : "";
+}
 function vocabHTML(s){
   const v = S.vocab[s];
   if (!v || (!(v.ism||[]).length && !(v.fil||[]).length)) return "";
   const nAy = surahOf(s).v.length;
   const vr = S.vrange && S.vrange.s === s ? S.vrange : null;
   const lo = vr ? vr.from : 1, hi = vr ? vr.to : nAy;
-  const inR = r => (r.ayahs||[]).some(a => a >= lo && a <= hi);
-  const cut = r => ({...r, ayahs: (r.ayahs||[]).filter(a => a >= lo && a <= hi)});
-  const ar = x => x ? `<td class="ar" lang="ar" dir="rtl">${esc(x)}</td>` : `<td class="muted">—</td>`;
-  const head = cols => `<tr>${cols.map(c => `<th>${esc(c[0])}${c[1] ? ` <span lang="ar">${esc(c[1])}</span>` : ""}</th>`).join("")}</tr>`;
-  const ism = (v.ism||[]).filter(inR).map(cut).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.p2)}${ar(r.p1)}${ar(r.sg)}</tr>`).join("");
-  const fil = (v.fil||[]).filter(inR).map(cut).map(r => `<tr><td class="refs">${vocabRefs(s, r.ayahs)}</td><td class="mean">${esc(r.mean||"")}</td>${ar(r.amr)}${ar(r.masdar)}${ar(r.mud)}${ar(r.madi)}</tr>`).join("");
+  const T = vocabTables(s, lo, hi);
   return `<section class="vocab" id="vocab">
     <div class="row"><h2>Vocabulary · Ism and Fiʿl</h2><span class="spacer"></span>
       <button type="button" class="btn small" data-vtoggle aria-expanded="${S.vocabOpen}">${S.vocabOpen ? "Hide tables" : "Show tables"}</button></div>
     ${S.vocabOpen ? `
-    ${v.ai ? `<div class="row small" style="margin-top:10px"><span class="notice">Unreviewed draft. ${esc(v.note || "Plural, maṣdar and amr forms are not in the corpus; gaps were filled by AI and still need checking.")}</span>${S.admin ? `<button type="button" class="btn small" data-vreviewed="${s}">Mark as reviewed</button>` : ""}</div>` : ""}
+    ${vocabNotice(s, v)}
     <form class="row small" id="vrange" autocomplete="off" style="margin-top:10px;gap:8px"><label class="flabel" for="vfrom">Ayah from</label><input type="text" id="vfrom" inputmode="numeric" style="width:64px" placeholder="1" value="${vr ? lo : ""}"><label class="flabel" for="vto">to</label><input type="text" id="vto" inputmode="numeric" style="width:64px" placeholder="${nAy}" value="${vr ? hi : ""}"><button class="btn small" type="submit">Filter</button>${vr ? `<button type="button" class="btn small ghost" data-vall>Show all</button><span class="muted">Ayahs ${lo}–${hi}</span>` : ""}</form>
-    ${!ism && !fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in this table.</p>` : ""}
-    ${ism ? `<h3>Ism (nouns)</h3><div class="vtbl-wrap"><table class="vtbl"><thead>${head(VOC_ISM)}</thead><tbody>${ism}</tbody></table></div>` : ""}
-    ${fil ? `<h3>Fiʿl (verbs)</h3><div class="vtbl-wrap"><table class="vtbl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""}
+    ${!T.ism && !T.fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in this table.</p>` : ""}
+    ${T.ism}${T.fil}
     <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>` : ""}
   </section>`;
+}
+
+/* ---------- Learn tab: Ism and Fiʿl tables for any surah, limited to an ayah range ---------- */
+function viewLearn(){
+  const have = Object.keys(S.vocab).map(Number).filter(n => n >= 1 && n <= 114 && ((S.vocab[n].ism||[]).length || (S.vocab[n].fil||[]).length)).sort((a, b) => a - b);
+  if (!S.learn) S.learn = {s: have[0] || 1, from: null, to: null};
+  const L = S.learn, s = L.s, nAy = surahOf(s).v.length;
+  const lo = L.from || 1, hi = L.to || nAy, ranged = !!(L.from || L.to) && !(lo === 1 && hi === nAy);
+  const v = S.vocab[s], ok = v && ((v.ism||[]).length || (v.fil||[]).length);
+  const opts = Array.from({length: 114}, (_, i) => i + 1).map(n => `<option value="${n}" ${n === s ? "selected" : ""}>${n} · ${esc(surahOf(n).tl)}${have.includes(n) ? "" : " (no tables yet)"}</option>`).join("");
+  const T = ok ? vocabTables(s, lo, hi) : null;
+  return `<div class="phead"><h1>Learn</h1></div>
+  <p class="muted small" style="margin:0">Word tables for study. Choose a surah and an ayah range: only the words of that part are shown. Tables read from right to left.</p>
+  <form class="learn-bar" id="learnform" autocomplete="off">
+    <label class="flabel" for="learn-s">Surah</label><select id="learn-s">${opts}</select>
+    <label class="flabel" for="learn-from">Ayah from</label><input type="text" id="learn-from" inputmode="numeric" style="width:64px" placeholder="1" value="${ranged ? lo : ""}">
+    <label class="flabel" for="learn-to">to</label><input type="text" id="learn-to" inputmode="numeric" style="width:64px" placeholder="${nAy}" value="${ranged ? hi : ""}">
+    <button class="btn small primary" type="submit">Show</button>${ranged ? `<button type="button" class="btn small ghost" data-learnall>Whole surah</button><span class="muted small">Ayahs ${lo}–${hi}</span>` : ""}
+  </form>
+  ${!ok ? `<div class="empty"><b>No tables for this surah yet</b>${have.length ? `Surahs with tables: ${have.map(n => `<button type="button" class="btn small ghost" data-learnpick="${n}">${n} · ${esc(surahOf(n).tl)}</button>`).join(" ")}` : ""}</div>` : `
+  ${vocabNotice(s, v)}
+  ${!T.ism && !T.fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in these tables.</p>` : ""}
+  ${T.ism}${T.fil}
+  <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>`}`;
 }
 
 /* Rukūʿ starts per surah (558 in all; Indo-Pak/quran.com division). Source: quran-meta package, checked against quran.ai metadata. */
@@ -3307,6 +3349,8 @@ document.addEventListener("click", async (ev) => {
   if (d.clear === "research") { S.rq = ""; S.rtag = null; S.rstatus = ""; return render(); }
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
+  if (d.learnall !== undefined) { if (S.learn) { S.learn.from = S.learn.to = null; } render(); return; }
+  if (d.learnpick !== undefined) { S.learn = {s: +d.learnpick, from: null, to: null}; render(); return; }
   if (d.vall !== undefined) { S.vrange = null; render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.vreviewed) { if (!S.admin || !S.db) return; try { await S.db.doc("vocab/" + d.vreviewed).update({ai: false, updatedAt: Date.now()}); toast("Marked as reviewed."); } catch (e) { toast("Couldn't save. Try again."); } return; }
   if (d.compare) { S.compare.has(d.compare) ? S.compare.delete(d.compare) : S.compare.add(d.compare); return render(); }
@@ -3488,11 +3532,21 @@ document.addEventListener("change", (ev) => {
   if (t.id === "rgroup") { S.rgroup = t.checked; render(); return; }
   if (t.id === "qfont") { S.qfont = t.value; store.set("aba.qfont", t.value); applyQFont(); }
   if (t.id === "ai-scope" && M) { captureFields(); M.aiScope = t.value; drawWriteEditor(); $("#ai-notes")?.focus(); return; }
+  if (t.id === "learn-s") { S.learn = {s: +t.value, from: null, to: null}; render(); return; }
   if (t.id === "w-src" && M) { captureFields(); if (M.tab !== M.it.src) M.tab = M.it.src; drawWriteEditor(); }
   if (t.id === "w-ref" && M && (M.type === "note" || M.type === "word")) { captureFields(); if (M.type === "word") loadEditorWords(); drawWriteEditor(); }
   if (t.id === "w-cat" && M && M.type === "note") { captureFields(); if (M.it.cat === "__new" && M.catNew === undefined) M.catNew = ""; drawWriteEditor(); if (M.it.cat === "__new") $("#w-newcat")?.focus(); }
 });
 document.addEventListener("submit", (ev) => {
+  if (ev.target.id === "learnform") {
+    ev.preventDefault();
+    const s = +$("#learn-s").value, n = surahOf(s).v.length, f = $("#learn-from").value.trim(), e = $("#learn-to").value.trim();
+    let from = f === "" ? 1 : parseInt(f, 10), to = e === "" ? n : parseInt(e, 10);
+    if (!(from >= 1 && from <= n && to >= 1 && to <= n)) { toast(`Enter ayah numbers from 1 to ${n}.`); return; }
+    if (from > to) [from, to] = [to, from];
+    S.learn = {s, from: (from === 1 && to === n) ? null : from, to: (from === 1 && to === n) ? null : to};
+    render(); return;
+  }
   if (ev.target.id === "vrange") {
     ev.preventDefault();
     const n = surahOf(S.surah).v.length;
