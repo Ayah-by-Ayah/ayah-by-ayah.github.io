@@ -102,3 +102,39 @@ def gen_surah(s):
         r = gen_ayah(s, a)
         if r: out[str(a)] = r
     return {'s': s, 'ayahs': out}
+
+def _relax(sig):
+    return ('N', sig[1], '', sig[3], sig[4]) if sig[0] == 'N' else ('V', '', '', sig[3], sig[4])
+_LF = None
+def LEMF():
+    global _LF
+    if _LF is None:
+        _LF = collections.Counter()
+        for lst in pool().values():
+            for x in lst: _LF[x[4]] += 1
+    return _LF
+_RP = None
+def auto_fill(s, a, i, taken, n):
+    """n attested words (refs) with the same grammatical signature as word i of s:a, different root/meaning, not in `taken` (normalised words); relaxed signature if needed."""
+    global _RP
+    g = gram(s)[a-1]; m = mad(s, a)
+    if len(g) != len(m): return []
+    inf = info(g[i-1])
+    if not inf: return []
+    if _RP is None:
+        _RP = collections.defaultdict(list)
+        for sg, lst in pool().items(): _RP[_relax(sg)].extend(lst)
+    rng = random.Random(s * 100000 + a * 100 + i); gl = set(ctokens(g[i-1][1]))
+    seen = set(taken) | {norm(x) for x in m} | {bare(x) for x in m}; out = []; roots = {inf['root']}
+    for P, tol in ((pool().get(inf['sig'], []), 3), (_RP.get(_relax(inf['sig']), []), 4), (_RP.get(_relax(inf['sig']), []), 12)):
+        c = [x for x in P if x[3] != inf['root'] and x[4] != inf['lem'] and not (x[5] & gl) and abs(x[6] - inf['len']) <= tol and not (x[0] == s and x[1] == a)]
+        fr = LEMF()
+        rng.shuffle(c); u = {}
+        for x in c: u.setdefault((x[4], x[7]), x)
+        c = sorted(u.values(), key=lambda x: -fr[x[4]])[:80]; rng.shuffle(c)
+        for x in c:
+            b = bare(x[7])
+            if (x[3] in roots and tol < 12) or x[7] in seen or b in seen: continue
+            roots.add(x[3]); seen.add(x[7]); seen.add(b); out.append(x)
+            if len(out) == n: return out
+    return out

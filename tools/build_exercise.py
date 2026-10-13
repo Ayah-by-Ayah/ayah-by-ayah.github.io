@@ -5,26 +5,32 @@ Specs are hand-written in exercise_src/spec<s>.py: {ayah: [(blank word no., high
 import sys, os, json, importlib
 HERE = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, os.path.join(HERE, 'exercise_src'))
 from common import *
+import auto
 def build(s):
-    spec = importlib.import_module(f'spec{s}').SPEC; out = {}; errs = []
+    spec = importlib.import_module(f'spec{s}').SPEC; out = {}; errs = []; filled = []
     for a, qs in spec.items():
-        en = Q[s-1]['v'][a-1][1]; assert verified(s, a), (s, a)
+        en = Q[s-1]['v'][a-1][1]; ver = verified(s, a)
         sets = []
         for (i, hl, ds) in qs:
             if hl not in en or en.count(hl) != 1: errs.append(f'{s}:{a} highlight "{hl}" not unique in translation')
             opts = [f'{s}:{a}:{i}']; words = {norm(mad(s, a)[i-1])}
             for d in ds:
-                r = find(d, prefer=s)
-                if not r: errs.append(f'{s}:{a} distractor {d} not found'); continue
-                if norm(mad(*r[:2])[r[2]-1]) in words: errs.append(f'{s}:{a} duplicate option {d}'); continue
+                if len(opts) == 4: break
+                r = find(d, prefer=s) or find_loose(d, prefer=s)
+                if r and norm(mad(*r[:2])[r[2]-1]) in words: r = None
+                if not r: continue
                 words.add(norm(mad(*r[:2])[r[2]-1])); opts.append('%d:%d:%d' % r)
-            if len(opts) != 4: errs.append(f'{s}:{a} needs 4 options, has {len(opts)}')
-            sets.append({'w': i, 'hl': hl, 'o': opts})
+            if len(opts) < 4:
+                fill = auto.auto_fill(s, a, i, words, 4 - len(opts))
+                for x in fill: opts.append('%d:%d:%d' % x[:3]); words.add(x[7])
+                filled.append(f'{s}:{a} #{i} {mad(s,a)[i-1]} +{len(fill)} auto: ' + ' '.join(mad(x[0], x[1])[x[2]-1] for x in fill))
+            if len(opts) != 4: errs.append(f'{s}:{a} needs 4 options, has {len(opts)} (word {i})')
+            sets.append({'w': i, 'hl': hl, 'o': opts, **({} if ver else {'m': 1})})
         out[str(a)] = sets
+    if filled and os.environ.get('SHOWFILL'): print('\n'.join(filled))
     return {'s': s, 'ayahs': out}, errs
 if __name__ == '__main__':
     os.makedirs(f'{ROOT}/exercise', exist_ok=True)
-    import auto
     surahs = [int(x) for x in sys.argv[1:]] or list(range(1, 115))
     stats = []
     for s in surahs:

@@ -25,3 +25,20 @@ def find(word, prefer=None):
     if not r: return None
     pr = [x for x in r if x[0] == prefer]
     return (pr or r)[0]
+
+_LIDX = None
+def bare(t):
+    t = re.sub('[\u0610-\u061a\u064b-\u065f\u0670\u06d6-\u06ed\u0640]', '', STOP.sub('', t))
+    return t.translate(str.maketrans({'\u0671': '\u0627', '\u0622': '\u0627', '\u0623': '\u0627', '\u0625': '\u0627', '\u0624': '\u0648', '\u0626': '\u064a', '\u0649': '\u064a', '\u0621': None}))
+def find_loose(word, prefer=None):
+    global _LIDX
+    if _LIDX is None:
+        _LIDX = {}
+        for s in range(1, 115):
+            for a in range(1, len(Q[s-1]['v']) + 1):
+                if not verified(s, a): continue
+                for i, t in enumerate(mad(s, a), 1): _LIDX.setdefault(bare(t), []).append((s, a, i))
+    r = _LIDX.get(bare(word), [])
+    if not r: return None
+    pr = [x for x in r if x[0] == prefer]
+    return (pr or r)[0]
