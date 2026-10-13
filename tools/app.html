@@ -886,22 +886,7 @@ function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] ||
 const VOC_ISM = [["Meaning",""],["Singular","مفرد"],["Plural 1","جمع ١"],["Plural 2","جمع ٢"],["Ayah",""]];
 const VOC_FIL = [["Meaning",""],["Māḍī","ماضٍ"],["Muḍāriʿ","مضارع"],["Maṣdar","مصدر"],["Amr","أمر"],["Ism fāʿil","اسم فاعل"],["Ism mafʿūl","اسم مفعول"],["Ayah",""]];
 function ayahSelect(id, n, val){ return `<input type="number" id="${id}" class="ayah-sel ayah-num" inputmode="numeric" min="1" max="${n}" step="1" value="${val}" aria-label="Ayah (1–${n})" style="width:4.6em">`; }
-function ayahQuick(id, n, lo, hi){
-  const step = n <= 30 ? 10 : n <= 100 ? 20 : n <= 200 ? 25 : 50;
-  const opts = [`<option value="1-${n}" ${lo === 1 && hi === n ? "selected" : ""}>All (1–${n})</option>`];
-  let custom = !(lo === 1 && hi === n);
-  for (let a = 1; a <= n; a += step) {
-    const b = Math.min(a + step - 1, n), sel = lo === a && hi === b;
-    if (sel) custom = false;
-    opts.push(`<option value="${a}-${b}" ${sel ? "selected" : ""}>${a}–${b}</option>`);
-  }
-  if (custom) opts.unshift(`<option value="" selected>Custom ${lo}–${hi}</option>`);
-  return `<select id="${id}" class="ayah-quick" aria-label="Quick range">${opts.join("")}</select>`;
-}
-function ayahStep(prefix, n, lo, hi){
-  const len = hi - lo + 1;
-  return `<button type="button" class="btn small ghost" data-ayrange="${prefix}:${Math.max(1, lo - len)}:${Math.max(1, lo - len) + len - 1}" ${lo <= 1 ? "disabled" : ""} aria-label="Previous range">◀</button><button type="button" class="btn small ghost" data-ayrange="${prefix}:${Math.min(n - len + 1, hi + 1)}:${Math.min(n, hi + len)}" ${hi >= n ? "disabled" : ""} aria-label="Next range">▶</button>`;
-}
+function ayahCount(id, n, val){ return `<input type="number" id="${id}" class="ayah-sel ayah-num" inputmode="numeric" min="1" max="${n}" step="1" value="${val}" aria-label="Number of ayahs" style="width:4.6em">`; }
 function ayRead(id, n, def){ const v = parseInt(document.getElementById(id)?.value, 10); return Number.isFinite(v) ? Math.min(n, Math.max(1, v)) : def; }
 function vocabRefs(s, arr){ return (arr||[]).map(a => `<button type="button" class="reflink" data-go="${s}:${a}">${a}</button>`).join(", "); }
 function vocabTables(s, lo, hi, doc){
@@ -974,7 +959,7 @@ function viewLearn(){
     <label class="flabel" for="learn-s">Surah</label><select id="learn-s">${opts}</select>
     <label class="flabel" for="learn-from">Ayah</label>${ayahSelect("learn-from", nAy, lo)}
     <label class="flabel" for="learn-to">to</label>${ayahSelect("learn-to", nAy, hi)}
-    ${ayahQuick("learn-q", nAy, lo, hi)}${ayahStep("learn", nAy, lo, hi)}
+    <label class="flabel" for="learn-n">or number of ayahs</label>${ayahCount("learn-n", nAy, hi-lo+1)}
     ${ranged ? `<button type="button" class="btn small ghost" data-learnall>Whole surah</button><span class="muted small">Ayahs ${lo}–${hi}</span>` : ""}
   </div>
   ${failed ? `<div class="empty"><b>The tables for this surah could not be loaded</b>Check the connection and choose the surah again.</div>` : !ok ? `<p class="muted">Loading…</p>` : `
@@ -1043,7 +1028,7 @@ function viewExercise(){
       <label class="flabel" for="ex-s">Surah</label><select id="ex-s">${EX_SURAHS.map(x => `<option value="${x}" ${x === s ? "selected" : ""}>${x} · ${esc(surahOf(x).tl)}</option>`).join("")}</select>
       <label class="flabel" for="ex-from">Ayah</label>${ayahSelect("ex-from", n, E.from)}
       <label class="flabel" for="ex-to">to</label>${ayahSelect("ex-to", n, E.to)}
-      ${ayahQuick("ex-q", n, E.from, E.to)}${ayahStep("ex", n, E.from, E.to)}
+      <label class="flabel" for="ex-n">or number of ayahs</label>${ayahCount("ex-n", n, E.to-E.from+1)}
       <button type="button" class="btn small primary" data-exstart ${d ? "" : "disabled"}>${d ? "Start" : failed ? "Unavailable" : "Loading…"}</button>
     </div>
     <p class="small muted">Questions are generated automatically from the Qur'an's grammar data and are an unreviewed draft: if two options both seem right, choose the closest to the highlighted meaning. Surah 97 is hand-written.</p>`;
@@ -3489,12 +3474,6 @@ document.addEventListener("click", async (ev) => {
   if (d.clear === "research") { S.rq = ""; S.rtag = null; S.rstatus = ""; return render(); }
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
-  if (d.ayrange) {
-    const [k, a, b] = d.ayrange.split(":"), A = +a, B = +b;
-    if (k === "ex") { S.ex.from = A; S.ex.to = B; }
-    else { const n = surahOf(S.learn.s).v.length; S.learn = {s: S.learn.s, from: (A === 1 && B === n) ? null : A, to: (A === 1 && B === n) ? null : B}; }
-    return render();
-  }
   if (d.exstart !== undefined) { exStart(); return render(); }
   if (d.exopt !== undefined) { const E = S.ex; if (E.pick !== null) return; E.pick = +d.exopt; E.res[E.i] = E.qs[E.i].opts[E.pick].ok; return render(); }
   if (d.exnext !== undefined) { const E = S.ex; if (E.i + 1 < E.qs.length) { E.i++; E.pick = null; } else E.phase = "done"; render(); window.scrollTo(0, 0); return; }
@@ -3700,8 +3679,8 @@ document.addEventListener("change", (ev) => {
   if (t.id === "ai-scope" && M) { captureFields(); M.aiScope = t.value; drawWriteEditor(); $("#ai-notes")?.focus(); return; }
   if (t.id === "learn-s") { S.learn = {s: +t.value, from: null, to: null}; render(); return; }
   if (t.id === "ex-s") { const n = surahOf(+t.value).v.length; S.ex = {s: +t.value, from: 1, to: n, phase: "pick"}; return render(); }
-  if (t.id === "ex-q" && t.value) { const [a, b] = t.value.split("-").map(Number); S.ex.from = a; S.ex.to = b; return render(); }
-  if (t.id === "learn-q" && t.value) { const [a, b] = t.value.split("-").map(Number), n = surahOf(S.learn.s).v.length; S.learn = {s: S.learn.s, from: (a === 1 && b === n) ? null : a, to: (a === 1 && b === n) ? null : b}; return render(); }
+  if (t.id === "ex-n") { const nn = surahOf(S.ex.s).v.length, f = ayRead("ex-from", nn, 1), c = ayRead("ex-n", nn, 1); S.ex.from = f; S.ex.to = Math.min(nn, f + c - 1); return render(); }
+  if (t.id === "learn-n") { const nn = surahOf(S.learn.s).v.length, f = ayRead("learn-from", nn, 1), c = ayRead("learn-n", nn, 1), to = Math.min(nn, f + c - 1); S.learn = {s: S.learn.s, from: (f === 1 && to === nn) ? null : f, to: (f === 1 && to === nn) ? null : to}; return render(); }
   if (t.id === "ex-from" || t.id === "ex-to") {
     const nn = surahOf(S.ex.s).v.length;
     let from = ayRead("ex-from", nn, 1), to = ayRead("ex-to", nn, nn);
