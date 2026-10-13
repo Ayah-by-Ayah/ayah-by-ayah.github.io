@@ -48,6 +48,35 @@ def highlight(gloss, en):
             w = ms[0].group(1)
             if len(re.findall(r"\b%s\b" % re.escape(w), en, re.I)) == 1: return w
     return None
+
+ART = set("the a an of to in on at for with from by and or then so but".split())
+COP = set("is are was were am".split())
+def _gtok(gloss): return [x.lower() for x in re.findall(r"[A-Za-z']+", re.sub(r'[\[\]]', ' ', re.sub(r'\([^)]*\)', ' ', gloss)))]
+def _tmatch(e, gs):
+    e = e.lower()
+    for g in gs:
+        if e == g: return True
+        m = min(len(e), len(g))
+        if m >= 4 and (e.startswith(g[:max(4, len(g) - 2)]) or g.startswith(e[:max(4, len(e) - 2)])): return True
+    return False
+def expand(gloss, en, hl):
+    """Grow a one-word highlight to the whole phrase the Arabic word means ('You have bestowed favor', not 'bestowed')."""
+    if not hl or en.count(hl) != 1: return hl
+    gs = _gtok(gloss)
+    toks = [(m.start(), m.end(), m.group()) for m in re.finditer(r"[A-Za-z']+", en)]
+    k0 = next((k for k, (a, b, w) in enumerate(toks) if a == en.index(hl)), None)
+    if k0 is None: return hl
+    k1 = next((k for k, (a, b, w) in enumerate(toks) if b == en.index(hl) + len(hl)), None)
+    if k1 is None: return hl
+    def ok(k):
+        a, b, w = toks[k]
+        return w.lower() not in ART and w.lower() not in COP and _tmatch(w, gs)
+    lo, hi = k0, k1
+    while lo > 0 and en[toks[lo-1][1]:toks[lo][0]].strip() == '' and ok(lo-1): lo -= 1
+    while hi + 1 < len(toks) and en[toks[hi][1]:toks[hi+1][0]].strip() == '' and ok(hi+1): hi += 1
+    # a leading/trailing article is never part of the highlight
+    new = en[toks[lo][0]:toks[hi][1]]
+    return new if en.count(new) == 1 else hl
 _POOL = None
 def pool():
     global _POOL
@@ -71,6 +100,7 @@ def gen_ayah(s, a):
         if not inf: continue
         hl = highlight(w[1], en)
         if not hl: continue
+        hl = expand(w[1], en, hl)
         gl = set(ctokens(w[1])); ans = norm(m[i-1])
         pool_ = [c for c in P.get(inf['sig'], []) if c[3] != inf['root'] and c[4] != inf['lem'] and not (c[5] & gl) and c[7] != ans and abs(c[6] - inf['len']) <= 3 and not (c[0] == s and c[1] == a)]
         seen = set(); uniq = []

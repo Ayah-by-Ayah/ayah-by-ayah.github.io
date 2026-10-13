@@ -13,6 +13,11 @@ def build(s):
         sets = []
         for (i, hl, ds) in qs:
             if hl not in en or en.count(hl) != 1: errs.append(f'{s}:{a} highlight "{hl}" not unique in translation')
+            g = gram(s)[a-1]
+            if len(g) == len(mad(s, a)) and hl in en and en.count(hl) == 1:
+                h2 = auto.expand(g[i-1][1], en, hl)
+                if h2 != hl and os.environ.get('SHOWHL'): print(f'HL {s}:{a} #{i} {hl!r} -> {h2!r}   [{g[i-1][1]}]')
+                hl = h2
             opts = [f'{s}:{a}:{i}']; words = {norm(mad(s, a)[i-1])}
             for d in ds:
                 if len(opts) == 4: break
