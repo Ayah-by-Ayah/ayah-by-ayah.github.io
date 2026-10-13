@@ -407,6 +407,9 @@ h3[lang="ur"],h3[lang="ar"]{font-family:inherit}
 html.reading .top,html.reading .toolbar,html.reading .admin-bar,html.reading .art-actions,html.reading .statusbar,html.reading .shead > div:first-child,html.reading .shead > div:last-child{display:none}
 html.reading body{background:var(--surface)}
 html.reading main{padding-block:72px 96px;max-width:900px}
+html.reading [data-focus]{display:none}
+.focusbar .btn,.focusbar .seg button{white-space:nowrap}
+html.reading.rd-tool main{max-width:1100px;zoom:var(--read-scale)}
 html.reading .ayah{border-bottom-color:var(--sunk);padding:26px 0}
 html.reading .tr{font-size:calc(18px * var(--read-scale));max-width:none}
 html.reading .prose,html.reading .article-body{font-size:calc(18.5px * var(--read-scale))}
@@ -769,6 +772,8 @@ function qfontControls(){
 /* ---------- full screen reading ---------- */
 function focusTitle(){
   if (S.view === "surah") { const su = surahOf(S.surah); return `${su.n}. ${su.tl}`; }
+  if (S.view === "learn") return `Learn · ${surahOf((S.learn && S.learn.s) || S.surah || 1).tl}`;
+  if (S.view === "exercise") return `Exercise · ${surahOf((S.ex && S.ex.s) || 1).tl}`;
   if (S.view === "article") { const A = S.art || {}; const it = itemOf(A.kind, A.id); return it ? ((A.kind === "w" && !pickTitle(it.title, S.lang, it.src).text) ? it.word : pickTitle(it.title, S.lang, it.src).text || "Untitled") : ""; }
   return "";
 }
@@ -786,6 +791,7 @@ function applyReadScale(){ document.documentElement.style.setProperty("--read-sc
 async function enterFocus(){
   S.focus = true;
   document.documentElement.classList.add("reading");
+  document.documentElement.classList.toggle("rd-tool", S.view === "learn" || S.view === "exercise");
   applyReadScale();
   try { if (document.documentElement.requestFullscreen && !document.fullscreenElement) { await document.documentElement.requestFullscreen(); S.fsNative = true; } } catch { S.fsNative = false; }
   render();
@@ -802,7 +808,7 @@ document.addEventListener("fullscreenchange", () => { if (!document.fullscreenEl
 /* ---------- rendering ---------- */
 function render(){
   applyQFont();
-  if (S.focus && S.view !== "surah" && S.view !== "article") { S.focus = false; document.documentElement.classList.remove("reading"); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
+  if (S.focus && !["surah","article","learn","exercise"].includes(S.view)) { S.focus = false; document.documentElement.classList.remove("reading"); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
   setTimeout(drawFocusBar, 0);
   drawBackPill();
   { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; const nr = $("#nav-research"); if (nr) nr.hidden = !S.admin; }
@@ -953,7 +959,7 @@ function viewLearn(){
   const v = vocDoc(s), ok = hasRows(v), failed = LEARN[s] && LEARN[s].fail && !ok;
   const opts = Array.from({length: 114}, (_, i) => i + 1).map(n => `<option value="${n}" ${n === s ? "selected" : ""}>${n} · ${esc(surahOf(n).tl)}</option>`).join("");
   const T = ok ? vocabTables(s, lo, hi, v) : null;
-  return `<div class="phead" id="tbl-top"><h1>Learn</h1></div>
+  return `<div class="phead" id="tbl-top"><h1>Learn</h1><button type="button" class="btn" data-focus aria-label="Full screen">⛶ Full screen</button></div>
   <p class="muted small" style="margin:0">Word tables for study. Choose a surah and an ayah range: only the words of that part are shown. Tables read from right to left.</p>
   <div class="learn-bar" id="learnform" tabindex="-1">
     <label class="flabel" for="learn-s">Surah</label><select id="learn-s">${opts}</select>
@@ -1049,7 +1055,7 @@ function viewExercise(){
       <ul class="exlist">${E.qs.map((q, i) => `<li>${E.res[i] ? "✓" : "✗"} <button type="button" class="reflink" data-go="${s}:${q.a}">Ayah ${s}:${q.a}</button> <span class="ar" lang="ar" dir="rtl">${esc(exWord(q.opts.find(o => o.ok).r, q.m))}</span></li>`).join("")}</ul>
       <div class="row"><button type="button" class="btn primary" data-exagain>Try again (new blanks)</button><button type="button" class="btn ghost" data-exreset>Choose another range</button></div></div>`;
   }
-  return `<div class="phead"><h1>Exercise</h1></div>${body}`;
+  return `<div class="phead"><h1>Exercise</h1><button type="button" class="btn" data-focus aria-label="Full screen">⛶ Full screen</button></div>${body}`;
 }
 
 /* Rukūʿ starts per surah (558 in all; Indo-Pak/quran.com division). Source: quran-meta package, checked against quran.ai metadata. */
