@@ -24,7 +24,15 @@ def build(s):
     return {'s': s, 'ayahs': out}, errs
 if __name__ == '__main__':
     os.makedirs(f'{ROOT}/exercise', exist_ok=True)
-    for s in map(int, sys.argv[1:] or [97]):
-        d, errs = build(s)
-        print('\n'.join(errs) or 'ok')
+    import auto
+    surahs = [int(x) for x in sys.argv[1:]] or list(range(1, 115))
+    stats = []
+    for s in surahs:
+        if os.path.exists(os.path.join(HERE, 'exercise_src', f'spec{s}.py')): d, errs = build(s)
+        else: d, errs = auto.gen_surah(s), []
+        n = len(Q[s-1]['v']); k = [len(v) for v in d['ayahs'].values()]
+        stats.append((s, n, len(k), sum(k)))
+        if errs: print(s, '\n'.join(errs))
         if not errs: json.dump(d, open(f'{ROOT}/exercise/{s}.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
+    print('surahs', len(stats), 'ayahs', sum(x[1] for x in stats), 'with questions', sum(x[2] for x in stats), 'questions', sum(x[3] for x in stats))
+    print('weakest:', sorted(stats, key=lambda x: x[2] / x[1])[:8])
