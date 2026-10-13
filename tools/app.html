@@ -182,6 +182,8 @@ nav.tabs button[hidden]{display:none}
 .learn-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:12px 0}
 .learn-bar select{width:auto;max-width:100%}
 .ayah-sel{width:auto;min-width:64px}
+.jumpbar{gap:8px;margin:10px 0 0;position:sticky;top:0;z-index:5;background:var(--bg,#fff);padding:6px 0}
+.tblh{display:flex;align-items:center;gap:8px;scroll-margin-top:56px}
 .vtbl td.refs{white-space:nowrap}
 
 .admin-bar .btn{font-size:13px}
@@ -878,9 +880,13 @@ function vocabTables(s, lo, hi, doc){
   const refs = r => `<td class="refs">${vocabRefs(s, r.ayahs)}</td>`;
   const ism = (v.ism||[]).filter(inR).map(cut).map(r => `<tr>${mean(r)}${ar(r.sg)}${ar(r.p1)}${ar(r.p2)}${refs(r)}</tr>`).join("");
   const fil = (v.fil||[]).filter(inR).map(cut).map(r => `<tr>${mean(r)}${ar(r.madi)}${ar(r.mud)}${ar(r.masdar)}${ar(r.amr)}${ar(r.fa)}${ar(r.mf)}${refs(r)}</tr>`).join("");
+  const nI = (v.ism||[]).filter(inR).length, nF = (v.fil||[]).filter(inR).length;
+  const sw = (to, label) => `<button type="button" class="btn small ghost" data-jump="${to}">${label}</button>`;
   return {
-    ism: ism ? `<h3>Ism (nouns)</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_ISM)}</thead><tbody>${ism}</tbody></table></div>` : "",
-    fil: fil ? `<h3>Fiʿl (verbs)</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""
+    nI, nF,
+    bar: (nI || nF) ? `<div class="jumpbar row small">${nI ? sw("tbl-ism", `Ism · ${nI}`) : ""}${nF ? sw("tbl-fil", `Fiʿl · ${nF}`) : ""}</div>` : "",
+    ism: ism ? `<h3 id="tbl-ism" class="tblh">Ism (nouns)<span class="spacer"></span>${nF ? sw("tbl-fil", "Fiʿl ↓") : ""}${sw("tbl-top", "↑ Top")}</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_ISM)}</thead><tbody>${ism}</tbody></table></div>` : "",
+    fil: fil ? `<h3 id="tbl-fil" class="tblh">Fiʿl (verbs)<span class="spacer"></span>${nI ? sw("tbl-ism", "↑ Ism") : ""}${sw("tbl-top", "↑ Top")}</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""
   };
 }
 /* Generated Ism/Fiʿl tables (learn/<s>.json, built by tools/build_learn.py). A document saved in the database (S.vocab) wins. */
@@ -907,7 +913,7 @@ function vocabHTML(s){
   const vr = S.vrange && S.vrange.s === s ? S.vrange : null;
   const lo = vr ? vr.from : 1, hi = vr ? vr.to : nAy;
   const T = hasRows(v) ? vocabTables(s, lo, hi, v) : {ism: "", fil: ""};
-  return `<section class="vocab" id="vocab">
+  return `<section class="vocab" id="vocab"><span id="tbl-top"></span>
     <div class="row"><h2>Vocabulary · Ism and Fiʿl</h2><span class="spacer"></span>
       <button type="button" class="btn small" data-vtoggle aria-expanded="${S.vocabOpen}">${S.vocabOpen ? "Hide tables" : "Show tables"}</button></div>
     ${S.vocabOpen && !hasRows(v) ? `<p class="muted">${LEARN[s] && LEARN[s].fail ? "No tables for this surah." : "Loading…"}</p>` : ""}
@@ -915,7 +921,7 @@ function vocabHTML(s){
     ${vocabNotice(s, v)}
     <form class="row small" id="vrange" autocomplete="off" style="margin-top:10px;gap:8px"><label class="flabel" for="vfrom">Ayah from</label>${ayahSelect("vfrom", nAy, lo)}<label class="flabel" for="vto">to</label>${ayahSelect("vto", nAy, hi)}${vr ? `<button type="button" class="btn small ghost" data-vall>Show all</button><span class="muted">Ayahs ${lo}–${hi}</span>` : ""}</form>
     ${!T.ism && !T.fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in this table.</p>` : ""}
-    ${T.ism}${T.fil}
+    ${T.bar || ""}${T.ism}${T.fil}
     <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>` : ""}
   </section>`;
 }
@@ -928,9 +934,9 @@ function viewLearn(){
   const v = vocDoc(s), ok = hasRows(v), failed = LEARN[s] && LEARN[s].fail && !ok;
   const opts = Array.from({length: 114}, (_, i) => i + 1).map(n => `<option value="${n}" ${n === s ? "selected" : ""}>${n} · ${esc(surahOf(n).tl)}</option>`).join("");
   const T = ok ? vocabTables(s, lo, hi, v) : null;
-  return `<div class="phead"><h1>Learn</h1></div>
+  return `<div class="phead" id="tbl-top"><h1>Learn</h1></div>
   <p class="muted small" style="margin:0">Word tables for study. Choose a surah and an ayah range: only the words of that part are shown. Tables read from right to left.</p>
-  <div class="learn-bar" id="learnform">
+  <div class="learn-bar" id="learnform" tabindex="-1">
     <label class="flabel" for="learn-s">Surah</label><select id="learn-s">${opts}</select>
     <label class="flabel" for="learn-from">Ayah from</label>${ayahSelect("learn-from", nAy, lo)}
     <label class="flabel" for="learn-to">to</label>${ayahSelect("learn-to", nAy, hi)}
@@ -939,7 +945,7 @@ function viewLearn(){
   ${failed ? `<div class="empty"><b>The tables for this surah could not be loaded</b>Check the connection and choose the surah again.</div>` : !ok ? `<p class="muted">Loading…</p>` : `
   ${vocabNotice(s, v)}
   ${!T.ism && !T.fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in these tables.</p>` : ""}
-  ${T.ism}${T.fil}
+  ${T.bar}${T.ism}${T.fil}
   <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>`}`;
 }
 
@@ -3365,6 +3371,7 @@ document.addEventListener("click", async (ev) => {
   if (d.clear === "research") { S.rq = ""; S.rtag = null; S.rstatus = ""; return render(); }
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
+  if (d.jump) { document.getElementById(d.jump)?.scrollIntoView({block: "start", behavior: "smooth"}); return; }
   if (d.learnall !== undefined) { if (S.learn) { S.learn.from = S.learn.to = null; } render(); return; }
   if (d.vall !== undefined) { S.vrange = null; render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.vreviewed) {
