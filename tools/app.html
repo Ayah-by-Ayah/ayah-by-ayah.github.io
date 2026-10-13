@@ -3371,7 +3371,13 @@ document.addEventListener("click", async (ev) => {
   if (d.clear === "research") { S.rq = ""; S.rtag = null; S.rstatus = ""; return render(); }
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
-  if (d.jump) { document.getElementById(d.jump)?.scrollIntoView({block: "start", behavior: "smooth"}); return; }
+  if (d.jump) {
+    const el = document.getElementById(d.jump); if (!el) return;
+    const y = Math.max(0, el.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop || 0) - (d.jump === "tbl-top" ? 0 : 56));
+    window.scrollTo(0, y);
+    document.documentElement.scrollTop = y; document.body.scrollTop = y;
+    return;
+  }
   if (d.learnall !== undefined) { if (S.learn) { S.learn.from = S.learn.to = null; } render(); return; }
   if (d.vall !== undefined) { S.vrange = null; render(); requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.vreviewed) {
