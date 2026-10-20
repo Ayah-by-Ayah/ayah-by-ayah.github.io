@@ -133,6 +133,11 @@ html.script-indopak .ar .end{font-family:"Scheherazade New",serif}
 @keyframes flash{from{background:var(--flash)}to{background:transparent}}
 @media (prefers-reduced-motion:reduce){.ayah.flash{animation:none;background:var(--flash)}}
 .anum{font:600 13px/1 var(--f-ui);color:var(--muted);font-variant-numeric:tabular-nums;padding-top:12px}
+.anum .bm{display:block;margin:8px 0 0;padding:4px;border:0;background:none;color:var(--muted);cursor:pointer;border-radius:6px;opacity:.5;line-height:0}
+.anum .bm:hover,.anum .bm:focus-visible{opacity:1;color:var(--accent)}
+.anum .bm.on{opacity:1;color:var(--accent);--bmfill:1}
+.bmcard{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:12px 14px;margin:0 0 14px;background:var(--sunk);border:1px solid var(--line);border-radius:12px}
+.bmt{font:600 12px/1 var(--f-ui);color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px}
 .anum .dots{display:flex;flex-direction:column;gap:4px;margin-top:10px}
 .anum .dot{width:8px;height:8px;border-radius:50%}
 .dot.rev{background:var(--rev)} .dot.exp{background:var(--exp)} .dot.qa{background:var(--qa)} .dot.les{background:var(--les)} .dot.cm{background:var(--cm)}
@@ -495,6 +500,26 @@ const store = {
   get(k){ try { return localStorage.getItem(k); } catch { return null; } },
   set(k,v){ try { localStorage.setItem(k,v); } catch {} }
 };
+
+/* ---------- last-read bookmark (this browser only) ---------- */
+function bmGet(){ try { const v = JSON.parse(store.get("aba.bm") || "null"); return v && S.Q && validRef(v.s, v.a) ? v : null; } catch { return null; } }
+function bmAgo(t){ const m = Math.round((Date.now() - t) / 60000); if (m < 2) return "just now"; if (m < 60) return m + " min ago"; const h = Math.round(m / 60); if (h < 24) return h + " h ago"; const d = Math.round(h / 24); return d === 1 ? "yesterday" : d + " days ago"; }
+const BM_SVG = `<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z" fill="currentColor" fill-opacity="var(--bmfill,0)" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>`;
+function bmToggle(ref){
+  const [s, a] = ref.split(":").map(Number), cur = bmGet();
+  if (cur && cur.s === s && cur.a === a) { store.set("aba.bm", ""); toast("Bookmark removed"); }
+  else { store.set("aba.bm", JSON.stringify({s, a, t: Date.now()})); toast(`Bookmarked ${s}:${a} as your last read`); }
+  const b = bmGet();
+  document.querySelectorAll(".bm").forEach(el => { const on = !!b && el.dataset.bm === `${b.s}:${b.a}`; el.classList.toggle("on", on); el.setAttribute("aria-pressed", String(on)); });
+  const tb = document.getElementById("bm-go"); if (tb) tb.outerHTML = bmGoBtn();
+}
+function bmGoBtn(){ const b = bmGet(); return b ? `<button type="button" class="btn" id="bm-go" data-go="${b.s}:${b.a}" title="Saved ${bmAgo(b.t)}">🔖 Last read ${b.s}:${b.a}</button>` : `<span id="bm-go"></span>`; }
+function bmCard(){
+  const b = bmGet(); if (!b) return "";
+  const su = surahOf(b.s);
+  return `<div class="bmcard"><div><div class="bmt">🔖 Continue reading</div><div class="bmw"><b>${esc(su.tl)}</b> · ayah ${b.s}:${b.a} <span class="muted small">· saved ${bmAgo(b.t)}</span></div></div>
+    <span class="spacer"></span><button type="button" class="btn primary" data-go="${b.s}:${b.a}">Continue</button><button type="button" class="btn ghost small" data-bm="${b.s}:${b.a}" data-bmclear="1">Remove</button></div>`;
+}
 
 const S = {
   Q: null, view: "surahs", surah: 1, flashKey: null,
@@ -876,6 +901,7 @@ function viewSurahs(){
       <span class="chip wa">${S.words.length} word analys${S.words.length===1?"is":"es"}</span>
     </span>
   </div>
+  ${bmCard()}
   <div class="sgrid">
     ${list.map(s => `<button type="button" class="scard" data-surah="${s.n}">
       <span class="no">${s.n}</span><span class="tl">${esc(s.tl)}</span><span class="arn" lang="ar">${esc(s.ar)}</span>
@@ -1670,6 +1696,7 @@ function viewSurah(){
   </div>
   <div class="toolbar">
     <button type="button" class="btn" data-focus aria-label="Read this surah in full screen">⛶ Full screen</button>
+    ${bmGoBtn()}
     <form class="row" id="jump" autocomplete="off"><label class="flabel" for="jumpa">Go to ayah</label><input type="text" id="jumpa" inputmode="numeric" placeholder="1–${su.v.length}"><button class="btn" type="submit">Go</button></form>
     <label class="row small"><input type="checkbox" id="onlymarked" ${S.onlyMarked?"checked":""}> Only ayahs with marks</label>
     ${qfontControls()}
@@ -1692,7 +1719,7 @@ function ayahHTML(s, x){
   const cmt = S.cmIx[k], nRs = S.admin ? (S.rsIx[k] || []).length : 0;
   const dots = [rev?"rev":"", nExp?"exp":"", lessons.length?"les":"", wlist.length?"wa":"", cmt?"cm":""].filter(Boolean);
   return `<article class="ayah${S.flashKey===k?" flash":""}" id="a-${s}-${x.a}">
-    <div class="anum">${s}:${x.a}${dots.length?`<div class="dots" aria-hidden="true">${dots.map(d=>`<span class="dot ${d}"></span>`).join("")}</div>`:""}</div>
+    <div class="anum">${s}:${x.a}${(() => { const b = bmGet(), on = !!b && b.s === s && b.a === x.a; return `<button type="button" class="bm${on ? " on" : ""}" data-bm="${s}:${x.a}" aria-pressed="${on}" aria-label="Bookmark this ayah as last read" title="Bookmark as last read">${BM_SVG}</button>`; })()}${dots.length?`<div class="dots" aria-hidden="true">${dots.map(d=>`<span class="dot ${d}"></span>`).join("")}</div>`:""}</div>
     <div class="abody">
       <p class="ar" lang="ar" dir="rtl">${arTokHTML(s, x.a, x.ar)} <span class="end">﴿${arDigits(x.a)}﴾</span>${rukuEnds(s, x.a) ? ` <button type="button" class="rkend" data-rukulist="${s}:${RUKU[s].filter(v => v <= x.a).length}" title="End of rukūʿ ${RUKU[s].filter(v => v <= x.a).length} · show all rukūʿ">ع</button>` : ""}</p>
       <p class="tr${rev?" revised":""}" ${trAttrs()}>${esc(rev ? rev.text : x.en)}</p>
@@ -3480,6 +3507,7 @@ document.addEventListener("click", async (ev) => {
   if (d.clear === "research") { S.rq = ""; S.rtag = null; S.rstatus = ""; return render(); }
   if (d.go) { closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
+  if (d.bm) { bmToggle(d.bm); if (d.bmclear) render(); return; }
   if (d.exstart !== undefined) { exStart(); return render(); }
   if (d.exopt !== undefined) { const E = S.ex; if (E.pick !== null) return; E.pick = +d.exopt; E.res[E.i] = E.qs[E.i].opts[E.pick].ok; return render(); }
   if (d.exnext !== undefined) { const E = S.ex; if (E.i + 1 < E.qs.length) { E.i++; E.pick = null; } else E.phase = "done"; render(); window.scrollTo(0, 0); return; }
