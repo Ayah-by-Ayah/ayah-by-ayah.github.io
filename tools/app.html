@@ -459,6 +459,7 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
       <button type="button" data-nav="commentary">Commentary</button>
       <button type="button" data-nav="qa" id="nav-qa" hidden>Q&amp;A</button>
       <button type="button" data-nav="research" id="nav-research" hidden>Research</button>
+      <button type="button" data-nav="ruku" id="nav-ruku" hidden>Ruku</button>
     </nav>
     <div class="langbar">
       <span class="lbl">Write-ups in</span>
@@ -734,7 +735,7 @@ function goRef(ref){
       S.ret = {view: "article", art: Object.assign({}, S.art), y, label: t ? `Back to “${t.length > 48 ? t.slice(0, 46) + "…" : t}”` : `Back to the ${kindL}`};
     } else if (S.view === "surah") {
       if (!S.ret || S.ret.view !== "surah" || S.ret.surah !== S.surah || Math.abs(S.ret.y - y) > 40) S.ret = {view: "surah", surah: S.surah, y, label: `Back to where you were in ${surahOf(S.surah).tl}`};
-    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa" || S.view === "commentary" || S.view === "research" || S.view === "learn" || S.view === "exercise") {
+    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa" || S.view === "commentary" || S.view === "research" || S.view === "ruku" || S.view === "learn" || S.view === "exercise") {
       S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view === "learn" ? "Learn" : S.view === "exercise" ? "Exercise" : S.view === "qa" ? "Q&A" : S.view[0].toUpperCase() + S.view.slice(1)}`};
     }
     S.keepRet = true; if (S.onlyMarked && !hasMarks(s,a)) S.onlyMarked = false; S.open.add(key(s,a)); go("surah",{s,a}); }
@@ -743,7 +744,7 @@ function fromHash(){
   const h = (location.hash||"").slice(1);
   let m;
   if (h === "" || h === "surahs") S.view = "surahs";
-  else if (h === "notes" || h === "lessons" || h === "words" || h === "qa" || h === "commentary" || h === "research" || h === "learn" || h === "exercise") S.view = h;
+  else if (h === "notes" || h === "lessons" || h === "words" || h === "qa" || h === "commentary" || h === "research" || h === "ruku" || h === "learn" || h === "exercise") S.view = h;
   else if ((m = h.match(/^([nlw])-([A-Za-z0-9_.~-]+)$/))) { S.view = "article"; S.art = {kind: m[1], id: m[2], from: m[1]==="n" ? "notes" : m[1]==="w" ? "words" : "lessons"}; }
   else if ((m = h.match(/^s(\d{1,3})(?:-(\d{1,3}))?$/)) && +m[1]>=1 && +m[1]<=114) { S.view = "surah"; S.surah = +m[1]; if (m[2]) { S.pendingAyah = +m[2]; S.open.add(key(+m[1],+m[2])); } }
 }
@@ -842,7 +843,7 @@ function render(){
   if (S.focus && !["surah","article","learn","exercise"].includes(S.view)) { S.focus = false; document.documentElement.classList.remove("reading"); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
   setTimeout(drawFocusBar, 0);
   drawBackPill();
-  { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; const nr = $("#nav-research"); if (nr) nr.hidden = !S.admin; }
+  { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; const nr = $("#nav-research"); if (nr) nr.hidden = !S.admin; const nk = $("#nav-ruku"); if (nk) nk.hidden = !S.admin; }
   document.querySelectorAll("nav.tabs button").forEach(b => {
     const cur = b.dataset.nav === S.view || (b.dataset.nav==="surahs" && S.view==="surah")
       || (S.view==="article" && ((S.art?.kind==="l" && b.dataset.nav==="lessons") || (S.art?.kind==="n" && b.dataset.nav==="notes") || (S.art?.kind==="w" && b.dataset.nav==="words")));
@@ -864,6 +865,7 @@ function render(){
   else if (S.view === "qa") app.innerHTML = viewQA();
   else if (S.view === "commentary") app.innerHTML = viewCommentary();
   else if (S.view === "research") app.innerHTML = viewResearch();
+  else if (S.view === "ruku") app.innerHTML = viewRuku();
   else if (S.view === "learn") app.innerHTML = viewLearn();
   else if (S.view === "exercise") app.innerHTML = viewExercise();
   else if (S.view === "article") app.innerHTML = viewArticle();
@@ -984,6 +986,42 @@ function vocabHTML(s){
 }
 
 /* ---------- Learn tab: Ism and Fiʿl tables for any surah, limited to an ayah range ---------- */
+/* ---------- Ruku tab: analysis of the rukūʿ of a surah (private, editor only; collection ruku/<s>) ---------- */
+const RK_CONF = {strong: "Strong", plausible: "Plausible", speculative: "Speculative"};
+const RK_BND = {first: "Opening rukūʿ", clean: "Clean break", reasonable: "Reasonable break", debatable: "Debatable break"};
+const RK_SEC = [["thesis","Main thesis"],["structure","Structure of the surah"],["tafsirSurah","What the tafsirs say about the surah"],["boundaries","The rukūʿ boundaries"],["disagreements","Where this reading differs"],["sources","Sources consulted"],["limits","Limits of this analysis"]];
+function rkText(obj, key, src){
+  const p = pick(obj, S.lang, src);
+  if (!p.text) return "";
+  return `<div class="rk-text" lang="${p.lang}" dir="${RTL[p.lang] ? "rtl" : "ltr"}">${renderDoc(p.text, p.lang, key).html}</div>${p.fallback ? `<div class="small muted">Shown in ${LNAME_EN[p.lang]}</div>` : ""}`;
+}
+function viewRuku(){
+  if (!S.admin) return `${statusBar()}<div class="empty"><b>Ruku analysis is private</b>It is available in the editor only.</div>`;
+  if (!S.rk) S.rk = {s: 16};
+  const s = S.rk.s, docs = S.ruku || {}, d = docs[s];
+  const opts = Array.from({length: 114}, (_, i) => i + 1).map(n => `<option value="${n}" ${n === s ? "selected" : ""}>${n} · ${esc(surahOf(n).tl)}${docs[n] ? " ●" : ""}</option>`).join("");
+  let h = `<div class="phead"><h1>Ruku analysis</h1></div>
+  <p class="muted small" style="margin:0">The main topic of each rukūʿ and how it follows the one before. Each rukūʿ has two layers: what the tafsirs say, and an independent reading with a confidence label and a verdict. ● = analysed. Private: not on the public site.</p>
+  <div class="learn-bar"><label class="flabel" for="rk-s">Surah</label><select id="rk-s">${opts}</select></div>`;
+  if (!d) return h + `<div class="empty"><b>No analysis for ${esc(surahOf(s).tl)} yet</b>Ask Claude in the editor session to analyse this surah.</div>`;
+  const ai = d.ai || {}, flagged = LANGS.filter(l => ai[l] && ((d.surah.thesis || {})[l] || "").trim());
+  if (ai[S.lang]) h += `<div class="row small"><span class="notice">Drafted by AI (${LNAME_EN[S.lang]}). Not yet reviewed.</span><button type="button" class="btn small" data-rkrev="${S.lang}">Mark as reviewed</button></div>`;
+  const sur = d.surah || {};
+  if (sur.title) h += `<h2>${esc(pick(sur.title, S.lang, d.src).text)}</h2>`;
+  for (const [k, lab] of RK_SEC) { if (!sur[k]) continue; const b = rkText(sur[k], "rks" + s + k, d.src); if (b) h += `<section class="rk-sec"><h3>${lab}</h3>${b}</section>`; }
+  h += `<h2>Rukūʿ by rukūʿ</h2>`;
+  const ru = RUKU[s] || [];
+  h += (d.items || []).map(it => {
+    const ti = pick(it.title, S.lang, d.src).text;
+    return `<article class="qacard rk-item"><div class="row"><b>Rukūʿ ${it.n}</b><button type="button" class="reflink" data-go="${s}:${it.from}">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</button>
+      <span class="chip">${RK_BND[it.bnd] || ""}</span><span class="chip ${it.conf === "strong" ? "exp" : "rev"}">Independent reading: ${RK_CONF[it.conf] || ""}</span></div>
+      <h3>${esc(ti)}</h3>
+      ${[["theme","Main topic"],["tafsir","Tafsir layer"],["link","Connection to the previous rukūʿ"],["indep","Independent reading"],["verdict","Verdict"]].map(([k, lab]) => it[k] ? `<h4>${lab}</h4>${rkText(it[k], "rki" + s + "_" + it.n + k, d.src)}` : "").join("")}
+    </article>`;
+  }).join("");
+  return h;
+}
+
 function viewLearn(){
   if (!S.learn) S.learn = {s: S.surah || 1, from: null, to: null};
   const L = S.learn, s = L.s, nAy = surahOf(s).v.length;
@@ -3685,6 +3723,7 @@ document.addEventListener("click", async (ev) => {
   const d = t.dataset;
   if (t.id === "brand") return go("surahs");
   if (d.nav) return go(d.nav);
+  if (d.rkrev) { const dd = (S.ruku || {})[S.rk && S.rk.s]; if (!dd) return; const ai = Object.assign({}, dd.ai, {[d.rkrev]: false}); try { await S.db.collection("ruku").doc(String(dd.s)).update({ai, updatedAt: Date.now()}); toast("Marked as reviewed"); } catch (e) { toast(dbErr(e)); } return; }
   if ("goback" in d) return goBack();
   if ("gobackX" in d) { S.ret = null; return drawBackPill(); }
   if (d.script) { S.script = d.script; store.set("aba.script", d.script); if (d.script === "indopak" && S.ipState === "failed") S.ipState = "idle"; return render(); }
@@ -3921,6 +3960,7 @@ document.addEventListener("change", (ev) => {
   if (t.id === "mv-target" && M && M.type === "mv") { mvCapture(); M.target = t.value; M.err = ""; drawMove(); mvLoadWords(); return; }
   if (t.id === "mv-ref" && M && M.type === "mv") { mvCapture(); M.wordList = null; M.sel = null; drawMove(); mvLoadWords(); return; }
   if (t.id === "mv-cat" && M && M.type === "mv") { mvCapture(); return; }
+  if (t.id === "rk-s") { S.rk = {s: +t.value}; render(); return; }
   if (t.id === "learn-s") { S.learn = {s: +t.value, from: null, to: null}; render(); return; }
   if (t.id === "ex-s") { const n = surahOf(+t.value).v.length; S.ex = {s: +t.value, from: 1, to: n, phase: "pick"}; return render(); }
   if (t.id === "ex-n") { const nn = surahOf(S.ex.s).v.length, f = ayRead("ex-from", nn, 1), c = ayRead("ex-n", nn, 1); S.ex.from = f; S.ex.to = Math.min(nn, f + c - 1); return render(); }
@@ -3980,7 +4020,7 @@ function rerenderKeepingInput(id){
 
 async function exportData(){
   if (!S.downloads) return;
-  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, research: S.research}, null, 2);
+  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, research: S.research, ruku: Object.values(S.ruku || {})}, null, 2);
   try { await S.downloads.save({filename: `ayah-by-ayah-backup-${new Date().toISOString().slice(0,10)}.json`, data}); }
   catch (e) { if (e?.code !== "declined") toast("The backup couldn't be saved here."); }
 }
@@ -4003,7 +4043,7 @@ function hashDocJ(d){
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 }
 const SYNC_FORMAT = "ayah-by-ayah-offline-sync";
-const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","research","settings"];
+const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","research","ruku","settings"];
 function syncLabel(path, doc){
   const col = path.split("/")[0], id = path.slice(col.length + 1);
   let t = "";
@@ -4164,6 +4204,10 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
   db.collection("commentary").onSnapshot(snap => {
     S.cm = snap.docs.map(d => cmNorm(Object.assign({id: d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a));
     reindex(); render();
+  }, () => {});
+  if (S.admin) db.collection("ruku").onSnapshot(snap => {
+    S.ruku = {}; for (const d of snap.docs) { const x = d.data(); if (x && x.s) S.ruku[x.s] = x; }
+    render();
   }, () => {});
   if (S.admin) db.collection("research").onSnapshot(snap => {
     S.research = snap.docs.map(d => rsNorm(Object.assign({id: d.id}, d.data()))); reindex(); render();
