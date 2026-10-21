@@ -501,6 +501,10 @@ const store = {
   set(k,v){ try { localStorage.setItem(k,v); } catch {} }
 };
 
+/* ---------- extra ayah tags: notes, word analyses and Q&A may also be tagged with other ayahs (doc.also = [{s,from,to}]) ---------- */
+const alsoLabel = arr => (arr || []).map(rangeLabel).join(", ");
+function alsoKeys(x){ const out = []; for (const g of (x.also || [])) for (let a = g.from; a <= g.to && out.length < 400; a++) if (!(g.s === x.s && a === x.a)) out.push(key(g.s, a)); return out; }
+
 /* ---------- last-read bookmark (this browser only) ---------- */
 function bmGet(){ try { const v = JSON.parse(store.get("aba.bm") || "null"); return v && S.Q && validRef(v.s, v.a) ? v : null; } catch { return null; } }
 function bmAgo(t){ const m = Math.round((Date.now() - t) / 60000); if (m < 2) return "just now"; if (m < 60) return m + " min ago"; const h = Math.round(m / 60); if (h < 24) return h + " h ago"; const d = Math.round(h / 24); return d === 1 ? "yesterday" : d + " days ago"; }
@@ -678,8 +682,8 @@ function reindex(){
   S.cmIx = {}; for (const c of S.cm) { S.cmIx[key(c.s, c.a)] = c; bump(c.s, "cm"); }
   S.rsIx = {};
   for (const r of S.research) for (const k of rsKeys(r)) (S.rsIx[k] ||= []).push(r);
-  for (const n of S.notes) { (notes[key(n.s,n.a)] ||= []).push(n); bump(n.s, "exp"); }
-  for (const w of S.words) { (words[key(w.s,w.a)] ||= []).push(w); bump(w.s, "wa"); }
+  for (const n of S.notes) { (notes[key(n.s,n.a)] ||= []).push(n); bump(n.s, "exp"); for (const k of alsoKeys(n)) (notes[k] ||= []).push(n); }
+  for (const w of S.words) { (words[key(w.s,w.a)] ||= []).push(w); bump(w.s, "wa"); for (const k of alsoKeys(w)) (words[k] ||= []).push(w); }
   for (const k in S.tr) bump(S.tr[k].s, "rev");
   for (const l of S.lessons) {
     const seen = new Set();
@@ -1137,11 +1141,11 @@ function viewQA(){
     ${q ? `<div class="small muted">${items.length} result${items.length === 1 ? "" : "s"}</div>` : ""}</div>
   <div class="results">${items.map(qaCard).join("") || (S.qa.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No Q&amp;A yet</b>Open a surah and press “Q&amp;A” under any ayah.</div>`)}</div>`;
 }
-const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final, M.fit || null]);
+const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final, M.fit || null, M.also || ""]);
 function openQA(ref){
   const [s, a, id] = ref.split(":"); const ex = id ? S.qa.find(x => x.id === id) : null;
   const src = ex ? ex.src : S.lang;
-  M = {type: "qa", s: +s, a: +a, id: ex ? ex.id : null, src, tab: (ex && ((ex.q[S.lang] || "") + (ex.ans[S.lang] || "")).trim()) ? S.lang : src,
+  M = {type: "qa", s: ex ? ex.s : +s, a: ex ? ex.a : +a, also: ex ? alsoLabel(ex.also) : "", id: ex ? ex.id : null, src, tab: (ex && ((ex.q[S.lang] || "") + (ex.ans[S.lang] || "")).trim()) ? S.lang : src,
     q: Object.assign(blankLang(), ex?.q), ans: Object.assign(blankLang(), ex?.ans), ai: Object.assign({}, ex?.ai), fu: "", final: !!ex?.final, hist: (ex?.fu || []).slice(), created: ex?.createdAt || 0,
     fit: ex?.fit ? Object.assign({}, ex.fit) : null, busy: false, ctl: [], err: "", status: ""};
   M.saved = qaSnap();
@@ -1206,6 +1210,7 @@ function captureQA(){
   if (g("qa-fu")) M.fu = g("qa-fu").value;
   if (g("qa-final")) M.final = g("qa-final").checked;
   if (g("qa-src")) M.src = g("qa-src").value;
+  if (g("qa-also")) M.also = g("qa-also").value;
 }
 const qaDirty = () => qaSnap() !== M.saved;
 function drawQA(){
@@ -1215,6 +1220,7 @@ function drawQA(){
   modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
     <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
       <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
+    <div class="field"><label for="qa-also">Also tag these ayahs <span class="muted" style="font-weight:400">(optional, e.g. 2:23, 10:38; this Q&amp;A will also be listed under each)</span></label><input type="text" id="qa-also" value="${esc(M.also || "")}" autocomplete="off"></div>
     ${qaFitBox()}
     ${list.length ? `<div class="row small"><span class="flabel">Saved for this ayah</span>${list.map(x => `<button type="button" class="chip ${x.id === M.id ? "exp" : "les"}" data-m="qa-open" data-v="${esc(x.id)}">${esc(cut(pick(x.q, S.lang, x.src).text, 50))}</button>`).join("")}${M.id ? `<button type="button" class="btn small" data-m="qa-open" data-v="">New question</button>` : ""}</div>` : ""}
     <div class="row small"><label class="flabel" for="qa-src">Written in</label>
@@ -1239,7 +1245,7 @@ function drawQA(){
       <div class="row"><button type="button" class="btn" data-m="qa-follow" ${M.busy || noAI ? "disabled" : ""}>Revise the answer with AI</button><span class="small muted">It revises the answer above, keeping your edits. Other languages must be redrafted afterwards.</span></div></div>` : ""}
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
     <div class="foot row"><label class="row small"><input type="checkbox" id="qa-final" ${M.final ? "checked" : ""}> Final: I have reviewed this answer</label><span class="spacer"></span>
-      ${M.id ? `<button type="button" class="btn danger" data-m="qa-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
+      ${M.id ? `<button type="button" class="btn danger" data-m="qa-delete" ${M.busy ? "disabled" : ""}>Delete</button><button type="button" class="btn" data-m="move" ${M.busy ? "disabled" : ""}>Move to…</button>` : ""}
       <button type="button" class="btn primary" data-m="qa-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
 }
 function qaPrompt(follow, fitData){
@@ -1388,14 +1394,17 @@ async function qaAct(act, d){
   if (act === "qa-save") {
     captureQA();
     if (!M.q[M.src].trim()) { M.tab = M.src; M.err = `Write the question in ${LNAME_EN[M.src]} first (it is the language you wrote in).`; drawQA(); return; }
+    const alsoQ = (M.also || "").trim() ? parseRefs(M.also) : [];
+    if (alsoQ === null) { M.err = "The “also tag” ayahs aren't valid. Write them like 2:23, 10:38 or 11:13-14."; drawQA(); return; }
     const id = M.id || ("qa-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)), now = Date.now();
     const tr = o => Object.fromEntries(LANGS.map(l => [l, (o[l] || "").trim()]));
-    const doc = {s: M.s, a: M.a, src: M.src, q: tr(M.q), ans: tr(M.ans), ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && ((M.q[l] || "") + (M.ans[l] || "")).trim())), final: !!M.final, ...(M.fit ? {fit: M.fit} : {}), fu: M.hist, createdAt: M.created || now, updatedAt: now};
+    const doc = {s: M.s, a: M.a, src: M.src, q: tr(M.q), ans: tr(M.ans), ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && ((M.q[l] || "") + (M.ans[l] || "")).trim())), final: !!M.final, ...(M.fit ? {fit: M.fit} : {}), ...(alsoQ.length ? {also: alsoQ} : {}), fu: M.hist, createdAt: M.created || now, updatedAt: now};
     M.busy = true; M.err = ""; drawQA();
     try { await S.db.collection("qa").doc(id).set(doc); M.id = id; M.created = doc.createdAt; M.q = Object.assign(blankLang(), doc.q); M.ans = Object.assign(blankLang(), doc.ans); M.ai = Object.assign({}, doc.ai); M.saved = qaSnap(); M.status = "Saved."; toast("Q&A saved"); }
     catch (e) { M.err = dbErr(e); }
     M.busy = false; drawQA(); return;
   }
+  if (act === "move") return startMove();
   if (act === "qa-delete") { conf("Delete this question and its answers in all languages?", "qa-delete-yes", "Delete", "Keep it", true); return; }
   if (act === "qa-delete-yes") {
     M.busy = true; drawQA();
@@ -1463,7 +1472,7 @@ function drawCM(){
       <span class="small muted">${noAI ? "AI is not available in this view." : `Translates the ${LNAME_EN[M.src]} text. Replaces what is already written in the language drafted.`}</span></div>
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
     <div class="foot row"><span class="small muted">Shown to readers once you publish the site.</span><span class="spacer"></span>
-      ${M.exists ? `<button type="button" class="btn danger" data-m="cm-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
+      ${M.exists ? `<button type="button" class="btn danger" data-m="cm-delete" ${M.busy ? "disabled" : ""}>Delete</button><button type="button" class="btn" data-m="move" ${M.busy ? "disabled" : ""}>Move to…</button>` : ""}
       <button type="button" class="btn primary" data-m="cm-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
 }
 async function cmTranslate(only, force){
@@ -1550,6 +1559,7 @@ async function cmAct(act, d){
     catch (e) { M.err = dbErr(e); }
     M.busy = false; drawCM(); return;
   }
+  if (act === "move") return startMove();
   if (act === "cm-delete") { conf("Delete this commentary in all languages?", "cm-delete-yes", "Delete", "Keep it", true); return; }
   if (act === "cm-delete-yes") {
     M.busy = true; drawCM();
@@ -1632,7 +1642,7 @@ function drawRS(){
     <div class="field"><label for="rs-tags">Tags <span class="muted" style="font-weight:400">optional, separated by commas</span></label><input type="text" id="rs-tags" dir="auto" value="${esc(M.tags)}" placeholder="grammar, tafsir, hadith"></div>
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
     <div class="foot row"><span class="small muted">Private: never shown on the public site.</span><span class="spacer"></span>
-      ${M.id ? `<button type="button" class="btn danger" data-m="rs-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
+      ${M.id ? `<button type="button" class="btn danger" data-m="rs-delete" ${M.busy ? "disabled" : ""}>Delete</button><button type="button" class="btn" data-m="move" ${M.busy ? "disabled" : ""}>Move to…</button>` : ""}
       ${ctx ? `<button type="button" class="btn" data-m="rs-save-new" ${M.busy ? "disabled" : ""}>Save and add another</button>` : ""}
       <button type="button" class="btn primary" data-m="rs-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
 }
@@ -1661,6 +1671,7 @@ async function rsAct(act, d){
   }
   if (act === "rs-save") { if (await rsSave()) { drawRS(); } return; }
   if (act === "rs-save-new") { const ctx = M.ctx; if (await rsSave()) openRS("", ctx); return; }
+  if (act === "move") return startMove();
   if (act === "rs-delete") { conf("Delete this research topic?", "rs-delete-yes", "Delete", "Keep it", true); return; }
   if (act === "rs-delete-yes") {
     M.busy = true; drawRS();
@@ -1668,6 +1679,164 @@ async function rsAct(act, d){
     catch (e) { M.busy = false; M.err = dbErr(e); drawRS(); }
     return;
   }
+}
+/* ---------- Move an item to another kind: note, lesson, word analysis, Q&A, research topic, commentary ---------- */
+const MV_KINDS = {note: ["Note", true], lesson: ["Lesson", true], word: ["Word analysis", true], qa: ["Q&A", false], rs: ["Research topic", false], cm: ["Commentary", true]};   // [label, public once published]
+const MV_COL = {note: "notes", lesson: "lessons", word: "words", qa: "qa", rs: "research", cm: "commentary"};
+const MV_CH = {note: "n", lesson: "l", word: "w"};
+function guessLang(t){ t = String(t || ""); if (/[ঀ-৿]/.test(t)) return "bn"; if (/[؀-ۿ]/.test(t)) return /[ٹڈڑںےھگچپژکی]/.test(t) ? "ur" : "ar"; return "en"; }
+function moveSource(){
+  const m = M, E = err => ({err});
+  const N = {type: m.type, id: null, tags: [], ai: {}, title: blankLang(), summary: blankLang(), body: blankLang(), src: "en", ranges: [], status: "open", createdAt: 0, cat: ""};
+  const alsoOf = txt => (String(txt || "").trim() ? parseRefs(txt) : []);
+  if (m.type === "note" || m.type === "lesson" || m.type === "word") {
+    captureFields(); const it = m.it;
+    if (it._partial) return E("The later parts of this long write-up are still loading. Wait a moment, then try again.");
+    const refs = parseRefs(m.ref || ""); if (!refs) return E(m.type === "lesson" ? "List the ayahs first, like 2:153-157." : "Enter the ayah first, like 2:255.");
+    const al = m.type === "lesson" ? [] : alsoOf(it.alsoText); if (al === null) return E("The “also tag” ayahs aren't valid. Write them like 2:23, 10:38.");
+    Object.assign(N, {id: it.id, title: Object.assign(blankLang(), it.title), summary: Object.assign(blankLang(), it.summary), body: Object.assign(blankLang(), it.body), src: it.src, ai: Object.assign({}, it.ai), tags: (it.tags || []).slice(), createdAt: it.createdAt || 0, ranges: refs.concat(al), cat: it.cat || ""});
+  } else if (m.type === "qa") {
+    captureQA(); const al = alsoOf(m.also); if (al === null) return E("The “also tag” ayahs aren't valid. Write them like 2:23, 10:38.");
+    Object.assign(N, {id: m.id, title: Object.assign(blankLang(), m.q), body: Object.assign(blankLang(), m.ans), src: m.src, ai: Object.assign({}, m.ai), createdAt: m.created || 0, ranges: [{s: m.s, from: m.a, to: m.a}].concat(al)});
+  } else if (m.type === "rs") {
+    captureRS(); const rg = m.refs.trim() ? parseRefs(m.refs) : []; if (rg === null) return E("Write the ayahs like 2:23, 10:38 or 11:13-14 first.");
+    const lg = guessLang(m.title + " " + m.note);
+    N.title[lg] = m.title.trim(); N.body[lg] = m.note.trim();
+    Object.assign(N, {id: m.id, src: lg, tags: [...new Set(m.tags.split(/[,،]+/).map(x => x.trim().replace(/^#/, "")).filter(Boolean))], ranges: rg, status: m.status, createdAt: m.created || 0});
+  } else if (m.type === "cm") {
+    captureCM();
+    Object.assign(N, {id: `${m.s}-${m.a}`, body: Object.assign(blankLang(), m.text), src: m.src, ai: Object.assign({}, m.ai), createdAt: m.created || 0, ranges: [{s: m.s, from: m.a, to: m.a}]});
+  }
+  return N;
+}
+function startMove(){
+  const N = moveSource();
+  if (N.err) { const e = $("#m-err"); if (e) e.textContent = N.err; return; }
+  const first = Object.keys(MV_KINDS).filter(k => k !== N.type);
+  M = {type: "mv", prev: M, N, target: N.type === "rs" || N.type === "qa" ? "note" : first[0], refText: N.ranges.map(rangeLabel).join(", "), cat: N.cat || "", keep: false, sel: null, wordList: null, busy: false, err: ""};
+  drawMove(); mvLoadWords();
+}
+function mvPrimary(){ const r = parseRefs(M.refText || ""); return r ? {s: r[0].s, a: r[0].from} : null; }
+function mvCapture(){
+  if (!M || M.type !== "mv") return;
+  const g = i => document.getElementById(i);
+  if (g("mv-ref")) M.refText = g("mv-ref").value;
+  if (g("mv-cat")) M.cat = g("mv-cat").value;
+  if (g("mv-keep")) M.keep = g("mv-keep").checked;
+}
+function mvLoadWords(){
+  if (!M || M.type !== "mv" || M.target !== "word") return;
+  const p = mvPrimary(); if (!p) { M.wordList = null; return; }
+  if (M.wordList && M.wordList.s === p.s && M.wordList.a === p.a) return;
+  M.wordList = {s: p.s, a: p.a, words: null}; M.sel = null;
+  loadGrammar(p.s).then(d => { if (M && M.type === "mv" && M.wordList && M.wordList.s === p.s && M.wordList.a === p.a) { M.wordList.words = d[p.a - 1]; mvCapture(); drawMove(); } }).catch(() => {});
+}
+function drawMove(){
+  const N = M.N, T = M.target, [srcL, srcPub] = MV_KINDS[N.type], [tgtL, tgtPub] = MV_KINDS[T];
+  const used = LANGS.filter(l => (N.title[l] || "").trim() || (N.body[l] || "").trim());
+  const p = mvPrimary(), many = (parseRefs(M.refText || "") || []).length > 1 || (parseRefs(M.refText || "") || []).some(r => r.to > r.from);
+  const cut = (x, n) => { x = String(x || "").replace(/\s+/g, " ").trim(); return x.length > n ? x.slice(0, n - 1) + "…" : x; };
+  const label = (cut(pick(N.title, S.lang, N.src).text, 60) || cut(pick(N.body, S.lang, N.src).text, 60) || "Untitled");
+  const notes = [];
+  if (srcPub !== tgtPub) notes.push(tgtPub ? `<b>${srcL} items are private.</b> A ${tgtL.toLowerCase()} is public: it will appear on the public site the next time you publish.` : `<b>${srcL} items are public.</b> A ${tgtL.toLowerCase()} is private: it will disappear from the public site the next time you publish.`);
+  if (T === "rs" && used.length > 1) notes.push(`A research topic holds one language only. The ${LNAME_EN[N.src]} text is kept; ${used.filter(l => l !== N.src).map(l => LNAME_EN[l]).join(", ")} will be dropped.`);
+  if (T === "qa") notes.push(`The title becomes the question and the text becomes the answer (a summary, if any, goes above the answer).`);
+  if (T === "cm") notes.push(`A commentary has no title: the title, if any, is added as a bold first line. There is only one commentary per ayah${many ? `, so only ${p ? p.s + ":" + p.a : "the first ayah"} is kept` : ""}.`);
+  if (T === "cm" && p && S.cmIx[key(p.s, p.a)]) notes.push(`<b>${p.s}:${p.a} already has a commentary.</b> Edit or delete that one first.`);
+  if (T === "qa" && !(N.title[N.src] || "").trim()) notes.push(`<b>A Q&amp;A needs a question.</b> This item has no ${LNAME_EN[N.src]} title to use as the question.`);
+  if (T !== "rs" && T !== "lesson" && many) notes.push(`Only the first ayah is the main one; the others are kept as “also tagged” ayahs.`);
+  if (N.type === "word" && T !== "word") notes.push(`The word selection is not carried over.`);
+  const wordBox = T === "word" ? `<div class="field"><span class="flabel">Word (required): choose the word in ${p ? p.s + ":" + p.a : "the ayah"}</span>${!p ? `<p class="small muted" style="margin:0">Enter the ayah first.</p>` : !M.wordList?.words ? `<p class="small muted" style="margin:0">Loading the words…</p>` :
+      `<div class="gstrip" lang="ar" dir="rtl">${M.wordList.words.map((w, i) => `<button type="button" class="gchip" data-m="mv-word" data-v="${i + 1}" aria-pressed="${M.sel === i + 1}">${esc(w[2].map(x => x[0]).join(""))}</button>`).join("")}</div>`}</div>` : "";
+  const catBox = T === "note" ? `<div class="field"><label for="mv-cat">Category (required)</label><select id="mv-cat"><option value="">Choose a category…</option>${S.cats.map(c => `<option value="${esc(c.id)}" ${M.cat === c.id ? "selected" : ""}>${esc(catName(c.id))}</option>`).join("")}</select></div>` : "";
+  modal(`<div class="row"><h2>Move to another kind</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <p class="small" style="margin:0"><span class="chip ${srcPub ? "exp" : "rs"}">${esc(srcL)}</span> <b dir="auto">${esc(label)}</b> <span class="muted">${esc(M.refText || "no ayah")}</span></p>
+    <div class="grid2">
+      <div class="field"><label for="mv-target">Move it to</label><select id="mv-target">${Object.entries(MV_KINDS).filter(([k]) => k !== N.type).map(([k, v]) => `<option value="${k}" ${k === T ? "selected" : ""}>${v[0]} (${v[1] ? "public" : "private"})</option>`).join("")}</select></div>
+      <div class="field"><label for="mv-ref">Ayah(s) ${T === "rs" ? `<span class="muted" style="font-weight:400">optional</span>` : T === "lesson" ? `<span class="muted" style="font-weight:400">e.g. 2:153-157, 2:177</span>` : `<span class="muted" style="font-weight:400">first = main ayah, others also tagged</span>`}</label><input type="text" id="mv-ref" value="${esc(M.refText)}" placeholder="2:255, 3:18" autocomplete="off"></div>
+    </div>
+    ${catBox}${wordBox}
+    ${notes.map(x => `<div class="notice">${x}</div>`).join("")}
+    <label class="row small"><input type="checkbox" id="mv-keep" ${M.keep ? "checked" : ""}> Keep the original as well (copy instead of move)</label>
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot row"><button type="button" class="btn" data-m="mv-back" ${M.busy ? "disabled" : ""}>← Back to editing</button><span class="spacer"></span>
+      <button type="button" class="btn primary" data-m="mv-do" ${M.busy ? "disabled" : ""}>${M.keep ? "Copy" : "Move"} to ${esc(tgtL)}</button></div>`, "qa");
+}
+async function writeWritable(col, kindL, id, doc){
+  const extra = [], bodyOut = {}, more = {};
+  for (const l of Object.keys(doc.body || {})) {
+    const parts = splitPieces(doc.body[l]); bodyOut[l] = parts[0];
+    if (parts.length > 1) {
+      const r = Date.now().toString(36) + Math.random().toString(36).slice(2, 5); more[l] = {r, n: parts.length - 1};
+      parts.slice(1).forEach((tx, k) => extra.push({id: `${kindL}~${id}~${l}~${r}~${k + 1}`, data: {kind: kindL, ref: id, lang: l, r, i: k + 1, text: tx}}));
+    }
+  }
+  doc.body = bodyOut; if (Object.keys(more).length) doc.more = more;
+  for (const c of extra) await S.db.collection("chunks").doc(c.id).set(c.data);
+  await S.db.collection(col).doc(id).set(doc);
+}
+async function mvDo(){
+  mvCapture(); const m = M, N = m.N, T = m.target, now = Date.now();
+  const fail = msg => { m.err = msg; m.busy = false; drawMove(); return; };
+  const rg = m.refText.trim() ? parseRefs(m.refText) : [];
+  if (rg === null) return fail("Write the ayahs like 2:23, 10:38 or 11:13-14, with real surah and ayah numbers.");
+  if (T !== "rs" && !rg.length) return fail(T === "lesson" ? "List the ayahs the lesson covers." : "Give the ayah this belongs to.");
+  const P = rg.length ? {s: rg[0].s, a: rg[0].from} : null;
+  const also = rg.length ? [].concat(rg[0].to > rg[0].from ? [{s: rg[0].s, from: rg[0].from + 1, to: rg[0].to}] : [], rg.slice(1)) : [];
+  const nid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const trim = o => Object.fromEntries(LANGS.map(l => [l, String(o[l] || "").trim()]));
+  const has = o => LANGS.some(l => (o[l] || "").trim());
+  const aiOf = o => Object.fromEntries(Object.entries(N.ai).filter(([l, v]) => v && (o[l] || "").trim()));
+  const base = {src: N.src, updatedAt: now, createdAt: N.createdAt || now};
+  let col = MV_COL[T], id, doc, kindL = MV_CH[T] || null;
+  if (T === "note" || T === "lesson" || T === "word") {
+    if (!has(N.title) && !has(N.body)) return fail("There is no text to move.");
+    id = nid(); doc = Object.assign({title: trim(N.title), summary: trim(N.summary), body: trim(N.body), tags: N.tags.slice(), ai: aiOf(Object.assign({}, N.title, N.body))}, base);
+    if (T === "lesson") doc.ranges = rg;
+    else { doc.s = P.s; doc.a = P.a; if (also.length) doc.also = also; }
+    if (T === "note") { if (!m.cat || !catById(m.cat)) return fail("Choose a category. Every note needs one."); doc.kind = "explanation"; doc.cat = m.cat; }
+    if (T === "word") {
+      const w = m.wordList && m.wordList.s === P.s && m.wordList.a === P.a && m.wordList.words && m.wordList.words[m.sel - 1];
+      if (!w) return fail("Choose the word this analysis is about.");
+      const segs = w[2].map(decodeSeg), stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0];
+      Object.assign(doc, {w: m.sel, word: w[2].map(x => x[0]).join(""), root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""});
+    }
+  } else if (T === "qa") {
+    if (!(N.title[N.src] || "").trim()) return fail(`A Q&A needs a question: add a ${LNAME_EN[N.src]} title first (it becomes the question).`);
+    const ans = Object.fromEntries(LANGS.map(l => [l, [N.summary[l], N.body[l]].map(x => String(x || "").trim()).filter(Boolean).join("\n\n")]));
+    id = "qa-" + nid().slice(0, 9); doc = Object.assign({s: P.s, a: P.a, q: trim(N.title), ans, ai: aiOf(Object.assign({}, N.title, ans)), final: false, fu: []}, base);
+    if (also.length) doc.also = also;
+  } else if (T === "rs") {
+    const lg = N.src, firstLine = x => String(x || "").trim().split("\n")[0].slice(0, 120);
+    const title = (N.title[lg] || "").trim() || LANGS.map(l => (N.title[l] || "").trim()).find(Boolean) || firstLine(N.body[lg]) || LANGS.map(l => firstLine(N.body[l])).find(Boolean) || "";
+    if (!title) return fail("There is no text to move.");
+    const noteTxt = [N.summary[lg], N.body[lg]].map(x => String(x || "").trim()).filter(Boolean).join("\n\n") || LANGS.map(l => String(N.body[l] || "").trim()).find(Boolean) || "";
+    id = "rs-" + nid().slice(0, 9); doc = {title, note: noteTxt, refs: rg.map(rangeLabel).join(", "), ranges: rg, status: RS_STATUS[N.status] ? N.status : "open", tags: N.tags.slice(), createdAt: N.createdAt || now, updatedAt: now};
+  } else if (T === "cm") {
+    if (S.cmIx[key(P.s, P.a)]) return fail(`${P.s}:${P.a} already has a commentary. Edit or delete that one first.`);
+    const text = Object.fromEntries(LANGS.map(l => [l, [(N.title[l] || "").trim() ? `**${N.title[l].trim()}**` : "", N.summary[l], N.body[l]].map(x => String(x || "").trim()).filter(Boolean).join("\n\n")]));
+    if (!has(text)) return fail("There is no text to move.");
+    id = `${P.s}-${P.a}`; doc = Object.assign({s: P.s, a: P.a, text, ai: aiOf(text)}, base);
+  }
+  m.busy = true; m.err = ""; drawMove();
+  try {
+    if (kindL) await writeWritable(col, kindL, id, doc); else await S.db.collection(col).doc(id).set(doc);
+  } catch (e) { return fail(dbErr(e)); }
+  let warn = "";
+  if (!m.keep && N.id) {
+    try { await S.db.collection(MV_COL[N.type]).doc(N.id).delete(); if (MV_CH[N.type]) await dropStaleChunks(MV_CH[N.type], N.id, []); }
+    catch (e) { warn = ` The new item was created, but the original could not be deleted: ${dbErr(e)}`; }
+  }
+  closeModal();
+  toast(`${m.keep ? "Copied" : "Moved"} to ${MV_KINDS[T][0]}.${warn}`);
+  if (kindL) go("article", {kind: kindL, id}); else go(T === "qa" ? "qa" : T === "rs" ? "research" : "commentary");
+}
+async function mvAct(act, d){
+  if (M.busy) return;
+  if (act === "close") { closeModal(); return; }
+  if (act === "mv-back") { const prev = M.prev; M = prev; if (prev.type === "qa") drawQA(); else if (prev.type === "rs") drawRS(); else if (prev.type === "cm") drawCM(); else drawWriteEditor(); return; }
+  if (act === "mv-word") { mvCapture(); M.sel = +d.v; drawMove(); return; }
+  if (act === "mv-do") return mvDo();
 }
 function openRukuList(ref){
   const [s, cur] = ref.split(":").map(Number), su = surahOf(s), st = RUKU[s];
@@ -1781,6 +1950,7 @@ function noteCard(n, withRef){
          <span class="small muted">${readMins(doc.words)} min read${doc.toc.length?` · ${doc.toc.filter(x=>x.lvl===2).length || doc.toc.length} sections`:""}${doc.notes?` · ${doc.notes} notes`:""}</span></div>`
       : `<div class="prose w" ${b.attrs}>${mdLite(b.p.text, b.p.lang)}</div>
          <div class="row" style="margin-top:8px"><button type="button" class="btn ghost small" data-article="n:${esc(n.id)}">Open as page</button><button type="button" class="btn ghost small" data-share="n:${esc(n.id)}">Share</button></div>`}
+    ${(n.also||[]).length ? `<div class="small muted">Also tagged: ${n.also.map(g => `<button type="button" class="reflink" data-go="${g.s}:${g.from}">${rangeLabel(g)}</button>`).join(" ")}</div>` : ""}
     ${(n.tags||[]).length ? `<div class="tags">${n.tags.map(tg=>`<button type="button" class="tag" data-ntag="${esc(tg)}">#${esc(tg)}</button>`).join("")}</div>` : ""}
   </div>`;
 }
@@ -1802,7 +1972,7 @@ function viewArticle(){
   const dir = RTL[b.lang] ? "rtl" : "ltr";
   const ayahs = [];
   if (isL) for (const r of (it.ranges||[])) for (let a=r.from; a<=r.to; a++) ayahs.push([r.s,a]);
-  else ayahs.push([it.s, it.a]);
+  else { ayahs.push([it.s, it.a]); for (const g of (it.also || [])) for (let a = g.from; a <= g.to && ayahs.length < 60; a++) if (!(g.s === it.s && a === it.a)) ayahs.push([g.s, a]); }
   const manyAyahs = ayahs.length > 3;
   const date = new Date(it.updatedAt || it.createdAt || Date.now()).toLocaleDateString(S.lang==="en"?"en-GB":S.lang, {year:"numeric", month:"long", day:"numeric"});
   const toc = doc.toc.length >= 2 ? `<nav class="toc" aria-label="Contents" lang="${b.lang}" dir="${dir}"><div class="flabel">Contents</div><ol>${doc.toc.map(h=>`<li class="t${h.lvl}"><button type="button" data-fn="${h.id}">${esc(h.text)}</button></li>`).join("")}</ol></nav>` : "";
@@ -2727,6 +2897,7 @@ function openWriteEditor(kind, existing, preset){
   // kind: "explanation" (a note) | "lesson" | "word"
   const it = existing ? JSON.parse(JSON.stringify(existing)) : {kind: (kind==="lesson"||kind==="word")?undefined:"explanation", title:blankLang(), summary:blankLang(), body:blankLang(), tags:[], src: S.lang, ai:{}};
   it.title = Object.assign(blankLang(), it.title); it.summary = Object.assign(blankLang(), it.summary); it.body = Object.assign(blankLang(), it.body); it.ai = it.ai || {};
+  it.alsoText = alsoLabel(it.also); delete it.also;
   M = {type: kind==="lesson" ? "lesson" : kind==="word" ? "word" : "note", it, tab: it.src || "en", existing: !!existing, ctl: [], preview:false, dirty:false};
   if (M.type === "note" || M.type === "word") M.ref = existing ? `${it.s}:${it.a}` : (preset || "");
   else M.ref = existing ? (it.ranges||[]).map(rangeLabel).join(", ") : (preset || "");
@@ -3004,6 +3175,7 @@ function drawWriteEditor(){
       <div class="field"><label for="w-ref">${isLesson ? "Ayahs covered (e.g. 2:153-157, 2:177)" : "Ayah (e.g. 2:255)"}</label><input type="text" id="w-ref" value="${esc(M.ref)}" autocomplete="off"></div>
       <div class="field"><label for="w-tags">Tags, separated by commas</label><input type="text" id="w-tags" value="${esc((it.tags||[]).join(", "))}" placeholder="sabr, salah, fiqh" autocomplete="off"></div>
     </div>
+    ${!isLesson ? `<div class="field"><label for="w-also">Also tag these ayahs <span class="muted" style="font-weight:400">(optional, e.g. 2:23, 10:38, 11:13-14; the ${isWord ? "word analysis" : "note"} will also appear under each of them)</span></label><input type="text" id="w-also" value="${esc(it.alsoText || "")}" autocomplete="off"></div>` : ""}
     ${s && !isWord ? `<p class="ref-ar" lang="ar" dir="rtl">${esc(arText(s,a))}</p>` : ""}
     ${isWord ? `<div class="field"><span class="flabel">Word (required): choose the word in the ayah</span>
       ${!s ? `<p class="small muted" style="margin:0">Enter the ayah first.</p>`
@@ -3048,7 +3220,7 @@ function drawWriteEditor(){
     </div>`; })() : ""}
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err||"")}</div>
     <div class="foot">
-      ${M.existing ? `<button type="button" class="btn danger" data-m="delete">Delete</button>` : ""}
+      ${M.existing ? `<button type="button" class="btn danger" data-m="delete">Delete</button><button type="button" class="btn" data-m="move">Move to…</button>` : ""}
       <span class="spacer"></span>
       <button type="button" class="btn" data-m="close">Cancel</button>
       <button type="button" class="btn primary" data-m="save" ${M.busy?"disabled":""}>Save</button>
@@ -3058,6 +3230,7 @@ function captureFields(){
   if (!M || (M.type!=="note" && M.type!=="lesson" && M.type!=="word")) return;
   const t = $("#w-title"), b = $("#w-body"), sm = $("#w-sum"), r = $("#w-ref"), g = $("#w-tags"), src = $("#w-src");
   const it = M.it, L = M.tab;
+  const alo = $("#w-also"); if (alo) it.alsoText = alo.value;
   if (r) M.ref = r.value;
   if (g) it.tags = g.value.split(/[,،]/).map(x=>x.trim().replace(/^#/,"")).filter(Boolean);
   if (src) it.src = src.value;
@@ -3378,6 +3551,8 @@ async function saveWrite(){
   const refs = parseRefs(M.ref || "");
   if (!refs) { M.err = isLesson ? "List the ayahs as surah:ayah or ranges, like 2:153-157, 2:177." : "Enter one ayah as surah:ayah, like 2:255."; drawWriteEditor(); return; }
   if (!isLesson && (refs.length !== 1 || refs[0].from !== refs[0].to)) { M.err = isWord ? "A word analysis belongs to one ayah." : "A note belongs to one ayah. Use a lesson for a group of ayahs."; drawWriteEditor(); return; }
+  const alsoR = (!isLesson && (it.alsoText || "").trim()) ? parseRefs(it.alsoText) : [];
+  if (alsoR === null) { M.err = "The “also tag” ayahs aren't valid. Write them like 2:23, 10:38 or 11:13-14."; drawWriteEditor(); return; }
   if (isWord && !(it.w && it.s === refs[0].s && it.a === refs[0].from)) { M.err = "Choose the word this analysis is about."; drawWriteEditor(); return; }
   if (!LANGS.some(l => it.title[l].trim() || it.body[l].trim())) { M.err = "Write a title or text in at least one language."; drawWriteEditor(); return; }
   if (M.type === "note") {
@@ -3399,6 +3574,7 @@ async function saveWrite(){
   if (isLesson) doc.ranges = refs;
   else if (isWord) Object.assign(doc, {s: refs[0].s, a: refs[0].from, w: it.w, word: it.word, root: it.root || "", lemma: it.lemma || "", pos: it.pos || ""});
   else { doc.kind = it.kind || "explanation"; doc.s = refs[0].s; doc.a = refs[0].from; doc.cat = it.cat; }
+  if (alsoR && alsoR.length) doc.also = alsoR;
   const col = S.db.collection(isLesson ? "lessons" : isWord ? "words" : "notes");
   const ref = it.id ? col.doc(it.id) : col.doc(Date.now().toString(36) + Math.random().toString(36).slice(2, 7));
   if (it._partial) { M.err = "The later parts of this long write-up are still loading. Wait a moment, then save again."; drawWriteEditor(); return; }
@@ -3577,6 +3753,7 @@ document.addEventListener("click", async (ev) => {
   if (M.type === "qa") return qaAct(act, d);
   if (M.type === "cm") return cmAct(act, d);
   if (M.type === "rs") return rsAct(act, d);
+  if (M.type === "mv") return mvAct(act, d);
   if (M.type === "offsync" || M.type === "syncin") return syncAct(act);
   if (act === "close") {
     if (M.busy) return;
@@ -3681,6 +3858,7 @@ document.addEventListener("click", async (ev) => {
   if (act === "ai-undo") return aiUndo();
   if (act === "ai-stop") { M.ctl.forEach(c=>c.abort()); return; }
   if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+  if (act === "move") return startMove();
   if (act === "save") return saveWrite();
   if (act === "delete") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Delete this ${M.type==="lesson"?"lesson":M.type==="word"?"word analysis":"note"} in all four languages? This can't be undone.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="delete-yes">Delete</button></div>`; return; }
   if (act === "delete-yes") {
@@ -3711,6 +3889,9 @@ document.addEventListener("change", (ev) => {
   if (t.id === "rgroup") { S.rgroup = t.checked; render(); return; }
   if (t.id === "qfont") { S.qfont = t.value; store.set("aba.qfont", t.value); applyQFont(); }
   if (t.id === "ai-scope" && M) { captureFields(); M.aiScope = t.value; drawWriteEditor(); $("#ai-notes")?.focus(); return; }
+  if (t.id === "mv-target" && M && M.type === "mv") { mvCapture(); M.target = t.value; M.err = ""; drawMove(); mvLoadWords(); return; }
+  if (t.id === "mv-ref" && M && M.type === "mv") { mvCapture(); M.wordList = null; M.sel = null; drawMove(); mvLoadWords(); return; }
+  if (t.id === "mv-cat" && M && M.type === "mv") { mvCapture(); return; }
   if (t.id === "learn-s") { S.learn = {s: +t.value, from: null, to: null}; render(); return; }
   if (t.id === "ex-s") { const n = surahOf(+t.value).v.length; S.ex = {s: +t.value, from: 1, to: n, phase: "pick"}; return render(); }
   if (t.id === "ex-n") { const nn = surahOf(S.ex.s).v.length, f = ayRead("ex-from", nn, 1), c = ayRead("ex-n", nn, 1); S.ex.from = f; S.ex.to = Math.min(nn, f + c - 1); return render(); }
@@ -3948,7 +4129,7 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
   }, fail);
   db.collection("qa").onSnapshot(snap => {
     S.qa = snap.docs.map(d => qaNorm(Object.assign({id:d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a)); S.qaIx = {};
-    for (const x of S.qa) (S.qaIx[key(x.s, x.a)] ||= []).push(x);
+    for (const x of S.qa) { (S.qaIx[key(x.s, x.a)] ||= []).push(x); for (const k of alsoKeys(x)) (S.qaIx[k] ||= []).push(x); }
     render();
   }, () => {});
   db.collection("commentary").onSnapshot(snap => {
