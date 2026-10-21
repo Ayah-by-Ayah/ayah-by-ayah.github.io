@@ -502,6 +502,8 @@ const store = {
 };
 
 /* ---------- extra ayah tags: notes, word analyses and Q&A may also be tagged with other ayahs (doc.also = [{s,from,to}]) ---------- */
+const isPhrase = w => !!(w && w.w2 && w.w2 > w.w);
+const phraseMeta = w => (w.parts || []).map(x => `<span class="wa-meta"><b lang="ar" dir="rtl">${esc(x.word)}</b>${x.root ? ` · root <b lang="ar" dir="rtl">${esc(spaced(x.root))}</b>` : ""}</span>`).join("");
 const alsoLabel = arr => (arr || []).map(rangeLabel).join(", ");
 function alsoKeys(x){ const out = []; for (const g of (x.also || [])) for (let a = g.from; a <= g.to && out.length < 400; a++) if (!(g.s === x.s && a === x.a)) out.push(key(g.s, a)); return out; }
 
@@ -1797,7 +1799,7 @@ async function mvDo(){
     if (T === "note") { if (!m.cat || !catById(m.cat)) return fail("Choose a category. Every note needs one."); doc.kind = "explanation"; doc.cat = m.cat; }
     if (T === "word") {
       const w = m.wordList && m.wordList.s === P.s && m.wordList.a === P.a && m.wordList.words && m.wordList.words[m.sel - 1];
-      if (!w) return fail("Choose the word this analysis is about.");
+      if (!w) return fail("Choose the word or phrase this analysis is about.");
       const segs = w[2].map(decodeSeg), stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0];
       Object.assign(doc, {w: m.sel, word: w[2].map(x => x[0]).join(""), root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""});
     }
@@ -1986,7 +1988,7 @@ function viewArticle(){
     <header class="art-head">
       <div class="row"><span class="chip ${isL?"les":isW?"wa":"exp"}">${isL?"Lesson":isW?"Word analysis":"Note"}</span>${isL||isW ? "" : catChip(it.cat)}
         ${isL ? (it.ranges||[]).map(r=>`<button type="button" class="reflink" data-go="${r.s}:${r.from}">${rangeLabel(r)}</button>`).join(" ") : `<button type="button" class="reflink" data-go="${it.s}:${it.a}">${it.s}:${it.a} · ${esc(surahOf(it.s).tl)}</button>`}</div>
-      ${isW ? `<div class="wa-head"><span class="wa-word" lang="ar" dir="rtl">${esc(it.word||"")}</span>${it.root?`<span class="wa-meta">Root <b lang="ar" dir="rtl">${esc(spaced(it.root))}</b></span>`:""}${it.lemma?`<span class="wa-meta">Lemma <b lang="ar" dir="rtl">${esc(it.lemma)}</b></span>`:""}${it.pos?`<span class="wa-meta">${esc(it.pos)}</span>`:""}</div>` : ""}
+      ${isW ? `<div class="wa-head"><span class="wa-word" lang="ar" dir="rtl">${esc(it.word||"")}</span>${it.root?`<span class="wa-meta">Root <b lang="ar" dir="rtl">${esc(spaced(it.root))}</b></span>`:""}${it.lemma?`<span class="wa-meta">Lemma <b lang="ar" dir="rtl">${esc(it.lemma)}</b></span>`:""}${it.pos?`<span class="wa-meta">${esc(it.pos)}</span>`:""}${isPhrase(it) ? phraseMeta(it) : ""}</div>` : ""}
       ${isW && t.text === it.word ? "" : `<h1 class="art-title w" lang="${t.lang}" dir="${RTL[t.lang]?"rtl":"ltr"}">${esc(t.text || "Untitled")}</h1>`}
       ${sm.text ? `<p class="art-sum w" lang="${sm.lang}" dir="${RTL[sm.lang]?"rtl":"ltr"}">${esc(sm.text)}</p>` : ""}
       <div class="art-meta small muted">${date} · ${readMins(doc.words)} min read · ${LNAME[b.lang]}</div>
@@ -2014,7 +2016,7 @@ function wordCardList(w){
       <button type="button" class="reflink" data-go="${w.s}:${w.a}">${w.s}:${w.a} · ${esc(surahOf(w.s).tl)}</button><span class="spacer"></span>
       ${S.admin ? `<button type="button" class="btn ghost small" data-edit-word="${esc(w.id)}">Edit</button>` : ""}</div>
     <div class="wa-row"><span class="wa-word sm" lang="ar" dir="rtl">${esc(w.word||"")}</span>
-      <span class="wa-meta">${w.root ? `Root <b lang="ar" dir="rtl">${esc(spaced(w.root))}</b>` : "No root"}</span>
+      ${isPhrase(w) ? `<span class="wa-meta">Phrase · ${w.w2 - w.w + 1} words</span>` : `<span class="wa-meta">${w.root ? `Root <b lang="ar" dir="rtl">${esc(spaced(w.root))}</b>` : "No root"}</span>`}
       ${w.lemma ? `<span class="wa-meta">Lemma <b lang="ar" dir="rtl">${esc(w.lemma)}</b></span>` : ""}</div>
     ${t.text && t.text !== w.word ? `<h3 class="${t.lang==="ar"||t.lang==="ur"?"w":""}" lang="${t.lang}" dir="${RTL[t.lang]?"rtl":"ltr"}" style="font-size:17px;margin-top:6px">${esc(t.text)}</h3>` : ""}
     ${sn.text ? `<div class="snip w" lang="${sn.lang}" dir="${RTL[sn.lang]?"rtl":"ltr"}">${esc(sn.text)}</div>` : ""}
@@ -2363,7 +2365,7 @@ function wordCard(w, i, links){
   const [tl, gl, segs] = w;
   const ds = segs.map(decodeSeg);
   ds.forEach((o, j) => { o.link = links[`${M.s}:${M.a}:${i+1}:${j+1}`]; });
-  const wa = S.words.find(x => x.s === M.s && x.a === M.a && x.w === i+1);
+  const wa = S.words.find(x => x.s === M.s && x.a === M.a && x.w <= i+1 && i+1 <= (x.w2 || x.w));
   return `<div class="gword${M.sel===i?" sel":""}" id="gw-${i}">
     ${wa ? `<button type="button" class="chip wa gw-link" data-article="w:${esc(wa.id)}">Word analysis →</button>` : ""}
     <div class="gw-top"><span class="gw-n">${i+1}</span>
@@ -3177,11 +3179,11 @@ function drawWriteEditor(){
     </div>
     ${!isLesson ? `<div class="field"><label for="w-also">Also tag these ayahs <span class="muted" style="font-weight:400">(optional, e.g. 2:23, 10:38, 11:13-14; the ${isWord ? "word analysis" : "note"} will also appear under each of them)</span></label><input type="text" id="w-also" value="${esc(it.alsoText || "")}" autocomplete="off"></div>` : ""}
     ${s && !isWord ? `<p class="ref-ar" lang="ar" dir="rtl">${esc(arText(s,a))}</p>` : ""}
-    ${isWord ? `<div class="field"><span class="flabel">Word (required): choose the word in the ayah</span>
+    ${isWord ? `<div class="field"><span class="flabel">Word or phrase (required): tap a word; to analyse a phrase, tap a second word and everything between them is selected</span>
       ${!s ? `<p class="small muted" style="margin:0">Enter the ayah first.</p>`
         : !M.wordList?.words ? `<p class="small muted" style="margin:0">Loading the words of ${s}:${a}…</p>`
-        : `<div class="gstrip" lang="ar" dir="rtl">${M.wordList.words.map((w, i) => `<button type="button" class="gchip" data-m="pick-word" data-v="${i+1}" aria-pressed="${it.w === i+1 && it.s === s && it.a === a}">${esc(w[2].map(x=>x[0]).join(""))}</button>`).join("")}</div>
-           ${it.w && it.s === s && it.a === a ? `<p class="small" style="margin:4px 0 0">Selected: <b lang="ar" class="gar" style="font-size:18px">${esc(it.word)}</b>${it.root?` · root <b lang="ar" class="gar">${esc(spaced(it.root))}</b>`:""}${it.lemma?` · lemma <b lang="ar" class="gar">${esc(it.lemma)}</b>`:""}${it.pos?` · ${esc(it.pos)}`:""}</p>${usagePanel()}` : ""}`}
+        : `<div class="gstrip" lang="ar" dir="rtl">${M.wordList.words.map((w, i) => `<button type="button" class="gchip" data-m="pick-word" data-v="${i+1}" aria-pressed="${!!it.w && it.s === s && it.a === a && i+1 >= it.w && i+1 <= (it.w2 || it.w)}">${esc(w[2].map(x=>x[0]).join(""))}</button>`).join("")}</div>
+           ${it.w && it.s === s && it.a === a ? `<p class="small" style="margin:4px 0 0">${isPhrase(it) ? `Selected phrase (${it.w2 - it.w + 1} words): ` : "Selected: "}<b lang="ar" class="gar" style="font-size:18px">${esc(it.word)}</b>${isPhrase(it) ? `</p><p class="small" style="margin:2px 0 0">${phraseMeta(it)}<span class="muted"> · The list of occurrences in the Qur'an is available for a single word only.</span>` : ""}${it.root?` · root <b lang="ar" class="gar">${esc(spaced(it.root))}</b>`:""}${it.lemma?` · lemma <b lang="ar" class="gar">${esc(it.lemma)}</b>`:""}${it.pos?` · ${esc(it.pos)}`:""}</p>${usagePanel()}` : ""}`}
     </div>` : ""}
     <div class="row"><label class="flabel" for="w-src">I am writing in</label>
       <select id="w-src" style="width:auto">${LANGS.map(l=>`<option value="${l}" ${it.src===l?"selected":""}>${LNAME_EN[l]}</option>`).join("")}</select></div>
@@ -3553,7 +3555,7 @@ async function saveWrite(){
   if (!isLesson && (refs.length !== 1 || refs[0].from !== refs[0].to)) { M.err = isWord ? "A word analysis belongs to one ayah." : "A note belongs to one ayah. Use a lesson for a group of ayahs."; drawWriteEditor(); return; }
   const alsoR = (!isLesson && (it.alsoText || "").trim()) ? parseRefs(it.alsoText) : [];
   if (alsoR === null) { M.err = "The “also tag” ayahs aren't valid. Write them like 2:23, 10:38 or 11:13-14."; drawWriteEditor(); return; }
-  if (isWord && !(it.w && it.s === refs[0].s && it.a === refs[0].from)) { M.err = "Choose the word this analysis is about."; drawWriteEditor(); return; }
+  if (isWord && !(it.w && it.s === refs[0].s && it.a === refs[0].from)) { M.err = "Choose the word or phrase this analysis is about."; drawWriteEditor(); return; }
   if (!LANGS.some(l => it.title[l].trim() || it.body[l].trim())) { M.err = "Write a title or text in at least one language."; drawWriteEditor(); return; }
   if (M.type === "note") {
     if (it.cat === "__new") {
@@ -3572,7 +3574,7 @@ async function saveWrite(){
   const now = Date.now();
   const doc = {title: it.title, summary: it.summary, body: it.body, tags: [...new Set(it.tags)], src: it.src, ai: it.ai, updatedAt: now, createdAt: it.createdAt || now};
   if (isLesson) doc.ranges = refs;
-  else if (isWord) Object.assign(doc, {s: refs[0].s, a: refs[0].from, w: it.w, word: it.word, root: it.root || "", lemma: it.lemma || "", pos: it.pos || ""});
+  else if (isWord) { Object.assign(doc, {s: refs[0].s, a: refs[0].from, w: it.w, word: it.word, root: it.root || "", lemma: it.lemma || "", pos: it.pos || ""}); if (isPhrase(it)) { doc.w2 = it.w2; doc.parts = it.parts || []; } }
   else { doc.kind = it.kind || "explanation"; doc.s = refs[0].s; doc.a = refs[0].from; doc.cat = it.cat; }
   if (alsoR && alsoR.length) doc.also = alsoR;
   const col = S.db.collection(isLesson ? "lessons" : isWord ? "words" : "notes");
@@ -3828,9 +3830,12 @@ document.addEventListener("click", async (ev) => {
   }
   if (act === "pick-word" && M.type === "word" && M.wordList?.words) {
     captureFields();
-    const i = +d.v, w = M.wordList.words[i-1], segs = w[2].map(decodeSeg);
-    const stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0];
-    Object.assign(M.it, {s: M.wordList.s, a: M.wordList.a, w: i, word: w[2].map(x=>x[0]).join(""), root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""});
+    const i = +d.v, WL = M.wordList.words, cur = (M.it.s === M.wordList.s && M.it.a === M.wordList.a && M.it.w && !isPhrase(M.it)) ? M.it.w : 0;
+    const lo = cur && i !== cur ? Math.min(cur, i) : i, hi = cur && i !== cur ? Math.max(cur, i) : i;
+    const info = k => { const w = WL[k-1], segs = w[2].map(decodeSeg), stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0]; return {word: w[2].map(x=>x[0]).join(""), root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""}; };
+    const sel = {s: M.wordList.s, a: M.wordList.a, w: lo};
+    if (hi > lo) { const parts = []; for (let k = lo; k <= hi; k++) parts.push(info(k)); Object.assign(M.it, sel, {w2: hi, parts, word: parts.map(x => x.word).join(" "), root: "", lemma: "", pos: ""}); }
+    else { const x = info(lo); Object.assign(M.it, sel, x); delete M.it.w2; delete M.it.parts; }
     if (M.use && !M.use.busy) M.use = null;
     drawWriteEditor(); return;
   }
