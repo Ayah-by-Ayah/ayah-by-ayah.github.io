@@ -287,7 +287,7 @@ h3[lang="ur"],h3[lang="ar"]{font-family:inherit}
 @media (min-width:900px){.art-grid:has(.toc){grid-template-columns:220px minmax(0,1fr)} .art-grid .toc{position:sticky;top:90px;align-self:start;max-height:calc(100vh - 110px);overflow:auto}}
 .toc{border-inline-start:2px solid var(--line);padding-inline-start:12px;font-size:13.5px}
 .toc ol{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
-.toc li.t3{padding-inline-start:12px;font-size:13px}
+.toc li.t3{padding-inline-start:12px;font-size:13px}.rk-item,.rk-sec,#rk-items{scroll-margin-top:70px}
 .toc button{background:none;border:0;padding:0;text-align:start;color:var(--muted);cursor:pointer;line-height:1.4}
 .toc button:hover{color:var(--accent)}
 .toc[lang="ur"]{font-family:var(--f-ur);line-height:2} .toc[lang="ar"]{font-family:var(--f-ar)} .toc[lang="bn"]{font-family:var(--f-bn)}
@@ -995,9 +995,6 @@ function rkText(obj, key, src){
   if (!p.text) return "";
   return `<div class="rk-text" lang="${p.lang}" dir="${RTL[p.lang] ? "rtl" : "ltr"}">${renderDoc(p.text, p.lang, key).html}</div>${p.fallback ? `<div class="small muted">Shown in ${LNAME_EN[p.lang]}</div>` : ""}`;
 }
-const RK_CSS = document.createElement("style");
-RK_CSS.textContent = ".rk-index{border:1px solid var(--line,#ccc);border-radius:10px;padding:10px 14px;margin:12px 0}.rk-ix-h{font-weight:600;margin:6px 0}.rk-ix-row{display:flex;flex-wrap:wrap;gap:6px}.rk-ix-list{margin:0;padding-left:0;list-style:none}.rk-ix-b{all:unset;cursor:pointer;display:block;padding:5px 4px;border-radius:6px;width:100%;box-sizing:border-box}.rk-ix-b:hover,.rk-ix-b:focus-visible{background:rgba(127,127,127,.15)}.rk-item,.rk-sec{scroll-margin-top:70px}";
-document.head.appendChild(RK_CSS);
 function viewRuku(){
   if (!S.admin) return `${statusBar()}<div class="empty"><b>Ruku analysis is private</b>It is available in the editor only.</div>`;
   if (!S.rk) S.rk = {s: 16};
@@ -1012,22 +1009,21 @@ function viewRuku(){
   const sur = d.surah || {};
   if (sur.title) h += `<h2>${esc(pick(sur.title, S.lang, d.src).text)}</h2>`;
   const secs = RK_SEC.filter(([k]) => sur[k] && pick(sur[k], S.lang, d.src).text);
-  h += `<nav class="rk-index" aria-label="Contents"><div class="rk-ix-h">Contents</div>
-    <div class="rk-ix-row">${secs.map(([k, lab]) => `<button type="button" class="btn small ghost" data-rkgo="rk-sec-${k}">${lab}</button>`).join("")}</div>
-    <div class="rk-ix-h">Rukūʿ</div>
-    <ol class="rk-ix-list">${(d.items || []).map(it => `<li><button type="button" class="rk-ix-b" data-rkgo="rk-item-${it.n}"><b>${it.n}</b> <span class="muted">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</span> ${esc(pick(it.title, S.lang, d.src).text)} <span class="chip ${it.bnd === "debatable" ? "rev" : ""}">${RK_BND[it.bnd] || ""}</span></button></li>`).join("")}</ol></nav>`;
-  for (const [k, lab] of RK_SEC) { if (!sur[k]) continue; const b = rkText(sur[k], "rks" + s + k, d.src); if (b) h += `<section class="rk-sec" id="rk-sec-${k}"><h3>${lab} <button type="button" class="btn small ghost" data-rkgo="rk-top">↑ Contents</button></h3>${b}</section>`; }
-  h += `<h2>Rukūʿ by rukūʿ</h2>`;
+  const tocLi = (id, txt, cls) => `<li class="${cls || "t2"}"><button type="button" data-fn="${id}">${txt}</button></li>`;
+  const toc = `<nav class="toc" aria-label="Contents"><div class="flabel">Contents</div><ol>${secs.map(([k, lab]) => tocLi("rk-sec-" + k, lab)).join("")}${tocLi("rk-items", "Rukūʿ by rukūʿ")}${(d.items || []).map(it => tocLi("rk-item-" + it.n, `${it.n}. ${esc(pick(it.title, S.lang, d.src).text)} <span class="muted">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</span>`, "t3")).join("")}</ol></nav>`;
+  const head = h; h = "";
+  for (const [k, lab] of RK_SEC) { if (!sur[k]) continue; const b = rkText(sur[k], "rks" + s + k, d.src); if (b) h += `<section class="rk-sec" id="rk-sec-${k}"><h3>${lab} <button type="button" class="btn small ghost" data-fn="rk-top">↑ Contents</button></h3>${b}</section>`; }
+  h += `<h2 id="rk-items">Rukūʿ by rukūʿ</h2>`;
   const ru = RUKU[s] || [];
   h += (d.items || []).map(it => {
     const ti = pick(it.title, S.lang, d.src).text;
     return `<article class="qacard rk-item" id="rk-item-${it.n}"><div class="row"><b>Rukūʿ ${it.n}</b><button type="button" class="reflink" data-go="${s}:${it.from}">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</button>
-      <button type="button" class="btn small ghost" data-rkgo="rk-top">↑ Contents</button><span class="chip">${RK_BND[it.bnd] || ""}</span><span class="chip ${it.conf === "strong" ? "exp" : "rev"}">Independent reading: ${RK_CONF[it.conf] || ""}</span></div>
+      <button type="button" class="btn small ghost" data-fn="rk-top">↑ Contents</button><span class="chip">${RK_BND[it.bnd] || ""}</span><span class="chip ${it.conf === "strong" ? "exp" : "rev"}">Independent reading: ${RK_CONF[it.conf] || ""}</span></div>
       <h3>${esc(ti)}</h3>
       ${[["theme","Main topic"],["tafsir","Tafsir layer"],["link","Connection to the previous rukūʿ"],["indep","Independent reading"],["verdict","Verdict"]].map(([k, lab]) => it[k] ? `<h4>${lab}</h4>${rkText(it[k], "rki" + s + "_" + it.n + k, d.src)}` : "").join("")}
     </article>`;
   }).join("");
-  return h;
+  return head + `<div class="art-grid">${toc}<div class="rk-main">${h}</div></div>`;
 }
 
 function viewLearn(){
@@ -3731,7 +3727,6 @@ document.addEventListener("click", async (ev) => {
   const d = t.dataset;
   if (t.id === "brand") return go("surahs");
   if (d.nav) return go(d.nav);
-  if (d.rkgo) { const el = document.getElementById(d.rkgo); if (el) el.scrollIntoView({behavior: "smooth", block: "start"}); return; }
   if (d.rkrev) { const dd = (S.ruku || {})[S.rk && S.rk.s]; if (!dd) return; const ai = Object.assign({}, dd.ai, {[d.rkrev]: false}); try { await S.db.collection("ruku").doc(String(dd.s)).update({ai, updatedAt: Date.now()}); toast("Marked as reviewed"); } catch (e) { toast(dbErr(e)); } return; }
   if ("goback" in d) return goBack();
   if ("gobackX" in d) { S.ret = null; return drawBackPill(); }
@@ -3798,7 +3793,7 @@ document.addEventListener("click", async (ev) => {
     if (f && typeof f === "object") { go("surah", {s: f.surah}); requestAnimationFrame(()=> window.scrollTo(0, f.y||0)); return; }
     return go(f === "lessons" || f === "notes" || f === "words" || f === "surahs" ? f : (S.art?.kind === "l" ? "lessons" : S.art?.kind === "w" ? "words" : "notes"));
   }
-  if (d.fn) { const el = document.getElementById(d.fn); if (el) { el.scrollIntoView({block:"center"}); el.classList.add("hl"); setTimeout(()=>el.classList.remove("hl"), 1600); } return; }
+  if (d.fn) { const el = document.getElementById(d.fn); if (el) { el.scrollIntoView({block: d.fn.startsWith("rk-") ? "start" : "center"}); el.classList.add("hl"); setTimeout(()=>el.classList.remove("hl"), 1600); } return; }
   if (d.showAyahs !== undefined) { S.showAyahs = true; return render(); }
   if (d.lesson) { S.showAyahs = false; return go("article", {kind:"l", id:d.lesson}); }
   if (d.openNote) { S.openNote.has(d.openNote) ? S.openNote.delete(d.openNote) : S.openNote.add(d.openNote); return render(); }
