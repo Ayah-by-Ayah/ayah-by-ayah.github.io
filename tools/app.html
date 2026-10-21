@@ -2927,24 +2927,47 @@ let CONC = null; const GD = {};
 function loadConc(){ if (!CONC) CONC = fetch("conc.json").then(r => { if (!r.ok) throw 0; return r.json(); }).catch(e => { CONC = null; throw e; }); return CONC; }
 const decCode = c => [Math.floor(c/1e6), Math.floor(c/1000) % 1000, c % 1000];
 const stripHarakat = t => t.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, "").replace(/[ٱأإآ]/g, "ا");
-function usageKey(){ const it = M.it; return (M.useScope || "lemma") + "|" + (M.useScope === "root" ? it.root : it.lemma); }
+const usable = it => !!(it && (it.lemma || (isPhrase(it) && (it.parts || []).some(x => x.lemma))));
+function usageKey(){ const it = M.it, sc = M.useScope || "lemma"; return sc + "|" + (isPhrase(it) ? it.parts.map(x => (sc === "root" ? x.root || x.lemma : x.lemma) || "*").join("+") : (sc === "root" ? it.root : it.lemma)); }
+function useWhat(it){ return isPhrase(it) ? `the phrase «${it.word}» (${it.w2 - it.w + 1} words) in ${it.s}:${it.a} (${it.parts.map(x => `${x.word}${x.lemma ? ` [lemma ${x.lemma}${x.root ? ", root " + spaced(x.root) : ""}${x.pos ? ", " + x.pos : ""}]` : ""}`).join("; ")})` : `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`; }
+function useScopeTxt(U, it){
+  if (isPhrase(it)) return U.scope === "root" ? `every place in the Qur'an where words from the same roots follow one another in this order (${it.parts.map(x => x.root ? spaced(x.root) : "any word").join(" + ")})` : `every place in the Qur'an where words with the same lemmas follow one another in this order (${it.parts.map(x => x.lemma || "any word").join(" + ")})`;
+  return U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`;
+}
 async function usagePrepare(){
   const it = M.it, k = usageKey();
-  if (!it.lemma || (M.use && M.use.key === k)) return;
+  if (!usable(it) || (M.use && M.use.key === k)) return;
   const U = M.use = {key: k, scope: M.useScope || "lemma", state: "loading", rows: [], form: null, shown: 40, loaded: 0, need: 0};
   try {
     const C = await loadConc();
-    const lemmas = U.scope === "root" && it.root ? (C.R[it.root] || [it.lemma]) : [it.lemma];
-    const codes = [].concat(...lemmas.map(l => C.L[l] || [])).sort((x, y) => x - y);
+    let codes, n = 1;
+    if (isPhrase(it)) {
+      // a phrase matches where the words of the Qur'an follow one another with the same lemmas (or roots), in this order
+      const ps = it.parts; n = ps.length;
+      const sets = ps.map(x => {
+        const lems = U.scope === "root" && x.root ? (C.R[x.root] || [x.lemma]) : (x.lemma ? [x.lemma] : null);
+        if (!lems) return null;
+        const st = new Set(); for (const l of lems) for (const c of (C.L[l] || [])) st.add(c); return st;
+      });
+      let seed = -1; sets.forEach((st, i) => { if (st && (seed < 0 || st.size < sets[seed].size)) seed = i; });
+      codes = [];
+      for (const c of sets[seed]) { const st0 = c - seed; if (st0 % 1000 < 1) continue; if (sets.every((st, i) => !st || st.has(st0 + i))) codes.push(st0); }
+      codes.sort((x, y) => x - y);
+    } else {
+      const lemmas = U.scope === "root" && it.root ? (C.R[it.root] || [it.lemma]) : [it.lemma];
+      codes = [].concat(...lemmas.map(l => C.L[l] || [])).sort((x, y) => x - y);
+    }
     const surahs = [...new Set(codes.map(c => decCode(c)[0]))];
     U.need = surahs.length;
     await Promise.all(surahs.map(sn => loadGrammar(sn).then(d => { GD[sn] = d; U.loaded++; if (M && M.use === U && U.loaded % 10 === 0) redrawUsage(); })));
     if (!M || M.use !== U) return;
     U.rows = codes.map(c => {
-      const [s0, a0, w0] = decCode(c), wd = GD[s0][a0-1][w0-1];
-      const surf = wd[2].map(x => x[0]).join("");
-      return {s: s0, a: a0, w: w0, surf, form: stripHarakat(surf), gloss: wd[1], mk: surahOf(s0).t === "meccan"};
-    });
+      const [s0, a0, w0] = decCode(c), ws = [];
+      for (let q = 0; q < n; q++) ws.push(GD[s0][a0-1][w0-1+q]);
+      if (ws.some(x => !x)) return null;
+      const surf = ws.map(wd => wd[2].map(x => x[0]).join("")).join(" ");
+      return {s: s0, a: a0, w: w0, w2: w0 + n - 1, surf, form: stripHarakat(surf), gloss: ws.map(wd => wd[1]).join(" "), mk: surahOf(s0).t === "meccan"};
+    }).filter(Boolean);
     const f = {}; U.rows.forEach(r => f[r.form] = (f[r.form] || 0) + 1);
     U.forms = Object.entries(f).sort((x, y) => y[1] - x[1]);
     U.state = "ok";
@@ -2952,10 +2975,11 @@ async function usagePrepare(){
   redrawUsage();
 }
 function redrawUsage(){ if (M && M.type === "word") { captureFields(); drawWriteEditor(); } }
-function markWord(s, a, w){
+function markWord(s, a, w, w2){
+  w2 = w2 || w;
   const toks = arText(s, a).split(/\s+/), wc = (GD[s] && GD[s][a-1]) ? GD[s][a-1].length : 0;
   const isWordTok = t => t && !/^[\u06D6-\u06ED\u06DE\u06E9]+$/.test(t);
-  let n = 0; const out = toks.map(t => { if (!isWordTok(t)) return esc(t); n++; return n === w ? `<mark>${esc(t)}</mark>` : esc(t); });
+  let n = 0; const out = toks.map(t => { if (!isWordTok(t)) return esc(t); n++; return n >= w && n <= w2 ? `<mark>${esc(t)}</mark>` : esc(t); });
   if (n === wc) return out.join(" ");
   // The script's word division differs from the corpus here: find the word by its letters instead.
   const sk = t => t.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640\u08D3-\u08FFاٱأإآءىئؤۦيیوۥ]/g, "").replace(/ک/g, "ك").replace(/[ۃة]/g, "ه").replace(/[^\u0621-\u064A\u0671-\u06D3]/g, "");
@@ -2963,13 +2987,13 @@ function markWord(s, a, w){
   const hits = toks.map((t, i) => sk(t) === want ? i : -1).filter(i => i >= 0);
   if (!hits.length || !want) return esc(toks.join(" "));
   const best = hits.reduce((x, y) => Math.abs(y - (w-1)) < Math.abs(x - (w-1)) ? y : x);
-  return toks.map((t, i) => i === best ? `<mark>${esc(t)}</mark>` : esc(t)).join(" ");
+  return toks.map((t, i) => i >= best && i <= best + (w2 - w) ? `<mark>${esc(t)}</mark>` : esc(t)).join(" ");
 }
 function usagePanel(){
-  const it = M.it;
-  if (!it.lemma) return "";
+  const it = M.it, ph = isPhrase(it);
+  if (!usable(it)) return "";
   const scope = M.useScope || "lemma";
-  const head = `<button type="button" class="btn small" data-m="use-open" aria-expanded="${!!M.useOpen}">${M.useOpen ? "Hide" : "Show"} where this word occurs in the Qur'an</button>`;
+  const head = `<button type="button" class="btn small" data-m="use-open" aria-expanded="${!!M.useOpen}">${M.useOpen ? "Hide" : "Show"} where this ${ph ? "phrase" : "word"} occurs in the Qur'an</button>`;
   if (!M.useOpen) return `<div style="margin-top:8px">${head}</div>`;
   const U = M.use;
   let body;
@@ -2982,20 +3006,20 @@ function usagePanel(){
       ${U.forms.length > 1 ? `<div class="uforms" aria-label="Forms">${U.forms.slice(0, 24).map(([f, c]) => `<button type="button" class="uform" lang="ar" dir="rtl" data-m="use-form" data-v="${esc(f)}" aria-pressed="${U.form === f}">${esc(f)}<small>×${c}</small></button>`).join("")}${U.forms.length > 24 ? `<span class="small muted">+${U.forms.length - 24} more forms</span>` : ""}</div>` : ""}
       ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="use-ai" ${U.busy||M.busy?"disabled":""}>Analyse usage with AI</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}
         <span class="small muted">${esc(U.status || `Groups ${U.form ? "these" : "all"} ${rows.length.toLocaleString()} occurrences by sense and context, and adds the result to the ${LNAME_EN[it.src]} text for you to review.${rows.length > 1200 ? " That is too many for one analysis: choose one form above first." : ""}`)}</span></div>
-        <div class="uask"><label class="flabel" for="use-q">Ask something specific about this word's usage</label>
+        <div class="uask"><label class="flabel" for="use-q">Ask something specific about this ${ph ? "phrase" : "word"}'s usage</label>
           <textarea id="use-q" rows="2" placeholder="e.g. Where is it used for prophets and where for ordinary people? Is it ever used in a negative sense? Write a paragraph comparing its use in 2:124 and 14:40.">${esc(U.q || "")}</textarea>
           <div class="row"><button type="button" class="btn" data-m="use-ask" ${U.busy||M.busy?"disabled":""}>Ask</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}<span class="small muted" id="use-ask-status">${esc(U.askStatus || `Answers from the ${rows.length.toLocaleString()} occurrences shown${(it.body[it.src]||"").trim() ? ", with your current text as context" : ""}.`)}</span></div>
           ${U.answer != null ? `<div class="uans prose w" lang="${it.src}" dir="${RTL[it.src]?"rtl":"ltr"}" id="use-ans">${renderDoc(U.answer, it.src, "ua").html}</div>
             ${!U.busy ? `<div class="row"><button type="button" class="btn primary small" data-m="use-add">Add to the ${LNAME_EN[it.src]} text</button><button type="button" class="btn small" data-m="use-discard">Discard</button></div>` : ""}` : ""}
         </div>` : ""}
       <div class="ulist">${rows.slice(0, U.shown).map(r => `<div class="urow${r.s===it.s&&r.a===it.a?" cur":""}"><span class="uref">${r.s}:${r.a}<em>${r.mk?"Makki":"Madani"}${r.s===it.s&&r.a===it.a?" · this ayah":""}</em></span>
-          <p class="uar" lang="ar" dir="rtl">${markWord(r.s, r.a, r.w)}</p>
+          <p class="uar" lang="ar" dir="rtl">${markWord(r.s, r.a, r.w, r.w2)}</p>
           <span class="ugloss"><b lang="ar" class="gar">${esc(r.surf)}</b> · ${esc(r.gloss)}</span>
           <p class="tr utr" ${trAttrs()}>${esc(trText(r.s, r.a))}</p></div>`).join("")}
         ${rows.length > U.shown ? `<p style="margin:8px 0"><button type="button" class="btn small" data-m="use-more">Show more (${(rows.length - U.shown).toLocaleString()} left)</button></p>` : ""}</div>`;
   }
   return `<div class="usage" style="margin-top:8px"><div class="uhead">${head}
-    <div class="seg" role="group" aria-label="Search by"><button type="button" data-m="use-scope" data-v="lemma" aria-pressed="${scope==="lemma"}">Same lemma <span lang="ar" class="gar">${esc(it.lemma)}</span></button>${it.root ? `<button type="button" data-m="use-scope" data-v="root" aria-pressed="${scope==="root"}">Whole root <span lang="ar" class="gar">${esc(spaced(it.root))}</span></button>` : ""}</div></div>
+    <div class="seg" role="group" aria-label="Search by"><button type="button" data-m="use-scope" data-v="lemma" aria-pressed="${scope==="lemma"}">${ph ? "Same lemmas" : "Same lemma"} <span lang="ar" class="gar">${esc(ph ? it.parts.map(x => x.lemma || "…").join(" + ") : it.lemma)}</span></button>${(ph ? it.parts.some(x => x.root) : it.root) ? `<button type="button" data-m="use-scope" data-v="root" aria-pressed="${scope==="root"}">${ph ? "Same roots" : "Whole root"} <span lang="ar" class="gar">${esc(ph ? it.parts.map(x => x.root ? spaced(x.root) : "…").join(" + ") : spaced(it.root))}</span></button>` : ""}</div></div>
     ${body}</div>`;
 }
 async function usageAI(){
@@ -3009,8 +3033,8 @@ async function usageAI(){
   const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
   const ns = new Set(rows.map(r => r.s)).size, mk = rows.filter(r => r.mk).length;
   const forms = {}; rows.forEach(r => forms[r.form] = (forms[r.form]||0) + 1);
-  const what = `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`;
-  const scopeTxt = U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`;
+  const what = useWhat(it);
+  const scopeTxt = useScopeTxt(U, it);
   const stats = `${rows.length} places in ${ns} surahs; ${mk} in Makki surahs and ${rows.length - mk} in Madani surahs.${U.form ? ` (Only the form ${U.form} is included.)` : ""} Forms and counts: ${Object.entries(forms).sort((x,y)=>y[1]-x[1]).map(([f,c]) => `${f} ×${c}`).join(", ")}.`;
   const task = `Write a section for a word analysis, in ${guide[L]}, beginning with the heading "## ${L==="en"?"Usage across the Qur'an":L==="bn"?"কুরআনে শব্দটির ব্যবহার":L==="ar"?"استعمال الكلمة في القرآن":"قرآن میں لفظ کا استعمال"}".
 1. A short overview: how often and where the word occurs, and the forms it takes.
@@ -3092,8 +3116,8 @@ async function usageAsk(){
   if (tl !== "en") await loadTrx(tl);
   const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register, fully vowelled with all harakat (tashkeel) on every word", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
   const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
-  const what = `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`;
-  const scopeTxt = (U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`) + (U.form ? ` (only the form ${U.form})` : "");
+  const what = useWhat(it);
+  const scopeTxt = useScopeTxt(U, it) + (U.form ? ` (only the form ${U.form})` : "");
   const draft = (it.body[L] || "").trim();
   const ctxDraft = draft ? `\n\nThe researcher's current text of the analysis, for context (do not repeat it):\n"""\n${draft.length > 20000 ? draft.slice(0, 20000) + "\n[…]" : draft}\n"""` : "";
   const rules = `Answer the request in ${guide[L]}.
@@ -3183,7 +3207,7 @@ function drawWriteEditor(){
       ${!s ? `<p class="small muted" style="margin:0">Enter the ayah first.</p>`
         : !M.wordList?.words ? `<p class="small muted" style="margin:0">Loading the words of ${s}:${a}…</p>`
         : `<div class="gstrip" lang="ar" dir="rtl">${M.wordList.words.map((w, i) => `<button type="button" class="gchip" data-m="pick-word" data-v="${i+1}" aria-pressed="${!!it.w && it.s === s && it.a === a && i+1 >= it.w && i+1 <= (it.w2 || it.w)}">${esc(w[2].map(x=>x[0]).join(""))}</button>`).join("")}</div>
-           ${it.w && it.s === s && it.a === a ? `<p class="small" style="margin:4px 0 0">${isPhrase(it) ? `Selected phrase (${it.w2 - it.w + 1} words): ` : "Selected: "}<b lang="ar" class="gar" style="font-size:18px">${esc(it.word)}</b>${isPhrase(it) ? `</p><p class="small" style="margin:2px 0 0">${phraseMeta(it)}<span class="muted"> · The list of occurrences in the Qur'an is available for a single word only.</span>` : ""}${it.root?` · root <b lang="ar" class="gar">${esc(spaced(it.root))}</b>`:""}${it.lemma?` · lemma <b lang="ar" class="gar">${esc(it.lemma)}</b>`:""}${it.pos?` · ${esc(it.pos)}`:""}</p>${usagePanel()}` : ""}`}
+           ${it.w && it.s === s && it.a === a ? `<p class="small" style="margin:4px 0 0">${isPhrase(it) ? `Selected phrase (${it.w2 - it.w + 1} words): ` : "Selected: "}<b lang="ar" class="gar" style="font-size:18px">${esc(it.word)}</b>${isPhrase(it) ? `</p><p class="small" style="margin:2px 0 0">${phraseMeta(it)}` : ""}${it.root?` · root <b lang="ar" class="gar">${esc(spaced(it.root))}</b>`:""}${it.lemma?` · lemma <b lang="ar" class="gar">${esc(it.lemma)}</b>`:""}${it.pos?` · ${esc(it.pos)}`:""}</p>${usagePanel()}` : ""}`}
     </div>` : ""}
     <div class="row"><label class="flabel" for="w-src">I am writing in</label>
       <select id="w-src" style="width:auto">${LANGS.map(l=>`<option value="${l}" ${it.src===l?"selected":""}>${LNAME_EN[l]}</option>`).join("")}</select></div>

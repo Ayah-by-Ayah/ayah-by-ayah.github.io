@@ -43,7 +43,7 @@ To work on it in a new session: attach the repo (add_repo **Ayah-by-Ayah/ayah-by
 
 **lessons/<id>** — same text fields plus `ranges: [{s, from, to}]` (a group of ayahs). No category.
 
-**words/<id>** — word analysis: `s, a, w` (word index in the ayah, 1-based), `word, root, lemma, pos`, plus the text fields. A **phrase** analysis (several adjacent words) also has `w2` (last word index) and `parts:[{word,root,lemma,pos}]`; its `word` is the words joined with spaces and root/lemma/pos are empty (no occurrence list for phrases). Title may be empty (then the word itself is the heading in every language).
+**words/<id>** — word analysis: `s, a, w` (word index in the ayah, 1-based), `word, root, lemma, pos`, plus the text fields. A **phrase** analysis (several adjacent words) also has `w2` (last word index) and `parts:[{word,root,lemma,pos}]`; its `word` is the words joined with spaces and root/lemma/pos are empty. The occurrence list works for phrases too: it finds places where the same lemmas (or roots) follow one another in the same order, from `conc.json`. Title may be empty (then the word itself is the heading in every language).
 
 **translations/<id>** — his revised ayah translations. English: id `s-a`, `{s,a,text,note,updatedAt}`. Bangla/Urdu: id `s-a-bn` / `s-a-ur` with `lang`.
 
