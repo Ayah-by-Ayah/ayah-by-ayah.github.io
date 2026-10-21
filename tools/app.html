@@ -1009,10 +1009,14 @@ function viewRuku(){
   const sur = d.surah || {};
   if (sur.title) h += `<h2>${esc(pick(sur.title, S.lang, d.src).text)}</h2>`;
   const secs = RK_SEC.filter(([k]) => sur[k] && pick(sur[k], S.lang, d.src).text);
+  const flow = (d.items || []).filter(it => it.link && pick(it.link, S.lang, d.src).text);
   const tocLi = (id, txt, cls) => `<li class="${cls || "t2"}"><button type="button" data-fn="${id}">${txt}</button></li>`;
-  const toc = `<nav class="toc" aria-label="Contents"><div class="flabel">Contents</div><ol>${secs.map(([k, lab]) => tocLi("rk-sec-" + k, lab)).join("")}${tocLi("rk-items", "Rukūʿ by rukūʿ")}${(d.items || []).map(it => tocLi("rk-item-" + it.n, `${it.n}. ${esc(pick(it.title, S.lang, d.src).text)} <span class="muted">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</span>`, "t3")).join("")}</ol></nav>`;
+  const toc = `<nav class="toc" aria-label="Contents"><div class="flabel">Contents</div><ol>${secs.map(([k, lab]) => tocLi("rk-sec-" + k, lab)).join("")}${flow.length ? tocLi("rk-sec-flow", "How the rukūʿ follow one another") : ""}${tocLi("rk-items", "Rukūʿ by rukūʿ")}${(d.items || []).map(it => tocLi("rk-item-" + it.n, `${it.n}. ${esc(pick(it.title, S.lang, d.src).text)} <span class="muted">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</span>`, "t3")).join("")}</ol></nav>`;
   const head = h; h = "";
   for (const [k, lab] of RK_SEC) { if (!sur[k]) continue; const b = rkText(sur[k], "rks" + s + k, d.src); if (b) h += `<section class="rk-sec" id="rk-sec-${k}"><h3>${lab} <button type="button" class="btn small ghost" data-fn="rk-top">↑ Contents</button></h3>${b}</section>`; }
+  if (flow.length) h += `<section class="rk-sec" id="rk-sec-flow"><h2>How the rukūʿ follow one another <button type="button" class="btn small ghost" data-fn="rk-top">↑ Contents</button></h2>
+    <p class="small muted">Each rukūʿ read against the one before it, in order, as one continuous text.</p>
+    ${flow.map(it => `<div class="rk-flow" id="rk-flow-${it.n}"><h4>${it.n > 1 ? `Rukūʿ ${it.n - 1} → ${it.n}` : "Rukūʿ 1"} <span class="muted small">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</span> <span class="chip">${RK_BND[it.bnd] || ""}</span></h4>${rkText(it.link, "rkl" + s + "_" + it.n, d.src)}</div>`).join("")}</section>`;
   h += `<h2 id="rk-items">Rukūʿ by rukūʿ</h2>`;
   const ru = RUKU[s] || [];
   h += (d.items || []).map(it => {
@@ -1020,7 +1024,7 @@ function viewRuku(){
     return `<article class="qacard rk-item" id="rk-item-${it.n}"><div class="row"><b>Rukūʿ ${it.n}</b><button type="button" class="reflink" data-go="${s}:${it.from}">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</button>
       <button type="button" class="btn small ghost" data-fn="rk-top">↑ Contents</button><span class="chip">${RK_BND[it.bnd] || ""}</span><span class="chip ${it.conf === "strong" ? "exp" : "rev"}">Independent reading: ${RK_CONF[it.conf] || ""}</span></div>
       <h3>${esc(ti)}</h3>
-      ${[["theme","Main topic"],["tafsir","Tafsir layer"],["link","Connection to the previous rukūʿ"],["indep","Independent reading"],["verdict","Verdict"]].map(([k, lab]) => it[k] ? `<h4>${lab}</h4>${rkText(it[k], "rki" + s + "_" + it.n + k, d.src)}` : "").join("")}
+      ${[["theme","Main topic"],["tafsir","Tafsir layer"],["indep","Independent reading"],["verdict","Verdict"]].map(([k, lab]) => it[k] ? `<h4>${lab}</h4>${rkText(it[k], "rki" + s + "_" + it.n + k, d.src)}` : "").join("")}
     </article>`;
   }).join("");
   return head + `<div class="art-grid">${toc}<div class="rk-main">${h}</div></div>`;
