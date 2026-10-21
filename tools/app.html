@@ -995,12 +995,15 @@ function rkText(obj, key, src){
   if (!p.text) return "";
   return `<div class="rk-text" lang="${p.lang}" dir="${RTL[p.lang] ? "rtl" : "ltr"}">${renderDoc(p.text, p.lang, key).html}</div>${p.fallback ? `<div class="small muted">Shown in ${LNAME_EN[p.lang]}</div>` : ""}`;
 }
+const RK_CSS = document.createElement("style");
+RK_CSS.textContent = ".rk-index{border:1px solid var(--line,#ccc);border-radius:10px;padding:10px 14px;margin:12px 0}.rk-ix-h{font-weight:600;margin:6px 0}.rk-ix-row{display:flex;flex-wrap:wrap;gap:6px}.rk-ix-list{margin:0;padding-left:0;list-style:none}.rk-ix-b{all:unset;cursor:pointer;display:block;padding:5px 4px;border-radius:6px;width:100%;box-sizing:border-box}.rk-ix-b:hover,.rk-ix-b:focus-visible{background:rgba(127,127,127,.15)}.rk-item,.rk-sec{scroll-margin-top:70px}";
+document.head.appendChild(RK_CSS);
 function viewRuku(){
   if (!S.admin) return `${statusBar()}<div class="empty"><b>Ruku analysis is private</b>It is available in the editor only.</div>`;
   if (!S.rk) S.rk = {s: 16};
   const s = S.rk.s, docs = S.ruku || {}, d = docs[s];
   const opts = Array.from({length: 114}, (_, i) => i + 1).map(n => `<option value="${n}" ${n === s ? "selected" : ""}>${n} · ${esc(surahOf(n).tl)}${docs[n] ? " ●" : ""}</option>`).join("");
-  let h = `<div class="phead"><h1>Ruku analysis</h1></div>
+  let h = `<div class="phead" id="rk-top"><h1>Ruku analysis</h1></div>
   <p class="muted small" style="margin:0">The main topic of each rukūʿ and how it follows the one before. Each rukūʿ has two layers: what the tafsirs say, and an independent reading with a confidence label and a verdict. ● = analysed. Private: not on the public site.</p>
   <div class="learn-bar"><label class="flabel" for="rk-s">Surah</label><select id="rk-s">${opts}</select></div>`;
   if (!d) return h + `<div class="empty"><b>No analysis for ${esc(surahOf(s).tl)} yet</b>Ask Claude in the editor session to analyse this surah.</div>`;
@@ -1008,13 +1011,18 @@ function viewRuku(){
   if (ai[S.lang]) h += `<div class="row small"><span class="notice">Drafted by AI (${LNAME_EN[S.lang]}). Not yet reviewed.</span><button type="button" class="btn small" data-rkrev="${S.lang}">Mark as reviewed</button></div>`;
   const sur = d.surah || {};
   if (sur.title) h += `<h2>${esc(pick(sur.title, S.lang, d.src).text)}</h2>`;
-  for (const [k, lab] of RK_SEC) { if (!sur[k]) continue; const b = rkText(sur[k], "rks" + s + k, d.src); if (b) h += `<section class="rk-sec"><h3>${lab}</h3>${b}</section>`; }
+  const secs = RK_SEC.filter(([k]) => sur[k] && pick(sur[k], S.lang, d.src).text);
+  h += `<nav class="rk-index" aria-label="Contents"><div class="rk-ix-h">Contents</div>
+    <div class="rk-ix-row">${secs.map(([k, lab]) => `<button type="button" class="btn small ghost" data-rkgo="rk-sec-${k}">${lab}</button>`).join("")}</div>
+    <div class="rk-ix-h">Rukūʿ</div>
+    <ol class="rk-ix-list">${(d.items || []).map(it => `<li><button type="button" class="rk-ix-b" data-rkgo="rk-item-${it.n}"><b>${it.n}</b> <span class="muted">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</span> ${esc(pick(it.title, S.lang, d.src).text)} <span class="chip ${it.bnd === "debatable" ? "rev" : ""}">${RK_BND[it.bnd] || ""}</span></button></li>`).join("")}</ol></nav>`;
+  for (const [k, lab] of RK_SEC) { if (!sur[k]) continue; const b = rkText(sur[k], "rks" + s + k, d.src); if (b) h += `<section class="rk-sec" id="rk-sec-${k}"><h3>${lab} <button type="button" class="btn small ghost" data-rkgo="rk-top">↑ Contents</button></h3>${b}</section>`; }
   h += `<h2>Rukūʿ by rukūʿ</h2>`;
   const ru = RUKU[s] || [];
   h += (d.items || []).map(it => {
     const ti = pick(it.title, S.lang, d.src).text;
-    return `<article class="qacard rk-item"><div class="row"><b>Rukūʿ ${it.n}</b><button type="button" class="reflink" data-go="${s}:${it.from}">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</button>
-      <span class="chip">${RK_BND[it.bnd] || ""}</span><span class="chip ${it.conf === "strong" ? "exp" : "rev"}">Independent reading: ${RK_CONF[it.conf] || ""}</span></div>
+    return `<article class="qacard rk-item" id="rk-item-${it.n}"><div class="row"><b>Rukūʿ ${it.n}</b><button type="button" class="reflink" data-go="${s}:${it.from}">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</button>
+      <button type="button" class="btn small ghost" data-rkgo="rk-top">↑ Contents</button><span class="chip">${RK_BND[it.bnd] || ""}</span><span class="chip ${it.conf === "strong" ? "exp" : "rev"}">Independent reading: ${RK_CONF[it.conf] || ""}</span></div>
       <h3>${esc(ti)}</h3>
       ${[["theme","Main topic"],["tafsir","Tafsir layer"],["link","Connection to the previous rukūʿ"],["indep","Independent reading"],["verdict","Verdict"]].map(([k, lab]) => it[k] ? `<h4>${lab}</h4>${rkText(it[k], "rki" + s + "_" + it.n + k, d.src)}` : "").join("")}
     </article>`;
@@ -3723,6 +3731,7 @@ document.addEventListener("click", async (ev) => {
   const d = t.dataset;
   if (t.id === "brand") return go("surahs");
   if (d.nav) return go(d.nav);
+  if (d.rkgo) { const el = document.getElementById(d.rkgo); if (el) el.scrollIntoView({behavior: "smooth", block: "start"}); return; }
   if (d.rkrev) { const dd = (S.ruku || {})[S.rk && S.rk.s]; if (!dd) return; const ai = Object.assign({}, dd.ai, {[d.rkrev]: false}); try { await S.db.collection("ruku").doc(String(dd.s)).update({ai, updatedAt: Date.now()}); toast("Marked as reviewed"); } catch (e) { toast(dbErr(e)); } return; }
   if ("goback" in d) return goBack();
   if ("gobackX" in d) { S.ret = null; return drawBackPill(); }
