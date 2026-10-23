@@ -299,7 +299,7 @@ h3[lang="ur"],h3[lang="ar"]{font-family:inherit}
 @media (min-width:900px){.art-grid:has(.toc){grid-template-columns:220px minmax(0,1fr)} .art-grid .toc{position:sticky;top:90px;align-self:start;max-height:calc(100vh - 110px);overflow:auto}}
 .toc{border-inline-start:2px solid var(--line);padding-inline-start:12px;font-size:13.5px}
 .toc ol{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
-.toc li.t3{padding-inline-start:12px;font-size:13px}
+.toc li.t3{padding-inline-start:12px;font-size:13px}.rk-item,.rk-sec,#rk-items{scroll-margin-top:70px}
 .toc button{background:none;border:0;padding:0;text-align:start;color:var(--muted);cursor:pointer;line-height:1.4}
 .toc button:hover{color:var(--accent)}
 .toc[lang="ur"]{font-family:var(--f-ur);line-height:2} .toc[lang="ar"]{font-family:var(--f-ar)} .toc[lang="bn"]{font-family:var(--f-bn)}
@@ -456,6 +456,35 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
   .shead .arn{font-size:28px}
   .brand span{display:none}
 }
+
+/* Minimized window bar, sticky surah strip, search page */
+.backdrop.min{display:none}
+#dock-root{position:fixed;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom,0px));z-index:45;display:flex;justify-content:center;pointer-events:none;padding-inline:12px}
+.dock{pointer-events:auto;display:flex;align-items:center;gap:10px;max-width:560px;width:100%;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 7px 7px 14px;box-shadow:0 8px 28px rgba(0,0,0,.28)}
+.dock .dlabel{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.dock .dlabel b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock .dlabel span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock .dot{width:10px;height:10px;border-radius:50%;background:var(--muted);flex:none}
+.dock.busy .dot{background:var(--accent);animation:dockpulse 1.1s ease-in-out infinite}
+.dock.ready{border-color:var(--accent)} .dock.ready .dot{background:#2E8B57}
+.dock.err .dot{background:var(--danger)}
+@keyframes dockpulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.dock.busy .dot{animation:none}}
+.surahbar{position:absolute;left:0;right:0;top:100%;border-bottom:1px solid var(--line);background:var(--surface);box-shadow:0 3px 8px rgba(0,0,0,.08)}
+.surahbar .wrap{display:flex;align-items:center;gap:10px;padding-block:5px;font-size:14px}
+.surahbar b{font-weight:600}
+.surahbar .sb-ar{font:20px/1.3 var(--f-quran);color:var(--muted)}
+.surahbar .sb-pos{color:var(--muted);font-size:13px;margin-left:auto;white-space:nowrap}
+.surahbar[hidden]{display:none}
+.gres{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.gcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.gcard .ar{margin:0}
+.gcard .gtr{margin:0;font-size:15px}
+.gcard .ghead{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gcard mark,.gtr mark{background:var(--flash);color:inherit;border-radius:3px;padding:0 2px}
+.gsec{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 -2px}
+.gnote{font-size:13px;color:var(--muted);margin:8px 0 0}
+.gai{border-style:dashed}
 </style>
 </head>
 <body>
@@ -465,6 +494,7 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
     <button class="brand" id="brand" type="button" aria-label="Ayah by Ayah, surah list"><b>Ayah by Ayah</b><span>آية بعد آية</span></button>
     <nav class="tabs" aria-label="Sections">
       <button type="button" data-nav="surahs">Surahs</button>
+      <button type="button" data-nav="search">Search</button>
       <button type="button" data-nav="notes">Notes</button>
       <button type="button" data-nav="lessons">Lessons</button>
       <button type="button" data-nav="words">Word analysis</button>
@@ -473,6 +503,7 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
       <button type="button" data-nav="commentary">Commentary</button>
       <button type="button" data-nav="qa" id="nav-qa" hidden>Q&amp;A</button>
       <button type="button" data-nav="research" id="nav-research" hidden>Research</button>
+      <button type="button" data-nav="ruku" id="nav-ruku" hidden>Ruku</button>
     </nav>
     <div class="langbar">
       <span class="lbl">Write-ups in</span>
@@ -491,9 +522,12 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
       <span class="modepill" id="modepill">Reader</span>
     </div>
   </div>
+  <div class="surahbar" id="surahbar" hidden><div class="wrap"><span id="sb-name"></span><button type="button" class="btn ghost small" data-totop aria-label="Back to the top of the surah">↑ Top</button></div></div>
 </header>
 <main class="wrap" id="app"><p class="muted">Loading the Qur'an text…</p></main>
 <div id="modal-root"></div>
+<div id="flash-root"></div>
+<div id="dock-root"></div>
 <div id="focus-root"></div>
 <div id="back-root"></div>
 <div id="toast-root"></div>
@@ -514,6 +548,12 @@ const store = {
   get(k){ try { return localStorage.getItem(k); } catch { return null; } },
   set(k,v){ try { localStorage.setItem(k,v); } catch {} }
 };
+
+/* ---------- extra ayah tags: notes, word analyses and Q&A may also be tagged with other ayahs (doc.also = [{s,from,to}]) ---------- */
+const isPhrase = w => !!(w && w.w2 && w.w2 > w.w);
+const phraseMeta = w => (w.parts || []).map(x => `<span class="wa-meta"><b lang="ar" dir="rtl">${esc(x.word)}</b>${x.root ? ` · root <b lang="ar" dir="rtl">${esc(spaced(x.root))}</b>` : ""}</span>`).join("");
+const alsoLabel = arr => (arr || []).map(rangeLabel).join(", ");
+function alsoKeys(x){ const out = []; for (const g of (x.also || [])) for (let a = g.from; a <= g.to && out.length < 400; a++) if (!(g.s === x.s && a === x.a)) out.push(key(g.s, a)); return out; }
 
 /* ---------- last-read bookmark (this browser only) ---------- */
 function bmGet(){ try { const v = JSON.parse(store.get("aba.bm") || "null"); return v && S.Q && validRef(v.s, v.a) ? v : null; } catch { return null; } }
@@ -692,8 +732,8 @@ function reindex(){
   S.cmIx = {}; for (const c of S.cm) { S.cmIx[key(c.s, c.a)] = c; bump(c.s, "cm"); }
   S.rsIx = {};
   for (const r of S.research) for (const k of rsKeys(r)) (S.rsIx[k] ||= []).push(r);
-  for (const n of S.notes) { (notes[key(n.s,n.a)] ||= []).push(n); bump(n.s, "exp"); }
-  for (const w of S.words) { (words[key(w.s,w.a)] ||= []).push(w); bump(w.s, "wa"); }
+  for (const n of S.notes) { (notes[key(n.s,n.a)] ||= []).push(n); bump(n.s, "exp"); for (const k of alsoKeys(n)) (notes[k] ||= []).push(n); }
+  for (const w of S.words) { (words[key(w.s,w.a)] ||= []).push(w); bump(w.s, "wa"); for (const k of alsoKeys(w)) (words[k] ||= []).push(w); }
   for (const k in S.tr) bump(S.tr[k].s, "rev");
   for (const l of S.lessons) {
     const seen = new Set();
@@ -729,6 +769,7 @@ function go(view, opts={}){
       if (el) { el.scrollIntoView({block:"start"}); }
     });
   } else if (!opts.keepScroll) window.scrollTo(0,0);
+  if (view === "search") requestAnimationFrame(() => { const i = $("#gq"); if (i) i.focus(); });
 }
 function goRef(ref){
   const [s,a] = ref.split(":").map(Number);
@@ -742,7 +783,7 @@ function goRef(ref){
       S.ret = {view: "article", art: Object.assign({}, S.art), y, label: t ? `Back to “${t.length > 48 ? t.slice(0, 46) + "…" : t}”` : `Back to the ${kindL}`};
     } else if (S.view === "surah") {
       if (!S.ret || S.ret.view !== "surah" || S.ret.surah !== S.surah || Math.abs(S.ret.y - y) > 40) S.ret = {view: "surah", surah: S.surah, y, label: `Back to where you were in ${surahOf(S.surah).tl}`};
-    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa" || S.view === "commentary" || S.view === "research" || S.view === "learn" || S.view === "exercise") {
+    } else if (S.view === "search" || S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa" || S.view === "commentary" || S.view === "research" || S.view === "ruku" || S.view === "learn" || S.view === "exercise") {
       S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view === "learn" ? "Learn" : S.view === "exercise" ? "Exercise" : S.view === "qa" ? "Q&A" : S.view[0].toUpperCase() + S.view.slice(1)}`};
     }
     S.keepRet = true; if (S.onlyMarked && !hasMarks(s,a)) S.onlyMarked = false; S.open.add(key(s,a)); go("surah",{s,a}); }
@@ -751,7 +792,7 @@ function fromHash(){
   const h = (location.hash||"").slice(1);
   let m;
   if (h === "" || h === "surahs") S.view = "surahs";
-  else if (h === "notes" || h === "lessons" || h === "words" || h === "qa" || h === "commentary" || h === "research" || h === "learn" || h === "exercise") S.view = h;
+  else if (h === "search" || h === "notes" || h === "lessons" || h === "words" || h === "qa" || h === "commentary" || h === "research" || h === "ruku" || h === "learn" || h === "exercise") S.view = h;
   else if ((m = h.match(/^([nlw])-([A-Za-z0-9_.~-]+)$/))) { S.view = "article"; S.art = {kind: m[1], id: m[2], from: m[1]==="n" ? "notes" : m[1]==="w" ? "words" : "lessons"}; }
   else if ((m = h.match(/^s(\d{1,3})(?:-(\d{1,3}))?$/)) && +m[1]>=1 && +m[1]<=114) { S.view = "surah"; S.surah = +m[1]; if (m[2]) { S.pendingAyah = +m[2]; S.open.add(key(+m[1],+m[2])); } }
 }
@@ -849,8 +890,9 @@ function render(){
   applyQFont();
   if (S.focus && !["surah","article","learn","exercise"].includes(S.view)) { S.focus = false; document.documentElement.classList.remove("reading"); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
   setTimeout(drawFocusBar, 0);
+  setTimeout(updateSurahBar, 0);
   drawBackPill();
-  { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; const nr = $("#nav-research"); if (nr) nr.hidden = !S.admin; }
+  { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; const nr = $("#nav-research"); if (nr) nr.hidden = !S.admin; const nk = $("#nav-ruku"); if (nk) nk.hidden = !S.admin; }
   document.querySelectorAll("nav.tabs button").forEach(b => {
     const cur = b.dataset.nav === S.view || (b.dataset.nav==="surahs" && S.view==="surah")
       || (S.view==="article" && ((S.art?.kind==="l" && b.dataset.nav==="lessons") || (S.art?.kind==="n" && b.dataset.nav==="notes") || (S.art?.kind==="w" && b.dataset.nav==="words")));
@@ -872,6 +914,8 @@ function render(){
   else if (S.view === "qa") app.innerHTML = viewQA();
   else if (S.view === "commentary") app.innerHTML = viewCommentary();
   else if (S.view === "research") app.innerHTML = viewResearch();
+  else if (S.view === "ruku") app.innerHTML = viewRuku();
+  else if (S.view === "search") app.innerHTML = viewSearch();
   else if (S.view === "learn") app.innerHTML = viewLearn();
   else if (S.view === "exercise") app.innerHTML = viewExercise();
   else if (S.view === "article") app.innerHTML = viewArticle();
@@ -904,8 +948,9 @@ function viewSurahs(){
   return `${statusBar()}
   <div class="idx-head">
     <h1>Surahs</h1>
-    <input type="search" id="sq" class="search" placeholder="Find a surah by name or number" value="${esc(S.sq)}" aria-label="Find a surah">
+    <input type="search" id="sq" class="search" placeholder="Find a surah, or jump to an ayah like 2:4" value="${esc(S.sq)}" aria-label="Find a surah or jump to an ayah">
   </div>
+  ${S.sq.trim() ? `<p class="gnote" style="margin:-6px 0 12px">${parseRefs(S.sq) ? `Press Enter to open ${esc(parseRefs(S.sq).map(rangeLabel).join(", "))}. ` : ""}Looking for a topic, a word or an ayah? <button type="button" class="btn small" data-gsearch>Search the Qur'an for “${esc(S.sq.trim())}”</button></p>` : ""}
   <div class="row small muted" style="margin-bottom:14px">
     <span>Across the Qur'an:</span>
     <span class="legend">
@@ -992,6 +1037,50 @@ function vocabHTML(s){
 }
 
 /* ---------- Learn tab: Ism and Fiʿl tables for any surah, limited to an ayah range ---------- */
+/* ---------- Ruku tab: analysis of the rukūʿ of a surah (private, editor only; collection ruku/<s>) ---------- */
+const RK_CONF = {strong: "Strong", plausible: "Plausible", speculative: "Speculative"};
+const RK_BND = {first: "Opening rukūʿ", clean: "Clean break", reasonable: "Reasonable break", debatable: "Debatable break"};
+const RK_SEC = [["thesis","Main thesis"],["structure","Structure of the surah"],["tafsirSurah","What the tafsirs say about the surah"],["boundaries","The rukūʿ boundaries"],["disagreements","Where this reading differs"],["sources","Sources consulted"],["limits","Limits of this analysis"]];
+function rkText(obj, key, src){
+  const p = pick(obj, S.lang, src);
+  if (!p.text) return "";
+  return `<div class="rk-text" lang="${p.lang}" dir="${RTL[p.lang] ? "rtl" : "ltr"}">${renderDoc(p.text, p.lang, key).html}</div>${p.fallback ? `<div class="small muted">Shown in ${LNAME_EN[p.lang]}</div>` : ""}`;
+}
+function viewRuku(){
+  if (!S.admin) return `${statusBar()}<div class="empty"><b>Ruku analysis is private</b>It is available in the editor only.</div>`;
+  if (!S.rk) S.rk = {s: 16};
+  const s = S.rk.s, docs = S.ruku || {}, d = docs[s];
+  const opts = Array.from({length: 114}, (_, i) => i + 1).map(n => `<option value="${n}" ${n === s ? "selected" : ""}>${n} · ${esc(surahOf(n).tl)}${docs[n] ? " ●" : ""}</option>`).join("");
+  let h = `<div class="phead" id="rk-top"><h1>Ruku analysis</h1></div>
+  <p class="muted small" style="margin:0">The main topic of each rukūʿ and how it follows the one before. Each rukūʿ has two layers: what the tafsirs say, and an independent reading with a confidence label and a verdict. ● = analysed. Private: not on the public site.</p>
+  <div class="learn-bar"><label class="flabel" for="rk-s">Surah</label><select id="rk-s">${opts}</select></div>`;
+  if (!d) return h + `<div class="empty"><b>No analysis for ${esc(surahOf(s).tl)} yet</b>Ask Claude in the editor session to analyse this surah.</div>`;
+  const ai = d.ai || {}, flagged = LANGS.filter(l => ai[l] && ((d.surah.thesis || {})[l] || "").trim());
+  if (ai[S.lang]) h += `<div class="row small"><span class="notice">Drafted by AI (${LNAME_EN[S.lang]}). Not yet reviewed.</span><button type="button" class="btn small" data-rkrev="${S.lang}">Mark as reviewed</button></div>`;
+  const sur = d.surah || {};
+  if (sur.title) h += `<h2>${esc(pick(sur.title, S.lang, d.src).text)}</h2>`;
+  const secs = RK_SEC.filter(([k]) => sur[k] && pick(sur[k], S.lang, d.src).text);
+  const flow = (d.items || []).filter(it => it.link && pick(it.link, S.lang, d.src).text);
+  const tocLi = (id, txt, cls) => `<li class="${cls || "t2"}"><button type="button" data-fn="${id}">${txt}</button></li>`;
+  const toc = `<nav class="toc" aria-label="Contents"><div class="flabel">Contents</div><ol>${secs.map(([k, lab]) => tocLi("rk-sec-" + k, lab)).join("")}${flow.length ? tocLi("rk-sec-flow", "How the rukūʿ follow one another") : ""}${tocLi("rk-items", "Rukūʿ by rukūʿ")}${(d.items || []).map(it => tocLi("rk-item-" + it.n, `${it.n}. ${esc(pick(it.title, S.lang, d.src).text)} <span class="muted">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</span>`, "t3")).join("")}</ol></nav>`;
+  const head = h; h = "";
+  for (const [k, lab] of RK_SEC) { if (!sur[k]) continue; const b = rkText(sur[k], "rks" + s + k, d.src); if (b) h += `<section class="rk-sec" id="rk-sec-${k}"><h3>${lab} <button type="button" class="btn small ghost" data-fn="rk-top">↑ Contents</button></h3>${b}</section>`; }
+  if (flow.length) h += `<section class="rk-sec" id="rk-sec-flow"><h2>How the rukūʿ follow one another <button type="button" class="btn small ghost" data-fn="rk-top">↑ Contents</button></h2>
+    <p class="small muted">Each rukūʿ read against the one before it, in order, as one continuous text.</p>
+    ${flow.map(it => `<div class="rk-flow" id="rk-flow-${it.n}"><h4>${it.n > 1 ? `Rukūʿ ${it.n - 1} → ${it.n}` : "Rukūʿ 1"} <span class="muted small">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</span> <span class="chip">${RK_BND[it.bnd] || ""}</span></h4>${rkText(it.link, "rkl" + s + "_" + it.n, d.src)}</div>`).join("")}</section>`;
+  h += `<h2 id="rk-items">Rukūʿ by rukūʿ</h2>`;
+  const ru = RUKU[s] || [];
+  h += (d.items || []).map(it => {
+    const ti = pick(it.title, S.lang, d.src).text;
+    return `<article class="qacard rk-item" id="rk-item-${it.n}"><div class="row"><b>Rukūʿ ${it.n}</b><button type="button" class="reflink" data-go="${s}:${it.from}">${s}:${it.from}${it.to !== it.from ? "–" + it.to : ""}</button>
+      <button type="button" class="btn small ghost" data-fn="rk-top">↑ Contents</button><span class="chip">${RK_BND[it.bnd] || ""}</span><span class="chip ${it.conf === "strong" ? "exp" : "rev"}">Independent reading: ${RK_CONF[it.conf] || ""}</span></div>
+      <h3>${esc(ti)}</h3>
+      ${[["theme","Main topic"],["tafsir","Tafsir layer"],["indep","Independent reading"],["verdict","Verdict"]].map(([k, lab]) => it[k] ? `<h4>${lab}</h4>${rkText(it[k], "rki" + s + "_" + it.n + k, d.src)}` : "").join("")}
+    </article>`;
+  }).join("");
+  return head + `<div class="art-grid">${toc}<div class="rk-main">${h}</div></div>`;
+}
+
 function viewLearn(){
   if (!S.learn) S.learn = {s: S.surah || 1, from: null, to: null};
   const L = S.learn, s = L.s, nAy = surahOf(s).v.length;
@@ -1151,11 +1240,12 @@ function viewQA(){
     ${q ? `<div class="small muted">${items.length} result${items.length === 1 ? "" : "s"}</div>` : ""}</div>
   <div class="results">${items.map(qaCard).join("") || (S.qa.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No Q&amp;A yet</b>Open a surah and press “Q&amp;A” under any ayah.</div>`)}</div>`;
 }
-const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final, M.fit || null]);
+const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final, M.fit || null, M.also || ""]);
 function openQA(ref){
+  if (blockedByMin()) return;
   const [s, a, id] = ref.split(":"); const ex = id ? S.qa.find(x => x.id === id) : null;
   const src = ex ? ex.src : S.lang;
-  M = {type: "qa", s: +s, a: +a, id: ex ? ex.id : null, src, tab: (ex && ((ex.q[S.lang] || "") + (ex.ans[S.lang] || "")).trim()) ? S.lang : src,
+  M = {type: "qa", s: ex ? ex.s : +s, a: ex ? ex.a : +a, also: ex ? alsoLabel(ex.also) : "", id: ex ? ex.id : null, src, tab: (ex && ((ex.q[S.lang] || "") + (ex.ans[S.lang] || "")).trim()) ? S.lang : src,
     q: Object.assign(blankLang(), ex?.q), ans: Object.assign(blankLang(), ex?.ans), ai: Object.assign({}, ex?.ai), fu: "", final: !!ex?.final, hist: (ex?.fu || []).slice(), created: ex?.createdAt || 0,
     fit: ex?.fit ? Object.assign({}, ex.fit) : null, busy: false, ctl: [], err: "", status: ""};
   M.saved = qaSnap();
@@ -1220,15 +1310,17 @@ function captureQA(){
   if (g("qa-fu")) M.fu = g("qa-fu").value;
   if (g("qa-final")) M.final = g("qa-final").checked;
   if (g("qa-src")) M.src = g("qa-src").value;
+  if (g("qa-also")) M.also = g("qa-also").value;
 }
 const qaDirty = () => qaSnap() !== M.saved;
 function drawQA(){
   const {s, a} = M, k = key(s, a), list = qaList(k), su = surahOf(s), T = M.tab, isSrc = T === M.src, dir = RTL[T] ? "rtl" : "ltr";
   const cut = (x, n) => { x = String(x || "").replace(/\s+/g, " "); return x.length > n ? x.slice(0, n - 1) + "…" : x; };
   const noAI = !S.sample;
-  modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+  modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button><button type="button" class="btn" data-m="close">Close</button></div>
     <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
       <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
+    <div class="field"><label for="qa-also">Also tag these ayahs <span class="muted" style="font-weight:400">(optional, e.g. 2:23, 10:38; this Q&amp;A will also be listed under each)</span></label><input type="text" id="qa-also" value="${esc(M.also || "")}" autocomplete="off"></div>
     ${qaFitBox()}
     ${list.length ? `<div class="row small"><span class="flabel">Saved for this ayah</span>${list.map(x => `<button type="button" class="chip ${x.id === M.id ? "exp" : "les"}" data-m="qa-open" data-v="${esc(x.id)}">${esc(cut(pick(x.q, S.lang, x.src).text, 50))}</button>`).join("")}${M.id ? `<button type="button" class="btn small" data-m="qa-open" data-v="">New question</button>` : ""}</div>` : ""}
     <div class="row small"><label class="flabel" for="qa-src">Written in</label>
@@ -1238,8 +1330,8 @@ function drawQA(){
     <div class="field"><label for="qa-q">Question · ${LNAME_EN[T]}</label>
       <textarea id="qa-q" rows="3" lang="${T}" dir="${dir}" placeholder="${isSrc ? "Write your question about this ayah" : "Drafted from the " + LNAME_EN[M.src] + " question, or write it here"}">${esc(M.q[T])}</textarea>
       ${isSrc ? `<div class="row"><button type="button" class="btn primary" data-m="qa-ask" ${M.busy || noAI ? "disabled" : ""}>${M.ans[T].trim() ? "Ask again from scratch" : "Ask AI"}</button>
-        ${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button>` : ""}<span class="small muted">${esc(M.status || (noAI ? "AI is not available in this view." : ""))}</span></div>`
-        : `<div class="row">${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button>` : ""}<span class="small muted">${esc(M.status || "")}</span></div>`}</div>
+        ${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}<span class="small muted">${esc(M.status || (noAI ? "AI is not available in this view." : ""))}</span></div>`
+        : `<div class="row">${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}<span class="small muted">${esc(M.status || "")}</span></div>`}</div>
     <div class="field"><label for="qa-ans">Answer · ${LNAME_EN[T]} ${M.ai[T] ? `<span class="chip rev">AI draft</span>` : ""}</label>
       <textarea id="qa-ans" rows="14" lang="${T}" dir="${dir}" placeholder="${isSrc ? "The AI draft appears here. You can also write or edit the answer yourself." : "Draft this language with AI, or write it here"}">${esc(M.ans[T])}</textarea>
       ${isSrc ? `<span class="small muted">The AI works from its own knowledge only: it cannot look up tafsir, hadith or the Qur'an text. Check every quotation, reference and attribution before you finalise.</span>` : ""}
@@ -1253,7 +1345,7 @@ function drawQA(){
       <div class="row"><button type="button" class="btn" data-m="qa-follow" ${M.busy || noAI ? "disabled" : ""}>Revise the answer with AI</button><span class="small muted">It revises the answer above, keeping your edits. Other languages must be redrafted afterwards.</span></div></div>` : ""}
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
     <div class="foot row"><label class="row small"><input type="checkbox" id="qa-final" ${M.final ? "checked" : ""}> Final: I have reviewed this answer</label><span class="spacer"></span>
-      ${M.id ? `<button type="button" class="btn danger" data-m="qa-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
+      ${M.id ? `<button type="button" class="btn danger" data-m="qa-delete" ${M.busy ? "disabled" : ""}>Delete</button><button type="button" class="btn" data-m="move" ${M.busy ? "disabled" : ""}>Move to…</button>` : ""}
       <button type="button" class="btn primary" data-m="qa-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
 }
 function qaPrompt(follow, fitData){
@@ -1402,14 +1494,17 @@ async function qaAct(act, d){
   if (act === "qa-save") {
     captureQA();
     if (!M.q[M.src].trim()) { M.tab = M.src; M.err = `Write the question in ${LNAME_EN[M.src]} first (it is the language you wrote in).`; drawQA(); return; }
+    const alsoQ = (M.also || "").trim() ? parseRefs(M.also) : [];
+    if (alsoQ === null) { M.err = "The “also tag” ayahs aren't valid. Write them like 2:23, 10:38 or 11:13-14."; drawQA(); return; }
     const id = M.id || ("qa-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5)), now = Date.now();
     const tr = o => Object.fromEntries(LANGS.map(l => [l, (o[l] || "").trim()]));
-    const doc = {s: M.s, a: M.a, src: M.src, q: tr(M.q), ans: tr(M.ans), ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && ((M.q[l] || "") + (M.ans[l] || "")).trim())), final: !!M.final, ...(M.fit ? {fit: M.fit} : {}), fu: M.hist, createdAt: M.created || now, updatedAt: now};
+    const doc = {s: M.s, a: M.a, src: M.src, q: tr(M.q), ans: tr(M.ans), ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && ((M.q[l] || "") + (M.ans[l] || "")).trim())), final: !!M.final, ...(M.fit ? {fit: M.fit} : {}), ...(alsoQ.length ? {also: alsoQ} : {}), fu: M.hist, createdAt: M.created || now, updatedAt: now};
     M.busy = true; M.err = ""; drawQA();
     try { await S.db.collection("qa").doc(id).set(doc); M.id = id; M.created = doc.createdAt; M.q = Object.assign(blankLang(), doc.q); M.ans = Object.assign(blankLang(), doc.ans); M.ai = Object.assign({}, doc.ai); M.saved = qaSnap(); M.status = "Saved."; toast("Q&A saved"); }
     catch (e) { M.err = dbErr(e); }
     M.busy = false; drawQA(); return;
   }
+  if (act === "move") return startMove();
   if (act === "qa-delete") { conf("Delete this question and its answers in all languages?", "qa-delete-yes", "Delete", "Keep it", true); return; }
   if (act === "qa-delete-yes") {
     M.busy = true; drawQA();
@@ -1446,6 +1541,7 @@ function viewCommentary(){
 }
 const cmSnap = () => JSON.stringify([M.src, M.text]);
 function openCM(k){
+  if (blockedByMin()) return;
   const [s, a] = k.split(":").map(Number), ex = S.cmIx[k], src = ex ? ex.src : S.lang;
   M = {type: "cm", s, a, src, tab: (ex && (ex.text[S.lang] || "").trim()) ? S.lang : src, text: Object.assign(blankLang(), ex?.text), ai: Object.assign({}, ex?.ai),
     exists: !!ex, created: ex?.createdAt || 0, busy: false, ctl: [], err: "", status: ""};
@@ -1460,7 +1556,7 @@ function captureCM(){
 }
 function drawCM(){
   const {s, a} = M, su = surahOf(s), T = M.tab, isSrc = T === M.src, dir = RTL[T] ? "rtl" : "ltr", noAI = !S.sample;
-  modal(`<div class="row"><h2>Commentary · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+  modal(`<div class="row"><h2>Commentary · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button><button type="button" class="btn" data-m="close">Close</button></div>
     <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
       <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
     <div class="row small"><label class="flabel" for="cm-src">Written in</label>
@@ -1470,14 +1566,14 @@ function drawCM(){
     <div class="field"><label for="cm-text">Short commentary · ${LNAME_EN[T]} ${M.ai[T] ? `<span class="chip rev">AI draft</span>` : ""}</label>
       <textarea id="cm-text" rows="9" lang="${T}" dir="${dir}" placeholder="${isSrc ? "Write a short commentary on this ayah. Blank lines make paragraphs; **bold**, *italic* and references such as 4:82 work." : "Draft this language with AI, or write it here"}">${esc(M.text[T])}</textarea>
       ${M.ai[T] ? `<div class="row small"><span class="notice">Drafted by AI. Review it, then mark it reviewed.</span><button type="button" class="btn small" data-m="cm-reviewed">Mark as reviewed</button></div>` : ""}
-      ${M.busy ? `<div class="row"><button type="button" class="btn" data-m="cm-stop">Stop</button><span class="small muted">${esc(M.status || "")}</span></div>` : ""}</div>
+      ${M.busy ? `<div class="row"><button type="button" class="btn" data-m="cm-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button><span class="small muted">${esc(M.status || "")}</span></div>` : ""}</div>
     <div class="aibox row">
       <button type="button" class="btn" data-m="cm-trans" data-v="" ${M.busy || noAI ? "disabled" : ""}>Draft the other languages with AI</button>
       ${!isSrc ? `<button type="button" class="btn" data-m="cm-trans" data-v="${T}" ${M.busy || noAI ? "disabled" : ""}>Draft ${LNAME_EN[T]} only</button>` : ""}
       <span class="small muted">${noAI ? "AI is not available in this view." : `Translates the ${LNAME_EN[M.src]} text. Replaces what is already written in the language drafted.`}</span></div>
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
     <div class="foot row"><span class="small muted">Shown to readers once you publish the site.</span><span class="spacer"></span>
-      ${M.exists ? `<button type="button" class="btn danger" data-m="cm-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
+      ${M.exists ? `<button type="button" class="btn danger" data-m="cm-delete" ${M.busy ? "disabled" : ""}>Delete</button><button type="button" class="btn" data-m="move" ${M.busy ? "disabled" : ""}>Move to…</button>` : ""}
       <button type="button" class="btn primary" data-m="cm-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
 }
 async function cmTranslate(only, force){
@@ -1564,6 +1660,7 @@ async function cmAct(act, d){
     catch (e) { M.err = dbErr(e); }
     M.busy = false; drawCM(); return;
   }
+  if (act === "move") return startMove();
   if (act === "cm-delete") { conf("Delete this commentary in all languages?", "cm-delete-yes", "Delete", "Keep it", true); return; }
   if (act === "cm-delete-yes") {
     M.busy = true; drawCM();
@@ -1618,6 +1715,7 @@ function viewResearch(){
 }
 const rsSnap = () => JSON.stringify([M.title, M.refs, M.status, M.note, M.tags]);
 function openRS(id, ctx){
+  if (blockedByMin()) return;
   const ex = id ? S.research.find(x => x.id === id) : null;
   M = {type: "rs", id: ex ? ex.id : null, ctx: ctx || "", title: ex ? ex.title : "", note: ex ? ex.note : "", refs: ex ? (ex.refs || rsRefLabel(ex)) : (ctx || ""),
     status: ex ? ex.status : "open", tags: ex ? ex.tags.join(", ") : "", created: ex ? ex.createdAt || 0 : 0, busy: false, err: ""};
@@ -1646,7 +1744,7 @@ function drawRS(){
     <div class="field"><label for="rs-tags">Tags <span class="muted" style="font-weight:400">optional, separated by commas</span></label><input type="text" id="rs-tags" dir="auto" value="${esc(M.tags)}" placeholder="grammar, tafsir, hadith"></div>
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
     <div class="foot row"><span class="small muted">Private: never shown on the public site.</span><span class="spacer"></span>
-      ${M.id ? `<button type="button" class="btn danger" data-m="rs-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}
+      ${M.id ? `<button type="button" class="btn danger" data-m="rs-delete" ${M.busy ? "disabled" : ""}>Delete</button><button type="button" class="btn" data-m="move" ${M.busy ? "disabled" : ""}>Move to…</button>` : ""}
       ${ctx ? `<button type="button" class="btn" data-m="rs-save-new" ${M.busy ? "disabled" : ""}>Save and add another</button>` : ""}
       <button type="button" class="btn primary" data-m="rs-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
 }
@@ -1675,6 +1773,7 @@ async function rsAct(act, d){
   }
   if (act === "rs-save") { if (await rsSave()) { drawRS(); } return; }
   if (act === "rs-save-new") { const ctx = M.ctx; if (await rsSave()) openRS("", ctx); return; }
+  if (act === "move") return startMove();
   if (act === "rs-delete") { conf("Delete this research topic?", "rs-delete-yes", "Delete", "Keep it", true); return; }
   if (act === "rs-delete-yes") {
     M.busy = true; drawRS();
@@ -1683,7 +1782,166 @@ async function rsAct(act, d){
     return;
   }
 }
+/* ---------- Move an item to another kind: note, lesson, word analysis, Q&A, research topic, commentary ---------- */
+const MV_KINDS = {note: ["Note", true], lesson: ["Lesson", true], word: ["Word analysis", true], qa: ["Q&A", false], rs: ["Research topic", false], cm: ["Commentary", true]};   // [label, public once published]
+const MV_COL = {note: "notes", lesson: "lessons", word: "words", qa: "qa", rs: "research", cm: "commentary"};
+const MV_CH = {note: "n", lesson: "l", word: "w"};
+function guessLang(t){ t = String(t || ""); if (/[ঀ-৿]/.test(t)) return "bn"; if (/[؀-ۿ]/.test(t)) return /[ٹڈڑںےھگچپژکی]/.test(t) ? "ur" : "ar"; return "en"; }
+function moveSource(){
+  const m = M, E = err => ({err});
+  const N = {type: m.type, id: null, tags: [], ai: {}, title: blankLang(), summary: blankLang(), body: blankLang(), src: "en", ranges: [], status: "open", createdAt: 0, cat: ""};
+  const alsoOf = txt => (String(txt || "").trim() ? parseRefs(txt) : []);
+  if (m.type === "note" || m.type === "lesson" || m.type === "word") {
+    captureFields(); const it = m.it;
+    if (it._partial) return E("The later parts of this long write-up are still loading. Wait a moment, then try again.");
+    const refs = parseRefs(m.ref || ""); if (!refs) return E(m.type === "lesson" ? "List the ayahs first, like 2:153-157." : "Enter the ayah first, like 2:255.");
+    const al = m.type === "lesson" ? [] : alsoOf(it.alsoText); if (al === null) return E("The “also tag” ayahs aren't valid. Write them like 2:23, 10:38.");
+    Object.assign(N, {id: it.id, title: Object.assign(blankLang(), it.title), summary: Object.assign(blankLang(), it.summary), body: Object.assign(blankLang(), it.body), src: it.src, ai: Object.assign({}, it.ai), tags: (it.tags || []).slice(), createdAt: it.createdAt || 0, ranges: refs.concat(al), cat: it.cat || ""});
+  } else if (m.type === "qa") {
+    captureQA(); const al = alsoOf(m.also); if (al === null) return E("The “also tag” ayahs aren't valid. Write them like 2:23, 10:38.");
+    Object.assign(N, {id: m.id, title: Object.assign(blankLang(), m.q), body: Object.assign(blankLang(), m.ans), src: m.src, ai: Object.assign({}, m.ai), createdAt: m.created || 0, ranges: [{s: m.s, from: m.a, to: m.a}].concat(al)});
+  } else if (m.type === "rs") {
+    captureRS(); const rg = m.refs.trim() ? parseRefs(m.refs) : []; if (rg === null) return E("Write the ayahs like 2:23, 10:38 or 11:13-14 first.");
+    const lg = guessLang(m.title + " " + m.note);
+    N.title[lg] = m.title.trim(); N.body[lg] = m.note.trim();
+    Object.assign(N, {id: m.id, src: lg, tags: [...new Set(m.tags.split(/[,،]+/).map(x => x.trim().replace(/^#/, "")).filter(Boolean))], ranges: rg, status: m.status, createdAt: m.created || 0});
+  } else if (m.type === "cm") {
+    captureCM();
+    Object.assign(N, {id: `${m.s}-${m.a}`, body: Object.assign(blankLang(), m.text), src: m.src, ai: Object.assign({}, m.ai), createdAt: m.created || 0, ranges: [{s: m.s, from: m.a, to: m.a}]});
+  }
+  return N;
+}
+function startMove(){
+  const N = moveSource();
+  if (N.err) { const e = $("#m-err"); if (e) e.textContent = N.err; return; }
+  const first = Object.keys(MV_KINDS).filter(k => k !== N.type);
+  M = {type: "mv", prev: M, N, target: N.type === "rs" || N.type === "qa" ? "note" : first[0], refText: N.ranges.map(rangeLabel).join(", "), cat: N.cat || "", keep: false, sel: null, wordList: null, busy: false, err: ""};
+  drawMove(); mvLoadWords();
+}
+function mvPrimary(){ const r = parseRefs(M.refText || ""); return r ? {s: r[0].s, a: r[0].from} : null; }
+function mvCapture(){
+  if (!M || M.type !== "mv") return;
+  const g = i => document.getElementById(i);
+  if (g("mv-ref")) M.refText = g("mv-ref").value;
+  if (g("mv-cat")) M.cat = g("mv-cat").value;
+  if (g("mv-keep")) M.keep = g("mv-keep").checked;
+}
+function mvLoadWords(){
+  if (!M || M.type !== "mv" || M.target !== "word") return;
+  const p = mvPrimary(); if (!p) { M.wordList = null; return; }
+  if (M.wordList && M.wordList.s === p.s && M.wordList.a === p.a) return;
+  M.wordList = {s: p.s, a: p.a, words: null}; M.sel = null;
+  loadGrammar(p.s).then(d => { if (M && M.type === "mv" && M.wordList && M.wordList.s === p.s && M.wordList.a === p.a) { M.wordList.words = d[p.a - 1]; mvCapture(); drawMove(); } }).catch(() => {});
+}
+function drawMove(){
+  const N = M.N, T = M.target, [srcL, srcPub] = MV_KINDS[N.type], [tgtL, tgtPub] = MV_KINDS[T];
+  const used = LANGS.filter(l => (N.title[l] || "").trim() || (N.body[l] || "").trim());
+  const p = mvPrimary(), many = (parseRefs(M.refText || "") || []).length > 1 || (parseRefs(M.refText || "") || []).some(r => r.to > r.from);
+  const cut = (x, n) => { x = String(x || "").replace(/\s+/g, " ").trim(); return x.length > n ? x.slice(0, n - 1) + "…" : x; };
+  const label = (cut(pick(N.title, S.lang, N.src).text, 60) || cut(pick(N.body, S.lang, N.src).text, 60) || "Untitled");
+  const notes = [];
+  if (srcPub !== tgtPub) notes.push(tgtPub ? `<b>${srcL} items are private.</b> A ${tgtL.toLowerCase()} is public: it will appear on the public site the next time you publish.` : `<b>${srcL} items are public.</b> A ${tgtL.toLowerCase()} is private: it will disappear from the public site the next time you publish.`);
+  if (T === "rs" && used.length > 1) notes.push(`A research topic holds one language only. The ${LNAME_EN[N.src]} text is kept; ${used.filter(l => l !== N.src).map(l => LNAME_EN[l]).join(", ")} will be dropped.`);
+  if (T === "qa") notes.push(`The title becomes the question and the text becomes the answer (a summary, if any, goes above the answer).`);
+  if (T === "cm") notes.push(`A commentary has no title: the title, if any, is added as a bold first line. There is only one commentary per ayah${many ? `, so only ${p ? p.s + ":" + p.a : "the first ayah"} is kept` : ""}.`);
+  if (T === "cm" && p && S.cmIx[key(p.s, p.a)]) notes.push(`<b>${p.s}:${p.a} already has a commentary.</b> Edit or delete that one first.`);
+  if (T === "qa" && !(N.title[N.src] || "").trim()) notes.push(`<b>A Q&amp;A needs a question.</b> This item has no ${LNAME_EN[N.src]} title to use as the question.`);
+  if (T !== "rs" && T !== "lesson" && many) notes.push(`Only the first ayah is the main one; the others are kept as “also tagged” ayahs.`);
+  if (N.type === "word" && T !== "word") notes.push(`The word selection is not carried over.`);
+  const wordBox = T === "word" ? `<div class="field"><span class="flabel">Word (required): choose the word in ${p ? p.s + ":" + p.a : "the ayah"}</span>${!p ? `<p class="small muted" style="margin:0">Enter the ayah first.</p>` : !M.wordList?.words ? `<p class="small muted" style="margin:0">Loading the words…</p>` :
+      `<div class="gstrip" lang="ar" dir="rtl">${M.wordList.words.map((w, i) => `<button type="button" class="gchip" data-m="mv-word" data-v="${i + 1}" aria-pressed="${M.sel === i + 1}">${esc(w[2].map(x => x[0]).join(""))}</button>`).join("")}</div>`}</div>` : "";
+  const catBox = T === "note" ? `<div class="field"><label for="mv-cat">Category (required)</label><select id="mv-cat"><option value="">Choose a category…</option>${S.cats.map(c => `<option value="${esc(c.id)}" ${M.cat === c.id ? "selected" : ""}>${esc(catName(c.id))}</option>`).join("")}</select></div>` : "";
+  modal(`<div class="row"><h2>Move to another kind</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <p class="small" style="margin:0"><span class="chip ${srcPub ? "exp" : "rs"}">${esc(srcL)}</span> <b dir="auto">${esc(label)}</b> <span class="muted">${esc(M.refText || "no ayah")}</span></p>
+    <div class="grid2">
+      <div class="field"><label for="mv-target">Move it to</label><select id="mv-target">${Object.entries(MV_KINDS).filter(([k]) => k !== N.type).map(([k, v]) => `<option value="${k}" ${k === T ? "selected" : ""}>${v[0]} (${v[1] ? "public" : "private"})</option>`).join("")}</select></div>
+      <div class="field"><label for="mv-ref">Ayah(s) ${T === "rs" ? `<span class="muted" style="font-weight:400">optional</span>` : T === "lesson" ? `<span class="muted" style="font-weight:400">e.g. 2:153-157, 2:177</span>` : `<span class="muted" style="font-weight:400">first = main ayah, others also tagged</span>`}</label><input type="text" id="mv-ref" value="${esc(M.refText)}" placeholder="2:255, 3:18" autocomplete="off"></div>
+    </div>
+    ${catBox}${wordBox}
+    ${notes.map(x => `<div class="notice">${x}</div>`).join("")}
+    <label class="row small"><input type="checkbox" id="mv-keep" ${M.keep ? "checked" : ""}> Keep the original as well (copy instead of move)</label>
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot row"><button type="button" class="btn" data-m="mv-back" ${M.busy ? "disabled" : ""}>← Back to editing</button><span class="spacer"></span>
+      <button type="button" class="btn primary" data-m="mv-do" ${M.busy ? "disabled" : ""}>${M.keep ? "Copy" : "Move"} to ${esc(tgtL)}</button></div>`, "qa");
+}
+async function writeWritable(col, kindL, id, doc){
+  const extra = [], bodyOut = {}, more = {};
+  for (const l of Object.keys(doc.body || {})) {
+    const parts = splitPieces(doc.body[l]); bodyOut[l] = parts[0];
+    if (parts.length > 1) {
+      const r = Date.now().toString(36) + Math.random().toString(36).slice(2, 5); more[l] = {r, n: parts.length - 1};
+      parts.slice(1).forEach((tx, k) => extra.push({id: `${kindL}~${id}~${l}~${r}~${k + 1}`, data: {kind: kindL, ref: id, lang: l, r, i: k + 1, text: tx}}));
+    }
+  }
+  doc.body = bodyOut; if (Object.keys(more).length) doc.more = more;
+  for (const c of extra) await S.db.collection("chunks").doc(c.id).set(c.data);
+  await S.db.collection(col).doc(id).set(doc);
+}
+async function mvDo(){
+  mvCapture(); const m = M, N = m.N, T = m.target, now = Date.now();
+  const fail = msg => { m.err = msg; m.busy = false; drawMove(); return; };
+  const rg = m.refText.trim() ? parseRefs(m.refText) : [];
+  if (rg === null) return fail("Write the ayahs like 2:23, 10:38 or 11:13-14, with real surah and ayah numbers.");
+  if (T !== "rs" && !rg.length) return fail(T === "lesson" ? "List the ayahs the lesson covers." : "Give the ayah this belongs to.");
+  const P = rg.length ? {s: rg[0].s, a: rg[0].from} : null;
+  const also = rg.length ? [].concat(rg[0].to > rg[0].from ? [{s: rg[0].s, from: rg[0].from + 1, to: rg[0].to}] : [], rg.slice(1)) : [];
+  const nid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  const trim = o => Object.fromEntries(LANGS.map(l => [l, String(o[l] || "").trim()]));
+  const has = o => LANGS.some(l => (o[l] || "").trim());
+  const aiOf = o => Object.fromEntries(Object.entries(N.ai).filter(([l, v]) => v && (o[l] || "").trim()));
+  const base = {src: N.src, updatedAt: now, createdAt: N.createdAt || now};
+  let col = MV_COL[T], id, doc, kindL = MV_CH[T] || null;
+  if (T === "note" || T === "lesson" || T === "word") {
+    if (!has(N.title) && !has(N.body)) return fail("There is no text to move.");
+    id = nid(); doc = Object.assign({title: trim(N.title), summary: trim(N.summary), body: trim(N.body), tags: N.tags.slice(), ai: aiOf(Object.assign({}, N.title, N.body))}, base);
+    if (T === "lesson") doc.ranges = rg;
+    else { doc.s = P.s; doc.a = P.a; if (also.length) doc.also = also; }
+    if (T === "note") { if (!m.cat || !catById(m.cat)) return fail("Choose a category. Every note needs one."); doc.kind = "explanation"; doc.cat = m.cat; }
+    if (T === "word") {
+      const w = m.wordList && m.wordList.s === P.s && m.wordList.a === P.a && m.wordList.words && m.wordList.words[m.sel - 1];
+      if (!w) return fail("Choose the word or phrase this analysis is about.");
+      const segs = w[2].map(decodeSeg), stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0];
+      Object.assign(doc, {w: m.sel, word: w[2].map(x => x[0]).join(""), root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""});
+    }
+  } else if (T === "qa") {
+    if (!(N.title[N.src] || "").trim()) return fail(`A Q&A needs a question: add a ${LNAME_EN[N.src]} title first (it becomes the question).`);
+    const ans = Object.fromEntries(LANGS.map(l => [l, [N.summary[l], N.body[l]].map(x => String(x || "").trim()).filter(Boolean).join("\n\n")]));
+    id = "qa-" + nid().slice(0, 9); doc = Object.assign({s: P.s, a: P.a, q: trim(N.title), ans, ai: aiOf(Object.assign({}, N.title, ans)), final: false, fu: []}, base);
+    if (also.length) doc.also = also;
+  } else if (T === "rs") {
+    const lg = N.src, firstLine = x => String(x || "").trim().split("\n")[0].slice(0, 120);
+    const title = (N.title[lg] || "").trim() || LANGS.map(l => (N.title[l] || "").trim()).find(Boolean) || firstLine(N.body[lg]) || LANGS.map(l => firstLine(N.body[l])).find(Boolean) || "";
+    if (!title) return fail("There is no text to move.");
+    const noteTxt = [N.summary[lg], N.body[lg]].map(x => String(x || "").trim()).filter(Boolean).join("\n\n") || LANGS.map(l => String(N.body[l] || "").trim()).find(Boolean) || "";
+    id = "rs-" + nid().slice(0, 9); doc = {title, note: noteTxt, refs: rg.map(rangeLabel).join(", "), ranges: rg, status: RS_STATUS[N.status] ? N.status : "open", tags: N.tags.slice(), createdAt: N.createdAt || now, updatedAt: now};
+  } else if (T === "cm") {
+    if (S.cmIx[key(P.s, P.a)]) return fail(`${P.s}:${P.a} already has a commentary. Edit or delete that one first.`);
+    const text = Object.fromEntries(LANGS.map(l => [l, [(N.title[l] || "").trim() ? `**${N.title[l].trim()}**` : "", N.summary[l], N.body[l]].map(x => String(x || "").trim()).filter(Boolean).join("\n\n")]));
+    if (!has(text)) return fail("There is no text to move.");
+    id = `${P.s}-${P.a}`; doc = Object.assign({s: P.s, a: P.a, text, ai: aiOf(text)}, base);
+  }
+  m.busy = true; m.err = ""; drawMove();
+  try {
+    if (kindL) await writeWritable(col, kindL, id, doc); else await S.db.collection(col).doc(id).set(doc);
+  } catch (e) { return fail(dbErr(e)); }
+  let warn = "";
+  if (!m.keep && N.id) {
+    try { await S.db.collection(MV_COL[N.type]).doc(N.id).delete(); if (MV_CH[N.type]) await dropStaleChunks(MV_CH[N.type], N.id, []); }
+    catch (e) { warn = ` The new item was created, but the original could not be deleted: ${dbErr(e)}`; }
+  }
+  closeModal();
+  toast(`${m.keep ? "Copied" : "Moved"} to ${MV_KINDS[T][0]}.${warn}`);
+  if (kindL) go("article", {kind: kindL, id}); else go(T === "qa" ? "qa" : T === "rs" ? "research" : "commentary");
+}
+async function mvAct(act, d){
+  if (M.busy) return;
+  if (act === "close") { closeModal(); return; }
+  if (act === "mv-back") { const prev = M.prev; M = prev; if (prev.type === "qa") drawQA(); else if (prev.type === "rs") drawRS(); else if (prev.type === "cm") drawCM(); else drawWriteEditor(); return; }
+  if (act === "mv-word") { mvCapture(); M.sel = +d.v; drawMove(); return; }
+  if (act === "mv-do") return mvDo();
+}
 function openRukuList(ref){
+  if (blockedByMin()) return;
   const [s, cur] = ref.split(":").map(Number), su = surahOf(s), st = RUKU[s];
   M = {type:"rukus"};
   modal(`<div class="row"><h2>Rukūʿ · ${esc(su.tl)}</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
@@ -1795,6 +2053,7 @@ function noteCard(n, withRef){
          <span class="small muted">${readMins(doc.words)} min read${doc.toc.length?` · ${doc.toc.filter(x=>x.lvl===2).length || doc.toc.length} sections`:""}${doc.notes?` · ${doc.notes} notes`:""}</span></div>`
       : `<div class="prose w" ${b.attrs}>${mdLite(b.p.text, b.p.lang)}</div>
          <div class="row" style="margin-top:8px"><button type="button" class="btn ghost small" data-article="n:${esc(n.id)}">Open as page</button><button type="button" class="btn ghost small" data-share="n:${esc(n.id)}">Share</button></div>`}
+    ${(n.also||[]).length ? `<div class="small muted">Also tagged: ${n.also.map(g => `<button type="button" class="reflink" data-go="${g.s}:${g.from}">${rangeLabel(g)}</button>`).join(" ")}</div>` : ""}
     ${(n.tags||[]).length ? `<div class="tags">${n.tags.map(tg=>`<button type="button" class="tag" data-ntag="${esc(tg)}">#${esc(tg)}</button>`).join("")}</div>` : ""}
   </div>`;
 }
@@ -1816,7 +2075,7 @@ function viewArticle(){
   const dir = RTL[b.lang] ? "rtl" : "ltr";
   const ayahs = [];
   if (isL) for (const r of (it.ranges||[])) for (let a=r.from; a<=r.to; a++) ayahs.push([r.s,a]);
-  else ayahs.push([it.s, it.a]);
+  else { ayahs.push([it.s, it.a]); for (const g of (it.also || [])) for (let a = g.from; a <= g.to && ayahs.length < 60; a++) if (!(g.s === it.s && a === it.a)) ayahs.push([g.s, a]); }
   const manyAyahs = ayahs.length > 3;
   const date = new Date(it.updatedAt || it.createdAt || Date.now()).toLocaleDateString(S.lang==="en"?"en-GB":S.lang, {year:"numeric", month:"long", day:"numeric"});
   const toc = doc.toc.length >= 2 ? `<nav class="toc" aria-label="Contents" lang="${b.lang}" dir="${dir}"><div class="flabel">Contents</div><ol>${doc.toc.map(h=>`<li class="t${h.lvl}"><button type="button" data-fn="${h.id}">${esc(h.text)}</button></li>`).join("")}</ol></nav>` : "";
@@ -1830,7 +2089,7 @@ function viewArticle(){
     <header class="art-head">
       <div class="row"><span class="chip ${isL?"les":isW?"wa":"exp"}">${isL?"Lesson":isW?"Word analysis":"Note"}</span>${isL||isW ? "" : catChip(it.cat)}
         ${isL ? (it.ranges||[]).map(r=>`<button type="button" class="reflink" data-go="${r.s}:${r.from}">${rangeLabel(r)}</button>`).join(" ") : `<button type="button" class="reflink" data-go="${it.s}:${it.a}">${it.s}:${it.a} · ${esc(surahOf(it.s).tl)}</button>`}</div>
-      ${isW ? `<div class="wa-head"><span class="wa-word" lang="ar" dir="rtl">${esc(it.word||"")}</span>${it.root?`<span class="wa-meta">Root <b lang="ar" dir="rtl">${esc(spaced(it.root))}</b></span>`:""}${it.lemma?`<span class="wa-meta">Lemma <b lang="ar" dir="rtl">${esc(it.lemma)}</b></span>`:""}${it.pos?`<span class="wa-meta">${esc(it.pos)}</span>`:""}</div>` : ""}
+      ${isW ? `<div class="wa-head"><span class="wa-word" lang="ar" dir="rtl">${esc(it.word||"")}</span>${it.root?`<span class="wa-meta">Root <b lang="ar" dir="rtl">${esc(spaced(it.root))}</b></span>`:""}${it.lemma?`<span class="wa-meta">Lemma <b lang="ar" dir="rtl">${esc(it.lemma)}</b></span>`:""}${it.pos?`<span class="wa-meta">${esc(it.pos)}</span>`:""}${isPhrase(it) ? phraseMeta(it) : ""}</div>` : ""}
       ${isW && t.text === it.word ? "" : `<h1 class="art-title w" lang="${t.lang}" dir="${RTL[t.lang]?"rtl":"ltr"}">${esc(t.text || "Untitled")}</h1>`}
       ${sm.text ? `<p class="art-sum w" lang="${sm.lang}" dir="${RTL[sm.lang]?"rtl":"ltr"}">${esc(sm.text)}</p>` : ""}
       <div class="art-meta small muted">${date} · ${readMins(doc.words)} min read · ${LNAME[b.lang]}</div>
@@ -1858,7 +2117,7 @@ function wordCardList(w){
       <button type="button" class="reflink" data-go="${w.s}:${w.a}">${w.s}:${w.a} · ${esc(surahOf(w.s).tl)}</button><span class="spacer"></span>
       ${S.admin ? `<button type="button" class="btn ghost small" data-edit-word="${esc(w.id)}">Edit</button>` : ""}</div>
     <div class="wa-row"><span class="wa-word sm" lang="ar" dir="rtl">${esc(w.word||"")}</span>
-      <span class="wa-meta">${w.root ? `Root <b lang="ar" dir="rtl">${esc(spaced(w.root))}</b>` : "No root"}</span>
+      ${isPhrase(w) ? `<span class="wa-meta">Phrase · ${w.w2 - w.w + 1} words</span>` : `<span class="wa-meta">${w.root ? `Root <b lang="ar" dir="rtl">${esc(spaced(w.root))}</b>` : "No root"}</span>`}
       ${w.lemma ? `<span class="wa-meta">Lemma <b lang="ar" dir="rtl">${esc(w.lemma)}</b></span>` : ""}</div>
     ${t.text && t.text !== w.word ? `<h3 class="${t.lang==="ar"||t.lang==="ur"?"w":""}" lang="${t.lang}" dir="${RTL[t.lang]?"rtl":"ltr"}" style="font-size:17px;margin-top:6px">${esc(t.text)}</h3>` : ""}
     ${sn.text ? `<div class="snip w" lang="${sn.lang}" dir="${RTL[sn.lang]?"rtl":"ltr"}">${esc(sn.text)}</div>` : ""}
@@ -2172,17 +2431,22 @@ function arTokHTML(s, a, text){
   return parts.map((t, i) => map.has(i) ? `<span class="wtok" role="button" tabindex="0" data-wtok="${s}:${a}:${map.get(i)}">${esc(t)}</span>` : esc(t)).join("");
 }
 function openWordCard(s, a, j){
+  if (M && M.min) {
+    FL = {type:"flash", s, a, j};
+    if (!FORMS) loadForms().then(() => { if (FL) drawWordCard(); }).catch(() => {});
+    drawWordCard(); return;
+  }
   M = {type:"flash", s, a, j};
   if (!FORMS) loadForms().then(() => { if (M && M.type === "flash") drawWordCard(); }).catch(() => {});
   drawWordCard();
 }
 function drawWordCard(){
-  const {s, a, j} = M, ws = FW[s] && FW[s][a-1];
-  if (!ws || !ws[j]) { closeModal(); return; }
+  const {s, a, j} = FL || M, ws = FW[s] && FW[s][a-1];
+  if (!ws || !ws[j]) { if (FL) closeFlash(); else closeModal(); return; }
   const w = ws[j], ds = w[2].map(decodeSeg);
   const stem = ds.find(o => o.role === "stem" && o.cls !== "p") || ds.find(o => o.role === "stem") || ds[0];
   const forms = formsCard(ds);
-  modal(`<div class="row"><span class="small muted">${s}:${a} · word ${j+1} of ${ws.length}</span><span class="spacer"></span>
+  (FL ? drawFlashLight : (h => modal(h, "flash")))(`<div class="row"><span class="small muted">${s}:${a} · word ${j+1} of ${ws.length}</span><span class="spacer"></span>
       <button type="button" class="btn ghost small" data-m="flash-go" data-v="-1" aria-label="Previous word" ${j===0?"disabled":""}>‹</button>
       <button type="button" class="btn ghost small" data-m="flash-go" data-v="1" aria-label="Next word" ${j===ws.length-1?"disabled":""}>›</button></div>
     <button type="button" class="flash-word" data-m="close" lang="ar" dir="rtl" title="Tap to return to the ayah">${ds.map(segHTML).join("")}</button>
@@ -2190,9 +2454,10 @@ function drawWordCard(){
     ${stem ? `<div class="gseg-d" style="text-align:center">${stem.en}${stem.enDesc ? " · " + esc(stem.enDesc) : ""}${stem.root ? ` · Root <span class="gar" lang="ar" dir="rtl">${esc(spaced(stem.root))}</span>` : ""}${stem.lem ? ` · Lemma <span class="gar" lang="ar" dir="rtl">${esc(stem.lem)}</span>` : ""}</div>` : ""}
     ${forms || (FORMS ? `<p class="small muted" style="margin:0;text-align:center">No forms table for this word (particles, pronouns and names have none).</p>` : `<p class="small muted" style="margin:0;text-align:center">Loading forms…</p>`)}
     ${FORMS ? `<p class="small muted" style="margin:0">● = occurs in the Qur’an. Forms: Arramooz dictionary (GPL-3) and the corpus; gaps filled by AI, not yet reviewed.</p>` : ""}
-    <div class="foot"><button type="button" class="btn" data-grammar="${s}:${a}">Full grammar</button><span class="spacer"></span><button type="button" class="btn primary" data-m="close">Back to the ayah</button></div>`, "flash");
+    <div class="foot"><button type="button" class="btn" data-grammar="${s}:${a}">Full grammar</button><span class="spacer"></span><button type="button" class="btn primary" data-m="close">Back to the ayah</button></div>`);
 }
 function openGrammar(k){
+  if (blockedByMin()) return;
   const [s,a] = k.split(":").map(Number);
   M = {type:"gram", s, a, sel:null, edit:false, tab:S.lang, ctl:[]};
   watchIrab(s);
@@ -2207,7 +2472,7 @@ function wordCard(w, i, links){
   const [tl, gl, segs] = w;
   const ds = segs.map(decodeSeg);
   ds.forEach((o, j) => { o.link = links[`${M.s}:${M.a}:${i+1}:${j+1}`]; });
-  const wa = S.words.find(x => x.s === M.s && x.a === M.a && x.w === i+1);
+  const wa = S.words.find(x => x.s === M.s && x.a === M.a && x.w <= i+1 && i+1 <= (x.w2 || x.w));
   return `<div class="gword${M.sel===i?" sel":""}" id="gw-${i}">
     ${wa ? `<button type="button" class="chip wa gw-link" data-article="w:${esc(wa.id)}">Word analysis →</button>` : ""}
     <div class="gw-top"><span class="gw-n">${i+1}</span>
@@ -2623,6 +2888,7 @@ function catName(id){ const c = catById(id); return c ? (c.name?.en || "") : "";
 function catChip(id){ const n = catName(id); return n ? `<button type="button" class="chip cat" data-ncat="${esc(id)}" title="Show everything in this category">${esc(n)}</button>` : ""; }
 const catUse = id => S.notes.filter(n => n.cat === id).length;
 function openCats(){
+  if (blockedByMin()) return;
   M = {type:"cats", list: JSON.parse(JSON.stringify(S.cats)), err:""};
   drawCats();
 }
@@ -2690,6 +2956,7 @@ function shareText(kind, it){
   ].filter((x, i, arr) => !(x === "" && arr[i-1] === "")).join("\n").trim();
 }
 function openShare(ref){
+  if (blockedByMin()) return;
   const [kind, id] = ref.split(":");
   const it = itemOf(kind, id);
   if (!it) return;
@@ -2713,10 +2980,71 @@ async function copyFrom(id, value, done){
 
 /* ---------- editors ---------- */
 let M = null; // modal state
-function closeModal(){ if (M?.ctl) M.ctl.forEach(c=>c.abort()); M = null; $("#modal-root").innerHTML = ""; }
-function modal(html, cls){ const sc = $(".backdrop")?.scrollTop || 0; $("#modal-root").innerHTML = `<div class="backdrop" id="backdrop"><div class="dialog ${cls||""}" role="dialog" aria-modal="true">${html}</div></div>`; if (cls) $(".backdrop").scrollTop = sc; }
+function closeModal(){ if (M?.ctl) M.ctl.forEach(c=>c.abort()); M = null; $("#modal-root").innerHTML = ""; updateDock(); }
+function modal(html, cls){ const sc = $("#modal-root .backdrop")?.scrollTop || 0; $("#modal-root").innerHTML = `<div class="backdrop${M && M.min ? " min" : ""}" id="backdrop"><div class="dialog ${cls||""}" role="dialog" aria-modal="true">${html}</div></div>`; if (cls) $("#modal-root .backdrop").scrollTop = sc; if (M && M.min) updateDock(); }
+
+/* ---------- minimize a window and keep studying ----------
+   A Q&A, commentary, note, lesson or word-analysis window can be hidden while the AI works (or while you think).
+   The window keeps its state and keeps running; a small bar at the bottom shows its progress and reopens it.
+   While one is minimized you can read, scroll, search, change surah and tap words (the word card opens on its own
+   layer). Opening another editor window is blocked until the minimized one is reopened and finished or closed. */
+let FL = null;   // word card shown while a window is minimized
+const MIN_TYPES = ["qa", "cm", "note", "lesson", "word"];
+function minLabel(m){
+  if (m.type === "qa") return `Q&A · ${m.s}:${m.a}`;
+  if (m.type === "cm") return `Commentary · ${m.s}:${m.a}`;
+  if (m.type === "word") return "Word analysis" + (m.it && m.it.word ? " · " + m.it.word : "");
+  return m.type === "lesson" ? "Lesson" : "Note";
+}
+const minBusy = m => !!(m && (m.busy || (m.use && m.use.busy)));
+function updateDock(){
+  const r = $("#dock-root"); if (!r) return;
+  const m = M && M.min ? M : null;
+  if (!m) { if (r.innerHTML) { r.innerHTML = ""; r.dataset.h = ""; } return; }
+  const busy = minBusy(m);
+  if (busy) m.minWork = true;
+  let cls = "dock", sub;
+  if (busy) { cls += " busy"; sub = "Working… keep reading, it continues in the background"; }
+  else if (m.minWork) { cls += m.err ? " err" : " ready"; sub = m.err ? "Stopped. Tap Open to see why" : "Ready. Tap Open to read it"; }
+  else sub = "Minimized. Your work is kept";
+  const html = `<div class="${cls}" role="status"><span class="dot"></span><div class="dlabel"><b>${esc(minLabel(m))}</b><span>${esc(sub)}</span></div><button type="button" class="btn primary small" data-dock="open">Open</button></div>`;
+  if (r.dataset.h !== html) { r.innerHTML = html; r.dataset.h = html; }
+  if (!busy && m.minWork && !m.minToasted) { m.minToasted = true; toast(m.err ? "A minimized window stopped. Tap Open." : minLabel(m) + " is ready. Tap Open."); }
+}
+function minimizeModal(){
+  if (!M || M.min || !MIN_TYPES.includes(M.type)) return;
+  if (M.type === "qa") captureQA(); else if (M.type === "cm") captureCM(); else captureFields();
+  M.minScroll = $("#modal-root .backdrop")?.scrollTop || 0;
+  M.min = true; M.minWork = false; M.minToasted = false;
+  const b = $("#modal-root .backdrop"); if (b) b.classList.add("min");
+  updateDock();
+}
+function restoreModal(){
+  if (!M || !M.min) return;
+  closeFlash();
+  if (M.type === "qa") captureQA(); else if (M.type === "cm") captureCM(); else captureFields();
+  M.min = false; M.minWork = false; M.minToasted = false;
+  if (M.type === "qa") drawQA(); else if (M.type === "cm") drawCM(); else drawWriteEditor();
+  const b = $("#modal-root .backdrop"); if (b) b.scrollTop = M.minScroll || 0;
+  updateDock();
+}
+function blockedByMin(){
+  if (!M || !M.min) return false;
+  toast("A window is minimized. Open it from the bar below and finish or close it first.");
+  const d = $(".dock"); if (d && d.animate) d.animate([{transform:"scale(1)"},{transform:"scale(1.05)"},{transform:"scale(1)"}], {duration: 320});
+  return true;
+}
+function closeFlash(){ FL = null; const r = $("#flash-root"); if (r) r.innerHTML = ""; }
+function drawFlashLight(html){
+  const r = $("#flash-root"); if (!r) return;
+  html = html.replace(/data-m="flash-go"/g, 'data-fl="go"').replace(/data-m="close"/g, 'data-fl="close"')
+    .replace(/<button type="button" class="btn" data-grammar="[^"]*">Full grammar<\/button>/, "");
+  r.innerHTML = `<div class="backdrop" id="fl-backdrop" style="z-index:48"><div class="dialog flash" role="dialog" aria-modal="true">${html}</div></div>`;
+}
+setInterval(() => { if (M && M.min) updateDock(); }, 700);
 
 function openTrEditor(k){
+  if (blockedByMin()) return;
   const [s,a] = k.split(":").map(Number);
   const v = surahOf(s).v[a-1], rev = S.tr[k];
   M = {type:"tr", s, a, l: S.trLang};
@@ -2738,9 +3066,11 @@ function openTrEditor(k){
 function blankLang(){ return {en:"",bn:"",ar:"",ur:""}; }
 function draftKey(){ return "aba.draft." + (M.it.id || ("new-" + M.type)); }
 function openWriteEditor(kind, existing, preset){
+  if (blockedByMin()) return;
   // kind: "explanation" (a note) | "lesson" | "word"
   const it = existing ? JSON.parse(JSON.stringify(existing)) : {kind: (kind==="lesson"||kind==="word")?undefined:"explanation", title:blankLang(), summary:blankLang(), body:blankLang(), tags:[], src: S.lang, ai:{}};
   it.title = Object.assign(blankLang(), it.title); it.summary = Object.assign(blankLang(), it.summary); it.body = Object.assign(blankLang(), it.body); it.ai = it.ai || {};
+  it.alsoText = alsoLabel(it.also); delete it.also;
   M = {type: kind==="lesson" ? "lesson" : kind==="word" ? "word" : "note", it, tab: it.src || "en", existing: !!existing, ctl: [], preview:false, dirty:false};
   if (M.type === "note" || M.type === "word") M.ref = existing ? `${it.s}:${it.a}` : (preset || "");
   else M.ref = existing ? (it.ranges||[]).map(rangeLabel).join(", ") : (preset || "");
@@ -2768,24 +3098,47 @@ let CONC = null; const GD = {};
 function loadConc(){ if (!CONC) CONC = fetch("conc.json").then(r => { if (!r.ok) throw 0; return r.json(); }).catch(e => { CONC = null; throw e; }); return CONC; }
 const decCode = c => [Math.floor(c/1e6), Math.floor(c/1000) % 1000, c % 1000];
 const stripHarakat = t => t.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, "").replace(/[ٱأإآ]/g, "ا");
-function usageKey(){ const it = M.it; return (M.useScope || "lemma") + "|" + (M.useScope === "root" ? it.root : it.lemma); }
+const usable = it => !!(it && (it.lemma || (isPhrase(it) && (it.parts || []).some(x => x.lemma))));
+function usageKey(){ const it = M.it, sc = M.useScope || "lemma"; return sc + "|" + (isPhrase(it) ? it.parts.map(x => (sc === "root" ? x.root || x.lemma : x.lemma) || "*").join("+") : (sc === "root" ? it.root : it.lemma)); }
+function useWhat(it){ return isPhrase(it) ? `the phrase «${it.word}» (${it.w2 - it.w + 1} words) in ${it.s}:${it.a} (${it.parts.map(x => `${x.word}${x.lemma ? ` [lemma ${x.lemma}${x.root ? ", root " + spaced(x.root) : ""}${x.pos ? ", " + x.pos : ""}]` : ""}`).join("; ")})` : `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`; }
+function useScopeTxt(U, it){
+  if (isPhrase(it)) return U.scope === "root" ? `every place in the Qur'an where words from the same roots follow one another in this order (${it.parts.map(x => x.root ? spaced(x.root) : "any word").join(" + ")})` : `every place in the Qur'an where words with the same lemmas follow one another in this order (${it.parts.map(x => x.lemma || "any word").join(" + ")})`;
+  return U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`;
+}
 async function usagePrepare(){
   const it = M.it, k = usageKey();
-  if (!it.lemma || (M.use && M.use.key === k)) return;
+  if (!usable(it) || (M.use && M.use.key === k)) return;
   const U = M.use = {key: k, scope: M.useScope || "lemma", state: "loading", rows: [], form: null, shown: 40, loaded: 0, need: 0};
   try {
     const C = await loadConc();
-    const lemmas = U.scope === "root" && it.root ? (C.R[it.root] || [it.lemma]) : [it.lemma];
-    const codes = [].concat(...lemmas.map(l => C.L[l] || [])).sort((x, y) => x - y);
+    let codes, n = 1;
+    if (isPhrase(it)) {
+      // a phrase matches where the words of the Qur'an follow one another with the same lemmas (or roots), in this order
+      const ps = it.parts; n = ps.length;
+      const sets = ps.map(x => {
+        const lems = U.scope === "root" && x.root ? (C.R[x.root] || [x.lemma]) : (x.lemma ? [x.lemma] : null);
+        if (!lems) return null;
+        const st = new Set(); for (const l of lems) for (const c of (C.L[l] || [])) st.add(c); return st;
+      });
+      let seed = -1; sets.forEach((st, i) => { if (st && (seed < 0 || st.size < sets[seed].size)) seed = i; });
+      codes = [];
+      for (const c of sets[seed]) { const st0 = c - seed; if (st0 % 1000 < 1) continue; if (sets.every((st, i) => !st || st.has(st0 + i))) codes.push(st0); }
+      codes.sort((x, y) => x - y);
+    } else {
+      const lemmas = U.scope === "root" && it.root ? (C.R[it.root] || [it.lemma]) : [it.lemma];
+      codes = [].concat(...lemmas.map(l => C.L[l] || [])).sort((x, y) => x - y);
+    }
     const surahs = [...new Set(codes.map(c => decCode(c)[0]))];
     U.need = surahs.length;
     await Promise.all(surahs.map(sn => loadGrammar(sn).then(d => { GD[sn] = d; U.loaded++; if (M && M.use === U && U.loaded % 10 === 0) redrawUsage(); })));
     if (!M || M.use !== U) return;
     U.rows = codes.map(c => {
-      const [s0, a0, w0] = decCode(c), wd = GD[s0][a0-1][w0-1];
-      const surf = wd[2].map(x => x[0]).join("");
-      return {s: s0, a: a0, w: w0, surf, form: stripHarakat(surf), gloss: wd[1], mk: surahOf(s0).t === "meccan"};
-    });
+      const [s0, a0, w0] = decCode(c), ws = [];
+      for (let q = 0; q < n; q++) ws.push(GD[s0][a0-1][w0-1+q]);
+      if (ws.some(x => !x)) return null;
+      const surf = ws.map(wd => wd[2].map(x => x[0]).join("")).join(" ");
+      return {s: s0, a: a0, w: w0, w2: w0 + n - 1, surf, form: stripHarakat(surf), gloss: ws.map(wd => wd[1]).join(" "), mk: surahOf(s0).t === "meccan"};
+    }).filter(Boolean);
     const f = {}; U.rows.forEach(r => f[r.form] = (f[r.form] || 0) + 1);
     U.forms = Object.entries(f).sort((x, y) => y[1] - x[1]);
     U.state = "ok";
@@ -2793,10 +3146,11 @@ async function usagePrepare(){
   redrawUsage();
 }
 function redrawUsage(){ if (M && M.type === "word") { captureFields(); drawWriteEditor(); } }
-function markWord(s, a, w){
+function markWord(s, a, w, w2){
+  w2 = w2 || w;
   const toks = arText(s, a).split(/\s+/), wc = (GD[s] && GD[s][a-1]) ? GD[s][a-1].length : 0;
   const isWordTok = t => t && !/^[\u06D6-\u06ED\u06DE\u06E9]+$/.test(t);
-  let n = 0; const out = toks.map(t => { if (!isWordTok(t)) return esc(t); n++; return n === w ? `<mark>${esc(t)}</mark>` : esc(t); });
+  let n = 0; const out = toks.map(t => { if (!isWordTok(t)) return esc(t); n++; return n >= w && n <= w2 ? `<mark>${esc(t)}</mark>` : esc(t); });
   if (n === wc) return out.join(" ");
   // The script's word division differs from the corpus here: find the word by its letters instead.
   const sk = t => t.replace(/[\u0610-\u061A\u064B-\u065F\u0670\u06D6-\u06ED\u0640\u08D3-\u08FFاٱأإآءىئؤۦيیوۥ]/g, "").replace(/ک/g, "ك").replace(/[ۃة]/g, "ه").replace(/[^\u0621-\u064A\u0671-\u06D3]/g, "");
@@ -2804,13 +3158,13 @@ function markWord(s, a, w){
   const hits = toks.map((t, i) => sk(t) === want ? i : -1).filter(i => i >= 0);
   if (!hits.length || !want) return esc(toks.join(" "));
   const best = hits.reduce((x, y) => Math.abs(y - (w-1)) < Math.abs(x - (w-1)) ? y : x);
-  return toks.map((t, i) => i === best ? `<mark>${esc(t)}</mark>` : esc(t)).join(" ");
+  return toks.map((t, i) => i >= best && i <= best + (w2 - w) ? `<mark>${esc(t)}</mark>` : esc(t)).join(" ");
 }
 function usagePanel(){
-  const it = M.it;
-  if (!it.lemma) return "";
+  const it = M.it, ph = isPhrase(it);
+  if (!usable(it)) return "";
   const scope = M.useScope || "lemma";
-  const head = `<button type="button" class="btn small" data-m="use-open" aria-expanded="${!!M.useOpen}">${M.useOpen ? "Hide" : "Show"} where this word occurs in the Qur'an</button>`;
+  const head = `<button type="button" class="btn small" data-m="use-open" aria-expanded="${!!M.useOpen}">${M.useOpen ? "Hide" : "Show"} where this ${ph ? "phrase" : "word"} occurs in the Qur'an</button>`;
   if (!M.useOpen) return `<div style="margin-top:8px">${head}</div>`;
   const U = M.use;
   let body;
@@ -2821,22 +3175,22 @@ function usagePanel(){
     const ns = new Set(rows.map(r => r.s)).size, mk = rows.filter(r => r.mk).length;
     body = `<div class="ustats">${rows.length.toLocaleString()} occurrence${rows.length===1?"":"s"} in ${ns} surah${ns===1?"":"s"} · ${mk} in Makki surahs, ${rows.length - mk} in Madani${U.form ? " · filtered to one form" : ""}</div>
       ${U.forms.length > 1 ? `<div class="uforms" aria-label="Forms">${U.forms.slice(0, 24).map(([f, c]) => `<button type="button" class="uform" lang="ar" dir="rtl" data-m="use-form" data-v="${esc(f)}" aria-pressed="${U.form === f}">${esc(f)}<small>×${c}</small></button>`).join("")}${U.forms.length > 24 ? `<span class="small muted">+${U.forms.length - 24} more forms</span>` : ""}</div>` : ""}
-      ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="use-ai" ${U.busy||M.busy?"disabled":""}>Analyse usage with AI</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}
+      ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="use-ai" ${U.busy||M.busy?"disabled":""}>Analyse usage with AI</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}
         <span class="small muted">${esc(U.status || `Groups ${U.form ? "these" : "all"} ${rows.length.toLocaleString()} occurrences by sense and context, and adds the result to the ${LNAME_EN[it.src]} text for you to review.${rows.length > 1200 ? " That is too many for one analysis: choose one form above first." : ""}`)}</span></div>
-        <div class="uask"><label class="flabel" for="use-q">Ask something specific about this word's usage</label>
+        <div class="uask"><label class="flabel" for="use-q">Ask something specific about this ${ph ? "phrase" : "word"}'s usage</label>
           <textarea id="use-q" rows="2" placeholder="e.g. Where is it used for prophets and where for ordinary people? Is it ever used in a negative sense? Write a paragraph comparing its use in 2:124 and 14:40.">${esc(U.q || "")}</textarea>
-          <div class="row"><button type="button" class="btn" data-m="use-ask" ${U.busy||M.busy?"disabled":""}>Ask</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}<span class="small muted" id="use-ask-status">${esc(U.askStatus || `Answers from the ${rows.length.toLocaleString()} occurrences shown${(it.body[it.src]||"").trim() ? ", with your current text as context" : ""}.`)}</span></div>
+          <div class="row"><button type="button" class="btn" data-m="use-ask" ${U.busy||M.busy?"disabled":""}>Ask</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}<span class="small muted" id="use-ask-status">${esc(U.askStatus || `Answers from the ${rows.length.toLocaleString()} occurrences shown${(it.body[it.src]||"").trim() ? ", with your current text as context" : ""}.`)}</span></div>
           ${U.answer != null ? `<div class="uans prose w" lang="${it.src}" dir="${RTL[it.src]?"rtl":"ltr"}" id="use-ans">${renderDoc(U.answer, it.src, "ua").html}</div>
             ${!U.busy ? `<div class="row"><button type="button" class="btn primary small" data-m="use-add">Add to the ${LNAME_EN[it.src]} text</button><button type="button" class="btn small" data-m="use-discard">Discard</button></div>` : ""}` : ""}
         </div>` : ""}
       <div class="ulist">${rows.slice(0, U.shown).map(r => `<div class="urow${r.s===it.s&&r.a===it.a?" cur":""}"><span class="uref">${r.s}:${r.a}<em>${r.mk?"Makki":"Madani"}${r.s===it.s&&r.a===it.a?" · this ayah":""}</em></span>
-          <p class="uar" lang="ar" dir="rtl">${markWord(r.s, r.a, r.w)}</p>
+          <p class="uar" lang="ar" dir="rtl">${markWord(r.s, r.a, r.w, r.w2)}</p>
           <span class="ugloss"><b lang="ar" class="gar">${esc(r.surf)}</b> · ${esc(r.gloss)}</span>
           <p class="tr utr" ${trAttrs()}>${esc(trText(r.s, r.a))}</p></div>`).join("")}
         ${rows.length > U.shown ? `<p style="margin:8px 0"><button type="button" class="btn small" data-m="use-more">Show more (${(rows.length - U.shown).toLocaleString()} left)</button></p>` : ""}</div>`;
   }
   return `<div class="usage" style="margin-top:8px"><div class="uhead">${head}
-    <div class="seg" role="group" aria-label="Search by"><button type="button" data-m="use-scope" data-v="lemma" aria-pressed="${scope==="lemma"}">Same lemma <span lang="ar" class="gar">${esc(it.lemma)}</span></button>${it.root ? `<button type="button" data-m="use-scope" data-v="root" aria-pressed="${scope==="root"}">Whole root <span lang="ar" class="gar">${esc(spaced(it.root))}</span></button>` : ""}</div></div>
+    <div class="seg" role="group" aria-label="Search by"><button type="button" data-m="use-scope" data-v="lemma" aria-pressed="${scope==="lemma"}">${ph ? "Same lemmas" : "Same lemma"} <span lang="ar" class="gar">${esc(ph ? it.parts.map(x => x.lemma || "…").join(" + ") : it.lemma)}</span></button>${(ph ? it.parts.some(x => x.root) : it.root) ? `<button type="button" data-m="use-scope" data-v="root" aria-pressed="${scope==="root"}">${ph ? "Same roots" : "Whole root"} <span lang="ar" class="gar">${esc(ph ? it.parts.map(x => x.root ? spaced(x.root) : "…").join(" + ") : spaced(it.root))}</span></button>` : ""}</div></div>
     ${body}</div>`;
 }
 async function usageAI(){
@@ -2850,8 +3204,8 @@ async function usageAI(){
   const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
   const ns = new Set(rows.map(r => r.s)).size, mk = rows.filter(r => r.mk).length;
   const forms = {}; rows.forEach(r => forms[r.form] = (forms[r.form]||0) + 1);
-  const what = `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`;
-  const scopeTxt = U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`;
+  const what = useWhat(it);
+  const scopeTxt = useScopeTxt(U, it);
   const stats = `${rows.length} places in ${ns} surahs; ${mk} in Makki surahs and ${rows.length - mk} in Madani surahs.${U.form ? ` (Only the form ${U.form} is included.)` : ""} Forms and counts: ${Object.entries(forms).sort((x,y)=>y[1]-x[1]).map(([f,c]) => `${f} ×${c}`).join(", ")}.`;
   const task = `Write a section for a word analysis, in ${guide[L]}, beginning with the heading "## ${L==="en"?"Usage across the Qur'an":L==="bn"?"কুরআনে শব্দটির ব্যবহার":L==="ar"?"استعمال الكلمة في القرآن":"قرآن میں لفظ کا استعمال"}".
 1. A short overview: how often and where the word occurs, and the forms it takes.
@@ -2933,8 +3287,8 @@ async function usageAsk(){
   if (tl !== "en") await loadTrx(tl);
   const guide = {en:"English, in a clear scholarly register", bn:"Bangla (Bengali script), in the register of Bangladeshi Islamic literature", ar:"Modern Standard Arabic, in a classical scholarly register, fully vowelled with all harakat (tashkeel) on every word", ur:"Urdu, in the register of standard Urdu Islamic scholarly prose"};
   const line = r => `${r.s}:${r.a} [${r.mk?"Makki":"Madani"}] word: ${r.surf} (gloss: ${r.gloss}) | ayah: ${S.Q[r.s-1].v[r.a-1][0]} | ${LNAME_EN[tl]} translation: ${trText(r.s, r.a, tl)}`;
-  const what = `the word «${it.word}» in ${it.s}:${it.a} (lemma ${it.lemma}${it.root ? `, root ${spaced(it.root)}` : ""}${it.pos ? `, ${it.pos}` : ""})`;
-  const scopeTxt = (U.scope === "root" ? `every word from the root ${spaced(it.root)}` : `every occurrence of the lemma ${it.lemma}`) + (U.form ? ` (only the form ${U.form})` : "");
+  const what = useWhat(it);
+  const scopeTxt = useScopeTxt(U, it) + (U.form ? ` (only the form ${U.form})` : "");
   const draft = (it.body[L] || "").trim();
   const ctxDraft = draft ? `\n\nThe researcher's current text of the analysis, for context (do not repeat it):\n"""\n${draft.length > 20000 ? draft.slice(0, 20000) + "\n[…]" : draft}\n"""` : "";
   const rules = `Answer the request in ${guide[L]}.
@@ -3007,7 +3361,7 @@ function drawWriteEditor(){
   const others = LANGS.filter(l=>l!==it.src);
   const L = M.tab, dir = RTL[L] ? "rtl" : "ltr";
   const doc = renderDoc(it.body[L], L, "pv");
-  modal(`<div class="row"><h2>${heading}</h2><span class="spacer"></span><span class="small muted" id="w-count">${doc.words.toLocaleString()} words · ${readMins(doc.words)} min read</span></div>
+  modal(`<div class="row"><h2>${heading}</h2><span class="spacer"></span><span class="small muted" id="w-count">${doc.words.toLocaleString()} words · ${readMins(doc.words)} min read</span><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button></div>
     ${M.draft ? `<div class="confirm"><span>You have unsaved writing from ${new Date(M.draft.savedAt).toLocaleString()}.</span><span class="spacer"></span><button type="button" class="btn" data-m="draft-discard">Discard it</button><button type="button" class="btn primary" data-m="draft-restore">Restore it</button></div>` : ""}
     ${M.type === "note" ? `<div class="grid2">
       <div class="field"><label for="w-cat">Category (required)</label>
@@ -3018,12 +3372,13 @@ function drawWriteEditor(){
       <div class="field"><label for="w-ref">${isLesson ? "Ayahs covered (e.g. 2:153-157, 2:177)" : "Ayah (e.g. 2:255)"}</label><input type="text" id="w-ref" value="${esc(M.ref)}" autocomplete="off"></div>
       <div class="field"><label for="w-tags">Tags, separated by commas</label><input type="text" id="w-tags" value="${esc((it.tags||[]).join(", "))}" placeholder="sabr, salah, fiqh" autocomplete="off"></div>
     </div>
+    ${!isLesson ? `<div class="field"><label for="w-also">Also tag these ayahs <span class="muted" style="font-weight:400">(optional, e.g. 2:23, 10:38, 11:13-14; the ${isWord ? "word analysis" : "note"} will also appear under each of them)</span></label><input type="text" id="w-also" value="${esc(it.alsoText || "")}" autocomplete="off"></div>` : ""}
     ${s && !isWord ? `<p class="ref-ar" lang="ar" dir="rtl">${esc(arText(s,a))}</p>` : ""}
-    ${isWord ? `<div class="field"><span class="flabel">Word (required): choose the word in the ayah</span>
+    ${isWord ? `<div class="field"><span class="flabel">Word or phrase (required): tap a word; to analyse a phrase, tap a second word and everything between them is selected</span>
       ${!s ? `<p class="small muted" style="margin:0">Enter the ayah first.</p>`
         : !M.wordList?.words ? `<p class="small muted" style="margin:0">Loading the words of ${s}:${a}…</p>`
-        : `<div class="gstrip" lang="ar" dir="rtl">${M.wordList.words.map((w, i) => `<button type="button" class="gchip" data-m="pick-word" data-v="${i+1}" aria-pressed="${it.w === i+1 && it.s === s && it.a === a}">${esc(w[2].map(x=>x[0]).join(""))}</button>`).join("")}</div>
-           ${it.w && it.s === s && it.a === a ? `<p class="small" style="margin:4px 0 0">Selected: <b lang="ar" class="gar" style="font-size:18px">${esc(it.word)}</b>${it.root?` · root <b lang="ar" class="gar">${esc(spaced(it.root))}</b>`:""}${it.lemma?` · lemma <b lang="ar" class="gar">${esc(it.lemma)}</b>`:""}${it.pos?` · ${esc(it.pos)}`:""}</p>${usagePanel()}` : ""}`}
+        : `<div class="gstrip" lang="ar" dir="rtl">${M.wordList.words.map((w, i) => `<button type="button" class="gchip" data-m="pick-word" data-v="${i+1}" aria-pressed="${!!it.w && it.s === s && it.a === a && i+1 >= it.w && i+1 <= (it.w2 || it.w)}">${esc(w[2].map(x=>x[0]).join(""))}</button>`).join("")}</div>
+           ${it.w && it.s === s && it.a === a ? `<p class="small" style="margin:4px 0 0">${isPhrase(it) ? `Selected phrase (${it.w2 - it.w + 1} words): ` : "Selected: "}<b lang="ar" class="gar" style="font-size:18px">${esc(it.word)}</b>${isPhrase(it) ? `</p><p class="small" style="margin:2px 0 0">${phraseMeta(it)}` : ""}${it.root?` · root <b lang="ar" class="gar">${esc(spaced(it.root))}</b>`:""}${it.lemma?` · lemma <b lang="ar" class="gar">${esc(it.lemma)}</b>`:""}${it.pos?` · ${esc(it.pos)}`:""}</p>${usagePanel()}` : ""}`}
     </div>` : ""}
     <div class="row"><label class="flabel" for="w-src">I am writing in</label>
       <select id="w-src" style="width:auto">${LANGS.map(l=>`<option value="${l}" ${it.src===l?"selected":""}>${LNAME_EN[l]}</option>`).join("")}</select></div>
@@ -3048,7 +3403,7 @@ function drawWriteEditor(){
       const AN = (M.aiNotes ||= {}), SC = M.aiScope || "all", scName = SC === "all" ? "all languages" : LNAME_EN[SC];
       return `<div class="aibox"><button type="button" class="btn" data-m="ai" ${M.busy?"disabled":""}>Draft ${others.map(l=>LNAME_EN[l]).join(", ")} from ${LNAME_EN[it.src]} with AI</button>
       ${["bn","ar","ur"].map(l=>`<button type="button" class="btn" data-m="ai-one" data-v="${l}" ${M.busy||l===it.src?"disabled":""} title="${l===it.src?"This is the language you are writing in":`Draft only the ${LNAME_EN[l]} version`}">Draft in ${LNAME_EN[l]}</button>`).join("")}
-      ${M.busy ? `<button type="button" class="btn" data-m="ai-stop">Stop</button>` : ""}
+      ${M.busy ? `<button type="button" class="btn" data-m="ai-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}
       <span class="small muted" id="ai-status">${esc(M.aiStatus || "Drafts fill the tabs for you to review before saving. Long articles take a few minutes.")}</span></div>
     <div class="aibox" style="flex-direction:column;align-items:stretch">
       <div class="row"><label class="flabel" for="ai-notes">Your instructions to the AI</label><span class="spacer"></span>
@@ -3062,7 +3417,7 @@ function drawWriteEditor(){
     </div>`; })() : ""}
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err||"")}</div>
     <div class="foot">
-      ${M.existing ? `<button type="button" class="btn danger" data-m="delete">Delete</button>` : ""}
+      ${M.existing ? `<button type="button" class="btn danger" data-m="delete">Delete</button><button type="button" class="btn" data-m="move">Move to…</button>` : ""}
       <span class="spacer"></span>
       <button type="button" class="btn" data-m="close">Cancel</button>
       <button type="button" class="btn primary" data-m="save" ${M.busy?"disabled":""}>Save</button>
@@ -3072,6 +3427,7 @@ function captureFields(){
   if (!M || (M.type!=="note" && M.type!=="lesson" && M.type!=="word")) return;
   const t = $("#w-title"), b = $("#w-body"), sm = $("#w-sum"), r = $("#w-ref"), g = $("#w-tags"), src = $("#w-src");
   const it = M.it, L = M.tab;
+  const alo = $("#w-also"); if (alo) it.alsoText = alo.value;
   if (r) M.ref = r.value;
   if (g) it.tags = g.value.split(/[,،]/).map(x=>x.trim().replace(/^#/,"")).filter(Boolean);
   if (src) it.src = src.value;
@@ -3392,7 +3748,9 @@ async function saveWrite(){
   const refs = parseRefs(M.ref || "");
   if (!refs) { M.err = isLesson ? "List the ayahs as surah:ayah or ranges, like 2:153-157, 2:177." : "Enter one ayah as surah:ayah, like 2:255."; drawWriteEditor(); return; }
   if (!isLesson && (refs.length !== 1 || refs[0].from !== refs[0].to)) { M.err = isWord ? "A word analysis belongs to one ayah." : "A note belongs to one ayah. Use a lesson for a group of ayahs."; drawWriteEditor(); return; }
-  if (isWord && !(it.w && it.s === refs[0].s && it.a === refs[0].from)) { M.err = "Choose the word this analysis is about."; drawWriteEditor(); return; }
+  const alsoR = (!isLesson && (it.alsoText || "").trim()) ? parseRefs(it.alsoText) : [];
+  if (alsoR === null) { M.err = "The “also tag” ayahs aren't valid. Write them like 2:23, 10:38 or 11:13-14."; drawWriteEditor(); return; }
+  if (isWord && !(it.w && it.s === refs[0].s && it.a === refs[0].from)) { M.err = "Choose the word or phrase this analysis is about."; drawWriteEditor(); return; }
   if (!LANGS.some(l => it.title[l].trim() || it.body[l].trim())) { M.err = "Write a title or text in at least one language."; drawWriteEditor(); return; }
   if (M.type === "note") {
     if (it.cat === "__new") {
@@ -3411,8 +3769,9 @@ async function saveWrite(){
   const now = Date.now();
   const doc = {title: it.title, summary: it.summary, body: it.body, tags: [...new Set(it.tags)], src: it.src, ai: it.ai, updatedAt: now, createdAt: it.createdAt || now};
   if (isLesson) doc.ranges = refs;
-  else if (isWord) Object.assign(doc, {s: refs[0].s, a: refs[0].from, w: it.w, word: it.word, root: it.root || "", lemma: it.lemma || "", pos: it.pos || ""});
+  else if (isWord) { Object.assign(doc, {s: refs[0].s, a: refs[0].from, w: it.w, word: it.word, root: it.root || "", lemma: it.lemma || "", pos: it.pos || ""}); if (isPhrase(it)) { doc.w2 = it.w2; doc.parts = it.parts || []; } }
   else { doc.kind = it.kind || "explanation"; doc.s = refs[0].s; doc.a = refs[0].from; doc.cat = it.cat; }
+  if (alsoR && alsoR.length) doc.also = alsoR;
   const col = S.db.collection(isLesson ? "lessons" : isWord ? "words" : "notes");
   const ref = it.id ? col.doc(it.id) : col.doc(Date.now().toString(36) + Math.random().toString(36).slice(2, 7));
   if (it._partial) { M.err = "The later parts of this long write-up are still loading. Wait a moment, then save again."; drawWriteEditor(); return; }
@@ -3487,16 +3846,334 @@ function dbErr(e){
   return "Saving failed. Check your connection and try again.";
 }
 
+
+/* ---------- the surah name stays visible while you read ---------- */
+let sbRaf = 0;
+function updateSurahBar(){
+  const b = $("#surahbar"); if (!b) return;
+  if (S.view !== "surah" || !S.Q || S.focus) { b.hidden = true; return; }
+  const wrap = document.querySelector("header.top .wrap"), head = document.querySelector(".shead");
+  const edge = wrap ? wrap.getBoundingClientRect().bottom : 0;
+  const away = !head || head.getBoundingClientRect().bottom < edge + 2;
+  if (!away) { b.hidden = true; return; }
+  const su = surahOf(S.surah); if (!su) { b.hidden = true; return; }
+  let cur = 1; const list = document.querySelectorAll("article.ayah");
+  const line = edge + 46;
+  for (let i = 0; i < list.length; i++) { if (list[i].getBoundingClientRect().top <= line) cur = +list[i].id.split("-")[2] || cur; else break; }
+  const html = `<b>${su.n}. ${esc(su.tl)}</b> <span class="sb-ar" lang="ar" dir="rtl">${esc(su.ar)}</span> <span class="sb-pos">Ayah ${cur} of ${su.v.length}</span>`;
+  const n = $("#sb-name"); if (n && n.dataset.h !== html) { n.innerHTML = html; n.dataset.h = html; n.style.cssText = "flex:1;display:flex;align-items:center;gap:10px;min-width:0"; }
+  b.hidden = false;
+}
+window.addEventListener("scroll", () => { if (sbRaf) return; sbRaf = requestAnimationFrame(() => { sbRaf = 0; updateSurahBar(); }); }, {passive: true});
+window.addEventListener("resize", () => updateSurahBar());
+
+/* ---------- search: an ayah (2:4, baqarah 255), a topic or concept, a word, a root, or your own write-ups ---------- */
+S.gq = ""; S.gmore = 30; S.gai = null;
+let gSearchTimer = 0;
+/* Common themes. k = words a reader may type; w = stems looked for in the English translation (prefix match; a stem
+   ending in ! must match the whole word). Meant to catch the vocabulary of Saheeh International. */
+const CONCEPTS = [
+  {t:"Patience (ṣabr)", k:["patience","patient","sabr","sabar","perseverance","steadfastness"], w:["patien","persever","steadfast","endur","constan"]},
+  {t:"Gratitude (shukr)", k:["gratitude","gratefulness","thankfulness","shukr","grateful","thanks"], w:["grateful","thank","gratitude","ungrateful"]},
+  {t:"Prayer (ṣalāh)", k:["prayer","prayers","salah","salat","namaz","pray"], w:["prayer","pray","prostrat","salah"]},
+  {t:"Fasting (ṣawm)", k:["fasting","sawm","siyam","ramadan","roza"], w:["fast!","fasting","ramadan","fasts!"]},
+  {t:"Charity (zakāh, ṣadaqah)", k:["charity","zakah","zakat","sadaqah","alms","infaq","spending"], w:["zakah","charit","alms","spend","needy","the poor"]},
+  {t:"Pilgrimage (ḥajj)", k:["hajj","pilgrimage","umrah","kaaba","kabah"], w:["pilgrimage","hajj","umrah","sacred house","ka'bah","safa","arafat"]},
+  {t:"Repentance (tawbah)", k:["repentance","tawbah","tawba","repent"], w:["repent","turn back","turns in forgiveness","accepting of repentance"]},
+  {t:"Forgiveness (maghfirah)", k:["forgiveness","maghfirah","forgive","pardon"], w:["forgiv","pardon"]},
+  {t:"Mercy (raḥmah)", k:["mercy","rahmah","rahma","compassion","merciful"], w:["mercy","merciful","compassion"]},
+  {t:"Trust in God (tawakkul)", k:["tawakkul","trust","reliance","trust in god","trust in allah"], w:["trust","rely","reliance","depend"]},
+  {t:"Faith (īmān)", k:["faith","iman","belief","believe","believers"], w:["believ","faith"]},
+  {t:"Disbelief (kufr)", k:["disbelief","kufr","unbelief","kafir","disbelievers","denial"], w:["disbelie","deny","denied","reject"]},
+  {t:"Hypocrisy (nifāq)", k:["hypocrisy","nifaq","hypocrite","hypocrites","munafiq"], w:["hypocri"]},
+  {t:"Justice (ʿadl)", k:["justice","adl","fairness","equity"], w:["justice","justly","equit","fair"]},
+  {t:"Wrongdoing and oppression (ẓulm)", k:["oppression","zulm","injustice","wrongdoing","wrongdoers","tyranny"], w:["oppress","wrongdo","unjust","injustice","tyran","wrong!"]},
+  {t:"Parents", k:["parents","mother","father","birr"], w:["parents","mother","father"]},
+  {t:"Marriage and divorce", k:["marriage","nikah","wife","husband","spouse","divorce","talaq"], w:["marr","wife","wives","husband","spouse","divorc"]},
+  {t:"Orphans", k:["orphan","orphans","yatim"], w:["orphan"]},
+  {t:"Usury (ribā)", k:["usury","riba","interest"], w:["usury","riba"]},
+  {t:"Wealth", k:["wealth","money","riches","property"], w:["wealth","riches","propert"]},
+  {t:"Death and the Hereafter", k:["death","afterlife","hereafter","akhirah","akhira","resurrection","judgment","qiyamah"], w:["death","die!","dies!","hereafter","resurrect","judgment","reckoning","last day"]},
+  {t:"Paradise (jannah)", k:["paradise","jannah","heaven","gardens"], w:["paradise","gardens","jannah"]},
+  {t:"Hell and punishment", k:["hell","hellfire","jahannam","fire","punishment","torment"], w:["hellfire","hell!","jahannam","fire","punishment","torment"]},
+  {t:"Angels", k:["angels","angel","malaikah"], w:["angel","gabriel","michael"]},
+  {t:"Satan and the jinn", k:["satan","shaytan","iblis","jinn"], w:["satan","iblis","jinn","devil"]},
+  {t:"Creation and the signs in nature", k:["creation","universe","nature","cosmos","signs"], w:["created","creation","heavens and the earth","sun and the moon","alternation of the night"]},
+  {t:"Knowledge and reflection", k:["knowledge","reflection","ponder","reason","intellect","ilm","aql"], w:["knowledge","ponder","reflect","reason","intellect","understand"]},
+  {t:"Guidance (hidāyah)", k:["guidance","hidayah","hidayat","straight path","sirat"], w:["guidance","guide","straight path"]},
+  {t:"Fighting and striving (jihād)", k:["jihad","fighting","war","qital","struggle"], w:["fight","strive","struggl","jihad","battle"]},
+  {t:"Peace and reconciliation", k:["peace","truce","reconciliation"], w:["peace","truce","reconcil"]},
+  {t:"Covenants and promises", k:["covenant","promise","oath","pledge","mithaq"], w:["covenant","promise","oath","pledge"]},
+  {t:"Trials and hardship", k:["trial","trials","test","tribulation","fitnah","hardship"], w:["test","trial","tribulation","hardship","affliction"]},
+  {t:"Arrogance and pride (kibr)", k:["arrogance","pride","kibr","haughty"], w:["arrogan","pride","haughty","boast"]},
+  {t:"Supplication (duʿāʾ)", k:["dua","supplication","invoke"], w:["supplicat","invok","call upon","calls upon"]},
+  {t:"Remembrance (dhikr)", k:["dhikr","zikr","remembrance","remember"], w:["remembrance","remember","dhikr"]},
+  {t:"Oneness of God and shirk", k:["tawhid","shirk","oneness","polytheism","idolatry","partners"], w:["associat","partner","idol","one god","no deity","polythe"]},
+  {t:"The Qur'an and revelation", k:["quran","qur'an","revelation","recitation","wahy"], w:["qur'an","recit","revelation","revealed"]},
+  {t:"Modesty and chastity", k:["modesty","hijab","chastity","haya","humility"], w:["modest","chaste","chastity","veil","humble","humility"]},
+  {t:"Lawful and prohibited", k:["halal","haram","lawful","prohibited","forbidden","food","wine","intoxicants","pork"], w:["lawful","unlawful","forbidden","prohibit","intoxicant","wine","swine","carrion"]},
+  {t:"Prophets and messengers", k:["prophets","messengers","rasul","nabi"], w:["prophet","messenger"]},
+  {t:"Truthfulness and lying", k:["truthfulness","honesty","sidq","lying","falsehood","lie"], w:["truthful","honest","lie!","lies!","falsehood","liar"]},
+  {t:"Kinship and neighbours", k:["brotherhood","neighbours","neighbors","kinship","relatives","silat"], w:["relatives","kin!","neighbo","brother","kindred"]},
+  {t:"Backbiting and ridicule", k:["backbiting","slander","gossip","suspicion","ghibah","mockery"], w:["backbit","slander","suspicion","ridicule","insult","mock"]},
+  {t:"Women", k:["women","woman"], w:["women","woman"]},
+  {t:"Trade, debts and contracts", k:["trade","business","commerce","contracts","debt","loan"], w:["trade","debt","contract","write it down","weigh","scale"]},
+  {t:"Migration (hijrah)", k:["hijrah","migration","emigrate"], w:["emigrat","migrat","hijrah"]},
+  {t:"People of the Book and the Children of Israel", k:["people of the book","jews","christians","israelites","bani israel"], w:["people of the scripture","children of israel","jews","christians"]}
+];
+const G_STOP = new Set(["the","of","and","in","to","a","an","is","are","for","on","with","about","what","does","do","say","says","verses","verse","ayah","ayahs","quran","qur'an","from","that","this","how","why","who","me","my","show","find","all"]);
+const gRe = x => String(x).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function gStem(t){
+  if (!/^[a-z]+$/.test(t) || t.length < 5) return t;
+  for (const suf of ["ers","ing","ness","ment","ed","er","es","ly","ce","s"]) if (t.endsWith(suf) && t.length - suf.length >= 3) return t.slice(0, -suf.length);
+  return t;
+}
+function gStemRe(st){ const whole = st.endsWith("!"); st = whole ? st.slice(0, -1) : st; return new RegExp("\\b" + gRe(st) + (whole ? "\\b" : "\\w*"), "i"); }
+function gHL(text, regs){
+  const rng = [];
+  for (const re of regs) { const g = new RegExp(re.source, "gi"); let m; while ((m = g.exec(text))) { if (!m[0]) { g.lastIndex++; continue; } rng.push([m.index, m.index + m[0].length]); } }
+  if (!rng.length) return esc(text);
+  rng.sort((x, y) => x[0] - y[0]);
+  const mg = []; for (const r of rng) { const l = mg[mg.length - 1]; if (l && r[0] <= l[1]) l[1] = Math.max(l[1], r[1]); else mg.push([r[0], r[1]]); }
+  let out = "", p = 0; for (const [a, b] of mg) { out += esc(text.slice(p, a)) + "<mark>" + esc(text.slice(a, b)) + "</mark>"; p = b; }
+  return out + esc(text.slice(p));
+}
+function gNameRef(q){
+  const m = String(q).trim().match(/^([A-Za-z'’ʿ-]{3,}(?:\s[A-Za-z'’ʿ-]{2,})?)[\s:.]+(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?$/);
+  if (!m || !S.Q) return null;
+  const nm = normalize(m[1]).replace(/[^a-z]/g, ""); if (nm.length < 3) return null;
+  const bare = t => normalize(t).replace(/[^a-z]/g, "").replace(/^(al|an|ash|as|ad|ar|at|az)/, "");
+  const cand = S.Q.filter(s => bare(s.tl).startsWith(bare(m[1])) || normalize(s.tl).replace(/[^a-z]/g, "") === nm);
+  if (cand.length !== 1) return null;
+  const s = cand[0].n, a = +m[2], b = m[3] ? +m[3] : a;
+  return validRef(s, a) && validRef(s, b) && b >= a ? [{s, from: a, to: b}] : null;
+}
+let GIDX = null, CIDX = null;
+function gIndex(){
+  if (GIDX || !S.Q) return GIDX;
+  const ar = [], en = [], sa = [];
+  S.Q.forEach(su => su.v.forEach((v, j) => { ar.push(normalize(v[0])); en.push(String(v[1] || "").toLowerCase()); sa.push([su.n, j + 1]); }));
+  return GIDX = {ar, en, sa};
+}
+function gIndexL(l){
+  const G = gIndex(); if (!G) return null;
+  if (!G[l] && S.TRX[l]) G[l] = [].concat(...S.TRX[l].map(r => r.map(t => normalize(t))));
+  return G[l] || null;
+}
+function gConcIndex(C){
+  if (CIDX) return CIDX;
+  const R = new Map(), L = new Map();
+  for (const r of Object.keys(C.R)) R.set(normalize(r).replace(/\s/g, ""), r);
+  for (const l of Object.keys(C.L)) { const k = normalize(l); (L.get(k) || L.set(k, []).get(k)).push(l); }
+  return CIDX = {R, L};
+}
+function gSearch(q){
+  const out = {refs: null, surahs: [], ayahs: [], regs: [], treg: [], creg: [], concepts: [], loading: ""};
+  q = q.trim(); if (!q || !S.Q) return out;
+  out.refs = parseRefs(q) || gNameRef(q);
+  const qn = normalize(q);
+  out.surahs = out.refs ? [] : S.Q.filter(s => String(s.n) === q || normalize(s.tl).includes(qn) || normalize(s.m).includes(qn) || normalize(s.ar).includes(qn)).slice(0, 6);
+  if (out.refs) return out;
+  const G = gIndex(), arabic = /[؀-ۿ]/.test(q), bengali = /[ঀ-৿]/.test(q);
+  let hits = [];
+  if (arabic || bengali) {
+    const toks = qn.split(/\s+/).filter(Boolean);
+    const idx = [];
+    if (bengali) { const b = gIndexL("bn"); if (b) idx.push(b); else { loadTrx("bn"); out.loading = "Loading the Bangla translation…"; } }
+    else { idx.push(G.ar); const u = gIndexL("ur"); if (u) idx.push(u); else if (S.trLang === "ur") loadTrx("ur"); }
+    for (let i = 0; i < G.sa.length; i++) {
+      let sc = 0;
+      for (const ix of idx) { const t = ix[i]; if (toks.every(k => t.includes(k))) { sc = Math.max(sc, 20 * toks.length + (t.includes(qn) ? 15 : 0)); } }
+      if (sc) hits.push([i, sc - Math.min(8, G.en[i].length / 120)]);
+    }
+    out.regs = [];
+  } else {
+    const all = q.toLowerCase().replace(/[“”"‘’()\[\]{},;:!?]/g, " ").split(/\s+/).filter(Boolean);
+    let toks = all.filter(t => !G_STOP.has(t)); if (!toks.length) toks = all;
+    const ql = all.join(" ");
+    out.concepts = toks.length <= 3 ? CONCEPTS.filter(c => c.k.includes(ql) || toks.some(t => t.length >= 3 && c.k.includes(t))) : [];
+    const treg = toks.map(t => gStemRe(gStem(t)));
+    const creg = [...new Set(out.concepts.flatMap(c => c.w))].map(gStemRe);
+    out.regs = treg.concat(creg); out.treg = treg; out.creg = creg;
+    const run = (minHit) => {
+      const res = [];
+      for (let i = 0; i < G.sa.length; i++) {
+        const t = G.en[i];
+        let n = 0; for (const re of treg) if (re.test(t)) n++;
+        let cn = 0; for (const re of creg) if (re.test(t)) cn++;
+        if (n < minHit && !cn) continue;
+        const sc = n * 20 + cn * 5 + (t.includes(ql) ? 15 : 0) - Math.min(8, t.length / 120);
+        res.push([i, sc]);
+      }
+      return res;
+    };
+    hits = run(treg.length);
+    if (hits.length < 8 && treg.length > 1) hits = run(Math.max(1, Math.ceil(treg.length / 2)));
+  }
+  hits.sort((x, y) => y[1] - x[1] || x[0] - y[0]);
+  out.ayahs = hits.slice(0, 600).map(h => G.sa[h[0]]);
+  out.total = hits.length;
+  return out;
+}
+let CONC_OBJ = null;
+function gRoot(q){
+  const k = normalize(q).replace(/\s/g, ""); if (!k || !CONC_OBJ) return null;
+  const I = gConcIndex(CONC_OBJ), C = CONC_OBJ;
+  let kind = "", name = "", lemmas = [];
+  const root = I.R.get(k);
+  if (root) { kind = "root"; name = root; lemmas = C.R[root] || []; }
+  else if (I.L.has(k)) { kind = "lemma"; lemmas = I.L.get(k); name = lemmas[0]; }
+  if (!kind) return null;
+  const seen = new Set(), ayahs = []; let places = 0;
+  for (const l of lemmas) for (const c of (C.L[l] || [])) { const [s, a] = decCode(c); places++; const kk = s + ":" + a; if (!seen.has(kk)) { seen.add(kk); ayahs.push([s, a]); } }
+  ayahs.sort((x, y) => x[0] - y[0] || x[1] - y[1]);
+  return {kind, name, lemmas, ayahs, places};
+}
+function gMine(q, R){
+  const nonLatin = /[\u0600-\u06FF\u0980-\u09FF]/.test(q);
+  const treg = nonLatin ? q.trim().split(/\s+/).filter(Boolean).map(t => new RegExp(gRe(normalize(t)), "i")) : R.treg;
+  const creg = nonLatin ? [] : R.creg;
+  if (!treg.length) return [];
+  const txt = o => LANGS.map(l => (o && o[l]) || "").join(" \n ");
+  const items = [];
+  const add = (kind, chip, it, s, a, fields, open) => {
+    const f = nonLatin ? fields.map(normalize) : fields;
+    const [ti, tg, sm, bo] = f, hay = ti + " " + tg + " " + sm + " " + bo;
+    const n = treg.filter(re => re.test(hay)).length, cn = creg.filter(re => re.test(hay)).length;
+    if (n < treg.length && !(creg.length && cn >= 2 && n >= 1)) return;
+    let sc = n * 3 + cn;
+    if (treg.some(re => re.test(ti))) sc += 8;
+    if (treg.some(re => re.test(tg))) sc += 5;
+    if (treg.some(re => re.test(sm))) sc += 3;
+    items.push({kind, chip, it, s, a, sc, open, regs: nonLatin ? [] : treg.concat(creg)});
+  };
+  for (const n of S.notes) add("note", n.kind === "question" ? "Question" : "Note", n, n.s, n.a, [txt(n.title), (n.tags || []).join(" "), txt(n.summary), txt(n.body)], "n:" + n.id);
+  for (const l of S.lessons) add("lesson", "Lesson", l, (l.ranges[0] || {}).s, (l.ranges[0] || {}).from, [txt(l.title), (l.tags || []).join(" "), txt(l.summary), txt(l.body)], "l:" + l.id);
+  for (const w of S.words) add("word", "Word analysis", w, w.s, w.a, [txt(w.title) + " " + (w.word || "") + " " + (w.root || "") + " " + (w.lemma || ""), (w.tags || []).join(" "), txt(w.summary), txt(w.body)], "w:" + w.id);
+  for (const c of S.cm) add("cm", "Commentary", c, c.s, c.a, ["", "", "", txt(c.text)], "");
+  if (S.admin) for (const x of S.qa) add("qa", "Q&A", x, x.s, x.a, [txt(x.q), "", "", txt(x.ans)], "");
+  items.sort((x, y) => y.sc - x.sc);
+  return items.slice(0, 6);
+}
+function gSnip(text, regs, max){
+  const t = String(text || "").replace(/\[\^[^\]]+\]/g, "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/[#*>`]/g, "").replace(/\s+/g, " ").trim();
+  let at = -1; for (const re of regs) { const m = re.exec(t); if (m && (at < 0 || m.index < at)) at = m.index; }
+  if (at < 0) return t.length > max ? t.slice(0, max - 1) + "…" : t;
+  const from = Math.max(0, at - Math.floor(max / 3)), to = Math.min(t.length, from + max);
+  return (from > 0 ? "…" : "") + t.slice(from, to) + (to < t.length ? "…" : "");
+}
+function gAyahCard(s, a, regs, tag){
+  const su = surahOf(s), ar = arText(s, a);
+  const arShow = ar.length > 320 ? ar.slice(0, 320).replace(/\s\S*$/, "") + " …" : ar;
+  const en = S.Q[s - 1].v[a - 1][1];
+  return `<div class="gcard"><div class="ghead"><button type="button" class="reflink" data-go="${s}:${a}">${s}:${a}</button><span class="small muted">Sūrat ${esc(su.tl)}</span>${tag || ""}</div>
+    <p class="ar" lang="ar" dir="rtl">${esc(arShow)} <span class="end">﴿${arDigits(a)}﴾</span></p>
+    <p class="gtr" lang="en">${regs && regs.length ? gHL(en, regs) : esc(en)}</p>
+    ${S.trLang !== "en" ? `<p class="gtr muted" ${trAttrs()}>${esc(trText(s, a))}</p>` : ""}
+    <div class="row"><button type="button" class="btn small" data-go="${s}:${a}">Open in the surah</button></div></div>`;
+}
+function gResultsHTML(){
+  const q = S.gq.trim();
+  if (!q) return `<p class="gnote">Search by <b>ayah</b> (2:4, 3:10-12, or “baqarah 255”), by <b>topic or concept</b> (patience, mercy and forgiveness, usury), by an <b>English word</b>, by an <b>Arabic word or root</b> (صبر), or in <b>your own notes, lessons, word analyses and commentary</b>.</p>`;
+  if (CONC_OBJ === null && /[؀-ۿ]/.test(q)) loadConc().then(c => { CONC_OBJ = c; drawSearchResults(); }).catch(() => { CONC_OBJ = false; });
+  const R = gSearch(q); let h = "";
+  const more = S.gmore;
+  if (R.refs) {
+    let n = 0; const cards = [];
+    for (const r of R.refs) for (let a = r.from; a <= r.to && n < 40; a++, n++) cards.push(gAyahCard(r.s, a, null, ""));
+    h += `<div class="gsec">Ayah${cards.length > 1 ? "s" : ""}</div><div class="gres">${cards.join("")}</div>`;
+    return h;
+  }
+  if (R.surahs.length) h += `<div class="gsec">Surah</div><div class="sgrid" style="margin-top:8px">${R.surahs.map(s => `<button type="button" class="scard" data-surah="${s.n}"><span class="no">${s.n}</span><span class="tl">${esc(s.tl)}</span><span class="arn" lang="ar">${esc(s.ar)}</span><span class="meta">${esc(s.m)} · ${s.v.length} ayahs · ${s.t === "meccan" ? "Makki" : "Madani"}</span></button>`).join("")}</div>`;
+  if (R.loading) h += `<p class="gnote">${esc(R.loading)}</p>`;
+  if (R.concepts.length) h += `<p class="gnote">Topic: <b>${R.concepts.map(c => esc(c.t)).join(" · ")}</b>. Showing ayahs whose English translation uses related words, so a theme can appear under a different word. Every result is the plain text of the ayah.</p>`;
+  const root = /[؀-ۿ]/.test(q) && !/[ঀ-৿]/.test(q) ? gRoot(q) : null;
+  if (root) {
+    h += `<div class="gsec">${root.kind === "root" ? "Words from the root" : "The word"} <span lang="ar" class="gar">${esc(root.name)}</span></div><p class="gnote" style="margin-top:4px">${root.places} places in ${root.ayahs.length} ayahs${root.kind === "root" && root.lemmas.length ? ". Forms: " + root.lemmas.map(l => `<span lang="ar" class="gar">${esc(l)}</span>`).join("، ") : ""}.</p>
+      <div class="gres">${root.ayahs.slice(0, more).map(([s, a]) => gAyahCard(s, a, null, "")).join("")}</div>${root.ayahs.length > more ? `<p><button type="button" class="btn" data-gmore>Show more</button></p>` : ""}`;
+  }
+  const mine = gMine(q, R);
+  if (mine.length) h += `<div class="gsec">In your write-ups</div><div class="gres">${mine.map(m => {
+    const it = m.it, chipCls = m.kind === "lesson" ? "les" : m.kind === "word" ? "wa" : m.kind === "cm" ? "cm" : "exp";
+    const title = m.kind === "cm" || m.kind === "qa" ? "" : (pickTitle(it.title, S.lang, it.src).text || (m.kind === "word" ? it.word : "") || "Untitled");
+    const body = m.kind === "cm" ? pick(it.text, S.lang, it.src).text : m.kind === "qa" ? pick(it.ans, S.lang, it.src).text || pick(it.q, S.lang, it.src).text : pick(it.body, S.lang, it.src).text || pick(it.summary, S.lang, it.src).text;
+    const ref = m.s && m.a ? `<button type="button" class="reflink" data-go="${m.s}:${m.a}">${m.s}:${m.a}</button>` : "";
+    return `<div class="gcard"><div class="ghead"><span class="chip ${chipCls}">${m.chip}</span>${ref}</div>${title ? `<b>${esc(title)}</b>` : ""}<p class="gtr">${gHL(gSnip(body, m.regs, 220), m.regs)}</p>
+      <div class="row">${m.open ? `<button type="button" class="btn small primary" data-article="${esc(m.open)}">Open</button>` : (m.s ? `<button type="button" class="btn small" data-go="${m.s}:${m.a}">Open in the surah</button>` : "")}</div></div>`;
+  }).join("")}</div>`;
+  if (R.ayahs.length) {
+    h += `<div class="gsec">Ayahs · ${R.total}${R.total > 600 ? " (first 600 shown by relevance)" : ""}</div><div class="gres">${R.ayahs.slice(0, more).map(([s, a]) => gAyahCard(s, a, R.regs, "")).join("")}</div>${R.ayahs.length > more ? `<p><button type="button" class="btn" data-gmore>Show more</button></p>` : ""}`;
+  } else if (!R.surahs.length && !mine.length && !root && !R.loading) {
+    h += `<div class="empty" style="margin-top:14px"><b>No match for “${esc(q)}”</b>Try a simpler word, a related word, or the ayah number.</div>`;
+  }
+  if (S.sample && S.admin) {
+    const A = S.gai;
+    h += `<div class="gsec">Ask AI for ayahs on this topic</div>`;
+    if (A && A.q === q && A.busy) h += `<p class="gnote">Looking… this can take half a minute.</p>`;
+    else if (A && A.q === q && A.err) h += `<p class="gnote" style="color:var(--danger)">${esc(A.err)}</p>`;
+    else if (A && A.q === q) h += `<p class="gnote">AI suggestions, not verified. Each ayah below is shown from the Qur'an text itself; check that it really speaks to the topic before relying on it.</p><div class="gres">${A.items.map(x => gAyahCard(x.s, x.a, null, `<span class="chip" style="background:var(--sunk);color:var(--muted)">AI suggestion</span>`).replace('<div class="row">', `<p class="small muted" style="margin:0">${esc(x.why)}</p><div class="row">`)).join("") || `<p class="gnote">No usable suggestions came back.</p>`}</div>`;
+    else h += `<p class="gnote">For a theme that the words above do not catch, the AI can suggest ayahs. Its list is only a starting point.</p><p><button type="button" class="btn" data-gai>Ask AI for ayahs on “${esc(q)}”</button></p>`;
+  }
+  return h;
+}
+function drawSearchResults(){ const el = $("#gres"); if (el) el.innerHTML = gResultsHTML(); }
+async function gAskAI(){
+  const q = S.gq.trim(); if (!q || !S.sample || (S.gai && S.gai.busy)) return;
+  S.gai = {q, busy: true, items: [], err: ""}; drawSearchResults();
+  const prompt = `You are helping a researcher of the Qur'an find ayahs on a topic.
+
+Topic or question: «${q}»
+
+List up to 12 ayahs of the Qur'an that speak most directly to it, most relevant first. Write one line per ayah, in exactly this form:
+s:a | reason in at most 15 words
+
+Rules:
+- Use only references you are certain exist. Do not guess.
+- Give each ayah as one reference only (no ranges).
+- Do not quote the Arabic or any translation; the text is added from the Qur'an itself.
+- No heading, no preamble, no closing remarks.`;
+  const mine = S.gai;
+  try {
+    const {text} = await S.sample(prompt, {cache: false, modelTier: "complex"});
+    const seen = new Set();
+    for (const line of String(text).split(/\r?\n/)) {
+      const m = line.match(/^\s*[-*\d.)\s]*(\d{1,3}):(\d{1,3})\s*[|—–-]\s*(.*)$/);
+      if (m && validRef(+m[1], +m[2]) && !seen.has(m[1] + ":" + m[2])) { seen.add(m[1] + ":" + m[2]); mine.items.push({s: +m[1], a: +m[2], why: m[3].trim()}); }
+    }
+  } catch (e) { mine.err = (typeof aiErr === "function" ? aiErr(e && e.code, "en") : "The AI did not answer.").replace(/The \w+ draft/, "The suggestions"); }
+  mine.busy = false;
+  if (S.gai === mine) drawSearchResults();
+}
+function viewSearch(){
+  return `${statusBar()}
+  <div class="idx-head"><h1>Search</h1>
+    <input type="search" id="gq" class="search" placeholder="Topic or concept, a word or root (صبر), or an ayah like 2:4" value="${esc(S.gq)}" aria-label="Search the Qur'an and your write-ups" autocomplete="off">
+  </div>
+  <div class="row small muted" style="flex-wrap:wrap;gap:6px"><span>Try:</span>${["patience", "2:255", "3:10-12", "baqarah 255", "mercy and forgiveness", "صبر", "usury"].map(x => `<button type="button" class="btn ghost small" data-gex="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+  <div id="gres">${gResultsHTML()}</div>`;
+}
+
 /* ---------- events ---------- */
 document.addEventListener("click", async (ev) => {
   const wt = ev.target.closest && ev.target.closest(".wtok");
-  if (wt && !M) { const [s0, a0, j0] = wt.dataset.wtok.split(":").map(Number); return openWordCard(s0, a0, j0); }
+  { const fl = ev.target.closest && ev.target.closest("[data-fl]");
+    if (fl) { if (fl.dataset.fl === "go" && FL) { FL.j += +fl.dataset.v; drawWordCard(); } else closeFlash(); return; }
+    if (FL && ev.target.id === "fl-backdrop") { closeFlash(); return; } }
+  if (wt && (!M || M.min)) { const [s0, a0, j0] = wt.dataset.wtok.split(":").map(Number); return openWordCard(s0, a0, j0); }
   const t = ev.target.closest("button, .backdrop");
   if (!t) return;
   if (t.id === "backdrop") { if (ev.target === t && !M?.busy && (M?.type === "tr" || M?.type === "share" || M?.type === "flash" || (M?.type === "gram" && !M.edit))) closeModal(); return; }
   const d = t.dataset;
+  if (d.gsearch !== undefined) { S.gq = S.sq.trim(); S.gmore = 30; S.gai = null; return go("search"); }
+  if (d.gex !== undefined) { S.gq = d.gex; S.gmore = 30; S.gai = null; render(); const i = $("#gq"); if (i) i.focus(); return; }
+  if (d.gmore !== undefined) { S.gmore += 30; drawSearchResults(); return; }
+  if (d.gai !== undefined) return gAskAI();
+  if (d.dock !== undefined) return restoreModal();
+  if (d.dockmin !== undefined) return minimizeModal();
+  if (d.totop !== undefined) return window.scrollTo({top: 0, behavior: "smooth"});
   if (t.id === "brand") return go("surahs");
   if (d.nav) return go(d.nav);
+  if (d.rkrev) { const dd = (S.ruku || {})[S.rk && S.rk.s]; if (!dd) return; const ai = Object.assign({}, dd.ai, {[d.rkrev]: false}); try { await S.db.collection("ruku").doc(String(dd.s)).update({ai, updatedAt: Date.now()}); toast("Marked as reviewed"); } catch (e) { toast(dbErr(e)); } return; }
   if ("goback" in d) return goBack();
   if ("gobackX" in d) { S.ret = null; return drawBackPill(); }
   if (d.script) { S.script = d.script; store.set("aba.script", d.script); if (d.script === "indopak" && S.ipState === "failed") S.ipState = "idle"; return render(); }
@@ -3519,7 +4196,7 @@ document.addEventListener("click", async (ev) => {
   if (d.rstatus !== undefined) { S.rstatus = d.rstatus; return render(); }
   if (d.rtag) { S.rtag = S.rtag === d.rtag ? null : d.rtag; return render(); }
   if (d.clear === "research") { S.rq = ""; S.rtag = null; S.rstatus = ""; return render(); }
-  if (d.go) { closeModal(); return goRef(d.go); }
+  if (d.go) { if (!M?.min) closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.bm) { bmToggle(d.bm); if (d.bmclear) render(); return; }
   if (d.exstart !== undefined) { exStart(); return render(); }
@@ -3555,14 +4232,14 @@ document.addEventListener("click", async (ev) => {
   if (d.fsize) { S.readScale = Math.round(Math.min(1.5, Math.max(0.85, S.readScale + (+d.fsize) * 0.08)) * 100) / 100; store.set("aba.readscale", String(S.readScale)); S.qscale = Math.round(Math.min(1.6, Math.max(0.8, S.qscale + (+d.fsize) * 0.1)) * 10) / 10; store.set("aba.qscale", String(S.qscale)); applyReadScale(); applyQFont(); return; }
   if (d.share) return openShare(d.share);
   if (d.cats !== undefined) { if (S.admin) openCats(); return; }
-  if (d.ncat !== undefined && !d.m) { closeModal(); S.ncat = d.ncat; if (S.nkind === "revised") S.nkind = "all"; if (S.view !== "notes") go("notes"); else render(); return; }
-  if (d.article) { const [kind, id] = d.article.split(":"); closeModal(); S.showAyahs = false; return go("article", {kind, id}); }
+  if (d.ncat !== undefined && !d.m) { if (!M?.min) closeModal(); S.ncat = d.ncat; if (S.nkind === "revised") S.nkind = "all"; if (S.view !== "notes") go("notes"); else render(); return; }
+  if (d.article) { const [kind, id] = d.article.split(":"); if (!M?.min) closeModal(); S.showAyahs = false; return go("article", {kind, id}); }
   if (d.back !== undefined) {
     const f = S.art?.from;
     if (f && typeof f === "object") { go("surah", {s: f.surah}); requestAnimationFrame(()=> window.scrollTo(0, f.y||0)); return; }
     return go(f === "lessons" || f === "notes" || f === "words" || f === "surahs" ? f : (S.art?.kind === "l" ? "lessons" : S.art?.kind === "w" ? "words" : "notes"));
   }
-  if (d.fn) { const el = document.getElementById(d.fn); if (el) { el.scrollIntoView({block:"center"}); el.classList.add("hl"); setTimeout(()=>el.classList.remove("hl"), 1600); } return; }
+  if (d.fn) { const el = document.getElementById(d.fn); if (el) { el.scrollIntoView({block: d.fn.startsWith("rk-") ? "start" : "center"}); el.classList.add("hl"); setTimeout(()=>el.classList.remove("hl"), 1600); } return; }
   if (d.showAyahs !== undefined) { S.showAyahs = true; return render(); }
   if (d.lesson) { S.showAyahs = false; return go("article", {kind:"l", id:d.lesson}); }
   if (d.openNote) { S.openNote.has(d.openNote) ? S.openNote.delete(d.openNote) : S.openNote.add(d.openNote); return render(); }
@@ -3591,6 +4268,7 @@ document.addEventListener("click", async (ev) => {
   if (M.type === "qa") return qaAct(act, d);
   if (M.type === "cm") return cmAct(act, d);
   if (M.type === "rs") return rsAct(act, d);
+  if (M.type === "mv") return mvAct(act, d);
   if (M.type === "offsync" || M.type === "syncin") return syncAct(act);
   if (act === "close") {
     if (M.busy) return;
@@ -3665,9 +4343,12 @@ document.addEventListener("click", async (ev) => {
   }
   if (act === "pick-word" && M.type === "word" && M.wordList?.words) {
     captureFields();
-    const i = +d.v, w = M.wordList.words[i-1], segs = w[2].map(decodeSeg);
-    const stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0];
-    Object.assign(M.it, {s: M.wordList.s, a: M.wordList.a, w: i, word: w[2].map(x=>x[0]).join(""), root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""});
+    const i = +d.v, WL = M.wordList.words, cur = (M.it.s === M.wordList.s && M.it.a === M.wordList.a && M.it.w && !isPhrase(M.it)) ? M.it.w : 0;
+    const lo = cur && i !== cur ? Math.min(cur, i) : i, hi = cur && i !== cur ? Math.max(cur, i) : i;
+    const info = k => { const w = WL[k-1], segs = w[2].map(decodeSeg), stem = segs.find(o => o.role === "stem" && o.cls !== "p") || segs.find(o => o.role === "stem") || segs[0]; return {word: w[2].map(x=>x[0]).join(""), root: stem?.root || "", lemma: stem?.lem || "", pos: stem ? stem.en : ""}; };
+    const sel = {s: M.wordList.s, a: M.wordList.a, w: lo};
+    if (hi > lo) { const parts = []; for (let k = lo; k <= hi; k++) parts.push(info(k)); Object.assign(M.it, sel, {w2: hi, parts, word: parts.map(x => x.word).join(" "), root: "", lemma: "", pos: ""}); }
+    else { const x = info(lo); Object.assign(M.it, sel, x); delete M.it.w2; delete M.it.parts; }
     if (M.use && !M.use.busy) M.use = null;
     drawWriteEditor(); return;
   }
@@ -3695,6 +4376,7 @@ document.addEventListener("click", async (ev) => {
   if (act === "ai-undo") return aiUndo();
   if (act === "ai-stop") { M.ctl.forEach(c=>c.abort()); return; }
   if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+  if (act === "move") return startMove();
   if (act === "save") return saveWrite();
   if (act === "delete") { $("#m-confirm").innerHTML = `<div class="confirm"><span>Delete this ${M.type==="lesson"?"lesson":M.type==="word"?"word analysis":"note"} in all four languages? This can't be undone.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep it</button><button type="button" class="btn danger" data-m="delete-yes">Delete</button></div>`; return; }
   if (act === "delete-yes") {
@@ -3706,6 +4388,7 @@ document.addEventListener("click", async (ev) => {
 document.addEventListener("input", (ev) => {
   const t = ev.target;
   if (t.id === "sq") { S.sq = t.value; rerenderKeepingInput("sq"); }
+  else if (t.id === "gq") { S.gq = t.value; S.gmore = 30; S.gai = null; clearTimeout(gSearchTimer); gSearchTimer = setTimeout(drawSearchResults, 160); }
   else if (t.id === "nq") { S.nq = t.value; rerenderKeepingInput("nq"); }
   else if (t.id === "lq") { S.lq = t.value; rerenderKeepingInput("lq"); }
   else if (t.id === "wq") { S.wq = t.value; rerenderKeepingInput("wq"); }
@@ -3725,6 +4408,10 @@ document.addEventListener("change", (ev) => {
   if (t.id === "rgroup") { S.rgroup = t.checked; render(); return; }
   if (t.id === "qfont") { S.qfont = t.value; store.set("aba.qfont", t.value); applyQFont(); }
   if (t.id === "ai-scope" && M) { captureFields(); M.aiScope = t.value; drawWriteEditor(); $("#ai-notes")?.focus(); return; }
+  if (t.id === "mv-target" && M && M.type === "mv") { mvCapture(); M.target = t.value; M.err = ""; drawMove(); mvLoadWords(); return; }
+  if (t.id === "mv-ref" && M && M.type === "mv") { mvCapture(); M.wordList = null; M.sel = null; drawMove(); mvLoadWords(); return; }
+  if (t.id === "mv-cat" && M && M.type === "mv") { mvCapture(); return; }
+  if (t.id === "rk-s") { S.rk = {s: +t.value}; render(); return; }
   if (t.id === "learn-s") { S.learn = {s: +t.value, from: null, to: null}; render(); return; }
   if (t.id === "ex-s") { const n = surahOf(+t.value).v.length; S.ex = {s: +t.value, from: 1, to: n, phase: "pick"}; return render(); }
   if (t.id === "ex-n") { const nn = surahOf(S.ex.s).v.length, f = ayRead("ex-from", nn, 1), c = ayRead("ex-n", nn, 1); S.ex.from = f; S.ex.to = Math.min(nn, f + c - 1); return render(); }
@@ -3773,7 +4460,15 @@ document.addEventListener("submit", (ev) => {
     else toast(`Enter an ayah from 1 to ${surahOf(S.surah).v.length}.`);
   }
 });
-document.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && ev.target.classList && ev.target.classList.contains("wtok") && !M) { ev.preventDefault(); ev.target.click(); } });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && ev.target.classList && ev.target.classList.contains("wtok") && (!M || M.min)) { ev.preventDefault(); ev.target.click(); } });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && FL) { closeFlash(); return; } });
+document.addEventListener("keydown", (ev) => {
+  if (ev.key !== "Enter" || (ev.target.id !== "sq" && ev.target.id !== "gq")) return;
+  const v = ev.target.value, r = parseRefs(v) || gNameRef(v);
+  if (r && r.length === 1 && r[0].from === r[0].to && ev.target.id === "gq") { ev.preventDefault(); goRef(r[0].s + ":" + r[0].from); }
+  else if (r && ev.target.id === "sq") { ev.preventDefault(); goRef(r[0].s + ":" + r[0].from); }
+  else if (ev.target.id === "gq") { clearTimeout(gSearchTimer); drawSearchResults(); }
+});
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && S.focus && !M && !document.fullscreenElement) { exitFocus(); return; } });
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && M && !M.busy && (M.type === "tr" || M.type === "share" || M.type === "rukus" || M.type === "flash" || (M.type === "gram" && !M.edit))) closeModal(); });
 function rerenderKeepingInput(id){
@@ -3784,7 +4479,7 @@ function rerenderKeepingInput(id){
 
 async function exportData(){
   if (!S.downloads) return;
-  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, research: S.research}, null, 2);
+  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, research: S.research, ruku: Object.values(S.ruku || {})}, null, 2);
   try { await S.downloads.save({filename: `ayah-by-ayah-backup-${new Date().toISOString().slice(0,10)}.json`, data}); }
   catch (e) { if (e?.code !== "declined") toast("The backup couldn't be saved here."); }
 }
@@ -3807,7 +4502,7 @@ function hashDocJ(d){
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 }
 const SYNC_FORMAT = "ayah-by-ayah-offline-sync";
-const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","research","settings"];
+const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","research","ruku","settings"];
 function syncLabel(path, doc){
   const col = path.split("/")[0], id = path.slice(col.length + 1);
   let t = "";
@@ -3826,6 +4521,7 @@ function refreshOfflineBtn(){
   b.className = "btn small" + (n ? " primary" : " ghost");
 }
 function openOfflineSync(){
+  if (blockedByMin()) return;
   const O = window.__OFFLINE__; if (!O) return;
   M = {type: "offsync"}; drawOfflineSync();
 }
@@ -3962,12 +4658,16 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
   }, fail);
   db.collection("qa").onSnapshot(snap => {
     S.qa = snap.docs.map(d => qaNorm(Object.assign({id:d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a)); S.qaIx = {};
-    for (const x of S.qa) (S.qaIx[key(x.s, x.a)] ||= []).push(x);
+    for (const x of S.qa) { (S.qaIx[key(x.s, x.a)] ||= []).push(x); for (const k of alsoKeys(x)) (S.qaIx[k] ||= []).push(x); }
     render();
   }, () => {});
   db.collection("commentary").onSnapshot(snap => {
     S.cm = snap.docs.map(d => cmNorm(Object.assign({id: d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a));
     reindex(); render();
+  }, () => {});
+  if (S.admin) db.collection("ruku").onSnapshot(snap => {
+    S.ruku = {}; for (const d of snap.docs) { const x = d.data(); if (x && x.s) S.ruku[x.s] = x; }
+    render();
   }, () => {});
   if (S.admin) db.collection("research").onSnapshot(snap => {
     S.research = snap.docs.map(d => rsNorm(Object.assign({id: d.id}, d.data()))); reindex(); render();
