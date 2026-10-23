@@ -878,7 +878,7 @@ function render(){
   setTimeout(drawFocusBar, 0);
   setTimeout(updateSurahBar, 0);
   drawBackPill();
-  { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; const nr = $("#nav-research"); if (nr) nr.hidden = !S.admin; const nk = $("#nav-ruku"); if (nk) nk.hidden = !S.admin; }
+  { const nq = $("#nav-qa"); if (nq) nq.hidden = !(S.admin || S.static); const nr = $("#nav-research"); if (nr) nr.hidden = !S.admin; const nk = $("#nav-ruku"); if (nk) nk.hidden = !S.admin; }
   document.querySelectorAll("nav.tabs button").forEach(b => {
     const cur = b.dataset.nav === S.view || (b.dataset.nav==="surahs" && S.view==="surah")
       || (S.view==="article" && ((S.art?.kind==="l" && b.dataset.nav==="lessons") || (S.art?.kind==="n" && b.dataset.nav==="notes") || (S.art?.kind==="w" && b.dataset.nav==="words")));
@@ -1209,22 +1209,21 @@ function qaCard(x){
       <span class="chip ${x.final ? "exp" : "rev"}">${x.final ? "Final" : "Draft"}</span>
       ${(an.fallback || q.fallback) ? `<span class="chip">Shown in ${LNAME_EN[an.text ? an.lang : q.lang]}</span>` : ""}
       ${x.ai[an.lang] ? `<span class="chip rev">AI draft</span>` : ""}<span class="spacer"></span>
-      <button type="button" class="btn small" data-qa="${x.s}:${x.a}:${esc(x.id)}">Open</button></div>
+      ${S.admin ? `<button type="button" class="btn small" data-qa="${x.s}:${x.a}:${esc(x.id)}">Open</button>` : ""}</div>
     <p class="qq" lang="${q.lang}" dir="${dir(q.lang)}"><b>${esc(q.text)}</b></p>
     <div class="qa-ans" lang="${an.lang}" dir="${dir(an.lang)}">${an.text ? body.html : `<p class="muted small">No answer yet.</p>`}</div>
   </article>`;
 }
 function viewQA(){
-  if (!S.admin) return `${statusBar()}<div class="empty"><b>Q&amp;A is private</b>It is available in the editor only.</div>`;
   const q = S.qq.trim(), refs = q ? refMatch(q) : null, nq = normalize(q);
   const items = S.qa.filter(x => refs ? inRanges(x.s, x.a, refs) : (!q || normalize(LANGS.map(l => (x.q[l] || "") + " " + (x.ans[l] || "")).join(" ")).includes(nq)))
     .sort((a, b) => (a.s*1000 + a.a) - (b.s*1000 + b.a) || (a.createdAt || 0) - (b.createdAt || 0));
   return `${statusBar()}
   <div class="phead"><h1>Q&amp;A</h1></div>
-  <p class="lede">Your questions about ayahs, with the answers you finalised, in the write-up language chosen at the top (falling back to the language it was written in). Private: not shown on the public site. Start one from any ayah in the surah reader (the “Q&amp;A” button), or search here by text or by an ayah such as <b>2:255</b>.</p>
+  <p class="lede">${S.admin ? `Your questions about ayahs, with the answers you finalised, in the write-up language chosen at the top (falling back to the language it was written in). Public: shown on the public site once you publish. Start one from any ayah in the surah reader (the “Q&amp;A” button), or search here by text or by an ayah such as <b>2:255</b>.` : `Questions about ayahs and their answers, in the write-up language chosen at the top (falling back to the language it was written in). Answers marked “Draft” or “AI draft” have not been reviewed yet. Search by text or by an ayah such as <b>2:255</b>.`}</p>
   <div class="filters"><div class="row"><input type="search" id="qq" class="search" placeholder="Search questions and answers, or 2:255" value="${esc(S.qq)}" aria-label="Search Q&amp;A"></div>
     ${q ? `<div class="small muted">${items.length} result${items.length === 1 ? "" : "s"}</div>` : ""}</div>
-  <div class="results">${items.map(qaCard).join("") || (S.qa.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No Q&amp;A yet</b>Open a surah and press “Q&amp;A” under any ayah.</div>`)}</div>`;
+  <div class="results">${items.map(qaCard).join("") || (S.qa.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No Q&amp;A yet</b>${S.admin ? "Open a surah and press “Q&amp;A” under any ayah." : "Questions and answers will appear here as they are added."}</div>`)}</div>`;
 }
 const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final, M.fit || null, M.also || ""]);
 function openQA(ref){
@@ -4037,7 +4036,7 @@ function gMine(q, R){
   for (const l of S.lessons) add("lesson", "Lesson", l, (l.ranges[0] || {}).s, (l.ranges[0] || {}).from, [txt(l.title), (l.tags || []).join(" "), txt(l.summary), txt(l.body)], "l:" + l.id);
   for (const w of S.words) add("word", "Word analysis", w, w.s, w.a, [txt(w.title) + " " + (w.word || "") + " " + (w.root || "") + " " + (w.lemma || ""), (w.tags || []).join(" "), txt(w.summary), txt(w.body)], "w:" + w.id);
   for (const c of S.cm) add("cm", "Commentary", c, c.s, c.a, ["", "", "", txt(c.text)], "");
-  if (S.admin) for (const x of S.qa) add("qa", "Q&A", x, x.s, x.a, [txt(x.q), "", "", txt(x.ans)], "");
+  if (S.admin || S.static) for (const x of S.qa) add("qa", "Q&A", x, x.s, x.a, [txt(x.q), "", "", txt(x.ans)], "");
   items.sort((x, y) => y.sc - x.sc);
   return items.slice(0, 6);
 }
@@ -4687,6 +4686,8 @@ async function loadStatic(){
     S.lessons = d.lessons || [];
     S.words = (d.words || []).filter(w => validRefSafe(w.s, w.a));
     S.cm = (d.commentary || []).filter(c => validRefSafe(c.s, c.a)).map(cmNorm);
+    S.qa = (d.qa || []).map(qaNorm).filter(x => validRefSafe(x.s, x.a)); S.qaIx = {};
+    for (const x of S.qa) { (S.qaIx[key(x.s, x.a)] ||= []).push(x); for (const k of alsoKeys(x)) (S.qaIx[k] ||= []).push(x); }
     S.cats = (d.categories || []).slice().sort((a, b) => (a.order||0) - (b.order||0));
     S.irabAll = d.irab || {};
     S.vocab = d.vocab || {};
