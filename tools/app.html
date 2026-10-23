@@ -444,6 +444,35 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
   .shead .arn{font-size:28px}
   .brand span{display:none}
 }
+
+/* Minimized window bar, sticky surah strip, search page */
+.backdrop.min{display:none}
+#dock-root{position:fixed;left:0;right:0;bottom:max(14px,env(safe-area-inset-bottom,0px));z-index:45;display:flex;justify-content:center;pointer-events:none;padding-inline:12px}
+.dock{pointer-events:auto;display:flex;align-items:center;gap:10px;max-width:560px;width:100%;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:999px;padding:7px 7px 7px 14px;box-shadow:0 8px 28px rgba(0,0,0,.28)}
+.dock .dlabel{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.dock .dlabel b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock .dlabel span{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock .dot{width:10px;height:10px;border-radius:50%;background:var(--muted);flex:none}
+.dock.busy .dot{background:var(--accent);animation:dockpulse 1.1s ease-in-out infinite}
+.dock.ready{border-color:var(--accent)} .dock.ready .dot{background:#2E8B57}
+.dock.err .dot{background:var(--danger)}
+@keyframes dockpulse{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.dock.busy .dot{animation:none}}
+.surahbar{position:absolute;left:0;right:0;top:100%;border-bottom:1px solid var(--line);background:var(--surface);box-shadow:0 3px 8px rgba(0,0,0,.08)}
+.surahbar .wrap{display:flex;align-items:center;gap:10px;padding-block:5px;font-size:14px}
+.surahbar b{font-weight:600}
+.surahbar .sb-ar{font:20px/1.3 var(--f-quran);color:var(--muted)}
+.surahbar .sb-pos{color:var(--muted);font-size:13px;margin-left:auto;white-space:nowrap}
+.surahbar[hidden]{display:none}
+.gres{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.gcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.gcard .ar{margin:0}
+.gcard .gtr{margin:0;font-size:15px}
+.gcard .ghead{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gcard mark,.gtr mark{background:var(--flash);color:inherit;border-radius:3px;padding:0 2px}
+.gsec{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:14px 0 -2px}
+.gnote{font-size:13px;color:var(--muted);margin:8px 0 0}
+.gai{border-style:dashed}
 </style>
 
 <header class="top">
@@ -451,6 +480,7 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
     <button class="brand" id="brand" type="button" aria-label="Ayah by Ayah, surah list"><b>Ayah by Ayah</b><span>آية بعد آية</span></button>
     <nav class="tabs" aria-label="Sections">
       <button type="button" data-nav="surahs">Surahs</button>
+      <button type="button" data-nav="search">Search</button>
       <button type="button" data-nav="notes">Notes</button>
       <button type="button" data-nav="lessons">Lessons</button>
       <button type="button" data-nav="words">Word analysis</button>
@@ -478,9 +508,12 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
       <span class="modepill" id="modepill">Reader</span>
     </div>
   </div>
+  <div class="surahbar" id="surahbar" hidden><div class="wrap"><span id="sb-name"></span><button type="button" class="btn ghost small" data-totop aria-label="Back to the top of the surah">↑ Top</button></div></div>
 </header>
 <main class="wrap" id="app"><p class="muted">Loading the Qur'an text…</p></main>
 <div id="modal-root"></div>
+<div id="flash-root"></div>
+<div id="dock-root"></div>
 <div id="focus-root"></div>
 <div id="back-root"></div>
 <div id="toast-root"></div>
@@ -722,6 +755,7 @@ function go(view, opts={}){
       if (el) { el.scrollIntoView({block:"start"}); }
     });
   } else if (!opts.keepScroll) window.scrollTo(0,0);
+  if (view === "search") requestAnimationFrame(() => { const i = $("#gq"); if (i) i.focus(); });
 }
 function goRef(ref){
   const [s,a] = ref.split(":").map(Number);
@@ -735,7 +769,7 @@ function goRef(ref){
       S.ret = {view: "article", art: Object.assign({}, S.art), y, label: t ? `Back to “${t.length > 48 ? t.slice(0, 46) + "…" : t}”` : `Back to the ${kindL}`};
     } else if (S.view === "surah") {
       if (!S.ret || S.ret.view !== "surah" || S.ret.surah !== S.surah || Math.abs(S.ret.y - y) > 40) S.ret = {view: "surah", surah: S.surah, y, label: `Back to where you were in ${surahOf(S.surah).tl}`};
-    } else if (S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa" || S.view === "commentary" || S.view === "research" || S.view === "ruku" || S.view === "learn" || S.view === "exercise") {
+    } else if (S.view === "search" || S.view === "notes" || S.view === "lessons" || S.view === "words" || S.view === "qa" || S.view === "commentary" || S.view === "research" || S.view === "ruku" || S.view === "learn" || S.view === "exercise") {
       S.ret = {view: S.view, y, label: `Back to ${S.view === "words" ? "Word analysis" : S.view === "learn" ? "Learn" : S.view === "exercise" ? "Exercise" : S.view === "qa" ? "Q&A" : S.view[0].toUpperCase() + S.view.slice(1)}`};
     }
     S.keepRet = true; if (S.onlyMarked && !hasMarks(s,a)) S.onlyMarked = false; S.open.add(key(s,a)); go("surah",{s,a}); }
@@ -744,7 +778,7 @@ function fromHash(){
   const h = (location.hash||"").slice(1);
   let m;
   if (h === "" || h === "surahs") S.view = "surahs";
-  else if (h === "notes" || h === "lessons" || h === "words" || h === "qa" || h === "commentary" || h === "research" || h === "ruku" || h === "learn" || h === "exercise") S.view = h;
+  else if (h === "search" || h === "notes" || h === "lessons" || h === "words" || h === "qa" || h === "commentary" || h === "research" || h === "ruku" || h === "learn" || h === "exercise") S.view = h;
   else if ((m = h.match(/^([nlw])-([A-Za-z0-9_.~-]+)$/))) { S.view = "article"; S.art = {kind: m[1], id: m[2], from: m[1]==="n" ? "notes" : m[1]==="w" ? "words" : "lessons"}; }
   else if ((m = h.match(/^s(\d{1,3})(?:-(\d{1,3}))?$/)) && +m[1]>=1 && +m[1]<=114) { S.view = "surah"; S.surah = +m[1]; if (m[2]) { S.pendingAyah = +m[2]; S.open.add(key(+m[1],+m[2])); } }
 }
@@ -842,6 +876,7 @@ function render(){
   applyQFont();
   if (S.focus && !["surah","article","learn","exercise"].includes(S.view)) { S.focus = false; document.documentElement.classList.remove("reading"); if (document.fullscreenElement) document.exitFullscreen().catch(() => {}); }
   setTimeout(drawFocusBar, 0);
+  setTimeout(updateSurahBar, 0);
   drawBackPill();
   { const nq = $("#nav-qa"); if (nq) nq.hidden = !S.admin; const nr = $("#nav-research"); if (nr) nr.hidden = !S.admin; const nk = $("#nav-ruku"); if (nk) nk.hidden = !S.admin; }
   document.querySelectorAll("nav.tabs button").forEach(b => {
@@ -866,6 +901,7 @@ function render(){
   else if (S.view === "commentary") app.innerHTML = viewCommentary();
   else if (S.view === "research") app.innerHTML = viewResearch();
   else if (S.view === "ruku") app.innerHTML = viewRuku();
+  else if (S.view === "search") app.innerHTML = viewSearch();
   else if (S.view === "learn") app.innerHTML = viewLearn();
   else if (S.view === "exercise") app.innerHTML = viewExercise();
   else if (S.view === "article") app.innerHTML = viewArticle();
@@ -898,8 +934,9 @@ function viewSurahs(){
   return `${statusBar()}
   <div class="idx-head">
     <h1>Surahs</h1>
-    <input type="search" id="sq" class="search" placeholder="Find a surah by name or number" value="${esc(S.sq)}" aria-label="Find a surah">
+    <input type="search" id="sq" class="search" placeholder="Find a surah, or jump to an ayah like 2:4" value="${esc(S.sq)}" aria-label="Find a surah or jump to an ayah">
   </div>
+  ${S.sq.trim() ? `<p class="gnote" style="margin:-6px 0 12px">${parseRefs(S.sq) ? `Press Enter to open ${esc(parseRefs(S.sq).map(rangeLabel).join(", "))}. ` : ""}Looking for a topic, a word or an ayah? <button type="button" class="btn small" data-gsearch>Search the Qur'an for “${esc(S.sq.trim())}”</button></p>` : ""}
   <div class="row small muted" style="margin-bottom:14px">
     <span>Across the Qur'an:</span>
     <span class="legend">
@@ -1191,6 +1228,7 @@ function viewQA(){
 }
 const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final, M.fit || null, M.also || ""]);
 function openQA(ref){
+  if (blockedByMin()) return;
   const [s, a, id] = ref.split(":"); const ex = id ? S.qa.find(x => x.id === id) : null;
   const src = ex ? ex.src : S.lang;
   M = {type: "qa", s: ex ? ex.s : +s, a: ex ? ex.a : +a, also: ex ? alsoLabel(ex.also) : "", id: ex ? ex.id : null, src, tab: (ex && ((ex.q[S.lang] || "") + (ex.ans[S.lang] || "")).trim()) ? S.lang : src,
@@ -1265,7 +1303,7 @@ function drawQA(){
   const {s, a} = M, k = key(s, a), list = qaList(k), su = surahOf(s), T = M.tab, isSrc = T === M.src, dir = RTL[T] ? "rtl" : "ltr";
   const cut = (x, n) => { x = String(x || "").replace(/\s+/g, " "); return x.length > n ? x.slice(0, n - 1) + "…" : x; };
   const noAI = !S.sample;
-  modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+  modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button><button type="button" class="btn" data-m="close">Close</button></div>
     <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
       <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
     <div class="field"><label for="qa-also">Also tag these ayahs <span class="muted" style="font-weight:400">(optional, e.g. 2:23, 10:38; this Q&amp;A will also be listed under each)</span></label><input type="text" id="qa-also" value="${esc(M.also || "")}" autocomplete="off"></div>
@@ -1278,8 +1316,8 @@ function drawQA(){
     <div class="field"><label for="qa-q">Question · ${LNAME_EN[T]}</label>
       <textarea id="qa-q" rows="3" lang="${T}" dir="${dir}" placeholder="${isSrc ? "Write your question about this ayah" : "Drafted from the " + LNAME_EN[M.src] + " question, or write it here"}">${esc(M.q[T])}</textarea>
       ${isSrc ? `<div class="row"><button type="button" class="btn primary" data-m="qa-ask" ${M.busy || noAI ? "disabled" : ""}>${M.ans[T].trim() ? "Ask again from scratch" : "Ask AI"}</button>
-        ${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button>` : ""}<span class="small muted">${esc(M.status || (noAI ? "AI is not available in this view." : ""))}</span></div>`
-        : `<div class="row">${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button>` : ""}<span class="small muted">${esc(M.status || "")}</span></div>`}</div>
+        ${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}<span class="small muted">${esc(M.status || (noAI ? "AI is not available in this view." : ""))}</span></div>`
+        : `<div class="row">${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}<span class="small muted">${esc(M.status || "")}</span></div>`}</div>
     <div class="field"><label for="qa-ans">Answer · ${LNAME_EN[T]} ${M.ai[T] ? `<span class="chip rev">AI draft</span>` : ""}</label>
       <textarea id="qa-ans" rows="14" lang="${T}" dir="${dir}" placeholder="${isSrc ? "The AI draft appears here. You can also write or edit the answer yourself." : "Draft this language with AI, or write it here"}">${esc(M.ans[T])}</textarea>
       ${isSrc ? `<span class="small muted">The AI works from its own knowledge only: it cannot look up tafsir, hadith or the Qur'an text. Check every quotation, reference and attribution before you finalise.</span>` : ""}
@@ -1489,6 +1527,7 @@ function viewCommentary(){
 }
 const cmSnap = () => JSON.stringify([M.src, M.text]);
 function openCM(k){
+  if (blockedByMin()) return;
   const [s, a] = k.split(":").map(Number), ex = S.cmIx[k], src = ex ? ex.src : S.lang;
   M = {type: "cm", s, a, src, tab: (ex && (ex.text[S.lang] || "").trim()) ? S.lang : src, text: Object.assign(blankLang(), ex?.text), ai: Object.assign({}, ex?.ai),
     exists: !!ex, created: ex?.createdAt || 0, busy: false, ctl: [], err: "", status: ""};
@@ -1503,7 +1542,7 @@ function captureCM(){
 }
 function drawCM(){
   const {s, a} = M, su = surahOf(s), T = M.tab, isSrc = T === M.src, dir = RTL[T] ? "rtl" : "ltr", noAI = !S.sample;
-  modal(`<div class="row"><h2>Commentary · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+  modal(`<div class="row"><h2>Commentary · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button><button type="button" class="btn" data-m="close">Close</button></div>
     <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
       <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
     <div class="row small"><label class="flabel" for="cm-src">Written in</label>
@@ -1513,7 +1552,7 @@ function drawCM(){
     <div class="field"><label for="cm-text">Short commentary · ${LNAME_EN[T]} ${M.ai[T] ? `<span class="chip rev">AI draft</span>` : ""}</label>
       <textarea id="cm-text" rows="9" lang="${T}" dir="${dir}" placeholder="${isSrc ? "Write a short commentary on this ayah. Blank lines make paragraphs; **bold**, *italic* and references such as 4:82 work." : "Draft this language with AI, or write it here"}">${esc(M.text[T])}</textarea>
       ${M.ai[T] ? `<div class="row small"><span class="notice">Drafted by AI. Review it, then mark it reviewed.</span><button type="button" class="btn small" data-m="cm-reviewed">Mark as reviewed</button></div>` : ""}
-      ${M.busy ? `<div class="row"><button type="button" class="btn" data-m="cm-stop">Stop</button><span class="small muted">${esc(M.status || "")}</span></div>` : ""}</div>
+      ${M.busy ? `<div class="row"><button type="button" class="btn" data-m="cm-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button><span class="small muted">${esc(M.status || "")}</span></div>` : ""}</div>
     <div class="aibox row">
       <button type="button" class="btn" data-m="cm-trans" data-v="" ${M.busy || noAI ? "disabled" : ""}>Draft the other languages with AI</button>
       ${!isSrc ? `<button type="button" class="btn" data-m="cm-trans" data-v="${T}" ${M.busy || noAI ? "disabled" : ""}>Draft ${LNAME_EN[T]} only</button>` : ""}
@@ -1662,6 +1701,7 @@ function viewResearch(){
 }
 const rsSnap = () => JSON.stringify([M.title, M.refs, M.status, M.note, M.tags]);
 function openRS(id, ctx){
+  if (blockedByMin()) return;
   const ex = id ? S.research.find(x => x.id === id) : null;
   M = {type: "rs", id: ex ? ex.id : null, ctx: ctx || "", title: ex ? ex.title : "", note: ex ? ex.note : "", refs: ex ? (ex.refs || rsRefLabel(ex)) : (ctx || ""),
     status: ex ? ex.status : "open", tags: ex ? ex.tags.join(", ") : "", created: ex ? ex.createdAt || 0 : 0, busy: false, err: ""};
@@ -1887,6 +1927,7 @@ async function mvAct(act, d){
   if (act === "mv-do") return mvDo();
 }
 function openRukuList(ref){
+  if (blockedByMin()) return;
   const [s, cur] = ref.split(":").map(Number), su = surahOf(s), st = RUKU[s];
   M = {type:"rukus"};
   modal(`<div class="row"><h2>Rukūʿ · ${esc(su.tl)}</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
@@ -2376,17 +2417,22 @@ function arTokHTML(s, a, text){
   return parts.map((t, i) => map.has(i) ? `<span class="wtok" role="button" tabindex="0" data-wtok="${s}:${a}:${map.get(i)}">${esc(t)}</span>` : esc(t)).join("");
 }
 function openWordCard(s, a, j){
+  if (M && M.min) {
+    FL = {type:"flash", s, a, j};
+    if (!FORMS) loadForms().then(() => { if (FL) drawWordCard(); }).catch(() => {});
+    drawWordCard(); return;
+  }
   M = {type:"flash", s, a, j};
   if (!FORMS) loadForms().then(() => { if (M && M.type === "flash") drawWordCard(); }).catch(() => {});
   drawWordCard();
 }
 function drawWordCard(){
-  const {s, a, j} = M, ws = FW[s] && FW[s][a-1];
-  if (!ws || !ws[j]) { closeModal(); return; }
+  const {s, a, j} = FL || M, ws = FW[s] && FW[s][a-1];
+  if (!ws || !ws[j]) { if (FL) closeFlash(); else closeModal(); return; }
   const w = ws[j], ds = w[2].map(decodeSeg);
   const stem = ds.find(o => o.role === "stem" && o.cls !== "p") || ds.find(o => o.role === "stem") || ds[0];
   const forms = formsCard(ds);
-  modal(`<div class="row"><span class="small muted">${s}:${a} · word ${j+1} of ${ws.length}</span><span class="spacer"></span>
+  (FL ? drawFlashLight : (h => modal(h, "flash")))(`<div class="row"><span class="small muted">${s}:${a} · word ${j+1} of ${ws.length}</span><span class="spacer"></span>
       <button type="button" class="btn ghost small" data-m="flash-go" data-v="-1" aria-label="Previous word" ${j===0?"disabled":""}>‹</button>
       <button type="button" class="btn ghost small" data-m="flash-go" data-v="1" aria-label="Next word" ${j===ws.length-1?"disabled":""}>›</button></div>
     <button type="button" class="flash-word" data-m="close" lang="ar" dir="rtl" title="Tap to return to the ayah">${ds.map(segHTML).join("")}</button>
@@ -2394,9 +2440,10 @@ function drawWordCard(){
     ${stem ? `<div class="gseg-d" style="text-align:center">${stem.en}${stem.enDesc ? " · " + esc(stem.enDesc) : ""}${stem.root ? ` · Root <span class="gar" lang="ar" dir="rtl">${esc(spaced(stem.root))}</span>` : ""}${stem.lem ? ` · Lemma <span class="gar" lang="ar" dir="rtl">${esc(stem.lem)}</span>` : ""}</div>` : ""}
     ${forms || (FORMS ? `<p class="small muted" style="margin:0;text-align:center">No forms table for this word (particles, pronouns and names have none).</p>` : `<p class="small muted" style="margin:0;text-align:center">Loading forms…</p>`)}
     ${FORMS ? `<p class="small muted" style="margin:0">● = occurs in the Qur’an. Forms: Arramooz dictionary (GPL-3) and the corpus; gaps filled by AI, not yet reviewed.</p>` : ""}
-    <div class="foot"><button type="button" class="btn" data-grammar="${s}:${a}">Full grammar</button><span class="spacer"></span><button type="button" class="btn primary" data-m="close">Back to the ayah</button></div>`, "flash");
+    <div class="foot"><button type="button" class="btn" data-grammar="${s}:${a}">Full grammar</button><span class="spacer"></span><button type="button" class="btn primary" data-m="close">Back to the ayah</button></div>`);
 }
 function openGrammar(k){
+  if (blockedByMin()) return;
   const [s,a] = k.split(":").map(Number);
   M = {type:"gram", s, a, sel:null, edit:false, tab:S.lang, ctl:[]};
   watchIrab(s);
@@ -2827,6 +2874,7 @@ function catName(id){ const c = catById(id); return c ? (c.name?.en || "") : "";
 function catChip(id){ const n = catName(id); return n ? `<button type="button" class="chip cat" data-ncat="${esc(id)}" title="Show everything in this category">${esc(n)}</button>` : ""; }
 const catUse = id => S.notes.filter(n => n.cat === id).length;
 function openCats(){
+  if (blockedByMin()) return;
   M = {type:"cats", list: JSON.parse(JSON.stringify(S.cats)), err:""};
   drawCats();
 }
@@ -2894,6 +2942,7 @@ function shareText(kind, it){
   ].filter((x, i, arr) => !(x === "" && arr[i-1] === "")).join("\n").trim();
 }
 function openShare(ref){
+  if (blockedByMin()) return;
   const [kind, id] = ref.split(":");
   const it = itemOf(kind, id);
   if (!it) return;
@@ -2917,10 +2966,71 @@ async function copyFrom(id, value, done){
 
 /* ---------- editors ---------- */
 let M = null; // modal state
-function closeModal(){ if (M?.ctl) M.ctl.forEach(c=>c.abort()); M = null; $("#modal-root").innerHTML = ""; }
-function modal(html, cls){ const sc = $(".backdrop")?.scrollTop || 0; $("#modal-root").innerHTML = `<div class="backdrop" id="backdrop"><div class="dialog ${cls||""}" role="dialog" aria-modal="true">${html}</div></div>`; if (cls) $(".backdrop").scrollTop = sc; }
+function closeModal(){ if (M?.ctl) M.ctl.forEach(c=>c.abort()); M = null; $("#modal-root").innerHTML = ""; updateDock(); }
+function modal(html, cls){ const sc = $("#modal-root .backdrop")?.scrollTop || 0; $("#modal-root").innerHTML = `<div class="backdrop${M && M.min ? " min" : ""}" id="backdrop"><div class="dialog ${cls||""}" role="dialog" aria-modal="true">${html}</div></div>`; if (cls) $("#modal-root .backdrop").scrollTop = sc; if (M && M.min) updateDock(); }
+
+/* ---------- minimize a window and keep studying ----------
+   A Q&A, commentary, note, lesson or word-analysis window can be hidden while the AI works (or while you think).
+   The window keeps its state and keeps running; a small bar at the bottom shows its progress and reopens it.
+   While one is minimized you can read, scroll, search, change surah and tap words (the word card opens on its own
+   layer). Opening another editor window is blocked until the minimized one is reopened and finished or closed. */
+let FL = null;   // word card shown while a window is minimized
+const MIN_TYPES = ["qa", "cm", "note", "lesson", "word"];
+function minLabel(m){
+  if (m.type === "qa") return `Q&A · ${m.s}:${m.a}`;
+  if (m.type === "cm") return `Commentary · ${m.s}:${m.a}`;
+  if (m.type === "word") return "Word analysis" + (m.it && m.it.word ? " · " + m.it.word : "");
+  return m.type === "lesson" ? "Lesson" : "Note";
+}
+const minBusy = m => !!(m && (m.busy || (m.use && m.use.busy)));
+function updateDock(){
+  const r = $("#dock-root"); if (!r) return;
+  const m = M && M.min ? M : null;
+  if (!m) { if (r.innerHTML) { r.innerHTML = ""; r.dataset.h = ""; } return; }
+  const busy = minBusy(m);
+  if (busy) m.minWork = true;
+  let cls = "dock", sub;
+  if (busy) { cls += " busy"; sub = "Working… keep reading, it continues in the background"; }
+  else if (m.minWork) { cls += m.err ? " err" : " ready"; sub = m.err ? "Stopped. Tap Open to see why" : "Ready. Tap Open to read it"; }
+  else sub = "Minimized. Your work is kept";
+  const html = `<div class="${cls}" role="status"><span class="dot"></span><div class="dlabel"><b>${esc(minLabel(m))}</b><span>${esc(sub)}</span></div><button type="button" class="btn primary small" data-dock="open">Open</button></div>`;
+  if (r.dataset.h !== html) { r.innerHTML = html; r.dataset.h = html; }
+  if (!busy && m.minWork && !m.minToasted) { m.minToasted = true; toast(m.err ? "A minimized window stopped. Tap Open." : minLabel(m) + " is ready. Tap Open."); }
+}
+function minimizeModal(){
+  if (!M || M.min || !MIN_TYPES.includes(M.type)) return;
+  if (M.type === "qa") captureQA(); else if (M.type === "cm") captureCM(); else captureFields();
+  M.minScroll = $("#modal-root .backdrop")?.scrollTop || 0;
+  M.min = true; M.minWork = false; M.minToasted = false;
+  const b = $("#modal-root .backdrop"); if (b) b.classList.add("min");
+  updateDock();
+}
+function restoreModal(){
+  if (!M || !M.min) return;
+  closeFlash();
+  if (M.type === "qa") captureQA(); else if (M.type === "cm") captureCM(); else captureFields();
+  M.min = false; M.minWork = false; M.minToasted = false;
+  if (M.type === "qa") drawQA(); else if (M.type === "cm") drawCM(); else drawWriteEditor();
+  const b = $("#modal-root .backdrop"); if (b) b.scrollTop = M.minScroll || 0;
+  updateDock();
+}
+function blockedByMin(){
+  if (!M || !M.min) return false;
+  toast("A window is minimized. Open it from the bar below and finish or close it first.");
+  const d = $(".dock"); if (d && d.animate) d.animate([{transform:"scale(1)"},{transform:"scale(1.05)"},{transform:"scale(1)"}], {duration: 320});
+  return true;
+}
+function closeFlash(){ FL = null; const r = $("#flash-root"); if (r) r.innerHTML = ""; }
+function drawFlashLight(html){
+  const r = $("#flash-root"); if (!r) return;
+  html = html.replace(/data-m="flash-go"/g, 'data-fl="go"').replace(/data-m="close"/g, 'data-fl="close"')
+    .replace(/<button type="button" class="btn" data-grammar="[^"]*">Full grammar<\/button>/, "");
+  r.innerHTML = `<div class="backdrop" id="fl-backdrop" style="z-index:48"><div class="dialog flash" role="dialog" aria-modal="true">${html}</div></div>`;
+}
+setInterval(() => { if (M && M.min) updateDock(); }, 700);
 
 function openTrEditor(k){
+  if (blockedByMin()) return;
   const [s,a] = k.split(":").map(Number);
   const v = surahOf(s).v[a-1], rev = S.tr[k];
   M = {type:"tr", s, a, l: S.trLang};
@@ -2942,6 +3052,7 @@ function openTrEditor(k){
 function blankLang(){ return {en:"",bn:"",ar:"",ur:""}; }
 function draftKey(){ return "aba.draft." + (M.it.id || ("new-" + M.type)); }
 function openWriteEditor(kind, existing, preset){
+  if (blockedByMin()) return;
   // kind: "explanation" (a note) | "lesson" | "word"
   const it = existing ? JSON.parse(JSON.stringify(existing)) : {kind: (kind==="lesson"||kind==="word")?undefined:"explanation", title:blankLang(), summary:blankLang(), body:blankLang(), tags:[], src: S.lang, ai:{}};
   it.title = Object.assign(blankLang(), it.title); it.summary = Object.assign(blankLang(), it.summary); it.body = Object.assign(blankLang(), it.body); it.ai = it.ai || {};
@@ -3050,11 +3161,11 @@ function usagePanel(){
     const ns = new Set(rows.map(r => r.s)).size, mk = rows.filter(r => r.mk).length;
     body = `<div class="ustats">${rows.length.toLocaleString()} occurrence${rows.length===1?"":"s"} in ${ns} surah${ns===1?"":"s"} · ${mk} in Makki surahs, ${rows.length - mk} in Madani${U.form ? " · filtered to one form" : ""}</div>
       ${U.forms.length > 1 ? `<div class="uforms" aria-label="Forms">${U.forms.slice(0, 24).map(([f, c]) => `<button type="button" class="uform" lang="ar" dir="rtl" data-m="use-form" data-v="${esc(f)}" aria-pressed="${U.form === f}">${esc(f)}<small>×${c}</small></button>`).join("")}${U.forms.length > 24 ? `<span class="small muted">+${U.forms.length - 24} more forms</span>` : ""}</div>` : ""}
-      ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="use-ai" ${U.busy||M.busy?"disabled":""}>Analyse usage with AI</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}
+      ${S.sample ? `<div class="aibox"><button type="button" class="btn" data-m="use-ai" ${U.busy||M.busy?"disabled":""}>Analyse usage with AI</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}
         <span class="small muted">${esc(U.status || `Groups ${U.form ? "these" : "all"} ${rows.length.toLocaleString()} occurrences by sense and context, and adds the result to the ${LNAME_EN[it.src]} text for you to review.${rows.length > 1200 ? " That is too many for one analysis: choose one form above first." : ""}`)}</span></div>
         <div class="uask"><label class="flabel" for="use-q">Ask something specific about this ${ph ? "phrase" : "word"}'s usage</label>
           <textarea id="use-q" rows="2" placeholder="e.g. Where is it used for prophets and where for ordinary people? Is it ever used in a negative sense? Write a paragraph comparing its use in 2:124 and 14:40.">${esc(U.q || "")}</textarea>
-          <div class="row"><button type="button" class="btn" data-m="use-ask" ${U.busy||M.busy?"disabled":""}>Ask</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button>` : ""}<span class="small muted" id="use-ask-status">${esc(U.askStatus || `Answers from the ${rows.length.toLocaleString()} occurrences shown${(it.body[it.src]||"").trim() ? ", with your current text as context" : ""}.`)}</span></div>
+          <div class="row"><button type="button" class="btn" data-m="use-ask" ${U.busy||M.busy?"disabled":""}>Ask</button>${U.busy ? `<button type="button" class="btn" data-m="use-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}<span class="small muted" id="use-ask-status">${esc(U.askStatus || `Answers from the ${rows.length.toLocaleString()} occurrences shown${(it.body[it.src]||"").trim() ? ", with your current text as context" : ""}.`)}</span></div>
           ${U.answer != null ? `<div class="uans prose w" lang="${it.src}" dir="${RTL[it.src]?"rtl":"ltr"}" id="use-ans">${renderDoc(U.answer, it.src, "ua").html}</div>
             ${!U.busy ? `<div class="row"><button type="button" class="btn primary small" data-m="use-add">Add to the ${LNAME_EN[it.src]} text</button><button type="button" class="btn small" data-m="use-discard">Discard</button></div>` : ""}` : ""}
         </div>` : ""}
@@ -3236,7 +3347,7 @@ function drawWriteEditor(){
   const others = LANGS.filter(l=>l!==it.src);
   const L = M.tab, dir = RTL[L] ? "rtl" : "ltr";
   const doc = renderDoc(it.body[L], L, "pv");
-  modal(`<div class="row"><h2>${heading}</h2><span class="spacer"></span><span class="small muted" id="w-count">${doc.words.toLocaleString()} words · ${readMins(doc.words)} min read</span></div>
+  modal(`<div class="row"><h2>${heading}</h2><span class="spacer"></span><span class="small muted" id="w-count">${doc.words.toLocaleString()} words · ${readMins(doc.words)} min read</span><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button></div>
     ${M.draft ? `<div class="confirm"><span>You have unsaved writing from ${new Date(M.draft.savedAt).toLocaleString()}.</span><span class="spacer"></span><button type="button" class="btn" data-m="draft-discard">Discard it</button><button type="button" class="btn primary" data-m="draft-restore">Restore it</button></div>` : ""}
     ${M.type === "note" ? `<div class="grid2">
       <div class="field"><label for="w-cat">Category (required)</label>
@@ -3278,7 +3389,7 @@ function drawWriteEditor(){
       const AN = (M.aiNotes ||= {}), SC = M.aiScope || "all", scName = SC === "all" ? "all languages" : LNAME_EN[SC];
       return `<div class="aibox"><button type="button" class="btn" data-m="ai" ${M.busy?"disabled":""}>Draft ${others.map(l=>LNAME_EN[l]).join(", ")} from ${LNAME_EN[it.src]} with AI</button>
       ${["bn","ar","ur"].map(l=>`<button type="button" class="btn" data-m="ai-one" data-v="${l}" ${M.busy||l===it.src?"disabled":""} title="${l===it.src?"This is the language you are writing in":`Draft only the ${LNAME_EN[l]} version`}">Draft in ${LNAME_EN[l]}</button>`).join("")}
-      ${M.busy ? `<button type="button" class="btn" data-m="ai-stop">Stop</button>` : ""}
+      ${M.busy ? `<button type="button" class="btn" data-m="ai-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}
       <span class="small muted" id="ai-status">${esc(M.aiStatus || "Drafts fill the tabs for you to review before saving. Long articles take a few minutes.")}</span></div>
     <div class="aibox" style="flex-direction:column;align-items:stretch">
       <div class="row"><label class="flabel" for="ai-notes">Your instructions to the AI</label><span class="spacer"></span>
@@ -3721,14 +3832,331 @@ function dbErr(e){
   return "Saving failed. Check your connection and try again.";
 }
 
+
+/* ---------- the surah name stays visible while you read ---------- */
+let sbRaf = 0;
+function updateSurahBar(){
+  const b = $("#surahbar"); if (!b) return;
+  if (S.view !== "surah" || !S.Q || S.focus) { b.hidden = true; return; }
+  const wrap = document.querySelector("header.top .wrap"), head = document.querySelector(".shead");
+  const edge = wrap ? wrap.getBoundingClientRect().bottom : 0;
+  const away = !head || head.getBoundingClientRect().bottom < edge + 2;
+  if (!away) { b.hidden = true; return; }
+  const su = surahOf(S.surah); if (!su) { b.hidden = true; return; }
+  let cur = 1; const list = document.querySelectorAll("article.ayah");
+  const line = edge + 46;
+  for (let i = 0; i < list.length; i++) { if (list[i].getBoundingClientRect().top <= line) cur = +list[i].id.split("-")[2] || cur; else break; }
+  const html = `<b>${su.n}. ${esc(su.tl)}</b> <span class="sb-ar" lang="ar" dir="rtl">${esc(su.ar)}</span> <span class="sb-pos">Ayah ${cur} of ${su.v.length}</span>`;
+  const n = $("#sb-name"); if (n && n.dataset.h !== html) { n.innerHTML = html; n.dataset.h = html; n.style.cssText = "flex:1;display:flex;align-items:center;gap:10px;min-width:0"; }
+  b.hidden = false;
+}
+window.addEventListener("scroll", () => { if (sbRaf) return; sbRaf = requestAnimationFrame(() => { sbRaf = 0; updateSurahBar(); }); }, {passive: true});
+window.addEventListener("resize", () => updateSurahBar());
+
+/* ---------- search: an ayah (2:4, baqarah 255), a topic or concept, a word, a root, or your own write-ups ---------- */
+S.gq = ""; S.gmore = 30; S.gai = null;
+let gSearchTimer = 0;
+/* Common themes. k = words a reader may type; w = stems looked for in the English translation (prefix match; a stem
+   ending in ! must match the whole word). Meant to catch the vocabulary of Saheeh International. */
+const CONCEPTS = [
+  {t:"Patience (ṣabr)", k:["patience","patient","sabr","sabar","perseverance","steadfastness"], w:["patien","persever","steadfast","endur","constan"]},
+  {t:"Gratitude (shukr)", k:["gratitude","gratefulness","thankfulness","shukr","grateful","thanks"], w:["grateful","thank","gratitude","ungrateful"]},
+  {t:"Prayer (ṣalāh)", k:["prayer","prayers","salah","salat","namaz","pray"], w:["prayer","pray","prostrat","salah"]},
+  {t:"Fasting (ṣawm)", k:["fasting","sawm","siyam","ramadan","roza"], w:["fast!","fasting","ramadan","fasts!"]},
+  {t:"Charity (zakāh, ṣadaqah)", k:["charity","zakah","zakat","sadaqah","alms","infaq","spending"], w:["zakah","charit","alms","spend","needy","the poor"]},
+  {t:"Pilgrimage (ḥajj)", k:["hajj","pilgrimage","umrah","kaaba","kabah"], w:["pilgrimage","hajj","umrah","sacred house","ka'bah","safa","arafat"]},
+  {t:"Repentance (tawbah)", k:["repentance","tawbah","tawba","repent"], w:["repent","turn back","turns in forgiveness","accepting of repentance"]},
+  {t:"Forgiveness (maghfirah)", k:["forgiveness","maghfirah","forgive","pardon"], w:["forgiv","pardon"]},
+  {t:"Mercy (raḥmah)", k:["mercy","rahmah","rahma","compassion","merciful"], w:["mercy","merciful","compassion"]},
+  {t:"Trust in God (tawakkul)", k:["tawakkul","trust","reliance","trust in god","trust in allah"], w:["trust","rely","reliance","depend"]},
+  {t:"Faith (īmān)", k:["faith","iman","belief","believe","believers"], w:["believ","faith"]},
+  {t:"Disbelief (kufr)", k:["disbelief","kufr","unbelief","kafir","disbelievers","denial"], w:["disbelie","deny","denied","reject"]},
+  {t:"Hypocrisy (nifāq)", k:["hypocrisy","nifaq","hypocrite","hypocrites","munafiq"], w:["hypocri"]},
+  {t:"Justice (ʿadl)", k:["justice","adl","fairness","equity"], w:["justice","justly","equit","fair"]},
+  {t:"Wrongdoing and oppression (ẓulm)", k:["oppression","zulm","injustice","wrongdoing","wrongdoers","tyranny"], w:["oppress","wrongdo","unjust","injustice","tyran","wrong!"]},
+  {t:"Parents", k:["parents","mother","father","birr"], w:["parents","mother","father"]},
+  {t:"Marriage and divorce", k:["marriage","nikah","wife","husband","spouse","divorce","talaq"], w:["marr","wife","wives","husband","spouse","divorc"]},
+  {t:"Orphans", k:["orphan","orphans","yatim"], w:["orphan"]},
+  {t:"Usury (ribā)", k:["usury","riba","interest"], w:["usury","riba"]},
+  {t:"Wealth", k:["wealth","money","riches","property"], w:["wealth","riches","propert"]},
+  {t:"Death and the Hereafter", k:["death","afterlife","hereafter","akhirah","akhira","resurrection","judgment","qiyamah"], w:["death","die!","dies!","hereafter","resurrect","judgment","reckoning","last day"]},
+  {t:"Paradise (jannah)", k:["paradise","jannah","heaven","gardens"], w:["paradise","gardens","jannah"]},
+  {t:"Hell and punishment", k:["hell","hellfire","jahannam","fire","punishment","torment"], w:["hellfire","hell!","jahannam","fire","punishment","torment"]},
+  {t:"Angels", k:["angels","angel","malaikah"], w:["angel","gabriel","michael"]},
+  {t:"Satan and the jinn", k:["satan","shaytan","iblis","jinn"], w:["satan","iblis","jinn","devil"]},
+  {t:"Creation and the signs in nature", k:["creation","universe","nature","cosmos","signs"], w:["created","creation","heavens and the earth","sun and the moon","alternation of the night"]},
+  {t:"Knowledge and reflection", k:["knowledge","reflection","ponder","reason","intellect","ilm","aql"], w:["knowledge","ponder","reflect","reason","intellect","understand"]},
+  {t:"Guidance (hidāyah)", k:["guidance","hidayah","hidayat","straight path","sirat"], w:["guidance","guide","straight path"]},
+  {t:"Fighting and striving (jihād)", k:["jihad","fighting","war","qital","struggle"], w:["fight","strive","struggl","jihad","battle"]},
+  {t:"Peace and reconciliation", k:["peace","truce","reconciliation"], w:["peace","truce","reconcil"]},
+  {t:"Covenants and promises", k:["covenant","promise","oath","pledge","mithaq"], w:["covenant","promise","oath","pledge"]},
+  {t:"Trials and hardship", k:["trial","trials","test","tribulation","fitnah","hardship"], w:["test","trial","tribulation","hardship","affliction"]},
+  {t:"Arrogance and pride (kibr)", k:["arrogance","pride","kibr","haughty"], w:["arrogan","pride","haughty","boast"]},
+  {t:"Supplication (duʿāʾ)", k:["dua","supplication","invoke"], w:["supplicat","invok","call upon","calls upon"]},
+  {t:"Remembrance (dhikr)", k:["dhikr","zikr","remembrance","remember"], w:["remembrance","remember","dhikr"]},
+  {t:"Oneness of God and shirk", k:["tawhid","shirk","oneness","polytheism","idolatry","partners"], w:["associat","partner","idol","one god","no deity","polythe"]},
+  {t:"The Qur'an and revelation", k:["quran","qur'an","revelation","recitation","wahy"], w:["qur'an","recit","revelation","revealed"]},
+  {t:"Modesty and chastity", k:["modesty","hijab","chastity","haya","humility"], w:["modest","chaste","chastity","veil","humble","humility"]},
+  {t:"Lawful and prohibited", k:["halal","haram","lawful","prohibited","forbidden","food","wine","intoxicants","pork"], w:["lawful","unlawful","forbidden","prohibit","intoxicant","wine","swine","carrion"]},
+  {t:"Prophets and messengers", k:["prophets","messengers","rasul","nabi"], w:["prophet","messenger"]},
+  {t:"Truthfulness and lying", k:["truthfulness","honesty","sidq","lying","falsehood","lie"], w:["truthful","honest","lie!","lies!","falsehood","liar"]},
+  {t:"Kinship and neighbours", k:["brotherhood","neighbours","neighbors","kinship","relatives","silat"], w:["relatives","kin!","neighbo","brother","kindred"]},
+  {t:"Backbiting and ridicule", k:["backbiting","slander","gossip","suspicion","ghibah","mockery"], w:["backbit","slander","suspicion","ridicule","insult","mock"]},
+  {t:"Women", k:["women","woman"], w:["women","woman"]},
+  {t:"Trade, debts and contracts", k:["trade","business","commerce","contracts","debt","loan"], w:["trade","debt","contract","write it down","weigh","scale"]},
+  {t:"Migration (hijrah)", k:["hijrah","migration","emigrate"], w:["emigrat","migrat","hijrah"]},
+  {t:"People of the Book and the Children of Israel", k:["people of the book","jews","christians","israelites","bani israel"], w:["people of the scripture","children of israel","jews","christians"]}
+];
+const G_STOP = new Set(["the","of","and","in","to","a","an","is","are","for","on","with","about","what","does","do","say","says","verses","verse","ayah","ayahs","quran","qur'an","from","that","this","how","why","who","me","my","show","find","all"]);
+const gRe = x => String(x).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+function gStem(t){
+  if (!/^[a-z]+$/.test(t) || t.length < 5) return t;
+  for (const suf of ["ers","ing","ness","ment","ed","er","es","ly","ce","s"]) if (t.endsWith(suf) && t.length - suf.length >= 3) return t.slice(0, -suf.length);
+  return t;
+}
+function gStemRe(st){ const whole = st.endsWith("!"); st = whole ? st.slice(0, -1) : st; return new RegExp("\\b" + gRe(st) + (whole ? "\\b" : "\\w*"), "i"); }
+function gHL(text, regs){
+  const rng = [];
+  for (const re of regs) { const g = new RegExp(re.source, "gi"); let m; while ((m = g.exec(text))) { if (!m[0]) { g.lastIndex++; continue; } rng.push([m.index, m.index + m[0].length]); } }
+  if (!rng.length) return esc(text);
+  rng.sort((x, y) => x[0] - y[0]);
+  const mg = []; for (const r of rng) { const l = mg[mg.length - 1]; if (l && r[0] <= l[1]) l[1] = Math.max(l[1], r[1]); else mg.push([r[0], r[1]]); }
+  let out = "", p = 0; for (const [a, b] of mg) { out += esc(text.slice(p, a)) + "<mark>" + esc(text.slice(a, b)) + "</mark>"; p = b; }
+  return out + esc(text.slice(p));
+}
+function gNameRef(q){
+  const m = String(q).trim().match(/^([A-Za-z'’ʿ-]{3,}(?:\s[A-Za-z'’ʿ-]{2,})?)[\s:.]+(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?$/);
+  if (!m || !S.Q) return null;
+  const nm = normalize(m[1]).replace(/[^a-z]/g, ""); if (nm.length < 3) return null;
+  const bare = t => normalize(t).replace(/[^a-z]/g, "").replace(/^(al|an|ash|as|ad|ar|at|az)/, "");
+  const cand = S.Q.filter(s => bare(s.tl).startsWith(bare(m[1])) || normalize(s.tl).replace(/[^a-z]/g, "") === nm);
+  if (cand.length !== 1) return null;
+  const s = cand[0].n, a = +m[2], b = m[3] ? +m[3] : a;
+  return validRef(s, a) && validRef(s, b) && b >= a ? [{s, from: a, to: b}] : null;
+}
+let GIDX = null, CIDX = null;
+function gIndex(){
+  if (GIDX || !S.Q) return GIDX;
+  const ar = [], en = [], sa = [];
+  S.Q.forEach(su => su.v.forEach((v, j) => { ar.push(normalize(v[0])); en.push(String(v[1] || "").toLowerCase()); sa.push([su.n, j + 1]); }));
+  return GIDX = {ar, en, sa};
+}
+function gIndexL(l){
+  const G = gIndex(); if (!G) return null;
+  if (!G[l] && S.TRX[l]) G[l] = [].concat(...S.TRX[l].map(r => r.map(t => normalize(t))));
+  return G[l] || null;
+}
+function gConcIndex(C){
+  if (CIDX) return CIDX;
+  const R = new Map(), L = new Map();
+  for (const r of Object.keys(C.R)) R.set(normalize(r).replace(/\s/g, ""), r);
+  for (const l of Object.keys(C.L)) { const k = normalize(l); (L.get(k) || L.set(k, []).get(k)).push(l); }
+  return CIDX = {R, L};
+}
+function gSearch(q){
+  const out = {refs: null, surahs: [], ayahs: [], regs: [], treg: [], creg: [], concepts: [], loading: ""};
+  q = q.trim(); if (!q || !S.Q) return out;
+  out.refs = parseRefs(q) || gNameRef(q);
+  const qn = normalize(q);
+  out.surahs = out.refs ? [] : S.Q.filter(s => String(s.n) === q || normalize(s.tl).includes(qn) || normalize(s.m).includes(qn) || normalize(s.ar).includes(qn)).slice(0, 6);
+  if (out.refs) return out;
+  const G = gIndex(), arabic = /[؀-ۿ]/.test(q), bengali = /[ঀ-৿]/.test(q);
+  let hits = [];
+  if (arabic || bengali) {
+    const toks = qn.split(/\s+/).filter(Boolean);
+    const idx = [];
+    if (bengali) { const b = gIndexL("bn"); if (b) idx.push(b); else { loadTrx("bn"); out.loading = "Loading the Bangla translation…"; } }
+    else { idx.push(G.ar); const u = gIndexL("ur"); if (u) idx.push(u); else if (S.trLang === "ur") loadTrx("ur"); }
+    for (let i = 0; i < G.sa.length; i++) {
+      let sc = 0;
+      for (const ix of idx) { const t = ix[i]; if (toks.every(k => t.includes(k))) { sc = Math.max(sc, 20 * toks.length + (t.includes(qn) ? 15 : 0)); } }
+      if (sc) hits.push([i, sc - Math.min(8, G.en[i].length / 120)]);
+    }
+    out.regs = [];
+  } else {
+    const all = q.toLowerCase().replace(/[“”"‘’()\[\]{},;:!?]/g, " ").split(/\s+/).filter(Boolean);
+    let toks = all.filter(t => !G_STOP.has(t)); if (!toks.length) toks = all;
+    const ql = all.join(" ");
+    out.concepts = toks.length <= 3 ? CONCEPTS.filter(c => c.k.includes(ql) || toks.some(t => t.length >= 3 && c.k.includes(t))) : [];
+    const treg = toks.map(t => gStemRe(gStem(t)));
+    const creg = [...new Set(out.concepts.flatMap(c => c.w))].map(gStemRe);
+    out.regs = treg.concat(creg); out.treg = treg; out.creg = creg;
+    const run = (minHit) => {
+      const res = [];
+      for (let i = 0; i < G.sa.length; i++) {
+        const t = G.en[i];
+        let n = 0; for (const re of treg) if (re.test(t)) n++;
+        let cn = 0; for (const re of creg) if (re.test(t)) cn++;
+        if (n < minHit && !cn) continue;
+        const sc = n * 20 + cn * 5 + (t.includes(ql) ? 15 : 0) - Math.min(8, t.length / 120);
+        res.push([i, sc]);
+      }
+      return res;
+    };
+    hits = run(treg.length);
+    if (hits.length < 8 && treg.length > 1) hits = run(Math.max(1, Math.ceil(treg.length / 2)));
+  }
+  hits.sort((x, y) => y[1] - x[1] || x[0] - y[0]);
+  out.ayahs = hits.slice(0, 600).map(h => G.sa[h[0]]);
+  out.total = hits.length;
+  return out;
+}
+let CONC_OBJ = null;
+function gRoot(q){
+  const k = normalize(q).replace(/\s/g, ""); if (!k || !CONC_OBJ) return null;
+  const I = gConcIndex(CONC_OBJ), C = CONC_OBJ;
+  let kind = "", name = "", lemmas = [];
+  const root = I.R.get(k);
+  if (root) { kind = "root"; name = root; lemmas = C.R[root] || []; }
+  else if (I.L.has(k)) { kind = "lemma"; lemmas = I.L.get(k); name = lemmas[0]; }
+  if (!kind) return null;
+  const seen = new Set(), ayahs = []; let places = 0;
+  for (const l of lemmas) for (const c of (C.L[l] || [])) { const [s, a] = decCode(c); places++; const kk = s + ":" + a; if (!seen.has(kk)) { seen.add(kk); ayahs.push([s, a]); } }
+  ayahs.sort((x, y) => x[0] - y[0] || x[1] - y[1]);
+  return {kind, name, lemmas, ayahs, places};
+}
+function gMine(q, R){
+  const nonLatin = /[\u0600-\u06FF\u0980-\u09FF]/.test(q);
+  const treg = nonLatin ? q.trim().split(/\s+/).filter(Boolean).map(t => new RegExp(gRe(normalize(t)), "i")) : R.treg;
+  const creg = nonLatin ? [] : R.creg;
+  if (!treg.length) return [];
+  const txt = o => LANGS.map(l => (o && o[l]) || "").join(" \n ");
+  const items = [];
+  const add = (kind, chip, it, s, a, fields, open) => {
+    const f = nonLatin ? fields.map(normalize) : fields;
+    const [ti, tg, sm, bo] = f, hay = ti + " " + tg + " " + sm + " " + bo;
+    const n = treg.filter(re => re.test(hay)).length, cn = creg.filter(re => re.test(hay)).length;
+    if (n < treg.length && !(creg.length && cn >= 2 && n >= 1)) return;
+    let sc = n * 3 + cn;
+    if (treg.some(re => re.test(ti))) sc += 8;
+    if (treg.some(re => re.test(tg))) sc += 5;
+    if (treg.some(re => re.test(sm))) sc += 3;
+    items.push({kind, chip, it, s, a, sc, open, regs: nonLatin ? [] : treg.concat(creg)});
+  };
+  for (const n of S.notes) add("note", n.kind === "question" ? "Question" : "Note", n, n.s, n.a, [txt(n.title), (n.tags || []).join(" "), txt(n.summary), txt(n.body)], "n:" + n.id);
+  for (const l of S.lessons) add("lesson", "Lesson", l, (l.ranges[0] || {}).s, (l.ranges[0] || {}).from, [txt(l.title), (l.tags || []).join(" "), txt(l.summary), txt(l.body)], "l:" + l.id);
+  for (const w of S.words) add("word", "Word analysis", w, w.s, w.a, [txt(w.title) + " " + (w.word || "") + " " + (w.root || "") + " " + (w.lemma || ""), (w.tags || []).join(" "), txt(w.summary), txt(w.body)], "w:" + w.id);
+  for (const c of S.cm) add("cm", "Commentary", c, c.s, c.a, ["", "", "", txt(c.text)], "");
+  if (S.admin) for (const x of S.qa) add("qa", "Q&A", x, x.s, x.a, [txt(x.q), "", "", txt(x.ans)], "");
+  items.sort((x, y) => y.sc - x.sc);
+  return items.slice(0, 6);
+}
+function gSnip(text, regs, max){
+  const t = String(text || "").replace(/\[\^[^\]]+\]/g, "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").replace(/[#*>`]/g, "").replace(/\s+/g, " ").trim();
+  let at = -1; for (const re of regs) { const m = re.exec(t); if (m && (at < 0 || m.index < at)) at = m.index; }
+  if (at < 0) return t.length > max ? t.slice(0, max - 1) + "…" : t;
+  const from = Math.max(0, at - Math.floor(max / 3)), to = Math.min(t.length, from + max);
+  return (from > 0 ? "…" : "") + t.slice(from, to) + (to < t.length ? "…" : "");
+}
+function gAyahCard(s, a, regs, tag){
+  const su = surahOf(s), ar = arText(s, a);
+  const arShow = ar.length > 320 ? ar.slice(0, 320).replace(/\s\S*$/, "") + " …" : ar;
+  const en = S.Q[s - 1].v[a - 1][1];
+  return `<div class="gcard"><div class="ghead"><button type="button" class="reflink" data-go="${s}:${a}">${s}:${a}</button><span class="small muted">Sūrat ${esc(su.tl)}</span>${tag || ""}</div>
+    <p class="ar" lang="ar" dir="rtl">${esc(arShow)} <span class="end">﴿${arDigits(a)}﴾</span></p>
+    <p class="gtr" lang="en">${regs && regs.length ? gHL(en, regs) : esc(en)}</p>
+    ${S.trLang !== "en" ? `<p class="gtr muted" ${trAttrs()}>${esc(trText(s, a))}</p>` : ""}
+    <div class="row"><button type="button" class="btn small" data-go="${s}:${a}">Open in the surah</button></div></div>`;
+}
+function gResultsHTML(){
+  const q = S.gq.trim();
+  if (!q) return `<p class="gnote">Search by <b>ayah</b> (2:4, 3:10-12, or “baqarah 255”), by <b>topic or concept</b> (patience, mercy and forgiveness, usury), by an <b>English word</b>, by an <b>Arabic word or root</b> (صبر), or in <b>your own notes, lessons, word analyses and commentary</b>.</p>`;
+  if (CONC_OBJ === null && /[؀-ۿ]/.test(q)) loadConc().then(c => { CONC_OBJ = c; drawSearchResults(); }).catch(() => { CONC_OBJ = false; });
+  const R = gSearch(q); let h = "";
+  const more = S.gmore;
+  if (R.refs) {
+    let n = 0; const cards = [];
+    for (const r of R.refs) for (let a = r.from; a <= r.to && n < 40; a++, n++) cards.push(gAyahCard(r.s, a, null, ""));
+    h += `<div class="gsec">Ayah${cards.length > 1 ? "s" : ""}</div><div class="gres">${cards.join("")}</div>`;
+    return h;
+  }
+  if (R.surahs.length) h += `<div class="gsec">Surah</div><div class="sgrid" style="margin-top:8px">${R.surahs.map(s => `<button type="button" class="scard" data-surah="${s.n}"><span class="no">${s.n}</span><span class="tl">${esc(s.tl)}</span><span class="arn" lang="ar">${esc(s.ar)}</span><span class="meta">${esc(s.m)} · ${s.v.length} ayahs · ${s.t === "meccan" ? "Makki" : "Madani"}</span></button>`).join("")}</div>`;
+  if (R.loading) h += `<p class="gnote">${esc(R.loading)}</p>`;
+  if (R.concepts.length) h += `<p class="gnote">Topic: <b>${R.concepts.map(c => esc(c.t)).join(" · ")}</b>. Showing ayahs whose English translation uses related words, so a theme can appear under a different word. Every result is the plain text of the ayah.</p>`;
+  const root = /[؀-ۿ]/.test(q) && !/[ঀ-৿]/.test(q) ? gRoot(q) : null;
+  if (root) {
+    h += `<div class="gsec">${root.kind === "root" ? "Words from the root" : "The word"} <span lang="ar" class="gar">${esc(root.name)}</span></div><p class="gnote" style="margin-top:4px">${root.places} places in ${root.ayahs.length} ayahs${root.kind === "root" && root.lemmas.length ? ". Forms: " + root.lemmas.map(l => `<span lang="ar" class="gar">${esc(l)}</span>`).join("، ") : ""}.</p>
+      <div class="gres">${root.ayahs.slice(0, more).map(([s, a]) => gAyahCard(s, a, null, "")).join("")}</div>${root.ayahs.length > more ? `<p><button type="button" class="btn" data-gmore>Show more</button></p>` : ""}`;
+  }
+  const mine = gMine(q, R);
+  if (mine.length) h += `<div class="gsec">In your write-ups</div><div class="gres">${mine.map(m => {
+    const it = m.it, chipCls = m.kind === "lesson" ? "les" : m.kind === "word" ? "wa" : m.kind === "cm" ? "cm" : "exp";
+    const title = m.kind === "cm" || m.kind === "qa" ? "" : (pickTitle(it.title, S.lang, it.src).text || (m.kind === "word" ? it.word : "") || "Untitled");
+    const body = m.kind === "cm" ? pick(it.text, S.lang, it.src).text : m.kind === "qa" ? pick(it.ans, S.lang, it.src).text || pick(it.q, S.lang, it.src).text : pick(it.body, S.lang, it.src).text || pick(it.summary, S.lang, it.src).text;
+    const ref = m.s && m.a ? `<button type="button" class="reflink" data-go="${m.s}:${m.a}">${m.s}:${m.a}</button>` : "";
+    return `<div class="gcard"><div class="ghead"><span class="chip ${chipCls}">${m.chip}</span>${ref}</div>${title ? `<b>${esc(title)}</b>` : ""}<p class="gtr">${gHL(gSnip(body, m.regs, 220), m.regs)}</p>
+      <div class="row">${m.open ? `<button type="button" class="btn small primary" data-article="${esc(m.open)}">Open</button>` : (m.s ? `<button type="button" class="btn small" data-go="${m.s}:${m.a}">Open in the surah</button>` : "")}</div></div>`;
+  }).join("")}</div>`;
+  if (R.ayahs.length) {
+    h += `<div class="gsec">Ayahs · ${R.total}${R.total > 600 ? " (first 600 shown by relevance)" : ""}</div><div class="gres">${R.ayahs.slice(0, more).map(([s, a]) => gAyahCard(s, a, R.regs, "")).join("")}</div>${R.ayahs.length > more ? `<p><button type="button" class="btn" data-gmore>Show more</button></p>` : ""}`;
+  } else if (!R.surahs.length && !mine.length && !root && !R.loading) {
+    h += `<div class="empty" style="margin-top:14px"><b>No match for “${esc(q)}”</b>Try a simpler word, a related word, or the ayah number.</div>`;
+  }
+  if (S.sample && S.admin) {
+    const A = S.gai;
+    h += `<div class="gsec">Ask AI for ayahs on this topic</div>`;
+    if (A && A.q === q && A.busy) h += `<p class="gnote">Looking… this can take half a minute.</p>`;
+    else if (A && A.q === q && A.err) h += `<p class="gnote" style="color:var(--danger)">${esc(A.err)}</p>`;
+    else if (A && A.q === q) h += `<p class="gnote">AI suggestions, not verified. Each ayah below is shown from the Qur'an text itself; check that it really speaks to the topic before relying on it.</p><div class="gres">${A.items.map(x => gAyahCard(x.s, x.a, null, `<span class="chip" style="background:var(--sunk);color:var(--muted)">AI suggestion</span>`).replace('<div class="row">', `<p class="small muted" style="margin:0">${esc(x.why)}</p><div class="row">`)).join("") || `<p class="gnote">No usable suggestions came back.</p>`}</div>`;
+    else h += `<p class="gnote">For a theme that the words above do not catch, the AI can suggest ayahs. Its list is only a starting point.</p><p><button type="button" class="btn" data-gai>Ask AI for ayahs on “${esc(q)}”</button></p>`;
+  }
+  return h;
+}
+function drawSearchResults(){ const el = $("#gres"); if (el) el.innerHTML = gResultsHTML(); }
+async function gAskAI(){
+  const q = S.gq.trim(); if (!q || !S.sample || (S.gai && S.gai.busy)) return;
+  S.gai = {q, busy: true, items: [], err: ""}; drawSearchResults();
+  const prompt = `You are helping a researcher of the Qur'an find ayahs on a topic.
+
+Topic or question: «${q}»
+
+List up to 12 ayahs of the Qur'an that speak most directly to it, most relevant first. Write one line per ayah, in exactly this form:
+s:a | reason in at most 15 words
+
+Rules:
+- Use only references you are certain exist. Do not guess.
+- Give each ayah as one reference only (no ranges).
+- Do not quote the Arabic or any translation; the text is added from the Qur'an itself.
+- No heading, no preamble, no closing remarks.`;
+  const mine = S.gai;
+  try {
+    const {text} = await S.sample(prompt, {cache: false, modelTier: "complex"});
+    const seen = new Set();
+    for (const line of String(text).split(/\r?\n/)) {
+      const m = line.match(/^\s*[-*\d.)\s]*(\d{1,3}):(\d{1,3})\s*[|—–-]\s*(.*)$/);
+      if (m && validRef(+m[1], +m[2]) && !seen.has(m[1] + ":" + m[2])) { seen.add(m[1] + ":" + m[2]); mine.items.push({s: +m[1], a: +m[2], why: m[3].trim()}); }
+    }
+  } catch (e) { mine.err = (typeof aiErr === "function" ? aiErr(e && e.code, "en") : "The AI did not answer.").replace(/The \w+ draft/, "The suggestions"); }
+  mine.busy = false;
+  if (S.gai === mine) drawSearchResults();
+}
+function viewSearch(){
+  return `${statusBar()}
+  <div class="idx-head"><h1>Search</h1>
+    <input type="search" id="gq" class="search" placeholder="Topic or concept, a word or root (صبر), or an ayah like 2:4" value="${esc(S.gq)}" aria-label="Search the Qur'an and your write-ups" autocomplete="off">
+  </div>
+  <div class="row small muted" style="flex-wrap:wrap;gap:6px"><span>Try:</span>${["patience", "2:255", "3:10-12", "baqarah 255", "mercy and forgiveness", "صبر", "usury"].map(x => `<button type="button" class="btn ghost small" data-gex="${esc(x)}">${esc(x)}</button>`).join("")}</div>
+  <div id="gres">${gResultsHTML()}</div>`;
+}
+
 /* ---------- events ---------- */
 document.addEventListener("click", async (ev) => {
   const wt = ev.target.closest && ev.target.closest(".wtok");
-  if (wt && !M) { const [s0, a0, j0] = wt.dataset.wtok.split(":").map(Number); return openWordCard(s0, a0, j0); }
+  { const fl = ev.target.closest && ev.target.closest("[data-fl]");
+    if (fl) { if (fl.dataset.fl === "go" && FL) { FL.j += +fl.dataset.v; drawWordCard(); } else closeFlash(); return; }
+    if (FL && ev.target.id === "fl-backdrop") { closeFlash(); return; } }
+  if (wt && (!M || M.min)) { const [s0, a0, j0] = wt.dataset.wtok.split(":").map(Number); return openWordCard(s0, a0, j0); }
   const t = ev.target.closest("button, .backdrop");
   if (!t) return;
   if (t.id === "backdrop") { if (ev.target === t && !M?.busy && (M?.type === "tr" || M?.type === "share" || M?.type === "flash" || (M?.type === "gram" && !M.edit))) closeModal(); return; }
   const d = t.dataset;
+  if (d.gsearch !== undefined) { S.gq = S.sq.trim(); S.gmore = 30; S.gai = null; return go("search"); }
+  if (d.gex !== undefined) { S.gq = d.gex; S.gmore = 30; S.gai = null; render(); const i = $("#gq"); if (i) i.focus(); return; }
+  if (d.gmore !== undefined) { S.gmore += 30; drawSearchResults(); return; }
+  if (d.gai !== undefined) return gAskAI();
+  if (d.dock !== undefined) return restoreModal();
+  if (d.dockmin !== undefined) return minimizeModal();
+  if (d.totop !== undefined) return window.scrollTo({top: 0, behavior: "smooth"});
   if (t.id === "brand") return go("surahs");
   if (d.nav) return go(d.nav);
   if (d.rkrev) { const dd = (S.ruku || {})[S.rk && S.rk.s]; if (!dd) return; const ai = Object.assign({}, dd.ai, {[d.rkrev]: false}); try { await S.db.collection("ruku").doc(String(dd.s)).update({ai, updatedAt: Date.now()}); toast("Marked as reviewed"); } catch (e) { toast(dbErr(e)); } return; }
@@ -3754,7 +4182,7 @@ document.addEventListener("click", async (ev) => {
   if (d.rstatus !== undefined) { S.rstatus = d.rstatus; return render(); }
   if (d.rtag) { S.rtag = S.rtag === d.rtag ? null : d.rtag; return render(); }
   if (d.clear === "research") { S.rq = ""; S.rtag = null; S.rstatus = ""; return render(); }
-  if (d.go) { closeModal(); return goRef(d.go); }
+  if (d.go) { if (!M?.min) closeModal(); return goRef(d.go); }
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.bm) { bmToggle(d.bm); if (d.bmclear) render(); return; }
   if (d.exstart !== undefined) { exStart(); return render(); }
@@ -3790,8 +4218,8 @@ document.addEventListener("click", async (ev) => {
   if (d.fsize) { S.readScale = Math.round(Math.min(1.5, Math.max(0.85, S.readScale + (+d.fsize) * 0.08)) * 100) / 100; store.set("aba.readscale", String(S.readScale)); S.qscale = Math.round(Math.min(1.6, Math.max(0.8, S.qscale + (+d.fsize) * 0.1)) * 10) / 10; store.set("aba.qscale", String(S.qscale)); applyReadScale(); applyQFont(); return; }
   if (d.share) return openShare(d.share);
   if (d.cats !== undefined) { if (S.admin) openCats(); return; }
-  if (d.ncat !== undefined && !d.m) { closeModal(); S.ncat = d.ncat; if (S.nkind === "revised") S.nkind = "all"; if (S.view !== "notes") go("notes"); else render(); return; }
-  if (d.article) { const [kind, id] = d.article.split(":"); closeModal(); S.showAyahs = false; return go("article", {kind, id}); }
+  if (d.ncat !== undefined && !d.m) { if (!M?.min) closeModal(); S.ncat = d.ncat; if (S.nkind === "revised") S.nkind = "all"; if (S.view !== "notes") go("notes"); else render(); return; }
+  if (d.article) { const [kind, id] = d.article.split(":"); if (!M?.min) closeModal(); S.showAyahs = false; return go("article", {kind, id}); }
   if (d.back !== undefined) {
     const f = S.art?.from;
     if (f && typeof f === "object") { go("surah", {s: f.surah}); requestAnimationFrame(()=> window.scrollTo(0, f.y||0)); return; }
@@ -3946,6 +4374,7 @@ document.addEventListener("click", async (ev) => {
 document.addEventListener("input", (ev) => {
   const t = ev.target;
   if (t.id === "sq") { S.sq = t.value; rerenderKeepingInput("sq"); }
+  else if (t.id === "gq") { S.gq = t.value; S.gmore = 30; S.gai = null; clearTimeout(gSearchTimer); gSearchTimer = setTimeout(drawSearchResults, 160); }
   else if (t.id === "nq") { S.nq = t.value; rerenderKeepingInput("nq"); }
   else if (t.id === "lq") { S.lq = t.value; rerenderKeepingInput("lq"); }
   else if (t.id === "wq") { S.wq = t.value; rerenderKeepingInput("wq"); }
@@ -4017,7 +4446,15 @@ document.addEventListener("submit", (ev) => {
     else toast(`Enter an ayah from 1 to ${surahOf(S.surah).v.length}.`);
   }
 });
-document.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && ev.target.classList && ev.target.classList.contains("wtok") && !M) { ev.preventDefault(); ev.target.click(); } });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Enter" && ev.target.classList && ev.target.classList.contains("wtok") && (!M || M.min)) { ev.preventDefault(); ev.target.click(); } });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && FL) { closeFlash(); return; } });
+document.addEventListener("keydown", (ev) => {
+  if (ev.key !== "Enter" || (ev.target.id !== "sq" && ev.target.id !== "gq")) return;
+  const v = ev.target.value, r = parseRefs(v) || gNameRef(v);
+  if (r && r.length === 1 && r[0].from === r[0].to && ev.target.id === "gq") { ev.preventDefault(); goRef(r[0].s + ":" + r[0].from); }
+  else if (r && ev.target.id === "sq") { ev.preventDefault(); goRef(r[0].s + ":" + r[0].from); }
+  else if (ev.target.id === "gq") { clearTimeout(gSearchTimer); drawSearchResults(); }
+});
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && S.focus && !M && !document.fullscreenElement) { exitFocus(); return; } });
 document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && M && !M.busy && (M.type === "tr" || M.type === "share" || M.type === "rukus" || M.type === "flash" || (M.type === "gram" && !M.edit))) closeModal(); });
 function rerenderKeepingInput(id){
@@ -4070,6 +4507,7 @@ function refreshOfflineBtn(){
   b.className = "btn small" + (n ? " primary" : " ghost");
 }
 function openOfflineSync(){
+  if (blockedByMin()) return;
   const O = window.__OFFLINE__; if (!O) return;
   M = {type: "offsync"}; drawOfflineSync();
 }
