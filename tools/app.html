@@ -3358,7 +3358,7 @@ function drawWriteEditor(){
       <div class="field"><label for="w-ref">${isLesson ? "Ayahs covered (e.g. 2:153-157, 2:177)" : "Ayah (e.g. 2:255)"}</label><input type="text" id="w-ref" value="${esc(M.ref)}" autocomplete="off"></div>
       <div class="field"><label for="w-tags">Tags, separated by commas</label><input type="text" id="w-tags" value="${esc((it.tags||[]).join(", "))}" placeholder="sabr, salah, fiqh" autocomplete="off"></div>
     </div>
-    ${!isLesson ? `<div class="field"><label for="w-also">Also tag these ayahs <span class="muted" style="font-weight:400">(optional, e.g. 2:23, 10:38, 11:13-14; the ${isWord ? "word analysis" : "note"} will also appear under each of them)</span></label><input type="text" id="w-also" value="${esc(it.alsoText || "")}" autocomplete="off"></div>` : ""}
+    ${!isLesson ? `<div class="field"><label for="w-also">Also tag these ayahs <span class="muted" style="font-weight:400">(optional, e.g. 2:23, 10:38, 11:13-14; the ${isWord ? "word analysis" : "note"} will also appear under each of them)</span></label><input type="text" id="w-also" value="${esc(it.alsoText || "")}" autocomplete="off"></div>${tagPanel()}` : ""}
     ${s && !isWord ? `<p class="ref-ar" lang="ar" dir="rtl">${esc(arText(s,a))}</p>` : ""}
     ${isWord ? `<div class="field"><span class="flabel">Word or phrase (required): tap a word; to analyse a phrase, tap a second word and everything between them is selected</span>
       ${!s ? `<p class="small muted" style="margin:0">Enter the ayah first.</p>`
@@ -3409,6 +3409,135 @@ function drawWriteEditor(){
       <button type="button" class="btn primary" data-m="save" ${M.busy?"disabled":""}>Save</button>
     </div>`, "wide");
 }
+// ---- "Find other ayahs to tag": ayahs the text already cites, plus AI suggestions, to add to "Also tag these ayahs".
+function tagTaken(){
+  // ayahs already covered: the main ayah and the ones in the "also" field
+  const it = M.it, seen = new Set();
+  const main = (M.ref && parseRefs(M.ref)) || [];
+  const al = parseRefs(it.alsoText || "") || [];
+  for (const r of [...main, ...al]) for (let a = r.from; a <= r.to; a++) seen.add(key(r.s, a));
+  return seen;
+}
+const tagCovered = (r, seen) => { for (let a = r.from; a <= r.to; a++) if (!seen.has(key(r.s, a))) return false; return true; };
+function tagPanel(){
+  if (!M || (M.type !== "note" && M.type !== "word")) return "";
+  const T = M.tag;
+  const head = `<div class="aibox" style="margin-top:6px"><button type="button" class="btn small" data-m="tag-find" ${T?.busy || M.busy ? "disabled" : ""}>${S.sample ? "Find other ayahs to tag (AI)" : "Find ayahs this text cites"}</button>${T?.busy ? `<button type="button" class="btn small" data-m="tag-stop">Stop</button>` : ""}${T ? `<button type="button" class="btn small" data-m="tag-close">Close</button>` : ""}${T?.status ? `<span class="small muted">${esc(T.status)}</span>` : ""}</div>`;
+  if (!T || !T.items.length) return head;
+  const tl = TR_LANGS.includes(M.it.src) && (M.it.src === "en" || S.TRX[M.it.src]) ? M.it.src : "en";
+  const row = (x, i) => {
+    const r = x.r, a1 = Math.min(r.to, r.from + 2);
+    const ar = []; for (let a = r.from; a <= a1; a++) ar.push(arText(r.s, a));
+    const tr = []; for (let a = r.from; a <= a1; a++) tr.push(trText(r.s, a, tl));
+    return `<label class="gcard" style="flex-direction:row;gap:10px;align-items:flex-start;cursor:pointer">
+      <input type="checkbox" data-m="tag-toggle" data-v="${i}" ${x.on ? "checked" : ""} style="margin-top:4px">
+      <span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+        <span class="small"><b>${rangeLabel(r)}</b> · <span class="muted">${x.from === "text" ? "cited in the text" : x.from === "ai+text" ? "AI suggestion · also cited in the text" : "AI suggestion"}</span>${x.why ? ` — ${esc(x.why)}` : ""}</span>
+        <span class="ref-ar" lang="ar" dir="rtl" style="margin:0">${esc(ar.join(" "))}${r.to > a1 ? " …" : ""}</span>
+        <span class="small" ${trAttrs(tl)}>${esc(tr.join(" "))}${r.to > a1 ? " …" : ""}</span>
+      </span></label>`;
+  };
+  const n = T.items.filter(x => x.on).length;
+  return head + `<div style="display:flex;flex-direction:column;gap:6px;margin-top:6px">
+    <p class="small muted" style="margin:0">Read each ayah before adding it. AI suggestions are checked to be real ayahs, but not that they fit.</p>
+    <div style="display:flex;flex-direction:column;gap:6px;max-height:440px;overflow-y:auto">${T.items.map(row).join("")}</div>
+    <div class="row"><button type="button" class="btn primary small" data-m="tag-add" ${n ? "" : "disabled"}>Add ${n} ticked to “Also tag these ayahs”</button></div></div>`;
+}
+function tagParse(text){
+  // AI reply: one suggestion per line, "2:23 | why" or "2:23-24 | why"
+  const out = [];
+  for (const ln of String(text || "").split("\n")) {
+    const m = ln.match(/(\d{1,3})\s*:\s*(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?\s*(?:\||[-–—:])?\s*(.*)$/);
+    if (!m) continue;
+    const r = parseRefs(`${m[1]}:${m[2]}${m[3] ? "-" + m[3] : ""}`);
+    if (!r || r.length !== 1 || r[0].to - r[0].from > 10) continue;
+    out.push({r: r[0], why: (m[4] || "").replace(/^[|\s]+/, "").trim().slice(0, 240)});
+  }
+  return out;
+}
+async function tagFind(){
+  captureFields();
+  const it = M.it, L = it.src;
+  const text = [it.title[L], it.summary[L], it.body[L]].join("\n").trim();
+  const seen = tagTaken(), have = new Set();
+  const T = M.tag = {busy: false, items: [], status: "", ctl: []};
+  const push = (r, from, why) => { const k = rangeLabel(r); if (have.has(k) || tagCovered(r, seen)) return; have.add(k); T.items.push({r, from, why, on: false}); };
+  // 1. ayahs the text itself refers to (no AI needed)
+  for (const m of text.matchAll(/(?<![\d:])(\d{1,3}):(\d{1,3})(?:\s*[-–]\s*(\d{1,3}))?(?![\d:])/g)) {
+    const r = parseRefs(`${m[1]}:${m[2]}${m[3] ? "-" + m[3] : ""}`); if (r && r.length === 1 && r[0].to - r[0].from <= 10) push(r[0], "text", "");
+  }
+  if (!S.sample) { T.status = T.items.length ? "" : "The text cites no other ayahs."; drawWriteEditor(); return; }
+  if (!text) { T.status = `Write the ${LNAME_EN[L]} text first.`; drawWriteEditor(); return; }
+  if (TR_LANGS.includes(L) && L !== "en") await loadTrx(L).catch(() => {});
+  T.busy = true; T.status = "Looking for ayahs on the same point… this usually takes 20–60 seconds."; drawWriteEditor();
+  const main = (M.ref && parseRefs(M.ref)) || [];
+  const mainTxt = main.map(rangeLabel).join(", ") || "(not set)";
+  let wordInfo = "";
+  if (M.type === "word" && usable(it)) {
+    wordInfo = `\nThe analysis is about ${useWhat(it)}.`;
+    try {
+      const C = await loadConc();
+      const codes = isPhrase(it) ? [] : (C.L[it.lemma] || []);
+      const refs = [...new Set(codes.map(c => { const [s0, a0] = decCode(c); return `${s0}:${a0}`; }))];
+      if (refs.length && refs.length <= 400) wordInfo += ` The same lemma occurs at: ${refs.join(", ")}. Tagging every occurrence is not the aim (the platform already lists them); suggest an occurrence only where the analysis's own point or conclusion applies to that ayah.`;
+    } catch {}
+  }
+  const kind = M.type === "word" ? "a word analysis" : "an article";
+  const prompt = `You help a researcher of the Qur'an tag ${kind} with every ayah it should also be listed under. The write-up belongs to ${mainTxt}. It is already tagged with: ${(parseRefs(it.alsoText || "") || []).map(rangeLabel).join(", ") || "nothing else"}.${wordInfo}
+
+Find other ayahs of the Qur'an where a reader studying that ayah would want to find this write-up: ayahs on the same incident, the same question or argument, the same word in the same sense, or a direct parallel passage. Prefer ayahs the write-up discusses or depends on. Do not suggest ayahs that are only loosely related by theme.
+
+Rules:
+- Only real ayahs, with the reference written like 2:255 or 2:255-257 (a range only when the ayahs form one passage).
+- At most 15 suggestions, the strongest first. Fewer is better than weak ones.
+- Do not repeat the ayahs it already belongs to or is tagged with.
+- One suggestion per line in exactly this form, and nothing else:
+<reference> | <one short sentence in English saying what links this ayah to the write-up>
+
+The write-up (${LNAME_EN[L]}):
+"""
+${text.slice(0, 45000)}
+"""`;
+  const ctl = new AbortController(); T.ctl.push(ctl);
+  try {
+    const r = await S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex"});
+    if (!M || M.tag !== T) return;
+    const sug = tagParse(r.text), cited = T.items; let n = 0;
+    T.items = []; have.clear();
+    for (const x of sug) {
+      const c = cited.find(y => rangeLabel(y.r) === rangeLabel(x.r));
+      const before = T.items.length; push(x.r, c ? "ai+text" : "ai", x.why); if (T.items.length > before) n++;
+    }
+    for (const y of cited) push(y.r, "text", "");
+    T.status = `${n} AI suggestion${n === 1 ? "" : "s"} first, then ${T.items.length - n} other ayah${T.items.length - n === 1 ? "" : "s"} the text cites. Tick the ones to add.`;
+    if (!T.items.length) T.status = "Nothing new to suggest.";
+  } catch (e) {
+    if (!M || M.tag !== T) return;
+    T.status = e?.code === "cancelled" ? "Stopped." : aiErr(e?.code, "en").replace(/ draft/g, " search");
+    if (["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)) S.sample = null;
+  }
+  T.busy = false; T.ctl = [];
+  captureFields(); drawWriteEditor();
+}
+function tagAdd(){
+  captureFields();
+  const T = M.tag; if (!T) return;
+  const cur = (M.it.alsoText || "").trim(), seen = tagTaken();
+  const add = T.items.filter(x => x.on && !tagCovered(x.r, seen)).map(x => rangeLabel(x.r));
+  if (add.length) M.it.alsoText = (cur ? cur.replace(/[,،\s]+$/, "") + ", " : "") + add.join(", ");
+  T.items = T.items.filter(x => !x.on);
+  T.status = add.length ? `Added ${add.join(", ")}. Save to keep it.` : T.status;
+  drawWriteEditor(); saveLocalDraft();
+}
+
+document.addEventListener("change", ev => {
+  const c = ev.target;
+  if (!c || c.dataset?.m !== "tag-toggle" || !M?.tag) return;
+  const x = M.tag.items[+c.dataset.v]; if (!x) return;
+  x.on = c.checked;
+  const b = document.querySelector('[data-m="tag-add"]'), n = M.tag.items.filter(y => y.on).length;
+  if (b) { b.disabled = !n; b.textContent = `Add ${n} ticked to “Also tag these ayahs”`; }
+});
 function captureFields(){
   if (!M || (M.type!=="note" && M.type!=="lesson" && M.type!=="word")) return;
   const t = $("#w-title"), b = $("#w-body"), sm = $("#w-sum"), r = $("#w-ref"), g = $("#w-tags"), src = $("#w-src");
@@ -4342,6 +4471,10 @@ document.addEventListener("click", async (ev) => {
   if (act === "use-scope") { captureFields(); if (M.use?.busy) return; M.useScope = d.v; M.use = null; usagePrepare(); drawWriteEditor(); return; }
   if (act === "use-form") { captureFields(); if (M.use && !M.use.busy) { M.use.form = M.use.form === d.v ? null : d.v; M.use.shown = 40; } drawWriteEditor(); return; }
   if (act === "use-more") { captureFields(); if (M.use) M.use.shown += 60; drawWriteEditor(); return; }
+  if (act === "tag-find") { tagFind(); return; }
+  if (act === "tag-stop") { (M.tag?.ctl || []).forEach(c => c.abort()); return; }
+  if (act === "tag-close") { captureFields(); (M.tag?.ctl || []).forEach(c => c.abort()); M.tag = null; drawWriteEditor(); return; }
+  if (act === "tag-add") { tagAdd(); return; }
   if (act === "use-ai") { captureFields(); usageAI(); return; }
   if (act === "use-ask") { captureFields(); usageAsk(); return; }
   if (act === "use-add") { captureFields(); const U = M.use, L = M.it.src; if (U && U.answer) { const b = (M.it.body[L] || "").trim(); M.it.body[L] = (b ? b + "\n\n" : "") + U.answer.trim(); U.answer = null; U.askStatus = `Added at the end of the ${LNAME_EN[L]} text.`; M.tab = L; M.preview = false; drawWriteEditor(); saveLocalDraft(); } return; }
