@@ -168,6 +168,16 @@ nav.tabs button[hidden]{display:none}
 .qafit{border:1px dashed var(--line);border-radius:10px;padding:10px 12px;margin:10px 0}
 .qafit .qw{font:20px/1.5 var(--f-ar);background:var(--sunk);border:1px solid var(--line);border-radius:6px;padding:0 9px;margin:2px;cursor:pointer;color:inherit}
 .qafit .qw[aria-pressed="true"]{background:var(--qa-bg);border-color:var(--qa);color:var(--qa)}
+.qacard,.qa-sh,#qa-top{scroll-margin-top:70px}
+.qa-index{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:12px 16px;margin:12px 0}
+.qa-index ol{list-style:none;margin:4px 0 10px;padding:0;display:flex;flex-direction:column;gap:2px}
+.qa-ix-s{background:none;border:0;padding:6px 0 2px;cursor:pointer;color:var(--ink,inherit);text-align:start;font:inherit}
+.qa-ix-q button{display:flex;gap:10px;align-items:baseline;width:100%;background:none;border:0;border-radius:6px;padding:5px 8px;text-align:start;cursor:pointer;color:inherit;font:inherit;font-size:14.5px;line-height:1.45}
+.qa-ix-q button:hover{background:var(--bg);color:var(--accent)}
+.qa-ix-ref{flex:none;min-width:52px;color:var(--accent);font-variant-numeric:tabular-nums;font-size:13px}
+.qa-ix-t{flex:1}.qa-ix-q .chip{flex:none;font-size:11px}
+.qa-sh{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:19px;margin:22px 0 4px;border-bottom:1px solid var(--line);padding-bottom:6px}
+.qa-toc{margin:2px 0 8px}.qa-toc summary{cursor:pointer;color:var(--muted)}.qa-toc .toc{margin-top:6px}
 .qacard{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:14px 16px;margin:12px 0}
 .qacard .qq{margin:8px 0 6px;font-size:17px}
 .qacard .qa-ans{font-size:15.5px;line-height:1.65}
@@ -256,6 +266,7 @@ h3[lang="ur"],h3[lang="ar"]{font-family:inherit}
 .aibox{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--sunk);border-radius:8px;padding:8px 10px}
 .confirm{display:flex;flex-wrap:wrap;gap:8px;align-items:center;background:var(--rev-bg);color:var(--ink);padding:8px 10px;border-radius:8px}
 .err{color:var(--danger);font-size:13px}
+.winbtns{display:inline-flex;flex-wrap:wrap;gap:8px;align-items:center}
 .foot{display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-top:1px solid var(--line);padding-top:12px}
 .ref-ar{font:22px/2 var(--f-quran);direction:rtl;text-align:right;margin:0}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:9px 16px;border-radius:8px;z-index:60;font-size:14px;max-width:calc(100% - 32px)}
@@ -1189,6 +1200,10 @@ function rukuBand(s, a){
 
 /* ---------- Q&A (private: editor only, never part of the public export) ---------- */
 /* doc: {s, a, src, q:{en,bn,ar,ur}, ans:{…}, ai:{lang:true}, final, fu:[…], createdAt, updatedAt} */
+/* Minimize · Close · Save, shown both at the top and at the bottom of the editor windows */
+function winBtns(save){
+  return `<span class="winbtns">${MIN_BTN}<button type="button" class="btn" data-m="close">Close</button>${save ? `<button type="button" class="btn primary" data-m="${save}" ${M && M.busy ? "disabled" : ""}>Save</button>` : ""}</span>`;
+}
 function qaList(k){ return (S.qaIx && S.qaIx[k]) || []; }
 function qaNorm(x){
   const src = x.src || (typeof x.q === "string" && /[؀-ۿ]/.test(x.q) ? "ar" : "en");
@@ -1204,13 +1219,14 @@ const QA_GUIDE = {
 function qaCard(x){
   const su = surahOf(x.s), q = pick(x.q, S.lang, x.src), an = pick(x.ans, S.lang, x.src);
   const body = renderDoc(an.text, an.lang, "qa" + x.id), dir = l => RTL[l] ? "rtl" : "ltr";
-  return `<article class="qacard">
+  const toc = body.toc.length >= 2 ? `<details class="qa-toc"><summary class="small">Contents of this answer (${body.toc.length})</summary><nav class="toc" lang="${an.lang}" dir="${dir(an.lang)}"><ol>${body.toc.map(h => `<li class="t${h.lvl}"><button type="button" data-fn="${h.id}">${esc(h.text)}</button></li>`).join("")}</ol></nav></details>` : "";
+  return `<article class="qacard" id="qa-c-${esc(x.id)}">
     <div class="row"><button type="button" class="reflink" data-go="${x.s}:${x.a}">${x.s}:${x.a}</button><span class="muted small">${esc(su.tl)}</span>
       <span class="chip ${x.final ? "exp" : "rev"}">${x.final ? "Final" : "Draft"}</span>
       ${(an.fallback || q.fallback) ? `<span class="chip">Shown in ${LNAME_EN[an.text ? an.lang : q.lang]}</span>` : ""}
       ${x.ai[an.lang] ? `<span class="chip rev">AI draft</span>` : ""}<span class="spacer"></span>
-      <button type="button" class="btn small" data-qa="${x.s}:${x.a}:${esc(x.id)}">Open</button></div>
-    <p class="qq" lang="${q.lang}" dir="${dir(q.lang)}"><b>${esc(q.text)}</b></p>
+      <button type="button" class="btn small ghost" data-fn="qa-top" title="Back to the index">↑ Index</button><button type="button" class="btn small" data-qa="${x.s}:${x.a}:${esc(x.id)}">Open</button></div>
+    <p class="qq" lang="${q.lang}" dir="${dir(q.lang)}"><b>${esc(q.text)}</b></p>${an.text ? toc : ""}
     <div class="qa-ans" lang="${an.lang}" dir="${dir(an.lang)}">${an.text ? body.html : `<p class="muted small">No answer yet.</p>`}</div>
   </article>`;
 }
@@ -1219,13 +1235,23 @@ function viewQA(){
   const q = S.qq.trim(), refs = q ? refMatch(q) : null, nq = normalize(q);
   const items = S.qa.filter(x => refs ? inRanges(x.s, x.a, refs) : (!q || normalize(LANGS.map(l => (x.q[l] || "") + " " + (x.ans[l] || "")).join(" ")).includes(nq)))
     .sort((a, b) => (a.s*1000 + a.a) - (b.s*1000 + b.a) || (a.createdAt || 0) - (b.createdAt || 0));
+  // index: grouped by surah, one line per question, each jumps to its card
+  const groups = [];
+  for (const x of items) { const g = groups[groups.length - 1]; if (g && g.s === x.s) g.list.push(x); else groups.push({s: x.s, list: [x]}); }
+  const cut = (t, n) => { t = String(t || "").replace(/\s+/g, " ").trim(); return t.length > n ? t.slice(0, n - 1) + "…" : t; };
+  const qline = x => { const p = pick(x.q, S.lang, x.src); return `<li class="qa-ix-q"><button type="button" data-fn="qa-c-${esc(x.id)}"><span class="qa-ix-ref">${x.s}:${x.a}</span><span class="qa-ix-t" lang="${p.lang}" dir="${RTL[p.lang] ? "rtl" : "ltr"}">${esc(cut(p.text, 140)) || '<span class="muted">(no question)</span>'}</span>${x.final ? "" : `<span class="chip rev">Draft</span>`}</button></li>`; };
+  const index = items.length >= 2 ? `<nav class="qa-index" aria-label="Q&amp;A index"><div class="row"><div class="flabel">Index</div><span class="small muted">${items.length} question${items.length === 1 ? "" : "s"} in ${groups.length} surah${groups.length === 1 ? "" : "s"}</span></div>
+    ${groups.map(g => { const su = surahOf(g.s); return `<div class="qa-ix-g"><button type="button" class="qa-ix-s" data-fn="qa-s-${g.s}"><b>${g.s}. ${esc(su.tl)}</b> <span lang="ar" dir="rtl" class="gar">${esc(su.ar || "")}</span> <span class="muted small">· ${g.list.length}</span></button><ol>${g.list.map(qline).join("")}</ol></div>`; }).join("")}</nav>` : "";
+  const cards = groups.map(g => { const su = surahOf(g.s); return `<h2 class="qa-sh" id="qa-s-${g.s}">${g.s}. ${esc(su.tl)} <span lang="ar" dir="rtl" class="gar">${esc(su.ar || "")}</span> <button type="button" class="btn small ghost" data-fn="qa-top">↑ Index</button></h2>${g.list.map(qaCard).join("")}`; }).join("");
   return `${statusBar()}
-  <div class="phead"><h1>Q&amp;A</h1></div>
+  <div class="phead" id="qa-top"><h1>Q&amp;A</h1></div>
   <p class="lede">Your questions about ayahs, with the answers you finalised, in the write-up language chosen at the top (falling back to the language it was written in). Private: not shown on the public site. Start one from any ayah in the surah reader (the “Q&amp;A” button), or search here by text or by an ayah such as <b>2:255</b>.</p>
   <div class="filters"><div class="row"><input type="search" id="qq" class="search" placeholder="Search questions and answers, or 2:255" value="${esc(S.qq)}" aria-label="Search Q&amp;A"></div>
     ${q ? `<div class="small muted">${items.length} result${items.length === 1 ? "" : "s"}</div>` : ""}</div>
-  <div class="results">${items.map(qaCard).join("") || (S.qa.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No Q&amp;A yet</b>Open a surah and press “Q&amp;A” under any ayah.</div>`)}</div>`;
+  ${index}
+  <div class="results">${cards || (S.qa.length ? `<div class="empty"><b>No match</b>Try another word or ayah.</div>` : `<div class="empty"><b>No Q&amp;A yet</b>Open a surah and press “Q&amp;A” under any ayah.</div>`)}</div>`;
 }
+const MIN_BTN = `<button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button>`;
 const qaSnap = () => JSON.stringify([M.src, M.q, M.ans, M.final, M.fit || null, M.also || ""]);
 function openQA(ref){
   if (blockedByMin()) return;
@@ -1302,8 +1328,8 @@ const qaDirty = () => qaSnap() !== M.saved;
 function drawQA(){
   const {s, a} = M, k = key(s, a), list = qaList(k), su = surahOf(s), T = M.tab, isSrc = T === M.src, dir = RTL[T] ? "rtl" : "ltr";
   const cut = (x, n) => { x = String(x || "").replace(/\s+/g, " "); return x.length > n ? x.slice(0, n - 1) + "…" : x; };
-  const noAI = !S.sample;
-  modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button><button type="button" class="btn" data-m="close">Close</button></div>
+  const noAI = !S.sample, pv = renderDoc(M.ans[T] || "", T, "qpv");
+  modal(`<div class="row"><h2>Q&amp;A · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span>${winBtns("qa-save")}</div>
     <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
       <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
     <div class="field"><label for="qa-also">Also tag these ayahs <span class="muted" style="font-weight:400">(optional, e.g. 2:23, 10:38; this Q&amp;A will also be listed under each)</span></label><input type="text" id="qa-also" value="${esc(M.also || "")}" autocomplete="off"></div>
@@ -1318,8 +1344,13 @@ function drawQA(){
       ${isSrc ? `<div class="row"><button type="button" class="btn primary" data-m="qa-ask" ${M.busy || noAI ? "disabled" : ""}>${M.ans[T].trim() ? "Ask again from scratch" : "Ask AI"}</button>
         ${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}<span class="small muted">${esc(M.status || (noAI ? "AI is not available in this view." : ""))}</span></div>`
         : `<div class="row">${M.busy ? `<button type="button" class="btn" data-m="qa-stop">Stop</button><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. The AI keeps working.">Minimize</button>` : ""}<span class="small muted">${esc(M.status || "")}</span></div>`}</div>
-    <div class="field"><label for="qa-ans">Answer · ${LNAME_EN[T]} ${M.ai[T] ? `<span class="chip rev">AI draft</span>` : ""}</label>
-      <textarea id="qa-ans" rows="14" lang="${T}" dir="${dir}" placeholder="${isSrc ? "The AI draft appears here. You can also write or edit the answer yourself." : "Draft this language with AI, or write it here"}">${esc(M.ans[T])}</textarea>
+    <div class="field"><div class="row"><label class="flabel" for="qa-ans">Answer · ${LNAME_EN[T]} ${M.ai[T] ? `<span class="chip rev">AI draft</span>` : ""}</label><span class="spacer"></span>
+        ${pv.words ? `<span class="small muted">${pv.words.toLocaleString()} words · ${readMins(pv.words)} min read</span>` : ""}
+        <div class="seg" role="group" aria-label="Answer view"><button type="button" data-m="qa-view" data-v="write" aria-pressed="${!M.preview}">Write</button><button type="button" data-m="qa-view" data-v="preview" aria-pressed="${!!M.preview}">Preview</button></div></div>
+      ${M.preview
+        ? `<div class="preview">${(M.q[T] || "").trim() ? `<p class="qq" lang="${T}" dir="${dir}" style="font-size:17px;margin:0 0 10px"><b>${esc(M.q[T])}</b></p>` : ""}<div class="art-grid">${pv.toc.length >= 2 ? `<nav class="toc" lang="${T}" dir="${dir}"><div class="flabel">Contents</div><ol>${pv.toc.map(h => `<li class="t${h.lvl}"><button type="button" data-fn="${h.id}">${esc(h.text)}</button></li>`).join("")}</ol></nav>` : ""}
+           <div class="prose article-body" lang="${T}" dir="${dir}">${pv.html || '<p class="muted">Nothing written yet.</p>'}</div></div></div>`
+        : `<textarea id="qa-ans" rows="14" lang="${T}" dir="${dir}" placeholder="${isSrc ? "The AI draft appears here. You can also write or edit the answer yourself." : "Draft this language with AI, or write it here"}">${esc(M.ans[T])}</textarea>`}
       ${isSrc ? `<span class="small muted">The AI works from its own knowledge only: it cannot look up tafsir, hadith or the Qur'an text. Check every quotation, reference and attribution before you finalise.</span>` : ""}
       ${M.ai[T] ? `<div class="row small"><span class="notice">Drafted by AI. Review it, then mark it reviewed.</span><button type="button" class="btn small" data-m="qa-reviewed">Mark as reviewed</button></div>` : ""}</div>
     <div class="aibox row">
@@ -1332,7 +1363,7 @@ function drawQA(){
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
     <div class="foot row"><label class="row small"><input type="checkbox" id="qa-final" ${M.final ? "checked" : ""}> Final: I have reviewed this answer</label><span class="spacer"></span>
       ${M.id ? `<button type="button" class="btn danger" data-m="qa-delete" ${M.busy ? "disabled" : ""}>Delete</button><button type="button" class="btn" data-m="move" ${M.busy ? "disabled" : ""}>Move to…</button>` : ""}
-      <button type="button" class="btn primary" data-m="qa-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
+      ${winBtns("qa-save")}</div>`, "qa");
 }
 function qaPrompt(follow, fitData){
   const {s, a} = M, su = surahOf(s), n = su.v.length, S0 = M.src;
@@ -1364,7 +1395,7 @@ async function qaRun(follow){
   if (!M.q[S0].trim()) { M.tab = S0; M.err = `Write the question in the ${LNAME_EN[S0]} tab first.`; drawQA(); return; }
   if (follow && !M.fu.trim()) { M.err = "Write the follow-up or the change you want first."; drawQA(); return; }
   if (!S.sample) { M.err = "AI is not available in this view."; drawQA(); return; }
-  M.tab = S0; M.err = ""; M.busy = true; M.status = "Thinking… this can take a minute."; drawQA();
+  M.tab = S0; M.err = ""; M.busy = true; M.preview = false; M.status = "Thinking… this can take a minute."; drawQA();
   const fitData = (M.fit && M.q[S0].includes("«" + M.fit.word + "»")) ? await qaFitData() : "";
   if (!M || M.type !== "qa") return;
   const prompt = qaPrompt(follow, fitData), keepAns = M.ans[S0];
@@ -1397,7 +1428,7 @@ async function qaTranslate(only, force){
   const filled = targets.filter(l => ((M.q[l] || "") + (M.ans[l] || "")).trim());
   if (filled.length && !force) { M.pendingTrans = only || ""; $("#m-confirm").innerHTML = `<div class="confirm"><span>This replaces what is already written in ${filled.map(l => LNAME_EN[l]).join(", ")}.</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">Keep them</button><button type="button" class="btn primary" data-m="qa-trans-yes">Replace</button></div>`; return; }
   if (only) M.tab = only;
-  M.err = ""; M.busy = true; M.status = "Drafting… the first words usually take 10–40 seconds."; drawQA();
+  M.err = ""; M.busy = true; M.preview = false; M.status = "Drafting… the first words usually take 10–40 seconds."; drawQA();
   M.ctl = [];
   const refAyahs = [], seen = new Set();
   const addRef = (s, a) => { const k = key(s, a); if (refAyahs.length < 60 && validRef(s, a) && !seen.has(k)) { seen.add(k); refAyahs.push([s, a]); } };
@@ -1466,6 +1497,7 @@ async function qaAct(act, d){
   if (M.busy && act !== "qa-stop") return;
   if (act === "qa-stop") { M.ctl.forEach(c => c.abort()); return; }
   if (act === "qa-tab") { captureQA(); M.tab = d.v; M.err = ""; drawQA(); return; }
+  if (act === "qa-view") { captureQA(); M.preview = d.v === "preview"; drawQA(); return; }
   if (act === "qa-reviewed") { captureQA(); delete M.ai[M.tab]; drawQA(); return; }
   if (act === "qa-word") { qaPickWord(+d.v); return; }
   if (act === "qa-fit") return qaFitFill();
@@ -1542,7 +1574,7 @@ function captureCM(){
 }
 function drawCM(){
   const {s, a} = M, su = surahOf(s), T = M.tab, isSrc = T === M.src, dir = RTL[T] ? "rtl" : "ltr", noAI = !S.sample;
-  modal(`<div class="row"><h2>Commentary · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button><button type="button" class="btn" data-m="close">Close</button></div>
+  modal(`<div class="row"><h2>Commentary · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span>${winBtns("cm-save")}</div>
     <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
       <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
     <div class="row small"><label class="flabel" for="cm-src">Written in</label>
@@ -1560,7 +1592,7 @@ function drawCM(){
     <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
     <div class="foot row"><span class="small muted">Shown to readers once you publish the site.</span><span class="spacer"></span>
       ${M.exists ? `<button type="button" class="btn danger" data-m="cm-delete" ${M.busy ? "disabled" : ""}>Delete</button><button type="button" class="btn" data-m="move" ${M.busy ? "disabled" : ""}>Move to…</button>` : ""}
-      <button type="button" class="btn primary" data-m="cm-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
+      ${winBtns("cm-save")}</div>`, "qa");
 }
 async function cmTranslate(only, force){
   captureCM();
@@ -2967,7 +2999,18 @@ async function copyFrom(id, value, done){
 /* ---------- editors ---------- */
 let M = null; // modal state
 function closeModal(){ if (M?.ctl) M.ctl.forEach(c=>c.abort()); M = null; $("#modal-root").innerHTML = ""; updateDock(); }
-function modal(html, cls){ const sc = $("#modal-root .backdrop")?.scrollTop || 0; $("#modal-root").innerHTML = `<div class="backdrop${M && M.min ? " min" : ""}" id="backdrop"><div class="dialog ${cls||""}" role="dialog" aria-modal="true">${html}</div></div>`; if (cls) $("#modal-root .backdrop").scrollTop = sc; if (M && M.min) updateDock(); }
+/* The Close/Save buttons are also at the top of the editor windows, but their confirmations and errors appear near
+   the bottom; bring a new confirmation or error into view so a click at the top is never answered out of sight. */
+let MOBS = null, M_LASTERR = "";
+function modalWatch(){
+  if (document.querySelector("#modal-root .backdrop.min")) return;
+  const c = document.getElementById("m-confirm");
+  if (c && c.children.length && !c.firstElementChild.dataset.shown) { c.firstElementChild.dataset.shown = "1"; c.scrollIntoView({block: "nearest"}); }
+  const e = document.getElementById("m-err"), t = e ? e.textContent.trim() : "";
+  if (t && t !== M_LASTERR) e.scrollIntoView({block: "nearest"});
+  M_LASTERR = t;
+}
+function modal(html, cls){ if (!MOBS && window.MutationObserver) { MOBS = new MutationObserver(modalWatch); MOBS.observe($("#modal-root"), {childList: true, subtree: true}); } const sc = $("#modal-root .backdrop")?.scrollTop || 0; $("#modal-root").innerHTML = `<div class="backdrop${M && M.min ? " min" : ""}" id="backdrop"><div class="dialog ${cls||""}" role="dialog" aria-modal="true">${html}</div></div>`; if (cls) $("#modal-root .backdrop").scrollTop = sc; if (M && M.min) updateDock(); }
 
 /* ---------- minimize a window and keep studying ----------
    A Q&A, commentary, note, lesson or word-analysis window can be hidden while the AI works (or while you think).
@@ -3347,7 +3390,7 @@ function drawWriteEditor(){
   const others = LANGS.filter(l=>l!==it.src);
   const L = M.tab, dir = RTL[L] ? "rtl" : "ltr";
   const doc = renderDoc(it.body[L], L, "pv");
-  modal(`<div class="row"><h2>${heading}</h2><span class="spacer"></span><span class="small muted" id="w-count">${doc.words.toLocaleString()} words · ${readMins(doc.words)} min read</span><button type="button" class="btn" data-dockmin title="Hide this window and keep reading. It keeps working in the background.">Minimize</button></div>
+  modal(`<div class="row"><h2>${heading}</h2><span class="spacer"></span><span class="small muted" id="w-count">${doc.words.toLocaleString()} words · ${readMins(doc.words)} min read</span>${winBtns("save")}</div>
     ${M.draft ? `<div class="confirm"><span>You have unsaved writing from ${new Date(M.draft.savedAt).toLocaleString()}.</span><span class="spacer"></span><button type="button" class="btn" data-m="draft-discard">Discard it</button><button type="button" class="btn primary" data-m="draft-restore">Restore it</button></div>` : ""}
     ${M.type === "note" ? `<div class="grid2">
       <div class="field"><label for="w-cat">Category (required)</label>
@@ -3405,8 +3448,7 @@ function drawWriteEditor(){
     <div class="foot">
       ${M.existing ? `<button type="button" class="btn danger" data-m="delete">Delete</button><button type="button" class="btn" data-m="move">Move to…</button>` : ""}
       <span class="spacer"></span>
-      <button type="button" class="btn" data-m="close">Cancel</button>
-      <button type="button" class="btn primary" data-m="save" ${M.busy?"disabled":""}>Save</button>
+      ${winBtns("save")}
     </div>`, "wide");
 }
 // ---- "Find other ayahs to tag": ayahs the text already cites, plus AI suggestions, to add to "Also tag these ayahs".
@@ -4354,7 +4396,7 @@ document.addEventListener("click", async (ev) => {
     if (f && typeof f === "object") { go("surah", {s: f.surah}); requestAnimationFrame(()=> window.scrollTo(0, f.y||0)); return; }
     return go(f === "lessons" || f === "notes" || f === "words" || f === "surahs" ? f : (S.art?.kind === "l" ? "lessons" : S.art?.kind === "w" ? "words" : "notes"));
   }
-  if (d.fn) { const el = document.getElementById(d.fn); if (el) { el.scrollIntoView({block: d.fn.startsWith("rk-") ? "start" : "center"}); el.classList.add("hl"); setTimeout(()=>el.classList.remove("hl"), 1600); } return; }
+  if (d.fn) { const el = document.getElementById(d.fn); if (el) { el.scrollIntoView({block: /^(rk|qa)-/.test(d.fn) ? "start" : "center"}); el.classList.add("hl"); setTimeout(()=>el.classList.remove("hl"), 1600); } return; }
   if (d.showAyahs !== undefined) { S.showAyahs = true; return render(); }
   if (d.lesson) { S.showAyahs = false; return go("article", {kind:"l", id:d.lesson}); }
   if (d.openNote) { S.openNote.has(d.openNote) ? S.openNote.delete(d.openNote) : S.openNote.add(d.openNote); return render(); }
