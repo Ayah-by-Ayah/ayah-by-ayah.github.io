@@ -207,6 +207,15 @@ nav.tabs button[hidden]{display:none}
 mark.hl{background:#FFE066;color:#1B2427;padding:0 .15em;border-radius:3px}
 .exn{display:inline-block;font:700 .62em/1 system-ui,sans-serif;background:var(--ink);color:var(--surface);border-radius:50%;min-width:1.5em;padding:.3em .2em;margin:0 .25em;text-align:center;vertical-align:.5em}
 .exlab{margin:10px 0 4px}
+.chip.kw{background:var(--sunk);color:var(--ink);border:1px solid var(--line);cursor:pointer}
+.chip.kwai{border-style:dashed}
+.kwmarks{margin-top:6px}
+.kwedit{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.kwedit .chip{display:inline-flex;align-items:center;gap:6px}
+.kwedit .chip button{border:0;background:none;color:inherit;cursor:pointer;font-size:1.1em;line-height:1;padding:0 2px}
+.kwsg{display:flex;flex-direction:column;gap:8px;margin-top:6px;max-height:360px;overflow-y:auto}
+.kwsg .kwgrp{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.kwsg label.chip{cursor:pointer;display:inline-flex;gap:6px;align-items:center}
 .extr{margin:0 0 12px;line-height:1.5}
 .exopts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .exopts button{font-size:1.25em;padding:10px 6px;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);cursor:pointer}
@@ -586,7 +595,7 @@ const S = {
   trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
   trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
   tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [], vocab: {}, vocabOpen: false, vrange: null, qa: [], qaIx: {}, qq: "",
-  cm: [], cmIx: {}, cmq: "", research: [], rsIx: {}, rq: "", rstatus: "", rtag: null, rgroup: true,
+  cm: [], cmIx: {}, cmq: "", kw: [], kwIx: {}, research: [], rsIx: {}, rq: "", rstatus: "", rtag: null, rgroup: true,
   admin: false, db: null, dbState: "loading", sample: null, downloads: null,
   open: new Set(), compare: new Set(), onlyMarked: false, pages: store.get("aba.pg") !== "0",
   words: [], wq: "", wroot: "", cats: [], ncat: "", focus: false, readScale: Math.min(1.5, Math.max(0.85, parseFloat(store.get("aba.readscale")) || 1)), sq: "", nq: "", nkind: "all", ntag: null, lq: "", ltag: null, openLesson: new Set(), openNote: new Set()
@@ -732,6 +741,7 @@ function reindex(){
   const notes = {}, lessons = {}, words = {}, counts = {};
   const bump = (s, k) => { (counts[s] ||= {rev:0,exp:0,les:0,wa:0,cm:0})[k]++; };
   S.cmIx = {}; for (const c of S.cm) { S.cmIx[key(c.s, c.a)] = c; bump(c.s, "cm"); }
+  S.kwIx = {}; for (const x of S.kw) S.kwIx[key(x.s, x.a)] = x;
   S.rsIx = {};
   for (const r of S.research) for (const k of rsKeys(r)) (S.rsIx[k] ||= []).push(r);
   for (const n of S.notes) { (notes[key(n.s,n.a)] ||= []).push(n); bump(n.s, "exp"); for (const k of alsoKeys(n)) (notes[k] ||= []).push(n); }
@@ -1745,6 +1755,156 @@ async function cmAct(act, d){
   }
 }
 
+/* ---------- Categories (private search words per ayah; editor only, never part of the public export) ---------- */
+/* doc keywords/<s>-<a>: {s, a, terms:[string], ai:[the terms that the AI suggested], updatedAt}
+   make_content.py does not read this collection and loadStatic never sets S.kw: keep it that way, like qa and research. */
+function kwNorm(x){
+  const terms = Array.isArray(x.terms) ? x.terms.map(v => String(v).trim()).filter(Boolean) : [];
+  return Object.assign({}, x, {terms, ai: Array.isArray(x.ai) ? x.ai.filter(v => terms.includes(v)) : []});
+}
+const kwClean = v => String(v || "").replace(/^[#\-*\d.)\s]+/, "").replace(/\s+/g, " ").trim().slice(0, 48);
+const kwSnap = () => JSON.stringify([M.terms, M.ai]);
+function openKW(k){
+  if (blockedByMin()) return;
+  const [s, a] = k.split(":").map(Number), ex = S.kwIx[k];
+  M = {type: "kw", s, a, terms: ex ? ex.terms.slice() : [], ai: ex ? ex.ai.slice() : [], input: "", sg: null, busy: false, ctl: [], err: "", status: ""};
+  M.saved = kwSnap();
+  drawKW();
+}
+function captureKW(){ if (M && M.type === "kw") { const g = document.getElementById("kw-in"); if (g) M.input = g.value; } }
+function drawKW(){
+  const {s, a} = M, su = surahOf(s), sg = M.sg, noAI = !S.sample;
+  const LN = {en: "English", ar: "العربية", bn: "বাংলা", ur: "اردو"};
+  const sgHTML = sg && sg.items.length ? (() => {
+    const n = sg.items.filter(x => x.on).length;
+    return `<div class="kwsg">${["en", "ar", "bn", "ur"].map(l => { const its = sg.items.map((x, i) => [x, i]).filter(([x]) => x.l === l); return its.length ? `<div class="kwgrp"><span class="small muted">${LN[l]}</span>${its.map(([x, i]) => `<label class="chip kw"><input type="checkbox" data-m="kw-sg" data-v="${i}" ${x.on ? "checked" : ""}><span lang="${l}" dir="${l === "en" ? "ltr" : "rtl"}">${esc(x.t)}</span></label>`).join("")}</div>` : ""; }).join("")}</div>
+      <div class="row"><button type="button" class="btn primary small" data-m="kw-sg-add" ${n ? "" : "disabled"}>Add ${n} ticked</button><button type="button" class="btn small" data-m="kw-sg-all">Tick all</button><button type="button" class="btn small" data-m="kw-sg-none">Untick all</button></div>`;
+  })() : "";
+  modal(`<div class="row"><h2>Categories · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button><button type="button" class="btn primary" data-m="kw-save" ${M.busy ? "disabled" : ""}>Save</button></div>
+    <div><p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
+      <p class="small" style="margin:0" ${trAttrs()}>${esc(trText(s, a))}</p></div>
+    <div class="field"><label for="kw-in">Add a category or search word <span class="muted" style="font-weight:400">any language; separate several with commas</span></label>
+      <div class="row"><input type="text" id="kw-in" dir="auto" value="${esc(M.input)}" placeholder="Riba" autocomplete="off" style="flex:1;min-width:0"><button type="button" class="btn" data-m="kw-add">Add</button></div></div>
+    <div class="kwedit">${M.terms.length ? M.terms.map((w, i) => `<span class="chip kw${M.ai.includes(w) ? " kwai" : ""}" title="${M.ai.includes(w) ? "Suggested by AI" : "Added by you"}"><span dir="auto">${esc(w)}</span><button type="button" data-m="kw-del" data-v="${i}" aria-label="Remove ${esc(w)}">×</button></span>`).join("") : `<span class="small muted">No categories yet.</span>`}</div>
+    <div class="aibox row"><button type="button" class="btn" data-m="kw-ai" ${M.busy || noAI || !M.terms.length ? "disabled" : ""}>Suggest related search words (AI)</button>${M.busy ? `<button type="button" class="btn" data-m="kw-stop">Stop</button>` : ""}
+      <span class="small muted">${noAI ? "AI is not available in this view." : !M.terms.length ? "Add at least one category first; the AI builds on it." : M.status || "Finds synonyms and related words in English, Arabic, Bangla and Urdu, so any of them finds this ayah."}</span></div>
+    ${sg && sg.items.length ? `<p class="small muted" style="margin:6px 0 0">AI suggestions. Untick any that do not fit this ayah, then add the rest.</p>` : ""}${sgHTML}
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot row"><span class="small muted">Private: used by Search, never shown on the public site.</span><span class="spacer"></span>
+      <button type="button" class="btn" data-m="close">Close</button><button type="button" class="btn primary" data-m="kw-save" ${M.busy ? "disabled" : ""}>Save</button></div>`, "qa");
+}
+function kwAddTerms(list, fromAI){
+  let n = 0; const have = new Set(M.terms.map(normalize));
+  for (const raw of list) {
+    const w = kwClean(raw); if (!w || have.has(normalize(w))) continue;
+    have.add(normalize(w)); M.terms.push(w); if (fromAI) M.ai.push(w); n++;
+  }
+  return n;
+}
+function kwParse(text){
+  // AI reply: one per line, "en | usury", "ar | الربا", "bn | সুদ", "ur | سود"
+  const out = [], seen = new Set();
+  for (const ln of String(text || "").split("\n")) {
+    const m = ln.match(/^\s*[-*\d.)\s]*(en|ar|bn|ur)\s*[|:]\s*(.+)$/i); if (!m) continue;
+    const l = m[1].toLowerCase(), t = kwClean(m[2]); if (!t || seen.has(l + normalize(t))) continue;
+    seen.add(l + normalize(t)); out.push({l, t, on: true});
+    if (out.length >= 60) break;
+  }
+  return out;
+}
+async function kwSuggest(){
+  captureKW();
+  if (!S.sample) { M.err = "AI is not available in this view."; drawKW(); return; }
+  if (!M.terms.length) { M.err = "Add at least one category first."; drawKW(); return; }
+  const {s, a} = M, self = M;
+  M.err = ""; M.busy = true; M.status = "Looking for related words… this usually takes 15–40 seconds."; drawKW();
+  const ctl = new AbortController(); M.ctl = [ctl];
+  const prompt = `You help a researcher of the Qur'an build search words for one ayah, so that any word a reader might type finds this ayah.
+
+Ayah ${s}:${a} (Sūrat ${surahOf(s).tl}):
+${arText(s, a)}
+${trText(s, a, "en")}
+
+The researcher has categorised this ayah as: ${M.terms.join(", ")}.
+
+List other words and short phrases that someone might search for to find this ayah, built on those categories: synonyms, spelling variants, near-synonyms, the underlying concept, the legal, ethical or theological theme it addresses, and the key subjects the ayah itself speaks about. Give them in English, Arabic (the common word, without needing vowel marks), Bangla and Urdu.
+
+Rules:
+- Only words that genuinely fit this ayah. Fewer good words are better than many weak ones.
+- Single words or phrases of at most three words. No sentences, no explanations.
+- Up to 12 in English and up to 6 in each of Arabic, Bangla and Urdu.
+- Do not repeat the researcher's own categories.
+- One per line in exactly this form, nothing else:
+en | word
+ar | كلمة
+bn | শব্দ
+ur | لفظ`;
+  try {
+    const r = await S.sample(prompt, {signal: ctl.signal, cache: false, modelTier: "complex"});
+    if (M !== self) return;
+    const have = new Set(M.terms.map(normalize));
+    const items = kwParse(r.text).filter(x => !have.has(normalize(x.t)));
+    M.sg = {items}; M.status = items.length ? `${items.length} suggestions. Untick any that do not fit.` : "No new words came back.";
+  } catch (e) {
+    if (M !== self) return;
+    M.status = ""; if (e?.code !== "cancelled") M.err = aiErr(e?.code, "en").replace(/The \w+ draft/, "The suggestions").replace("This article is too long to draft in one go (about 60,000 characters is the limit). Draft it in parts: temporarily paste one half in the source tab, draft, then the other half.", "The request was too long.");
+  }
+  M.busy = false; M.ctl = []; drawKW();
+}
+async function kwAct(act, d){
+  const conf = (msg, yes, yesLabel, noLabel, danger) => { $("#m-confirm").innerHTML = `<div class="confirm"><span>${msg}</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">${noLabel}</button><button type="button" class="btn ${danger ? "danger" : "primary"}" data-m="${yes}">${yesLabel}</button></div>`; };
+  if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+  if (act === "close-yes") { closeModal(); return; }
+  if (act === "kw-stop") { M.ctl.forEach(c => c.abort()); return; }
+  if (M.busy && act !== "close") return;
+  if (act === "close") {
+    captureKW();
+    if (M.busy) { M.ctl.forEach(c => c.abort()); closeModal(); return; }
+    if (kwSnap() !== M.saved || M.input.trim()) { conf("Close without saving?", "close-yes", "Close", "Keep editing", true); return; }
+    closeModal(); return;
+  }
+  if (act === "kw-add") { captureKW(); const n = kwAddTerms(M.input.split(/[,،\n]+/), false); M.input = ""; M.err = n ? "" : "Write a category first."; drawKW(); document.getElementById("kw-in")?.focus(); return; }
+  if (act === "kw-del") { captureKW(); const w = M.terms[+d.v]; M.terms.splice(+d.v, 1); M.ai = M.ai.filter(x => x !== w); drawKW(); return; }
+  if (act === "kw-ai") return kwSuggest();
+  if (act === "kw-sg-add") { captureKW(); const n = kwAddTerms(M.sg.items.filter(x => x.on).map(x => x.t), true); M.sg.items = M.sg.items.filter(x => !x.on); M.status = `Added ${n}. Save to keep them.`; drawKW(); return; }
+  if (act === "kw-sg-all" || act === "kw-sg-none") { captureKW(); M.sg.items.forEach(x => x.on = act === "kw-sg-all"); drawKW(); return; }
+  if (act === "kw-save") {
+    captureKW();
+    if (M.input.trim()) kwAddTerms(M.input.split(/[,،\n]+/), false), M.input = "";
+    const id = `${M.s}-${M.a}`;
+    M.busy = true; M.err = ""; drawKW();
+    try {
+      if (M.terms.length) await S.db.collection("keywords").doc(id).set({s: M.s, a: M.a, terms: M.terms, ai: M.ai.filter(w => M.terms.includes(w)), updatedAt: Date.now()});
+      else if (S.kwIx[id]) await S.db.collection("keywords").doc(id).delete();
+      M.saved = kwSnap(); toast("Categories saved"); closeModal(); return;
+    } catch (e) { M.err = dbErr(e); }
+    M.busy = false; drawKW(); return;
+  }
+}
+/* Search: ayahs whose categories match the query (editor only) */
+function kwMatch(q){
+  if (!S.admin || !S.kw.length) return [];
+  const nq = normalize(q).trim(); if (!nq) return [];
+  const toks = nq.split(/\s+/).filter(Boolean), out = [];
+  for (const x of S.kw) {
+    let best = 0; const hit = [];
+    for (const w of x.terms) {
+      const nw = normalize(w);
+      const sc = nw === nq ? 4 : nw.startsWith(nq) ? 3 : nw.includes(nq) ? 2 : (toks.length > 1 && toks.every(t => nw.includes(t))) ? 1 : (nq.length >= 5 && nw.length >= 5 && nw.slice(0, 5) === nq.slice(0, 5)) ? 1 : 0;
+      if (sc) { hit.push(w); best = Math.max(best, sc); }
+    }
+    if (hit.length) out.push({s: x.s, a: x.a, terms: hit, sc: best});
+  }
+  return out.sort((x, y) => y.sc - x.sc || x.s - y.s || x.a - y.a);
+}
+function kwIndexHTML(){
+  if (!S.admin || !S.kw.length) return "";
+  const cnt = new Map();
+  for (const x of S.kw) for (const w of x.terms) { const k = normalize(w); const e = cnt.get(k) || {w, n: 0}; e.n++; cnt.set(k, e); }
+  const list = [...cnt.values()].sort((x, y) => y.n - x.n || x.w.localeCompare(y.w));
+  return `<div class="gsec">Your categories · ${S.kw.length} ayah${S.kw.length === 1 ? "" : "s"}</div><div class="marks">${list.map(e => `<button type="button" class="chip kw" data-kwgo="${esc(e.w)}"><span dir="auto">${esc(e.w)}</span> · ${e.n}</button>`).join("")}</div>`;
+}
+
 /* ---------- Research topics (PRIVATE: editor only, never part of the public export) ---------- */
 /* doc research/<id>: {title, note, refs (as typed), ranges:[{s,from,to}], status: open|doing|done, tags:[…], createdAt, updatedAt}
    make_content.py does not read this collection and loadStatic never sets S.research: keep it that way. */
@@ -2076,6 +2236,7 @@ function ayahHTML(s, x){
         <button type="button" class="btn ghost small" data-compare="${k}">${S.compare.has(k)?"Hide original":"Compare with original"}</button></div>
         ${S.compare.has(k) ? `<div class="orig" ${trAttrs()}><b>${TR_NAME[S.trLang]}</b>${esc(x.en)}${rev.note?`<div style="margin-top:8px;color:var(--ink)"><b>Reason for revision</b>${esc(rev.note)}</div>`:""}</div>` : ""}` : ""}
       ${cmt ? cmBox(cmt) : ""}
+      ${S.admin && S.kwIx[k] && S.kwIx[k].terms.length ? `<div class="marks kwmarks" title="Your categories for this ayah. Tap one to search it.">${S.kwIx[k].terms.map(w => `<button type="button" class="chip kw${(S.kwIx[k].ai || []).includes(w) ? " kwai" : ""}" data-kwgo="${esc(w)}">${esc(w)}</button>`).join("")}</div>` : ""}
       ${(notes.length || lessons.length || wlist.length) ? `<div class="marks">
         ${nExp ? `<button type="button" class="chip exp" data-toggle="${k}" aria-expanded="${open}">${nExp} note${nExp>1?"s":""}</button>` : ""}
         ${wlist.map(w => `<button type="button" class="chip wa" data-article="w:${esc(w.id)}" title="Word analysis">Word: <span lang="ar" class="wa-ar">${esc(w.word||"")}</span></button>`).join("")}
@@ -2090,6 +2251,7 @@ function ayahHTML(s, x){
         <button type="button" class="btn ghost" data-new-word="${k}">Add word analysis</button>
         <button type="button" class="btn ghost" data-cm="${k}">${cmt ? "Edit commentary" : "Add commentary"}</button>
         <button type="button" class="btn ghost" data-qa="${k}">Q&amp;A${qaList(k).length ? ` (${qaList(k).length})` : ""}</button>
+        <button type="button" class="btn ghost" data-kw="${k}">Categories${S.kwIx[k] && S.kwIx[k].terms.length ? ` (${S.kwIx[k].terms.length})` : ""}</button>
         <button type="button" class="btn ghost" data-rs="${k}">Research${nRs ? ` (${nRs})` : ""}</button>` : ""}
       </div>
     </div>
@@ -3631,8 +3793,17 @@ function tagAdd(){
   drawWriteEditor(); saveLocalDraft();
 }
 
+document.addEventListener("keydown", ev => {
+  if (ev.key === "Enter" && ev.target.id === "kw-in" && M && M.type === "kw" && !M.busy) { ev.preventDefault(); kwAct("kw-add", {}); }
+});
 document.addEventListener("change", ev => {
   const c = ev.target;
+  if (c && c.dataset?.m === "kw-sg" && M?.type === "kw" && M.sg) {
+    const x = M.sg.items[+c.dataset.v]; if (x) x.on = c.checked;
+    const b = document.querySelector('[data-m="kw-sg-add"]'), n = M.sg.items.filter(y => y.on).length;
+    if (b) { b.disabled = !n; b.textContent = `Add ${n} ticked`; }
+    return;
+  }
   if (!c || c.dataset?.m !== "tag-toggle" || !M?.tag) return;
   const x = M.tag.items[+c.dataset.v]; if (!x) return;
   x.on = c.checked;
@@ -4290,7 +4461,7 @@ function gAyahCard(s, a, regs, tag){
 }
 function gResultsHTML(){
   const q = S.gq.trim();
-  if (!q) return `<p class="gnote">Search by <b>ayah</b> (2:4, 3:10-12, or “baqarah 255”), by <b>topic or concept</b> (patience, mercy and forgiveness, usury), by an <b>English word</b>, by an <b>Arabic word or root</b> (صبر), or in <b>your own notes, lessons, word analyses and commentary</b>.</p>`;
+  if (!q) return `<p class="gnote">Search by <b>ayah</b> (2:4, 3:10-12, or “baqarah 255”), by <b>topic or concept</b> (patience, mercy and forgiveness, usury), by an <b>English word</b>, by an <b>Arabic word or root</b> (صبر), or in <b>your own notes, lessons, word analyses and commentary</b>.</p>${kwIndexHTML()}`;
   if (CONC_OBJ === null && /[؀-ۿ]/.test(q)) loadConc().then(c => { CONC_OBJ = c; drawSearchResults(); }).catch(() => { CONC_OBJ = false; });
   const R = gSearch(q); let h = "";
   const more = S.gmore;
@@ -4308,6 +4479,8 @@ function gResultsHTML(){
     h += `<div class="gsec">${root.kind === "root" ? "Words from the root" : "The word"} <span lang="ar" class="gar">${esc(root.name)}</span></div><p class="gnote" style="margin-top:4px">${root.places} places in ${root.ayahs.length} ayahs${root.kind === "root" && root.lemmas.length ? ". Forms: " + root.lemmas.map(l => `<span lang="ar" class="gar">${esc(l)}</span>`).join("، ") : ""}.</p>
       <div class="gres">${root.ayahs.slice(0, more).map(([s, a]) => gAyahCard(s, a, null, "")).join("")}</div>${root.ayahs.length > more ? `<p><button type="button" class="btn" data-gmore>Show more</button></p>` : ""}`;
   }
+  const kwh = kwMatch(q);
+  if (kwh.length) h += `<div class="gsec">Your categories · ${kwh.length}</div><div class="gres">${kwh.slice(0, more).map(x => gAyahCard(x.s, x.a, null, x.terms.map(w => `<span class="chip kw">${esc(w)}</span>`).join(""))).join("")}</div>${kwh.length > more ? `<p><button type="button" class="btn" data-gmore>Show more</button></p>` : ""}`;
   const mine = gMine(q, R);
   if (mine.length) h += `<div class="gsec">In your write-ups</div><div class="gres">${mine.map(m => {
     const it = m.it, chipCls = m.kind === "lesson" ? "les" : m.kind === "word" ? "wa" : m.kind === "cm" ? "cm" : "exp";
@@ -4319,7 +4492,7 @@ function gResultsHTML(){
   }).join("")}</div>`;
   if (R.ayahs.length) {
     h += `<div class="gsec">Ayahs · ${R.total}${R.total > 600 ? " (first 600 shown by relevance)" : ""}</div><div class="gres">${R.ayahs.slice(0, more).map(([s, a]) => gAyahCard(s, a, R.regs, "")).join("")}</div>${R.ayahs.length > more ? `<p><button type="button" class="btn" data-gmore>Show more</button></p>` : ""}`;
-  } else if (!R.surahs.length && !mine.length && !root && !R.loading) {
+  } else if (!R.surahs.length && !mine.length && !root && !R.loading && !kwh.length) {
     h += `<div class="empty" style="margin-top:14px"><b>No match for “${esc(q)}”</b>Try a simpler word, a related word, or the ayah number.</div>`;
   }
   if (S.sample && S.admin) {
@@ -4400,6 +4573,8 @@ document.addEventListener("click", async (ev) => {
   if (d.rukulist) return openRukuList(d.rukulist);
   if (d.qa) { if (S.admin && S.db) openQA(d.qa); return; }
   if (d.cm) { if (S.admin && S.db) openCM(d.cm); return; }
+  if (d.kw) { if (S.admin && S.db) openKW(d.kw); return; }
+  if (d.kwgo) { S.gq = d.kwgo; S.gmore = 30; S.gai = null; if (S.view === "search") { render(); const i = $("#gq"); if (i) i.focus(); } else go("search"); return; }
   if (d.rs) { if (S.admin && S.db) openRS("", d.rs); return; }
   if (d.rsNew !== undefined) { if (S.admin && S.db) openRS("", ""); return; }
   if (d.rsEdit) { if (S.admin && S.db) openRS(d.rsEdit, ""); return; }
@@ -4483,6 +4658,7 @@ document.addEventListener("click", async (ev) => {
   const act = d.m;
   if (M.type === "qa") return qaAct(act, d);
   if (M.type === "cm") return cmAct(act, d);
+  if (M.type === "kw") return kwAct(act, d);
   if (M.type === "rs") return rsAct(act, d);
   if (M.type === "mv") return mvAct(act, d);
   if (M.type === "offsync" || M.type === "syncin") return syncAct(act);
@@ -4707,7 +4883,7 @@ function rerenderKeepingInput(id){
 
 async function exportData(){
   if (!S.downloads) return;
-  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, research: S.research, ruku: Object.values(S.ruku || {})}, null, 2);
+  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, keywords: S.kw, research: S.research, ruku: Object.values(S.ruku || {})}, null, 2);
   try { await S.downloads.save({filename: `ayah-by-ayah-backup-${new Date().toISOString().slice(0,10)}.json`, data}); }
   catch (e) { if (e?.code !== "declined") toast("The backup couldn't be saved here."); }
 }
@@ -4730,7 +4906,7 @@ function hashDocJ(d){
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 }
 const SYNC_FORMAT = "ayah-by-ayah-offline-sync";
-const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","research","ruku","settings"];
+const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","keywords","research","ruku","settings"];
 function syncLabel(path, doc){
   const col = path.split("/")[0], id = path.slice(col.length + 1);
   let t = "";
@@ -4738,7 +4914,7 @@ function syncLabel(path, doc){
     const pickT = (o) => o && (o.en || o.ar || o.bn || o.ur) || "";
     t = pickT(doc.title) || doc.word || (col === "commentary" ? `Commentary ${doc.s}:${doc.a}` : "") || (col === "qa" ? `Q&A ${doc.s}:${doc.a} ` + (pickT(doc.q) || "").slice(0, 60) : "") || (col === "research" ? doc.title : "") || (col === "translations" ? `Translation ${doc.s}:${doc.a}${doc.lang ? " (" + doc.lang + ")" : ""}` : "");
   }
-  const names = {notes:"Note", lessons:"Lesson", words:"Word analysis", translations:"Translation", irab:"Iʿrāb", chunks:"Part of a long write-up", vocab:"Vocabulary table", qa:"Q&A", commentary:"Commentary", research:"Research topic", settings:"Settings"};
+  const names = {notes:"Note", lessons:"Lesson", words:"Word analysis", translations:"Translation", irab:"Iʿrāb", chunks:"Part of a long write-up", vocab:"Vocabulary table", qa:"Q&A", commentary:"Commentary", keywords:"Categories", research:"Research topic", settings:"Settings"};
   return `${names[col] || col}: ${t ? String(t).trim() : id}`;
 }
 function refreshOfflineBtn(){
@@ -4896,6 +5072,9 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
   if (S.admin) db.collection("ruku").onSnapshot(snap => {
     S.ruku = {}; for (const d of snap.docs) { const x = d.data(); if (x && x.s) S.ruku[x.s] = x; }
     render();
+  }, () => {});
+  if (S.admin) db.collection("keywords").onSnapshot(snap => {
+    S.kw = snap.docs.map(d => kwNorm(Object.assign({id: d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a)); reindex(); render();
   }, () => {});
   if (S.admin) db.collection("research").onSnapshot(snap => {
     S.research = snap.docs.map(d => rsNorm(Object.assign({id: d.id}, d.data()))); reindex(); render();

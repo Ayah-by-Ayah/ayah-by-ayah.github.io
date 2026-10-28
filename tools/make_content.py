@@ -2,7 +2,7 @@
 
 Export every collection first with the ArtifactData tool, action "list", query {"limit": 1000},
 and out_dir=<EXPORT_DIR>, for: notes, lessons, words, translations, irab, vocab, chunks, commentary, settings.
-NEVER export or read the private collections: qa, research and ruku (they stay in the editor only).
+NEVER export or read the private collections: qa, research, ruku and keywords (they stay in the editor only).
 That writes <EXPORT_DIR>/<collection>/<doc_id>.json.
 
 Usage (from the repo root):  python3 tools/make_content.py <EXPORT_DIR>
