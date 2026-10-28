@@ -205,6 +205,8 @@ nav.tabs button[hidden]{display:none}
 .exblank{display:inline-block;min-width:4.5em;border-bottom:3px solid var(--ink);margin:0 .15em;color:transparent;user-select:none}
 .exgot{color:#1a7f37;font-weight:600}
 mark.hl{background:#FFE066;color:#1B2427;padding:0 .15em;border-radius:3px}
+.exn{display:inline-block;font:700 .62em/1 system-ui,sans-serif;background:var(--ink);color:var(--surface);border-radius:50%;min-width:1.5em;padding:.3em .2em;margin:0 .25em;text-align:center;vertical-align:.5em}
+.exlab{margin:10px 0 4px}
 .extr{margin:0 0 12px;line-height:1.5}
 .exopts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .exopts button{font-size:1.25em;padding:10px 6px;border:2px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink);cursor:pointer}
@@ -1129,28 +1131,60 @@ function exTok(s, a, forceMad){
 }
 const exWord = (ref, m) => { const [s, a, i] = ref.split(":").map(Number); return exTok(s, a, m)[i-1]; };
 const arNum = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
+/* Blanks per ayah grow with its length: up to 5 words 1 blank, up to 10 words 2, up to 20 words 3, longer 4 (limited by the sets in the data). */
+function exCount(nw){ return nw <= 5 ? 1 : nw <= 10 ? 2 : nw <= 20 ? 3 : 4; }
 function exStart(){
   const E = S.ex, d = exData(E.s); if (!d) return;
   const qs = [];
   for (let a = E.from; a <= E.to; a++) {
     const sets = d.ayahs[a]; if (!sets || !sets.length) continue;
-    const k = `aba.exlast.${E.s}.${a}`; let last = -1; try { last = +(localStorage.getItem(k) ?? -1); } catch (e) {}
-    const pool = sets.map((_, i) => i).filter(i => i !== last || sets.length === 1);
-    const si = pool[Math.floor(Math.random() * pool.length)];
-    try { localStorage.setItem(k, String(si)); } catch (e) {}
-    const q = sets[si], opts = q.o.map((r, j) => ({r, ok: j === 0}));
-    for (let i = opts.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [opts[i], opts[j]] = [opts[j], opts[i]]; }
-    qs.push({a, w: q.w, hl: q.hl, m: !!q.m, opts});
+    const en = surahOf(E.s).v[a-1][1], nw = surahOf(E.s).v[a-1][0].split(" ").length;
+    const k = `aba.exlast.${E.s}.${a}`; let last = []; try { last = (localStorage.getItem(k) || "").split(",").filter(Boolean).map(Number); } catch (e) {}
+    const want = Math.min(exCount(nw), sets.length);
+    // random order, sets used last time go to the end so the blanks change each attempt
+    const order = sets.map((_, i) => i).sort(() => Math.random() - 0.5).sort((x, y) => (last.includes(x) ? 1 : 0) - (last.includes(y) ? 1 : 0));
+    const span = i => { const h = en.indexOf(sets[i].hl); return [h, h + sets[i].hl.length]; };
+    const chosen = [];
+    for (const gap of [2, 1]) { // first keep blanks apart (no two neighbouring words), then relax
+      for (const i of order) {
+        if (chosen.length >= want) break;
+        if (chosen.includes(i)) continue;
+        const [h0, h1] = span(i);
+        if (chosen.some(j => { const [g0, g1] = span(j); return h0 < g1 && g0 < h1 || Math.abs(sets[j].w - sets[i].w) < gap; })) continue;
+        chosen.push(i);
+      }
+    }
+    chosen.sort((x, y) => sets[x].w - sets[y].w);
+    try { localStorage.setItem(k, chosen.join(",")); } catch (e) {}
+    const bl = chosen.map(si => {
+      const q = sets[si], opts = q.o.map((r, j) => ({r, ok: j === 0}));
+      for (let i = opts.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [opts[i], opts[j]] = [opts[j], opts[i]]; }
+      return {w: q.w, hl: q.hl, opts};
+    });
+    qs.push({a, m: !!sets[chosen[0]].m, bl, pk: bl.map(() => null)});
   }
-  E.qs = qs; E.i = 0; E.pick = null; E.res = []; E.phase = qs.length ? "run" : "pick";
+  E.qs = qs; E.i = 0; E.phase = qs.length ? "run" : "pick";
 }
-function exLine(s, q, filled){
+const exDone = q => q.pk.every(x => x !== null);
+const exRight = q => q.pk.filter((p, b) => p !== null && q.bl[b].opts[p].ok).length;
+const exScore = E => E.qs.reduce((n, q) => n + exRight(q), 0);
+const exTotal = E => E.qs.reduce((n, q) => n + q.bl.length, 0);
+const exBadge = (q, b) => q.bl.length > 1 ? `<sup class="exn">${b + 1}</sup>` : "";
+function exLine(s, q){
   const t = exTok(s, q.a, q.m);
-  return t.map((w, i) => i + 1 === q.w ? (filled ? `<span class="exgot">${esc(w)}</span>` : `<span class="exblank">${esc(w)}</span>`) : esc(w)).join(" ") + ` ﴿${arNum(q.a)}﴾`;
+  return t.map((w, i) => {
+    const b = q.bl.findIndex(x => x.w === i + 1);
+    if (b < 0) return esc(w);
+    const got = q.pk[b] !== null;
+    return `${exBadge(q, b)}${got ? `<span class="exgot">${esc(w)}</span>` : `<span class="exblank">${esc(w)}</span>`}`;
+  }).join(" ") + ` ﴿${arNum(q.a)}﴾`;
 }
 function exTrans(s, q){
-  const en = surahOf(s).v[q.a-1][1], k = en.indexOf(q.hl);
-  return k < 0 ? esc(en) : `${esc(en.slice(0, k))}<mark class="hl">${esc(q.hl)}</mark>${esc(en.slice(k + q.hl.length))}`;
+  const en = surahOf(s).v[q.a-1][1];
+  const hs = q.bl.map((x, b) => ({b, k: en.indexOf(x.hl), hl: x.hl})).filter(x => x.k >= 0).sort((x, y) => x.k - y.k);
+  let out = "", pos = 0;
+  for (const h of hs) { out += esc(en.slice(pos, h.k)) + `<mark class="hl">${esc(h.hl)}</mark>${exBadge(q, h.b)}`; pos = h.k + h.hl.length; }
+  return out + esc(en.slice(pos));
 }
 function viewExercise(){
   if (!S.ex) S.ex = {s: EX_SURAHS[0], from: 1, to: surahOf(EX_SURAHS[0]).v.length, phase: "pick"};
@@ -1158,7 +1192,7 @@ function viewExercise(){
   let body = "";
   if (E.phase === "pick") {
     const failed = EXD[s] && EXD[s].fail;
-    body = `<p class="muted small" style="margin:0">Fill-the-blank questions: one word of each ayah is missing and its translation is highlighted in yellow. Choose the right word; you see the answer straight away, and the score at the end. Each time the blanks change.</p>
+    body = `<p class="muted small" style="margin:0">Fill-the-blank questions: one word of each ayah is missing and its translation is highlighted in yellow. Choose the right word; you see the answer straight away, and the score at the end. Longer ayahs have more blanks (up to 5 words: 1, up to 10: 2, up to 20: 3, longer: 4), numbered in the ayah and in the translation. Each time the blanks change.</p>
     <div class="learn-bar">
       <label class="flabel" for="ex-s">Surah</label><select id="ex-s">${EX_SURAHS.map(x => `<option value="${x}" ${x === s ? "selected" : ""}>${x} · ${esc(surahOf(x).tl)}</option>`).join("")}</select>
       <label class="flabel" for="ex-from">Ayah</label>${ayahSelect("ex-from", n, E.from)}
@@ -1168,20 +1202,24 @@ function viewExercise(){
     </div>
     <p class="small muted">Questions are generated automatically from the Qur'an's grammar data and are an unreviewed draft: if two options both seem right, choose the closest to the highlighted meaning. Surah 97 is hand-written.</p>`;
   } else if (E.phase === "run") {
-    const q = E.qs[E.i], done = E.pick !== null, ok = done && q.opts[E.pick].ok, sc = E.res.filter(Boolean).length;
-    body = `<div class="row small"><span class="muted">Question ${E.i + 1} of ${E.qs.length} · Ayah ${s}:${q.a}</span><span class="spacer"></span><b>Score ${sc}</b></div>
+    const q = E.qs[E.i], done = exDone(q), sc = exScore(E), tot = exTotal(E), nb = q.bl.length;
+    const optRows = q.bl.map((bk, b) => {
+      const pk = q.pk[b], got = pk !== null;
+      return `${nb > 1 ? `<div class="exlab small muted">Blank ${b + 1}${got ? (bk.opts[pk].ok ? " · ✓" : " · ✗") : ""}</div>` : ""}<div class="exopts" dir="rtl">${bk.opts.map((o, j) => `<button type="button" class="ar ${got ? (o.ok ? "ok" : j === pk ? "bad" : "") : ""}" lang="ar" data-exopt="${b}:${j}" ${got ? "disabled" : ""}>${esc(exWord(o.r, q.m))}</button>`).join("")}</div>`;
+    }).join("");
+    body = `<div class="row small"><span class="muted">Question ${E.i + 1} of ${E.qs.length} · Ayah ${s}:${q.a}${nb > 1 ? ` · ${nb} blanks` : ""}</span><span class="spacer"></span><b>Score ${sc}</b></div>
     <div class="exq">
-      <div class="ar exline" lang="ar" dir="rtl">${exLine(s, q, done)}</div>
+      <div class="ar exline" lang="ar" dir="rtl">${exLine(s, q)}</div>
       <p class="extr">${exTrans(s, q)}</p>
-      <div class="exopts" dir="rtl">${q.opts.map((o, j) => `<button type="button" class="ar ${done ? (o.ok ? "ok" : j === E.pick ? "bad" : "") : ""}" lang="ar" data-exopt="${j}" ${done ? "disabled" : ""}>${esc(exWord(o.r, q.m))}</button>`).join("")}</div>
-      ${done ? `<p class="exres ${ok ? "ok" : "bad"}">${ok ? "✓ Correct" : "✗ Wrong — the right word is shown in green"}</p>
+      ${optRows}
+      ${done ? `<p class="exres ${exRight(q) === nb ? "ok" : "bad"}">${nb === 1 ? (exRight(q) ? "✓ Correct" : "✗ Wrong — the right word is shown in green") : `${exRight(q)} of ${nb} correct${exRight(q) < nb ? " — the right words are shown in green" : ""}`}</p>
       <div class="row"><button type="button" class="btn primary" data-exnext>${E.i + 1 < E.qs.length ? "Next question" : "See score"}</button></div>` : ""}
     </div>`;
   } else {
-    const sc = E.res.filter(Boolean).length, tot = E.qs.length;
+    const sc = exScore(E), tot = exTotal(E);
     body = `<div class="exq"><div class="muted small">Your score</div><div class="exscore">${sc} / ${tot}</div>
       <div>${sc === tot ? "Perfect." : sc >= tot * 0.6 ? "Good work." : "Keep practising."}</div>
-      <ul class="exlist">${E.qs.map((q, i) => `<li>${E.res[i] ? "✓" : "✗"} <button type="button" class="reflink" data-go="${s}:${q.a}">Ayah ${s}:${q.a}</button> <span class="ar" lang="ar" dir="rtl">${esc(exWord(q.opts.find(o => o.ok).r, q.m))}</span></li>`).join("")}</ul>
+      <ul class="exlist">${E.qs.map(q => `<li>${q.bl.map((bk, b) => q.pk[b] !== null && bk.opts[q.pk[b]].ok ? "✓" : "✗").join("")} <button type="button" class="reflink" data-go="${s}:${q.a}">Ayah ${s}:${q.a}</button> ${q.bl.map(bk => `<span class="ar" lang="ar" dir="rtl">${esc(exWord(bk.opts.find(o => o.ok).r, q.m))}</span>`).join(" · ")}</li>`).join("")}</ul>
       <div class="row"><button type="button" class="btn primary" data-exagain>Try again (new blanks)</button><button type="button" class="btn ghost" data-exreset>Choose another range</button></div></div>`;
   }
   return `<div class="phead"><h1>Exercise</h1><button type="button" class="btn" data-focus aria-label="Full screen">⛶ Full screen</button></div>${body}`;
@@ -4378,8 +4416,8 @@ document.addEventListener("click", async (ev) => {
   if (d.vtoggle !== undefined) { S.vocabOpen = !S.vocabOpen; render(); if (S.vocabOpen) requestAnimationFrame(() => document.getElementById("vocab")?.scrollIntoView({block:"start"})); return; }
   if (d.bm) { bmToggle(d.bm); if (d.bmclear) render(); return; }
   if (d.exstart !== undefined) { exStart(); return render(); }
-  if (d.exopt !== undefined) { const E = S.ex; if (E.pick !== null) return; E.pick = +d.exopt; E.res[E.i] = E.qs[E.i].opts[E.pick].ok; return render(); }
-  if (d.exnext !== undefined) { const E = S.ex; if (E.i + 1 < E.qs.length) { E.i++; E.pick = null; } else E.phase = "done"; render(); window.scrollTo(0, 0); return; }
+  if (d.exopt !== undefined) { const E = S.ex, q = E.qs[E.i], [b, j] = d.exopt.split(":").map(Number); if (q.pk[b] !== null) return; q.pk[b] = j; return render(); }
+  if (d.exnext !== undefined) { const E = S.ex; if (E.i + 1 < E.qs.length) E.i++; else E.phase = "done"; render(); window.scrollTo(0, 0); return; }
   if (d.exagain !== undefined) { exStart(); render(); window.scrollTo(0, 0); return; }
   if (d.exreset !== undefined) { S.ex.phase = "pick"; return render(); }
   if (d.jump) {
