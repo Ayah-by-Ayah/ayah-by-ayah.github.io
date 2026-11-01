@@ -991,6 +991,25 @@ function viewSurahs(){
 function hasMarks(s,a){ const k = key(s,a); return !!(S.tr[k] || IDX.notes[k] || IDX.lessons[k] || S.cmIx[k]); }
 
 /* Tables read right to left (dir="rtl"): the first column listed here is the rightmost. */
+/* Bangla for the Learn tables and the word card (labels here; meanings in learn-bn.json, built by tools/build_learn_bn.py) */
+const BNL = {"Meaning":"অর্থ","Singular":"একবচন","Plural 1":"বহুবচন ১","Plural 2":"বহুবচন ২","Ayah":"আয়াত","Māḍī":"অতীত (মাযী)","Muḍāriʿ":"বর্তমান (মুযারি)","Maṣdar":"মাসদার (ক্রিয়ামূল)","Amr":"আদেশ (আমর)","Ism fāʿil":"কর্তা (ইসমে ফায়েল)","Ism mafʿūl":"কর্ম (ইসমে মাফউল)",
+ "Ism (nouns)":"ইসম (বিশেষ্য)","Fiʿl (verbs)":"ফিল (ক্রিয়া)","Ism":"ইসম","Fiʿl":"ফিল","↑ Top":"↑ উপরে","↑ Ism":"↑ ইসম","Fiʿl ↓":"ফিল ↓","Vocabulary · Ism and Fiʿl":"শব্দতালিকা · ইসম ও ফিল","Show tables":"সারণি দেখান","Hide tables":"সারণি লুকান","Show all":"সব দেখান","to":"থেকে","Loading…":"লোড হচ্ছে…",
+ "Unreviewed draft.":"অপর্যালোচিত খসড়া।","Mark as reviewed":"পর্যালোচিত হিসেবে চিহ্নিত করুন","Forms":"রূপ","not available":"নেই","Plural":"বহুবচন","Plurals":"বহুবচন","Plural of":"যার বহুবচন","Learn":"শিখুন","Surah":"সূরা","or number of ayahs":"অথবা আয়াতের সংখ্যা","Whole surah":"পুরো সূরা","⛶ Full screen":"⛶ পূর্ণ পর্দা","Full screen":"পূর্ণ পর্দা"};
+const lb = t => (S.lang === "bn" && BNL[t]) || t;
+let LBN = null, LBNP = null;
+const bnNorm = t => String(t||"").replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, "").replace(/[أإآٱ]/g, "ا").replace(/ى/g, "ي");   /* learn-bn.json, loaded when Bangla is chosen */
+function ensureLBN(){
+  if (S.lang !== "bn" || LBN || LBNP) return;
+  LBNP = fetch("learn-bn.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(d => { LBN = d; LBN.nn = {}; LBN.vn = {}; const add = (m, src) => { for (const k in src) { const n = bnNorm(k); m[n] = (n in m && m[n] !== src[k]) ? null : src[k]; } }; add(LBN.nn, d.ns); add(LBN.vn, d.vs); })
+    .catch(() => { LBN = {n:{}, v:{}, ns:{}, vs:{}, nn:{}, vn:{}}; })
+    .then(() => { if (!M && (S.view === "learn" || (S.view === "surah" && S.vocabOpen))) render(); else if (M && M.type === "flash") drawWordCard(); });
+}
+/* meaning shown in a table row or word card: Bangla when chosen and available, else the English gloss */
+function bnMean(kind, r){
+  if (S.lang !== "bn" || !LBN) return r.mean || "";
+  const k = kind === "n" ? r.sg + "|" + r.p1 : r.madi + "|" + r.mud;
+  return LBN[kind][k] || (kind === "n" ? LBN.ns[r.sg] || LBN.nn[bnNorm(r.sg)] : LBN.vs[r.madi] || LBN.vn[bnNorm(r.madi)]) || r.mean || "";   /* exact key, then first form with its vowels, then vowel-free (skipped when two words collide, e.g. مَلَك / مَلِك) */
+}
 const VOC_ISM = [["Meaning",""],["Singular","مفرد"],["Plural 1","جمع ١"],["Plural 2","جمع ٢"],["Ayah",""]];
 const VOC_FIL = [["Meaning",""],["Māḍī","ماضٍ"],["Muḍāriʿ","مضارع"],["Maṣdar","مصدر"],["Amr","أمر"],["Ism fāʿil","اسم فاعل"],["Ism mafʿūl","اسم مفعول"],["Ayah",""]];
 function ayahSelect(id, n, val){ return `<input type="number" id="${id}" class="ayah-sel ayah-num" inputmode="numeric" min="1" max="${n}" step="1" value="${val}" aria-label="Ayah (1–${n})" style="width:4.6em">`; }
@@ -1002,19 +1021,21 @@ function vocabTables(s, lo, hi, doc){
   const inR = r => (r.ayahs||[]).some(a => a >= lo && a <= hi);
   const cut = r => ({...r, ayahs: (r.ayahs||[]).filter(a => a >= lo && a <= hi)});
   const ar = x => x ? `<td class="ar" lang="ar" dir="rtl">${esc(x)}</td>` : `<td class="muted">—</td>`;
-  const head = cols => `<tr>${cols.map(c => `<th>${esc(c[0])}${c[1] ? ` <span lang="ar">${esc(c[1])}</span>` : ""}</th>`).join("")}</tr>`;
-  const mean = r => `<td class="mean" dir="ltr">${esc(r.mean||"")}</td>`;
+  const head = cols => `<tr>${cols.map(c => `<th>${esc(lb(c[0]))}${c[1] ? ` <span lang="ar">${esc(c[1])}</span>` : ""}</th>`).join("")}</tr>`;
+  ensureLBN();
+  const bnOn = S.lang === "bn";
+  const mean = (r, kind) => `<td class="mean" dir="${bnOn ? "auto" : "ltr"}"${bnOn ? ' lang="bn"' : ""}>${esc(bnMean(kind, r))}</td>`;
   const refs = r => `<td class="refs">${vocabRefs(s, r.ayahs)}</td>`;
   const trc = r => r.nw && (r.ayahs[0] >= lo) ? " class=\"newword\"" : ""; // first time in the Qur'an (from 1:1), and that first ayah is in the shown range
-  const ism = (v.ism||[]).filter(inR).map(r => [r, cut(r)]).map(([o, r]) => `<tr${trc(o)}>${mean(r)}${ar(r.sg)}${ar(r.p1)}${ar(r.p2)}${refs(r)}</tr>`).join("");
-  const fil = (v.fil||[]).filter(inR).map(r => [r, cut(r)]).map(([o, r]) => `<tr${trc(o)}>${mean(r)}${ar(r.madi)}${ar(r.mud)}${ar(r.masdar)}${ar(r.amr)}${ar(r.fa)}${ar(r.mf)}${refs(r)}</tr>`).join("");
+  const ism = (v.ism||[]).filter(inR).map(r => [r, cut(r)]).map(([o, r]) => `<tr${trc(o)}>${mean(r, "n")}${ar(r.sg)}${ar(r.p1)}${ar(r.p2)}${refs(r)}</tr>`).join("");
+  const fil = (v.fil||[]).filter(inR).map(r => [r, cut(r)]).map(([o, r]) => `<tr${trc(o)}>${mean(r, "v")}${ar(r.madi)}${ar(r.mud)}${ar(r.masdar)}${ar(r.amr)}${ar(r.fa)}${ar(r.mf)}${refs(r)}</tr>`).join("");
   const nI = (v.ism||[]).filter(inR).length, nF = (v.fil||[]).filter(inR).length;
   const sw = (to, label) => `<button type="button" class="btn small ghost" data-jump="${to}">${label}</button>`;
   return {
     nI, nF,
-    bar: (nI || nF) ? `<div class="jumpbar row small">${nI ? sw("tbl-ism", `Ism · ${nI}`) : ""}${nF ? sw("tbl-fil", `Fiʿl · ${nF}`) : ""}</div>` : "",
-    ism: ism ? `<h3 id="tbl-ism" class="tblh">Ism (nouns)<span class="spacer"></span>${nF ? sw("tbl-fil", "Fiʿl ↓") : ""}${sw("tbl-top", "↑ Top")}</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_ISM)}</thead><tbody>${ism}</tbody></table></div>` : "",
-    fil: fil ? `<h3 id="tbl-fil" class="tblh">Fiʿl (verbs)<span class="spacer"></span>${nI ? sw("tbl-ism", "↑ Ism") : ""}${sw("tbl-top", "↑ Top")}</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""
+    bar: (nI || nF) ? `<div class="jumpbar row small">${nI ? sw("tbl-ism", `${lb("Ism")} · ${nI}`) : ""}${nF ? sw("tbl-fil", `${lb("Fiʿl")} · ${nF}`) : ""}</div>` : "",
+    ism: ism ? `<h3 id="tbl-ism" class="tblh">${lb("Ism (nouns)")}<span class="spacer"></span>${nF ? sw("tbl-fil", lb("Fiʿl ↓")) : ""}${sw("tbl-top", lb("↑ Top"))}</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_ISM)}</thead><tbody>${ism}</tbody></table></div>` : "",
+    fil: fil ? `<h3 id="tbl-fil" class="tblh">${lb("Fiʿl (verbs)")}<span class="spacer"></span>${nI ? sw("tbl-ism", lb("↑ Ism")) : ""}${sw("tbl-top", lb("↑ Top"))}</h3><div class="vtbl-wrap" dir="rtl"><table class="vtbl" dir="rtl"><thead>${head(VOC_FIL)}</thead><tbody>${fil}</tbody></table></div>` : ""
   };
 }
 /* Generated Ism/Fiʿl tables (learn/<s>.json, built by tools/build_learn.py). A document saved in the database (S.vocab) wins. */
@@ -1032,8 +1053,9 @@ function vocDoc(s){
   }
   return null;
 }
+function vocabFoot(){ return S.lang === "bn" ? "শব্দ ও অর্থ কুরআনিক অ্যারাবিক করপাস ও quran.com-এর শব্দার্থ অনুসরণ করে। সর্বনাম, অব্যয় ও প্রশ্নসূচক শব্দ বাদ দেওয়া হয়েছে।" : "Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out."; }
 function vocabNotice(s, v){
-  return v.ai ? `<div class="row small" style="margin-top:10px"><span class="notice">Unreviewed draft. ${esc(v.note || "Plural, maṣdar and amr forms are not in the corpus; gaps were filled by AI and still need checking.")}</span>${S.admin ? `<button type="button" class="btn small" data-vreviewed="${s}">Mark as reviewed</button>` : ""}</div>` : "";
+  return v.ai ? `<div class="row small" style="margin-top:10px"><span class="notice">${S.lang === "bn" ? "অপর্যালোচিত খসড়া। এই সারণি স্বয়ংক্রিয়ভাবে তৈরি; রূপ ও অর্থ সংশোধনের প্রয়োজন হতে পারে। বাংলা অর্থ এআই-খসড়া; যেসব শব্দের বাংলা অর্থ এখনো যোগ হয়নি সেখানে ইংরেজি অর্থ দেখানো হচ্ছে।" : "Unreviewed draft. " + esc(v.note || "Plural, maṣdar and amr forms are not in the corpus; gaps were filled by AI and still need checking.")}</span>${S.admin ? `<button type="button" class="btn small" data-vreviewed="${s}">${lb("Mark as reviewed")}</button>` : ""}</div>` : "";
 }
 function vocabHTML(s){
   const v = S.vocabOpen ? vocDoc(s) : S.vocab[s];
@@ -1042,15 +1064,15 @@ function vocabHTML(s){
   const lo = vr ? vr.from : 1, hi = vr ? vr.to : nAy;
   const T = hasRows(v) ? vocabTables(s, lo, hi, v) : {ism: "", fil: ""};
   return `<section class="vocab" id="vocab"><span id="tbl-top"></span>
-    <div class="row"><h2>Vocabulary · Ism and Fiʿl</h2><span class="spacer"></span>
-      <button type="button" class="btn small" data-vtoggle aria-expanded="${S.vocabOpen}">${S.vocabOpen ? "Hide tables" : "Show tables"}</button></div>
-    ${S.vocabOpen && !hasRows(v) ? `<p class="muted">${LEARN[s] && LEARN[s].fail ? "No tables for this surah." : "Loading…"}</p>` : ""}
+    <div class="row"><h2>${lb("Vocabulary · Ism and Fiʿl")}</h2><span class="spacer"></span>
+      <button type="button" class="btn small" data-vtoggle aria-expanded="${S.vocabOpen}">${S.vocabOpen ? lb("Hide tables") : lb("Show tables")}</button></div>
+    ${S.vocabOpen && !hasRows(v) ? `<p class="muted">${LEARN[s] && LEARN[s].fail ? (S.lang === "bn" ? "এই সূরার জন্য কোনো সারণি নেই।" : "No tables for this surah.") : lb("Loading…")}</p>` : ""}
     ${S.vocabOpen && hasRows(v) ? `
     ${vocabNotice(s, v)}
-    <form class="row small" id="vrange" autocomplete="off" style="margin-top:10px;gap:8px"><label class="flabel" for="vfrom">Ayah</label>${ayahSelect("vfrom", nAy, lo)}<label class="flabel" for="vto">to</label>${ayahSelect("vto", nAy, hi)}${vr ? `<button type="button" class="btn small ghost" data-vall>Show all</button><span class="muted">Ayahs ${lo}–${hi}</span>` : ""}</form>
-    ${!T.ism && !T.fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in this table.</p>` : ""}
+    <form class="row small" id="vrange" autocomplete="off" style="margin-top:10px;gap:8px"><label class="flabel" for="vfrom">${lb("Ayah")}</label>${ayahSelect("vfrom", nAy, lo)}<label class="flabel" for="vto">${lb("to")}</label>${ayahSelect("vto", nAy, hi)}${vr ? `<button type="button" class="btn small ghost" data-vall>${lb("Show all")}</button><span class="muted">${S.lang === "bn" ? "আয়াত" : "Ayahs"} ${lo}–${hi}</span>` : ""}</form>
+    ${!T.ism && !T.fil ? `<p class="muted">${S.lang === "bn" ? `আয়াত ${lo}–${hi}-এর কোনো শব্দ এই সারণিতে নেই।` : `No words from ayahs ${lo}–${hi} in this table.`}</p>` : ""}
     ${T.bar || ""}${T.ism}${T.fil}
-    <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>` : ""}
+    <p class="small muted">${vocabFoot()}</p>` : ""}
   </section>`;
 }
 
@@ -1106,20 +1128,20 @@ function viewLearn(){
   const v = vocDoc(s), ok = hasRows(v), failed = LEARN[s] && LEARN[s].fail && !ok;
   const opts = Array.from({length: 114}, (_, i) => i + 1).map(n => `<option value="${n}" ${n === s ? "selected" : ""}>${n} · ${esc(surahOf(n).tl)}</option>`).join("");
   const T = ok ? vocabTables(s, lo, hi, v) : null;
-  return `<div class="phead" id="tbl-top"><h1>Learn</h1><button type="button" class="btn" data-focus aria-label="Full screen">⛶ Full screen</button></div>
-  <p class="muted small" style="margin:0">Word tables for study. Choose a surah and an ayah range: only the words of that part are shown. Tables read from right to left.</p>
+  return `<div class="phead" id="tbl-top"><h1>${lb("Learn")}</h1><button type="button" class="btn" data-focus aria-label="${lb("Full screen")}">${lb("⛶ Full screen")}</button></div>
+  <p class="muted small" style="margin:0">${S.lang === "bn" ? "অধ্যয়নের জন্য শব্দের সারণি। একটি সূরা ও আয়াতের পরিসর বেছে নিন; শুধু সেই অংশের শব্দ দেখানো হবে। সারণি ডান থেকে বাঁয়ে পড়তে হয়।" : "Word tables for study. Choose a surah and an ayah range: only the words of that part are shown. Tables read from right to left."}</p>
   <div class="learn-bar" id="learnform" tabindex="-1">
-    <label class="flabel" for="learn-s">Surah</label><select id="learn-s">${opts}</select>
-    <label class="flabel" for="learn-from">Ayah</label>${ayahSelect("learn-from", nAy, lo)}
-    <label class="flabel" for="learn-to">to</label>${ayahSelect("learn-to", nAy, hi)}
-    <label class="flabel" for="learn-n">or number of ayahs</label>${ayahCount("learn-n", nAy, hi-lo+1)}
-    ${ranged ? `<button type="button" class="btn small ghost" data-learnall>Whole surah</button><span class="muted small">Ayahs ${lo}–${hi}</span>` : ""}
+    <label class="flabel" for="learn-s">${lb("Surah")}</label><select id="learn-s">${opts}</select>
+    <label class="flabel" for="learn-from">${lb("Ayah")}</label>${ayahSelect("learn-from", nAy, lo)}
+    <label class="flabel" for="learn-to">${lb("to")}</label>${ayahSelect("learn-to", nAy, hi)}
+    <label class="flabel" for="learn-n">${lb("or number of ayahs")}</label>${ayahCount("learn-n", nAy, hi-lo+1)}
+    ${ranged ? `<button type="button" class="btn small ghost" data-learnall>${lb("Whole surah")}</button><span class="muted small">${S.lang === "bn" ? "আয়াত" : "Ayahs"} ${lo}–${hi}</span>` : ""}
   </div>
-  ${failed ? `<div class="empty"><b>The tables for this surah could not be loaded</b>Check the connection and choose the surah again.</div>` : !ok ? `<p class="muted">Loading…</p>` : `
+  ${failed ? `<div class="empty"><b>${S.lang === "bn" ? "এই সূরার সারণি লোড করা যায়নি" : "The tables for this surah could not be loaded"}</b>${S.lang === "bn" ? "সংযোগ পরীক্ষা করে আবার সূরাটি বেছে নিন।" : "Check the connection and choose the surah again."}</div>` : !ok ? `<p class="muted">${lb("Loading…")}</p>` : `
   ${vocabNotice(s, v)}
-  ${!T.ism && !T.fil ? `<p class="muted">No words from ayahs ${lo}–${hi} in these tables.</p>` : ""}
+  ${!T.ism && !T.fil ? `<p class="muted">${S.lang === "bn" ? `আয়াত ${lo}–${hi}-এর কোনো শব্দ এই সারণিতে নেই।` : `No words from ayahs ${lo}–${hi} in these tables.`}</p>` : ""}
   ${T.bar}${T.ism}${T.fil}
-  <p class="small muted">Words and meanings follow the Quranic Arabic Corpus and quran.com glosses. Pronouns, particles and question words are left out.</p>`}`;
+  <p class="small muted">${vocabFoot()}</p>`}`;
 }
 
 
@@ -2605,24 +2627,27 @@ function loadForms(){
 }
 function formsCard(ds){
   if (!FORMS) return "";
+  ensureLBN();
+  const bn = S.lang === "bn";
   const out = [], seen = new Set();
   for (const o of ds) {
     if (o.pref || o.suff || !o.lem || seen.has(o.lem)) continue;
     const ar = t => `<span class="gar" lang="ar" dir="rtl">${esc(t)}</span>`;
     const row = (k, v) => `<div class="gf-r"><span class="gf-k">${k}</span>${v}</div>`;
-    const na = `<span class="muted">not available</span>`;
+    const na = `<span class="muted">${lb("not available")}</span>`;
+    const mrow = m => bn && m ? row(BNL["Meaning"] + " · المعنى", `<span lang="bn">${esc(m)}</span>`) : "";
     if (o.coarse === "V" && FORMS.v[o.lem]) {
       seen.add(o.lem); const f = FORMS.v[o.lem];
-      out.push(row("Māḍī · الماضي", ar(f[0])) + row("Muḍāriʿ · المضارع", ar(f[1])) + row("Amr · الأمر", f[2] ? ar(f[2]) : na)
-        + row("Maṣdar · المصدر", f[3] && f[3].length ? f[3].map(ar).join(" ، ") : na) + (f[4] ? `<div class="gf-n">${esc(f[4])}</div>` : ""));
+      out.push(mrow(LBN && (LBN.vs[f[0]] || LBN.vn[bnNorm(f[0])])) + row(lb("Māḍī") + " · الماضي", ar(f[0])) + row(lb("Muḍāriʿ") + " · المضارع", ar(f[1])) + row(lb("Amr") + " · الأمر", f[2] ? ar(f[2]) : na)
+        + row(lb("Maṣdar") + " · المصدر", f[3] && f[3].length ? f[3].map(ar).join(" ، ") : na) + (f[4] ? `<div class="gf-n">${esc(f[4])}</div>` : ""));
     } else if (o.coarse === "N" && FORMS.n[o.lem]) {
       seen.add(o.lem); const f = FORMS.n[o.lem];
       const pls = f[1].map(([p, q]) => `<span class="gf-p${q ? " q" : ""}" title="${q ? "occurs in the Qur’an" : "listed in the dictionary; not found in the Qur’an"}">${ar(p)}</span>`).join(" ");
-      out.push(row("Singular · المفرد", ar(f[0])) + (f[2] ? row("Plural of · جمع", ar(f[2])) : row(f[1].length > 1 ? "Plurals · الجموع" : "Plural · الجمع", pls || `<span class="muted">not available (may have none)</span>`))
+      out.push(mrow(LBN && (LBN.ns[f[0]] || LBN.nn[bnNorm(f[0])])) + row(lb("Singular") + " · المفرد", ar(f[0])) + (f[2] ? row(lb("Plural of") + " · جمع", ar(f[2])) : row(lb(f[1].length > 1 ? "Plurals" : "Plural") + (f[1].length > 1 ? " · الجموع" : " · الجمع"), pls || `<span class="muted">${bn ? "নেই (হয়তো বহুবচন নেই)" : "not available (may have none)"}</span>`))
         + (f[3][0] || f[3][1] ? `<div class="gf-n">${f[3][0] ? "also a sound masculine plural (-ūn/-īn)" : ""}${f[3][0] && f[3][1] ? "; " : ""}${f[3][1] ? "also a sound feminine plural (-āt)" : ""}</div>` : ""));
     }
   }
-  return out.length ? `<div class="gforms"><div class="gf-h">Forms</div>${out.join("")}</div>` : "";
+  return out.length ? `<div class="gforms"><div class="gf-h">${lb("Forms")}</div>${out.join("")}</div>` : "";
 }
 
 /* i'rab store: documents irab/<surah>-<group of 5 ayahs>, field ayahs[<ayah>] = {text:{en,bn,ar,ur}, ai, src, updatedAt} */
