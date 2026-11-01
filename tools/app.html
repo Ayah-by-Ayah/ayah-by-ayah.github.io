@@ -543,6 +543,12 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
         <button type="button" data-trlang="bn" class="l-bn" title="Taisirul Quran">বাংলা</button>
         <button type="button" data-trlang="ur" class="l-ur" title="Maududi, Tafheem-ul-Quran">اردو</button>
       </div>
+      <span class="lbl">Theme</span>
+      <div class="seg" role="group" aria-label="Colour theme">
+        <button type="button" data-theme-set="auto" title="Follow the phone or computer setting">Auto</button>
+        <button type="button" data-theme-set="light">☀ Light</button>
+        <button type="button" data-theme-set="dark">☾ Dark</button>
+      </div>
       <span class="modepill" id="modepill">Reader</span>
     </div>
   </div>
@@ -572,6 +578,17 @@ const store = {
   get(k){ try { return localStorage.getItem(k); } catch { return null; } },
   set(k,v){ try { localStorage.setItem(k,v); } catch {} }
 };
+/* Colour theme: Auto (follow the device), Light or Dark. The CSS reads :root[data-theme]. */
+const THEMES = ["auto", "light", "dark"];
+const themeNow = () => THEMES.includes(store.get("aba.theme")) ? store.get("aba.theme") : "auto";
+function applyTheme(v){
+  const r = document.documentElement;
+  if (v === "light" || v === "dark") r.setAttribute("data-theme", v); else r.removeAttribute("data-theme");
+  const dark = v === "dark" || (v !== "light" && window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches);
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.setAttribute("content", dark ? "#182023" : "#1E4E79");
+}
+applyTheme(themeNow());
+if (window.matchMedia) try { window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", () => applyTheme(themeNow())); } catch {}
 
 /* ---------- extra ayah tags: notes, word analyses and Q&A may also be tagged with other ayahs (doc.also = [{s,from,to}]) ---------- */
 const isPhrase = w => !!(w && w.w2 && w.w2 > w.w);
@@ -925,6 +942,7 @@ function render(){
   });
   document.querySelectorAll(".seg button[data-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === S.lang)));
   document.querySelectorAll(".seg button[data-trlang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.trlang === S.trLang)));
+  document.querySelectorAll(".seg button[data-theme-set]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.themeSet === themeNow())));
   const pill = $("#modepill");
   pill.textContent = S.admin ? "Editor mode" : "Reader";
   pill.className = "modepill" + (S.admin ? " admin" : "");
@@ -4629,6 +4647,7 @@ document.addEventListener("click", async (ev) => {
   if (d.gai !== undefined) return gAskAI();
   if (d.dock !== undefined) return restoreModal();
   if (d.dockmin !== undefined) return minimizeModal();
+  if (d.themeSet) { store.set("aba.theme", d.themeSet); applyTheme(d.themeSet); return render(); }
   if (d.totop !== undefined) return window.scrollTo({top: 0, behavior: "smooth"});
   if (t.id === "brand") return go("surahs");
   if (d.nav) return go(d.nav);
