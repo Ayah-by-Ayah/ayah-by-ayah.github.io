@@ -20,5 +20,23 @@ if os.path.exists(gp):
         l = l.rstrip('\n')
         if '|' in l:
             e, b = l.rsplit('|', 1); out["g"][e.strip()] = b.strip()
+# lemma -> Bangla (exact corpus lemma, as the word card needs it): reuse the row logic of build_learn.py (N / V dicts)
+src = open(f'{HERE}/build_learn.py', encoding='utf-8').read().split('NOTE = (')[0]
+g = {'__file__': f'{HERE}/build_learn.py'}
+exec(compile(src, 'build_learn_head', 'exec'), g)
+out["lm"] = {}
+for lem, r in g['N'].items():
+    bn = out['n'].get(f"{r['sg']}|{r['p1']}") or out['ns'].get(r['sg'])
+    if bn: out["lm"][lem] = bn
+for lem, r in g['V'].items():
+    bn = out['v'].get(f"{r['madi']}|{r['mud']}") or out['vs'].get(r['madi'])
+    if bn: out["lm"][lem] = bn
+# lemmas that have no table row (particles, pronouns, names, ...): tools/learn_src/bn_lemmas.txt  lemma|bangla
+lp = f'{HERE}/learn_src/bn_lemmas.txt'
+if os.path.exists(lp):
+    for l in open(lp, encoding='utf-8'):
+        l = l.rstrip('\n')
+        if '|' in l:
+            a, b = l.split('|', 1); out["lm"][a] = b.strip()
 json.dump(out, open(f'{ROOT}/learn-bn.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-print('learn-bn.json:', len(out['n']), 'nouns,', len(out['v']), 'verbs,', len(out['g']), 'word glosses')
+print('learn-bn.json:', len(out['n']), 'nouns,', len(out['v']), 'verbs,', len(out['g']), 'word glosses,', len(out['lm']), 'lemmas')
