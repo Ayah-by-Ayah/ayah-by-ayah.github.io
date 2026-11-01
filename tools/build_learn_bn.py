@@ -12,5 +12,13 @@ for l in open(f'{HERE}/learn_src/bn_meanings.txt', encoding='utf-8'):
     t, a, b, bn = l.split('|', 3)
     out[t][f'{a}|{b}'] = bn
     out[t + 's'].setdefault(a, bn)
+# per-word glosses of the word card (English quran.com gloss -> Bangla), tools/learn_src/bn_glosses.txt: english|bangla
+out["g"] = {}
+gp = f'{HERE}/learn_src/bn_glosses.txt'
+if os.path.exists(gp):
+    for l in open(gp, encoding='utf-8'):
+        l = l.rstrip('\n')
+        if '|' in l:
+            e, b = l.rsplit('|', 1); out["g"][e.strip()] = b.strip()
 json.dump(out, open(f'{ROOT}/learn-bn.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
-print('learn-bn.json:', len(out['n']), 'nouns,', len(out['v']), 'verbs')
+print('learn-bn.json:', len(out['n']), 'nouns,', len(out['v']), 'verbs,', len(out['g']), 'word glosses')

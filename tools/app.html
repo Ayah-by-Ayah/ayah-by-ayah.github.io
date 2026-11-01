@@ -2711,6 +2711,7 @@ function openWordCard(s, a, j){
   drawWordCard();
 }
 function drawWordCard(){
+  ensureLBN();
   const {s, a, j} = FL || M, ws = FW[s] && FW[s][a-1];
   if (!ws || !ws[j]) { if (FL) closeFlash(); else closeModal(); return; }
   const w = ws[j], ds = w[2].map(decodeSeg);
@@ -2720,7 +2721,7 @@ function drawWordCard(){
       <button type="button" class="btn ghost small" data-m="flash-go" data-v="-1" aria-label="Previous word" ${j===0?"disabled":""}>‹</button>
       <button type="button" class="btn ghost small" data-m="flash-go" data-v="1" aria-label="Next word" ${j===ws.length-1?"disabled":""}>›</button></div>
     <button type="button" class="flash-word" data-m="close" lang="ar" dir="rtl" title="Tap to return to the ayah">${ds.map(segHTML).join("")}</button>
-    <div class="gw-mean" style="text-align:center;margin:0"><i>${esc(w[0])}</i> · <b>${esc(w[1])}</b></div>
+    <div class="gw-mean" style="text-align:center;margin:0"><i>${esc(w[0])}</i> · <b>${S.trLang === "bn" && LBN && LBN.g && LBN.g[String(w[1]).trim()] ? `<span lang="bn">${esc(LBN.g[String(w[1]).trim()])}</span>` : esc(w[1])}</b></div>
     ${stem ? `<div class="gseg-d" style="text-align:center">${stem.en}${stem.enDesc ? " · " + esc(stem.enDesc) : ""}${stem.root ? ` · Root <span class="gar" lang="ar" dir="rtl">${esc(spaced(stem.root))}</span>` : ""}${stem.lem ? ` · Lemma <span class="gar" lang="ar" dir="rtl">${esc(stem.lem)}</span>` : ""}</div>` : ""}
     ${forms || (FORMS ? `<p class="small muted" style="margin:0;text-align:center">No forms table for this word (particles, pronouns and names have none).</p>` : `<p class="small muted" style="margin:0;text-align:center">Loading forms…</p>`)}
     ${FORMS ? `<p class="small muted" style="margin:0">● = occurs in the Qur’an. Forms: Arramooz dictionary (GPL-3) and the corpus; gaps filled by AI, not yet reviewed.</p>` : ""}
