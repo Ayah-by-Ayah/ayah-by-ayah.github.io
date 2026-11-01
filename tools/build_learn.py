@@ -49,6 +49,7 @@ NOTE = ('Generated study table (draft, not yet reviewed): word list from the Qur
         'written automatically. Forms and meanings may need correction.')
 os.makedirs(f'{ROOT}/learn', exist_ok=True)
 tot = 0
+seen = {'ism': set(), 'fil': set()}  # rows already met in an earlier surah (1:1 onward): repeats
 for s in range(1, 115):
     ism = {}; fil = {}
     for lem, d in inv['n'].items():
@@ -62,12 +63,15 @@ for s in range(1, 115):
         r = V[lem]; k = (r['madi'], r['mud'])
         e = fil.setdefault(k, dict(r, ayahs=set(), first=10**9))
         e['ayahs'].update(d['surahs'][str(s)]); e['first'] = min(e['first'], d['first'][str(s)])
-    def out(m):
+    def out(m, kind):
         rows = sorted(m.values(), key=lambda e: e['first'])
+        for k, e in m.items():
+            if k not in seen[kind]: e['nw'] = 1  # first time in the Qur'an (counted from 1:1); shown blue in the app
+        seen[kind].update(m.keys())
         for e in rows:
             e['ayahs'] = sorted(e['ayahs']); del e['first']
         return rows
-    doc = dict(s=s, ai=True, note=NOTE, ism=out(ism), fil=out(fil))
+    doc = dict(s=s, ai=True, note=NOTE, ism=out(ism, 'ism'), fil=out(fil, 'fil'))
     tot += len(doc['ism']) + len(doc['fil'])
     json.dump(doc, open(f'{ROOT}/learn/{s}.json', 'w', encoding='utf-8'), ensure_ascii=False, separators=(',', ':'))
 print('wrote 114 files,', tot, 'rows')

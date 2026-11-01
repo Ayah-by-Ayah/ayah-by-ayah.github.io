@@ -229,6 +229,11 @@ mark.hl{background:#FFE066;color:#1B2427;padding:0 .15em;border-radius:3px}
 .jumpbar{gap:8px;margin:10px 0 0;position:sticky;top:0;z-index:5;background:var(--bg,#fff);padding:6px 0}
 .tblh{display:flex;align-items:center;gap:8px;scroll-margin-top:56px}
 .vtbl td.refs{white-space:nowrap}
+.vtbl tr.newword td{color:#1d4ed8}
+.vtbl tr.newword td.ar.dim{color:#1d4ed8}
+.vtbl tr.newword td.muted{color:#1d4ed8}
+.vtbl tr.newword a{color:inherit}
+.vkey{font-size:13px}
 
 .admin-bar .btn{font-size:13px}
 
@@ -1000,8 +1005,9 @@ function vocabTables(s, lo, hi, doc){
   const head = cols => `<tr>${cols.map(c => `<th>${esc(c[0])}${c[1] ? ` <span lang="ar">${esc(c[1])}</span>` : ""}</th>`).join("")}</tr>`;
   const mean = r => `<td class="mean" dir="ltr">${esc(r.mean||"")}</td>`;
   const refs = r => `<td class="refs">${vocabRefs(s, r.ayahs)}</td>`;
-  const ism = (v.ism||[]).filter(inR).map(cut).map(r => `<tr>${mean(r)}${ar(r.sg)}${ar(r.p1)}${ar(r.p2)}${refs(r)}</tr>`).join("");
-  const fil = (v.fil||[]).filter(inR).map(cut).map(r => `<tr>${mean(r)}${ar(r.madi)}${ar(r.mud)}${ar(r.masdar)}${ar(r.amr)}${ar(r.fa)}${ar(r.mf)}${refs(r)}</tr>`).join("");
+  const trc = r => r.nw && (r.ayahs[0] >= lo) ? " class=\"newword\"" : ""; // first time in the Qur'an (from 1:1), and that first ayah is in the shown range
+  const ism = (v.ism||[]).filter(inR).map(r => [r, cut(r)]).map(([o, r]) => `<tr${trc(o)}>${mean(r)}${ar(r.sg)}${ar(r.p1)}${ar(r.p2)}${refs(r)}</tr>`).join("");
+  const fil = (v.fil||[]).filter(inR).map(r => [r, cut(r)]).map(([o, r]) => `<tr${trc(o)}>${mean(r)}${ar(r.madi)}${ar(r.mud)}${ar(r.masdar)}${ar(r.amr)}${ar(r.fa)}${ar(r.mf)}${refs(r)}</tr>`).join("");
   const nI = (v.ism||[]).filter(inR).length, nF = (v.fil||[]).filter(inR).length;
   const sw = (to, label) => `<button type="button" class="btn small ghost" data-jump="${to}">${label}</button>`;
   return {
