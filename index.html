@@ -8,6 +8,11 @@
 <meta property="og:description" content="Qur'an study, one ayah at a time: translation, notes, lessons, word analysis and grammar.">
 <meta property="og:type" content="website">
 <meta name="theme-color" content="#1E4E79">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Ayah by Ayah">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231E4E79'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='white' font-family='serif'%3E%D8%A2%3C/text%3E%3C/svg%3E">
 <style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style>
 <title>Ayah by Ayah</title>
@@ -5181,6 +5186,58 @@ async function loadStatic(){
 function validRefSafe(s,a){ return !S.Q || validRef(s,a); }
 })();
 </script>
-
+<script>
+/* Install as an app + offline use (public site only). Service worker: sw.js */
+(function(){
+  var h = location.hostname, test = /[?&]pwa=1/.test(location.search);
+  if (!test && (h === "127.0.0.1" || h === "localhost")) return;     // the Windows exe and local tests do not need it
+  if (!("serviceWorker" in navigator)) return;
+  var FILES = ["quran.json", "indopak.json", "indopak-font.woff2", "conc.json", "forms.json", "tr-bn.json", "tr-ur.json", "learn-bn.json", "data/content.json", "grammar/1.json", "grammar/2.json", "grammar/3.json", "grammar/4.json", "grammar/5.json", "grammar/6.json", "grammar/7.json", "grammar/8.json", "grammar/9.json", "grammar/10.json", "grammar/11.json", "grammar/12.json", "grammar/13.json", "grammar/14.json", "grammar/15.json", "grammar/16.json", "grammar/17.json", "grammar/18.json", "grammar/19.json", "grammar/20.json", "grammar/21.json", "grammar/22.json", "grammar/23.json", "grammar/24.json", "grammar/25.json", "grammar/26.json", "grammar/27.json", "grammar/28.json", "grammar/29.json", "grammar/30.json", "grammar/31.json", "grammar/32.json", "grammar/33.json", "grammar/34.json", "grammar/35.json", "grammar/36.json", "grammar/37.json", "grammar/38.json", "grammar/39.json", "grammar/40.json", "grammar/41.json", "grammar/42.json", "grammar/43.json", "grammar/44.json", "grammar/45.json", "grammar/46.json", "grammar/47.json", "grammar/48.json", "grammar/49.json", "grammar/50.json", "grammar/51.json", "grammar/52.json", "grammar/53.json", "grammar/54.json", "grammar/55.json", "grammar/56.json", "grammar/57.json", "grammar/58.json", "grammar/59.json", "grammar/60.json", "grammar/61.json", "grammar/62.json", "grammar/63.json", "grammar/64.json", "grammar/65.json", "grammar/66.json", "grammar/67.json", "grammar/68.json", "grammar/69.json", "grammar/70.json", "grammar/71.json", "grammar/72.json", "grammar/73.json", "grammar/74.json", "grammar/75.json", "grammar/76.json", "grammar/77.json", "grammar/78.json", "grammar/79.json", "grammar/80.json", "grammar/81.json", "grammar/82.json", "grammar/83.json", "grammar/84.json", "grammar/85.json", "grammar/86.json", "grammar/87.json", "grammar/88.json", "grammar/89.json", "grammar/90.json", "grammar/91.json", "grammar/92.json", "grammar/93.json", "grammar/94.json", "grammar/95.json", "grammar/96.json", "grammar/97.json", "grammar/98.json", "grammar/99.json", "grammar/100.json", "grammar/101.json", "grammar/102.json", "grammar/103.json", "grammar/104.json", "grammar/105.json", "grammar/106.json", "grammar/107.json", "grammar/108.json", "grammar/109.json", "grammar/110.json", "grammar/111.json", "grammar/112.json", "grammar/113.json", "grammar/114.json", "syntax/1.json", "syntax/2.json", "syntax/3.json", "syntax/4.json", "syntax/5.json", "syntax/6.json", "syntax/7.json", "syntax/8.json", "syntax/9.json", "syntax/10.json", "syntax/11.json", "syntax/12.json", "syntax/13.json", "syntax/14.json", "syntax/15.json", "syntax/16.json", "syntax/17.json", "syntax/18.json", "syntax/19.json", "syntax/20.json", "syntax/21.json", "syntax/22.json", "syntax/23.json", "syntax/24.json", "syntax/25.json", "syntax/26.json", "syntax/27.json", "syntax/28.json", "syntax/29.json", "syntax/30.json", "syntax/31.json", "syntax/32.json", "syntax/33.json", "syntax/34.json", "syntax/35.json", "syntax/36.json", "syntax/37.json", "syntax/38.json", "syntax/39.json", "syntax/40.json", "syntax/41.json", "syntax/42.json", "syntax/43.json", "syntax/44.json", "syntax/45.json", "syntax/46.json", "syntax/47.json", "syntax/48.json", "syntax/49.json", "syntax/50.json", "syntax/51.json", "syntax/52.json", "syntax/53.json", "syntax/54.json", "syntax/55.json", "syntax/56.json", "syntax/57.json", "syntax/58.json", "syntax/59.json", "syntax/60.json", "syntax/61.json", "syntax/62.json", "syntax/63.json", "syntax/64.json", "syntax/65.json", "syntax/66.json", "syntax/67.json", "syntax/68.json", "syntax/69.json", "syntax/70.json", "syntax/71.json", "syntax/72.json", "syntax/73.json", "syntax/74.json", "syntax/75.json", "syntax/76.json", "syntax/77.json", "syntax/78.json", "syntax/79.json", "syntax/80.json", "syntax/81.json", "syntax/82.json", "syntax/83.json", "syntax/84.json", "syntax/85.json", "syntax/86.json", "syntax/87.json", "syntax/88.json", "syntax/89.json", "syntax/90.json", "syntax/91.json", "syntax/92.json", "syntax/93.json", "syntax/94.json", "syntax/95.json", "syntax/96.json", "syntax/97.json", "syntax/98.json", "syntax/99.json", "syntax/100.json", "syntax/101.json", "syntax/102.json", "syntax/103.json", "syntax/104.json", "syntax/105.json", "syntax/106.json", "syntax/107.json", "syntax/108.json", "syntax/109.json", "syntax/110.json", "syntax/111.json", "syntax/112.json", "syntax/113.json", "syntax/114.json", "learn/1.json", "learn/2.json", "learn/3.json", "learn/4.json", "learn/5.json", "learn/6.json", "learn/7.json", "learn/8.json", "learn/9.json", "learn/10.json", "learn/11.json", "learn/12.json", "learn/13.json", "learn/14.json", "learn/15.json", "learn/16.json", "learn/17.json", "learn/18.json", "learn/19.json", "learn/20.json", "learn/21.json", "learn/22.json", "learn/23.json", "learn/24.json", "learn/25.json", "learn/26.json", "learn/27.json", "learn/28.json", "learn/29.json", "learn/30.json", "learn/31.json", "learn/32.json", "learn/33.json", "learn/34.json", "learn/35.json", "learn/36.json", "learn/37.json", "learn/38.json", "learn/39.json", "learn/40.json", "learn/41.json", "learn/42.json", "learn/43.json", "learn/44.json", "learn/45.json", "learn/46.json", "learn/47.json", "learn/48.json", "learn/49.json", "learn/50.json", "learn/51.json", "learn/52.json", "learn/53.json", "learn/54.json", "learn/55.json", "learn/56.json", "learn/57.json", "learn/58.json", "learn/59.json", "learn/60.json", "learn/61.json", "learn/62.json", "learn/63.json", "learn/64.json", "learn/65.json", "learn/66.json", "learn/67.json", "learn/68.json", "learn/69.json", "learn/70.json", "learn/71.json", "learn/72.json", "learn/73.json", "learn/74.json", "learn/75.json", "learn/76.json", "learn/77.json", "learn/78.json", "learn/79.json", "learn/80.json", "learn/81.json", "learn/82.json", "learn/83.json", "learn/84.json", "learn/85.json", "learn/86.json", "learn/87.json", "learn/88.json", "learn/89.json", "learn/90.json", "learn/91.json", "learn/92.json", "learn/93.json", "learn/94.json", "learn/95.json", "learn/96.json", "learn/97.json", "learn/98.json", "learn/99.json", "learn/100.json", "learn/101.json", "learn/102.json", "learn/103.json", "learn/104.json", "learn/105.json", "learn/106.json", "learn/107.json", "learn/108.json", "learn/109.json", "learn/110.json", "learn/111.json", "learn/112.json", "learn/113.json", "learn/114.json", "exercise/1.json", "exercise/2.json", "exercise/3.json", "exercise/4.json", "exercise/5.json", "exercise/6.json", "exercise/7.json", "exercise/8.json", "exercise/9.json", "exercise/10.json", "exercise/11.json", "exercise/12.json", "exercise/13.json", "exercise/14.json", "exercise/15.json", "exercise/16.json", "exercise/17.json", "exercise/18.json", "exercise/19.json", "exercise/20.json", "exercise/21.json", "exercise/22.json", "exercise/23.json", "exercise/24.json", "exercise/25.json", "exercise/26.json", "exercise/27.json", "exercise/28.json", "exercise/29.json", "exercise/30.json", "exercise/31.json", "exercise/32.json", "exercise/33.json", "exercise/34.json", "exercise/35.json", "exercise/36.json", "exercise/37.json", "exercise/38.json", "exercise/39.json", "exercise/40.json", "exercise/41.json", "exercise/42.json", "exercise/43.json", "exercise/44.json", "exercise/45.json", "exercise/46.json", "exercise/47.json", "exercise/48.json", "exercise/49.json", "exercise/50.json", "exercise/51.json", "exercise/52.json", "exercise/53.json", "exercise/54.json", "exercise/55.json", "exercise/56.json", "exercise/57.json", "exercise/58.json", "exercise/59.json", "exercise/60.json", "exercise/61.json", "exercise/62.json", "exercise/63.json", "exercise/64.json", "exercise/65.json", "exercise/66.json", "exercise/67.json", "exercise/68.json", "exercise/69.json", "exercise/70.json", "exercise/71.json", "exercise/72.json", "exercise/73.json", "exercise/74.json", "exercise/75.json", "exercise/76.json", "exercise/77.json", "exercise/78.json", "exercise/79.json", "exercise/80.json", "exercise/81.json", "exercise/82.json", "exercise/83.json", "exercise/84.json", "exercise/85.json", "exercise/86.json", "exercise/87.json", "exercise/88.json", "exercise/89.json", "exercise/90.json", "exercise/91.json", "exercise/92.json", "exercise/93.json", "exercise/94.json", "exercise/95.json", "exercise/96.json", "exercise/97.json", "exercise/98.json", "exercise/99.json", "exercise/100.json", "exercise/101.json", "exercise/102.json", "exercise/103.json", "exercise/104.json", "exercise/105.json", "exercise/106.json", "exercise/107.json", "exercise/108.json", "exercise/109.json", "exercise/110.json", "exercise/111.json", "exercise/112.json", "exercise/113.json", "exercise/114.json"];
+  navigator.serviceWorker.register("sw.js").catch(function(){});
+  var deferred = null, KEY = "aba.offline";
+  function get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+  function set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  var bar = document.createElement("div");
+  bar.setAttribute("style", "position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:9999;max-width:520px;margin:0 auto;background:#1E4E79;color:#fff;border-radius:14px;padding:10px 12px;font:14px/1.35 system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.28);display:none;align-items:center;gap:8px;flex-wrap:wrap");
+  var msg = document.createElement("span"); msg.style.flex = "1 1 160px";
+  function btn(label, fn, solid){ var b = document.createElement("button"); b.type = "button"; b.textContent = label; b.onclick = fn;
+    b.setAttribute("style", "border:1px solid #fff;border-radius:10px;padding:7px 12px;font:600 13px system-ui,sans-serif;cursor:pointer;" + (solid ? "background:#fff;color:#1E4E79" : "background:transparent;color:#fff")); return b; }
+  var bInstall = btn("Install app", function(){ if (deferred) { deferred.prompt(); deferred.userChoice.finally(function(){ deferred = null; render(); }); } }, true);
+  var bSave = btn("Save for offline (≈35 MB)", saveAll, true);
+  var bHide = btn("Not now", function(){ set("aba.pwahide", String(Date.now())); bar.style.display = "none"; }, false);
+  bar.appendChild(msg); bar.appendChild(bInstall); bar.appendChild(bSave); bar.appendChild(bHide);
+  document.addEventListener("DOMContentLoaded", function(){ document.body.appendChild(bar); render(); });
+  window.addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); deferred = e; render(); });
+  window.addEventListener("appinstalled", function(){ deferred = null; render(); });
+  var standalone = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+  var busy = false;
+  function render(){
+    var hidden = +get("aba.pwahide") || 0, saved = get(KEY) === "1";
+    var show = !busy && (hidden === 0 || Date.now() - hidden > 7*864e5) && (!saved || (deferred && !standalone));
+    if (busy) { bar.style.display = "flex"; return; }
+    bar.style.display = show ? "flex" : "none";
+    bInstall.style.display = deferred && !standalone ? "" : "none";
+    bSave.style.display = saved ? "none" : "";
+    msg.textContent = saved ? "Saved for offline use. You can install it as an app." : "Use Ayah by Ayah offline, like an app.";
+  }
+  function saveAll(){
+    if (busy) return; busy = true; bInstall.style.display = bSave.style.display = bHide.style.display = "none"; bar.style.display = "flex";
+    var i = 0, done = 0, failed = 0, N = FILES.length;
+    function upd(){ msg.textContent = "Saving for offline… " + Math.round(done / N * 100) + "%"; }
+    function next(){
+      if (i >= N) return;
+      var f = FILES[i++];
+      fetch(f).then(function(r){ if (!r.ok) failed++; return r.arrayBuffer(); }).catch(function(){ failed++; })
+        .then(function(){ done++; upd(); if (done === N) finish(); else next(); });
+    }
+    function finish(){
+      busy = false; bHide.style.display = "";
+      if (failed === 0) { set(KEY, "1"); render(); msg.textContent = "Saved for offline use."; bar.style.display = "flex"; setTimeout(function(){ bar.style.display = "none"; }, 4000); }
+      else { msg.textContent = "Some files could not be saved (" + failed + "). Check the connection and try again."; bSave.style.display = ""; bSave.textContent = "Try again"; }
+    }
+    upd(); for (var k = 0; k < 5; k++) next();
+  }
+})();
+</script>
 </body>
 </html>
