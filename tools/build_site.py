@@ -36,7 +36,9 @@ PWA_JS = r'''<script>
   if (!test && (h === "127.0.0.1" || h === "localhost")) return;     // the Windows exe and local tests do not need it
   if (!("serviceWorker" in navigator)) return;
   var FILES = __FILES__;
-  navigator.serviceWorker.register("sw.js").catch(function(){});
+  var hadController = !!navigator.serviceWorker.controller, reloaded = false;
+  navigator.serviceWorker.addEventListener("controllerchange", function(){ if (hadController && !reloaded) { reloaded = true; location.reload(); } });
+  navigator.serviceWorker.register("sw.js", {updateViaCache: "none"}).catch(function(){});
   var deferred = null, KEY = "aba.offline";
   function get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
   function set(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
@@ -109,7 +111,7 @@ self.addEventListener("fetch", e => {
   const u = new URL(r.url);
   if (u.origin !== location.origin) return;
   if (r.mode === "navigate" || isShell(r.url)) {
-    e.respondWith(fetch(r).then(res => { if (res.ok) { const c = res.clone(); caches.open(SHELL).then(ca => ca.put(r.mode === "navigate" ? "index.html" : r, c)); } return res; })
+    e.respondWith(fetch(r, {cache: "no-cache"}).then(res => { if (res.ok) { const c = res.clone(); caches.open(SHELL).then(ca => ca.put(r.mode === "navigate" ? "index.html" : r, c)); } return res; })
       .catch(() => caches.match(r.mode === "navigate" ? "index.html" : r, {ignoreSearch: true}).then(m => m || caches.match("index.html"))));
     return;
   }
