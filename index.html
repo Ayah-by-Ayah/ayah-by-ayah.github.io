@@ -517,7 +517,13 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
   .top{position:static}
   .surahbar{position:fixed;top:env(safe-area-inset-top,0px);z-index:21;transition:transform .22s ease}
   .surahbar.sb-hide{transform:translateY(-130%);box-shadow:none}
+  /* Menu button: the header drops down over the page right where you are (no jump to the top) */
+  body.menu-open .top{position:fixed;top:0;left:0;right:0;z-index:40;max-height:100vh;overflow-y:auto;box-shadow:0 12px 32px rgba(0,0,0,.35)}
+  body.menu-open .menu-shade{display:block}
+  body.menu-open .menu-close{display:inline-flex}
 }
+.menu-shade{display:none;position:fixed;inset:0;z-index:39;background:rgba(0,0,0,.35);border:0;padding:0;margin:0;width:100%}
+.menu-close{display:none;margin-left:auto}
 @media (prefers-reduced-motion:reduce){.surahbar{transition:none}}
 .gres{display:flex;flex-direction:column;gap:10px;margin-top:12px}
 .gcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
@@ -534,6 +540,7 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
 
 <header class="top">
   <div class="wrap">
+    <button type="button" class="btn small menu-close" data-menuclose aria-label="Close the menu">✕ Close</button>
     <button class="brand" id="brand" type="button" aria-label="Ayah by Ayah, surah list"><b>Ayah by Ayah</b><span>آية بعد آية</span></button>
     <nav class="tabs" aria-label="Sections">
       <button type="button" data-nav="surahs">Surahs</button>
@@ -573,6 +580,7 @@ footer.src{font-size:12px;color:var(--muted);padding-top:30px}
   </div>
   <div class="surahbar" id="surahbar" hidden><div class="wrap"><span id="sb-name"></span><button type="button" class="btn ghost small" data-totop aria-label="Back to the top of the surah">↑ Top</button></div></div>
 </header>
+<button type="button" class="menu-shade" id="menu-shade" data-menuclose tabindex="-1" aria-label="Close the menu"></button>
 <main class="wrap" id="app"><p class="muted">Loading the Qur'an text…</p></main>
 <div id="modal-root"></div>
 <div id="flash-root"></div>
@@ -4326,6 +4334,22 @@ function dbErr(e){
 }
 
 
+/* ---------- Menu overlay (phones): opens in place, over whatever you are reading ---------- */
+function setMenu(open){
+  const top = document.querySelector("header.top"), cl = document.body.classList;
+  if (open && !cl.contains("menu-open")) {
+    document.body.style.paddingTop = (top ? top.offsetHeight : 0) + "px";   // header leaves the flow: keep the page from shifting
+    cl.add("menu-open");
+    if (top) top.scrollTop = 0;
+  } else if (!open && cl.contains("menu-open")) {
+    cl.remove("menu-open");
+    document.body.style.paddingTop = "";
+  }
+  updateSurahBar();
+}
+window.addEventListener("resize", () => { if (!SB_NARROW.matches) setMenu(false); });
+document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && document.body.classList.contains("menu-open")) setMenu(false); });
+
 /* ---------- the surah name stays visible while you read ---------- */
 let sbRaf = 0, sbLastY = 0;
 const SB_NARROW = window.matchMedia("(max-width:899px)");
@@ -4667,9 +4691,10 @@ document.addEventListener("click", async (ev) => {
   if (d.dock !== undefined) return restoreModal();
   if (d.dockmin !== undefined) return minimizeModal();
   if (d.themeSet) { store.set("aba.theme", d.themeSet); applyTheme(d.themeSet); return render(); }
-  if (d.totop !== undefined) return window.scrollTo({top: 0, behavior: "smooth"});
-  if (t.id === "brand") return go("surahs");
-  if (d.nav) return go(d.nav);
+  if (d.menuclose !== undefined) return setMenu(false);
+  if (d.totop !== undefined) { if (SB_NARROW.matches) return setMenu(true); return window.scrollTo({top: 0, behavior: "smooth"}); }
+  if (t.id === "brand") { setMenu(false); return go("surahs"); }
+  if (d.nav) { setMenu(false); return go(d.nav); }
   if (d.rkrev) { const dd = (S.ruku || {})[S.rk && S.rk.s]; if (!dd) return; const ai = Object.assign({}, dd.ai, {[d.rkrev]: false}); try { await S.db.collection("ruku").doc(String(dd.s)).update({ai, updatedAt: Date.now()}); toast("Marked as reviewed"); } catch (e) { toast(dbErr(e)); } return; }
   if ("goback" in d) return goBack();
   if ("gobackX" in d) { S.ret = null; return drawBackPill(); }
