@@ -580,6 +580,16 @@ const RTL = {ar:true, ur:true};
 const TR_LANGS = ["en","bn","ur"];
 const TR_NAME = {en:"Saheeh International", bn:"Taisirul Quran", ur:"Maududi (Tafheem-ul-Quran)"};
 const $ = (s, r=document) => r.querySelector(s);
+/* Plain-language style for AI translation/drafting (default on; browser setting aba.plain). */
+const PLAIN_ON = () => store.get("aba.plain") !== "0";
+const PLAIN_RULE = {
+  en: "Style: write plain, easy English that any ordinary reader can read comfortably, like good popular literature. Use short sentences, everyday words and a natural flow. Explain a technical or scholarly term in simple words the first time it appears. This style overrides any \"scholarly register\" mentioned elsewhere, but it never changes the meaning.",
+  bn: "Style: do not translate word for word. Write natural, flowing, simple Bangla, like good popular literature that any ordinary reader can read comfortably and understand easily: short sentences, everyday words, nothing stiff, bookish or Sanskritised. For a word that people do not normally use in everyday Bangla conversation (a technical, scholarly or rare word), do not use a heavy Bangla equivalent: keep the English word, written in English letters (for example abrogation, context, evidence), and let the sentence around it make the meaning clear. Islamic terms that ordinary Bangla readers already use (such as আল্লাহ, সালাত, রোযা, ফিদইয়া) stay in Bangla. This style overrides any \"register\" mentioned elsewhere, but it never changes the meaning.",
+  ur: "Style: do not translate word for word. Write natural, flowing, simple Urdu, like good popular literature that any ordinary reader can read comfortably and understand easily: short sentences, everyday words, nothing heavy or bookish. For a word that people do not normally use in everyday Urdu conversation (a technical, scholarly or rare word), keep the English word, written in English letters (for example abrogation, context, evidence), and let the sentence around it make the meaning clear. Islamic terms that ordinary Urdu readers already use stay in Urdu. This style overrides any \"register\" mentioned elsewhere, but it never changes the meaning.",
+  ar: "Style: write simple, clear Modern Standard Arabic that an ordinary educated reader understands easily, like good popular writing: short sentences, common words, no rare or archaic vocabulary and no heavy rhetorical constructions. Keep full vowelling (all harakat) on every word. Do not use English words. This style overrides any \"classical scholarly register\" mentioned elsewhere, but it never changes the meaning."
+};
+const plainRule = l => PLAIN_ON() && PLAIN_RULE[l] ? "\n- " + PLAIN_RULE[l] : "";
+const KEEP_AR_RULE = "Where the source discusses an Arabic word or phrase (shown in Arabic script anywhere in the source, for instance inside the quotations, or only as a transliteration in the title), write that word in Arabic script, fully vowelled, in the title and the text, copied from the source. Never replace it by a transliteration; a transliteration may follow it in brackets only if the source has one.";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const arDigits = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
 const store = {
@@ -3741,6 +3751,8 @@ function drawWriteEditor(){
         <label class="small muted" for="ai-scope">Applies to</label>
         <select id="ai-scope" style="width:auto"><option value="all" ${SC==="all"?"selected":""}>All languages together</option>${LANGS.map(l=>`<option value="${l}" ${SC===l?"selected":""}>${LNAME_EN[l]} only</option>`).join("")}</select></div>
       <textarea id="ai-notes" rows="3" class="w" style="min-height:64px" placeholder="${esc(SC==="all" ? "For example: use a more formal tone; keep technical terms in transliteration; do not shorten anything." : "For example: use a particular word for a term; change a sentence; simplify the style in this language only.")}">${esc(AN[SC]||"")}</textarea>
+      <div class="row"><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="plain-on" ${PLAIN_ON()?"checked":""}> Plain, easy style for AI translations (simple everyday words; English words for terms ordinary readers do not use)</label></div>
+      <div class="row"><button type="button" class="btn" data-m="ai-plain" ${M.busy?"disabled":""} title="Rewrites the text already written in plain, easy language. The meaning, Arabic quotations and formatting stay the same.">✎ Make ${SC==="all"?"the drafted languages":LNAME_EN[SC]} easy to read</button></div>
       <div class="row"><button type="button" class="btn primary" data-m="ai-revise" ${M.busy?"disabled":""}>▶ Run my instructions on ${scName}</button>
         <button type="button" class="btn" data-m="ai-continue" ${M.busy?"disabled":""} title="Use when a drafted text stops in the middle">Complete the cut-off ${SC==="all"?"drafts":LNAME_EN[SC]+" draft"}</button>
         ${M.undo && !M.busy ? `<button type="button" class="btn" data-m="ai-undo">Undo last AI change</button>` : ""}
@@ -4002,7 +4014,8 @@ Rules:
 - Keep ayah references such as 2:255 exactly as written.
 - Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links.
 - Keep footnote markers such as [^1] exactly where they are, and translate the footnote lines that start with "[^1]: " while keeping that marker at the start.
-- Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}${instrBlock(l)}
+- Transliterated Arabic terms may be kept where a writer in that language would keep them.
+- ${KEEP_AR_RULE}${trBlock(l)}${plainRule(l)}${instrBlock(l)}
 
 - If the source title is "(none)", leave the title empty: write "TITLE:" with nothing after it. Never make up a title.
 
@@ -4113,6 +4126,67 @@ ${it.body[l] || "(none)"}`;
   M.aiStatus = done.length ? `Revised ${done.map(l=>LNAME_EN[l]).join(", ")}. Review each tab, then save. Undo is available.` : "";
   drawWriteEditor();
 }
+async function aiPlain(){
+  captureFields();
+  const it = M.it, src = it.src, scope = M.aiScope || "all";
+  const has = l => (it.body[l] || "").trim() || (it.title[l] || "").trim() || (it.summary[l] || "").trim();
+  const langs = (scope === "all" ? LANGS.filter(l => l !== src) : [scope]).filter(has);
+  if (!langs.length) { M.err = scope === "all" ? "There is no drafted text to convert yet. Draft the other languages first, or choose one language under “Applies to”." : `There is no ${LNAME_EN[scope]} text yet.`; drawWriteEditor(); return; }
+  M.undo = {}; langs.forEach(l => { M.undo[l] = {title: it.title[l], summary: it.summary[l], body: it.body[l], ai: !!it.ai[l]}; });
+  if (!langs.includes(M.tab)) { M.tab = langs[0]; M.preview = false; }
+  M.err = ""; M.busy = true; M.ctl = []; M.aiStatus = "Rewriting in plain language… long articles take a few minutes."; drawWriteEditor();
+  const names = {en:"English", bn:"Bangla (Bengali script)", ar:"Modern Standard Arabic (fully vowelled)", ur:"Urdu (Arabic script)"};
+  const rules = l => `Rules:
+- Keep the meaning exactly. Do not add, remove or comment on any claim, argument, reference or footnote. Only the wording changes: it should read easily and naturally.
+- Keep every quotation of the Qur'an in Arabic exactly as written, character for character, and keep ayah references such as 2:255 exactly as written. Keep the rendering of each ayah as it is.
+- Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, tables, **bold**, *italic*, [text](url) links, and footnote markers such as [^1] with their "[^1]: " lines (rewrite those lines too).
+- ${KEEP_AR_RULE}
+- ${PLAIN_RULE[l]}`;
+  const done = [], notes = [];
+  await Promise.all(langs.map(async l => {
+    const ctl = new AbortController(); M.ctl.push(ctl);
+    const run = async prompt => (await S.sample(prompt, {signal: ctl.signal, cache: false}));
+    try {
+      const t0 = (it.title[l] || "").trim(), s0 = (it.summary[l] || "").trim();
+      let nt = it.title[l], ns = it.summary[l];
+      if (t0 || s0) {
+        const r = await run(`Rewrite the title and summary below, written in ${names[l]}, so they read in plain, easy language.\n\n${rules(l)}\n- If the title or summary is "(none)", leave it empty. Never make one up.\n\nReply in exactly this form and nothing else:\nTITLE: <title on one line, or nothing>\nSUMMARY: <summary on one line, or nothing>\nBODY:\n\nTitle:\n${t0 || "(none)"}\n\nSummary:\n${s0 || "(none)"}`);
+        const p = parseDraft(r.text);
+        if (t0 && p.title) nt = p.title;
+        if (s0 && p.summary) ns = p.summary;
+      }
+      const paras = (it.body[l] || "").replace(/\r/g, "").split(/\n{2,}/).filter(x => x.trim());
+      const CH = 5000, out = [];
+      const cnt = (arr, re) => arr.filter(x => re.test(x)).length;
+      for (let from = 0; from < paras.length;) {
+        if (!M || !M.busy) return;
+        let to = from, n = 0;
+        while (to < paras.length && (n === 0 || n + paras[to].length <= CH)) { n += paras[to].length; to++; }
+        const piece = paras.slice(from, to), chunk = piece.join("\n\n");
+        const prev = out.slice(-2).join("\n\n");
+        M.aiStatus = `Rewriting ${LNAME_EN[l]} in plain language… ${Math.round(100 * from / paras.length)}%`;
+        const st = $("#ai-status"); if (st) st.textContent = M.aiStatus;
+        const r = await run(`Rewrite the passage below, written in ${names[l]}, so it reads in plain, easy language. It is one part of a longer article that is being rewritten part by part; the parts before it are already done.\n\n${rules(l)}\n- Reply with the rewritten passage only, with the same number of paragraphs, headings and list items.\n${prev ? `\nFor context only, the end of the part already rewritten (do not repeat it):\n"""\n${prev}\n"""\n` : ""}\nPassage:\n"""\n${chunk}\n"""`);
+        const txt = r.text.trim().replace(/^"""\s*|\s*"""$/g, "").trim();
+        const outParas = txt.split(/\n{2,}/).filter(x => x.trim());
+        const ok = !r.truncated && txt && cnt(outParas, /^#{2,4} /) === cnt(piece, /^#{2,4} /) && cnt(outParas, /^>> /) === cnt(piece, /^>> /) && txt.length > chunk.length * 0.3;
+        if (ok) out.push(txt); else { out.push(chunk); notes.push(`${LNAME_EN[l]} ${Math.round(100 * from / paras.length)}%`); }
+        from = to;
+      }
+      if (!M) return;
+      it.title[l] = nt; it.summary[l] = ns; it.body[l] = out.join("\n\n"); it.ai[l] = true; done.push(l);
+    } catch (e) {
+      if (!M || e?.code === "cancelled") return;
+      M.err = aiErr(e?.code, l).replace(/ draft/g, " rewrite");
+      if (["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)) S.sample = null;
+    }
+  }));
+  if (!M) return;
+  M.busy = false; M.ctl = [];
+  if (notes.length) M.err = `Some parts could not be rewritten safely and were left as they were (${notes.join(", ")}). Press the button again to retry them, or use Undo.`;
+  M.aiStatus = done.length ? `Plain-language rewrite done for ${done.map(l=>LNAME_EN[l]).join(", ")}. Review each tab, then save. Undo is available.` : "";
+  drawWriteEditor();
+}
 async function aiContinue(){
   captureFields();
   const it = M.it, src = it.src, scope = M.aiScope || "all";
@@ -4151,6 +4225,7 @@ Rules:
 - Translate faithfully and completely, to the very last word of the passage. Do not add, remove, summarise or comment.
 - Keep every quotation of the Qur'an in Arabic exactly as written, character for character, and keep ayah references such as 2:255 exactly as written. Where the passage gives the meaning of an ayah, render it the way the earlier part does.
 - Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links, footnote markers such as [^1] and their "[^1]: " lines (translate those lines).
+- ${KEEP_AR_RULE}${plainRule(l)}
 - Reply with the translation of the passage only.${extra ? `\n- Extra instructions from the editor (they never override the rules above):\n"""\n${extra}\n"""` : ""}
 ${ctxSrc ? `\nFor context only, the end of the previous part in ${guide[src]} and its ${guide[l]} translation (do not translate these again):\n"""\n${ctxSrc}\n"""\n"""\n${ctxTr}\n"""\n` : ""}
 Passage to translate:
@@ -4882,6 +4957,7 @@ document.addEventListener("click", async (ev) => {
   if (act === "ai-one") return aiDraft(false, d.v);
   if (act === "ai-force") return aiDraft(true, M.aiOnly || undefined);
   if (act === "ai-revise") return aiRevise();
+  if (act === "ai-plain") return aiPlain();
   if (act === "ai-continue") return aiContinue();
   if (act === "ai-undo") return aiUndo();
   if (act === "ai-stop") { M.ctl.forEach(c=>c.abort()); return; }
@@ -4915,6 +4991,7 @@ document.addEventListener("change", (ev) => {
   if (t.id === "wroot") { S.wroot = t.value; render(); return; }
   if (t.id === "ncat") { S.ncat = t.value; if (S.nkind === "revised") S.nkind = "all"; render(); return; }
   if (t.id === "onlymarked") { S.onlyMarked = t.checked; render(); }
+  if (t.id === "plain-on") { store.set("aba.plain", t.checked ? "1" : "0"); return; }
   if (t.id === "showpages") { S.pages = t.checked; store.set("aba.pg", t.checked ? "1" : "0"); render(); }
   if (t.id === "rgroup") { S.rgroup = t.checked; render(); return; }
   if (t.id === "qfont") { S.qfont = t.value; store.set("aba.qfont", t.value); applyQFont(); }
