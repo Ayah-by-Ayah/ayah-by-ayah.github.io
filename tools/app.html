@@ -3915,7 +3915,7 @@ function saveLocalDraft(){
   captureFields();
   const cur = JSON.stringify([M.ref, M.it]);
   M.dirty = cur !== M.initial;
-  if (M.dirty) store.set(draftKey(), JSON.stringify({ref:M.ref, it:M.it, savedAt:Date.now()}));
+  if (M.dirty) store.set(draftKey(), JSON.stringify({ref:M.ref, it:Object.assign({}, M.it, {_partial: undefined}), savedAt:Date.now()}));   // _partial describes the loaded note, never the draft
 }
 function clearLocalDraft(){ try { localStorage.removeItem(draftKey()); } catch {} }
 function applyFmt(k){
@@ -4874,7 +4874,7 @@ document.addEventListener("click", async (ev) => {
   if (act === "tab") { captureFields(); M.tab = d.v; M.err=""; drawWriteEditor(); ($("#w-body")||$("#w-title")).focus(); return; }
   if (act === "view") { captureFields(); M.preview = d.v === "preview"; drawWriteEditor(); return; }
   if (act === "fmt") { applyFmt(d.v); saveLocalDraft(); return; }
-  if (act === "draft-restore") { M.ref = M.draft.ref; M.it = Object.assign(M.it, M.draft.it); M.draft = null; drawWriteEditor(); return; }
+  if (act === "draft-restore") { M.ref = M.draft.ref; const wasPartial = !!M.it._partial; M.it = Object.assign(M.it, M.draft.it); if (wasPartial) M.it._partial = true; else delete M.it._partial; M.draft = null; drawWriteEditor(); return; }
   if (act === "draft-discard") { M.draft = null; clearLocalDraft(); drawWriteEditor(); return; }
   if (act === "kind") { captureFields(); M.it.kind = d.v; drawWriteEditor(); return; }
   if (act === "reviewed") { captureFields(); delete M.it.ai[M.tab]; drawWriteEditor(); return; }
