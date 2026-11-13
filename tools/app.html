@@ -2016,36 +2016,79 @@ function stripVerify(md){
   return parts.filter(p => !(/^## /.test(p) && /verify|যাচাই|التحقق|تصدیق|تحقیق|تحقق/i.test(p.split("\n")[0]))).join("\n").trim();
 }
 const pickQ = o => (typeof o === "string" ? o : o && (o.en || o.ar || o.bn || o.ur)) || "";
-function mpCandidates(){ return (S.qa || []).filter(x => x.fit && x.fit.w && !(x.fu && x.fu.length) && !S.morphIx[mpKey(x.s, x.a, x.fit.w)]); }
-function openMpMove(){
+const MP_Q = /morpholog|ṣarf|sarf|tasrif|taṣrīf|inflect|derivation|صرف|تصريف|اشتقاق|শব্দরূপ|সরফ|সর্ফ|ধাতু|صرفی|تصریف/i;
+const qaText = x => typeof x.q === "string" ? x.q : LANGS.map(l => (x.q && x.q[l]) || "").join(" \n ");
+/* find the one word of the ayah that the question names (Arabic word in the question) */
+function mpWordFromQ(x){
+  const ws = FW[x.s] && FW[x.s][x.a - 1]; if (!ws) return null;
+  const toks = [...new Set((qaText(x).match(/[\u0600-\u06FF\u0750-\u077F]+/g) || []).map(skel).filter(k => k.length >= 2))];
+  const sk = ws.map(w => skel(w[2].map(g => g[0]).join("")));
+  const hit = new Set();
+  for (const k of toks) {
+    let m = sk.map((v, i) => v === k ? i : -1).filter(i => i >= 0);
+    if (!m.length) m = sk.map((v, i) => (v.includes(k) || k.includes(v)) && v.length >= 2 ? i : -1).filter(i => i >= 0);
+    if (m.length === 1) hit.add(m[0]);
+  }
+  return hit.size === 1 ? [...hit][0] + 1 : null;
+}
+function mpEntry(x, w){
+  const ws = FW[x.s] && FW[x.s][x.a - 1], g = ws && ws[w - 1]; if (!g) return null;
+  const ds = g[2].map(decodeSeg), stem = ds.find(o => o.role === "stem" && o.cls !== "p") || ds.find(o => o.role === "stem") || ds[0];
+  return {x, w, word: g[2].map(o => o[0]).join(""), root: (stem && stem.root) || "", lemma: (stem && stem.lem) || "", pos: stem ? stem.en : ""};
+}
+function mpPlan(){
+  const cands = [], skip = [];
+  for (const x of (S.qa || [])) {
+    if (x.fu && x.fu.length) continue;
+    let w = x.fit && x.fit.w ? x.fit.w : (MP_Q.test(qaText(x)) ? mpWordFromQ(x) : null);
+    const asked = (x.fit && x.fit.w) || MP_Q.test(qaText(x));
+    if (!asked) continue;
+    if (!w) { skip.push(x); continue; }
+    if (S.morphIx[mpKey(x.s, x.a, w)]) { skip.push(x); continue; }
+    const e = (x.fit && x.fit.w) ? {x, w, word: x.fit.word, root: x.fit.root || "", lemma: x.fit.lemma || "", pos: x.fit.pos || ""} : mpEntry(x, w);
+    e ? cands.push(e) : skip.push(x);
+  }
+  return {cands, skip};
+}
+async function openMpMove(){
   if (blockedByMin()) return;
-  M = {type: "mpmove", busy: false, err: "", done: 0}; drawMpMove();
+  M = {type: "mpmove", busy: true, err: "", done: 0, plan: {cands: [], skip: []}}; drawMpMove();
+  try {
+    const ss = [...new Set((S.qa || []).filter(x => !(x.fu && x.fu.length) && !(x.fit && x.fit.w) && MP_Q.test(qaText(x))).map(x => x.s))];
+    await Promise.all(ss.map(s => FW[s] ? 0 : loadGrammar(s).then(d => { FW[s] = d; })));
+  } catch (e) { M.err = "Some surah word lists didn't load; try again."; }
+  if (!M || M.type !== "mpmove") return;
+  M.plan = mpPlan(); M.busy = false; drawMpMove();
 }
 function drawMpMove(){
-  const c = mpCandidates();
-  modal(`<div class="row"><h2>Move word Q&amp;As to Morphology</h2></div>
-    <p class="small">These Q&amp;As were asked about one picked word and have no follow-up questions. Each becomes that word's public morphology write-up (unreviewed), the “To verify before saving” list is left out, and a copy of the original Q&amp;A is kept in a private archive, then removed from Q&amp;A.</p>
-    ${c.map(x => `<div class="small" style="padding:4px 0"><b>${x.s}:${x.a}</b> <span lang="ar" dir="rtl" class="wa-ar">${esc(x.fit.word)}</span> · ${esc(pickQ(x.q))}</div>`).join("") || `<div class="empty"><b>Nothing to move</b>No Q&amp;A with a picked word is left.</div>`}
+  const {cands, skip} = M.plan;
+  modal(`<div class="row"><h2>Move morphology Q&amp;As to Morphology</h2></div>
+    <p class="small">Q&amp;As that ask about the morphology (or a picked word) with no follow-up questions. Each becomes that word's public morphology write-up (unreviewed), the “To verify before saving” list is left out, and a copy of the original is kept in a private archive, then removed from Q&amp;A.</p>
+    ${M.busy && !M.done ? `<p class="small muted">Checking…</p>` : ""}
+    ${cands.map(e => `<div class="small" style="padding:4px 0"><b>${e.x.s}:${e.x.a}</b> word ${e.w} <span lang="ar" dir="rtl" class="wa-ar">${esc(e.word)}</span> · ${esc(pickQ(e.x.q))}</div>`).join("") || (M.busy ? "" : `<div class="empty"><b>Nothing to move</b></div>`)}
+    ${skip.length ? `<p class="small muted" style="margin-top:10px">Not moved (no single word found in the question, or that word already has an analysis):</p>${skip.map(x => `<div class="small muted">${x.s}:${x.a} · ${esc(pickQ(x.q))}</div>`).join("")}` : ""}
     <div class="err" id="m-err">${esc(M.err || "")}</div>
-    <div class="foot"><span class="spacer"></span><button type="button" class="btn" data-m="close">${M.done ? "Close" : "Cancel"}</button>${c.length ? `<button type="button" class="btn primary" data-m="mpmove-go" ${M.busy ? "disabled" : ""}>Move ${c.length}</button>` : ""}</div>`);
+    <div class="foot"><span class="spacer"></span><button type="button" class="btn" data-m="close">${M.done ? "Close" : "Cancel"}</button>${cands.length && !M.done ? `<button type="button" class="btn primary" data-m="mpmove-go" ${M.busy ? "disabled" : ""}>Move ${cands.length}</button>` : ""}</div>`);
 }
 async function mpMoveAct(act){
-  if (act === "close") { if (M.busy) return; closeModal(); return; }
+  if (act === "close") { if (M.busy && M.done) return; closeModal(); return; }
   if (act !== "mpmove-go" || M.busy) return;
   M.busy = true; M.err = ""; M.done = 0; drawMpMove();
-  const now = Date.now();
+  const now = Date.now(), list = M.plan.cands.slice();
   try {
-    for (const x of mpCandidates()) {
-      const text = Object.fromEntries(LANGS.map(l => [l, stripVerify(x.ans[l] || "")]));
+    for (const e of list) {
+      const x = e.x;
+      const text = Object.fromEntries(LANGS.map(l => [l, stripVerify((x.ans && x.ans[l]) || "")]));
       const src = text[x.src] ? x.src : (LANGS.find(l => text[l]) || "en");
-      const doc = {s: x.s, a: x.a, w: x.fit.w, word: x.fit.word, root: x.fit.root || "", lemma: x.fit.lemma || "", pos: x.fit.pos || "", src, text,
+      const doc = {s: x.s, a: x.a, w: e.w, word: e.word, root: e.root, lemma: e.lemma, pos: e.pos, src, text,
         ai: Object.fromEntries(LANGS.filter(l => text[l]).map(l => [l, true])), createdAt: x.createdAt || now, updatedAt: now, fromQa: x.id};
       await S.db.collection("qa_moved").doc(x.id).set(Object.assign({}, x, {movedAt: now}));
-      await S.db.collection("morph").doc(`${x.s}-${x.a}-${x.fit.w}`).set(doc);
+      await S.db.collection("morph").doc(`${x.s}-${x.a}-${e.w}`).set(doc);
       await S.db.collection("qa").doc(x.id).delete();
       M.done++;
     }
     toast(`Moved ${M.done} to Morphology`);
+    M.plan = {cands: [], skip: M.plan.skip};
   } catch (e) { M.err = dbErr(e); }
   M.busy = false; drawMpMove();
 }
@@ -5435,7 +5478,7 @@ function addSyncControls(){
   } else if (S.admin && S.db && !S.static) {
     const b = document.createElement("button"); b.type = "button"; b.className = "btn ghost small"; b.dataset.syncImport = ""; b.textContent = "Import offline changes"; bar.appendChild(b);
     const fb = document.createElement("button"); fb.type = "button"; fb.id = "flag-btn"; fb.className = "btn ghost small"; fb.dataset.flaglist = ""; fb.textContent = flagBtnText(); bar.appendChild(fb);
-    const mb = document.createElement("button"); mb.type = "button"; mb.className = "btn ghost small"; mb.dataset.mpmove = ""; mb.textContent = "Move word Q&As to Morphology"; bar.appendChild(mb);
+    const mb = document.createElement("button"); mb.type = "button"; mb.className = "btn ghost small"; mb.dataset.mpmove = ""; mb.textContent = "Move morphology Q&As to Morphology"; bar.appendChild(mb);
     const inp = document.createElement("input"); inp.type = "file"; inp.id = "sync-file"; inp.accept = ".json,application/json"; inp.hidden = true;
     inp.addEventListener("change", () => { const f = inp.files && inp.files[0]; inp.value = ""; syncPicked(f); });
     document.body.appendChild(inp);
