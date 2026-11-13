@@ -643,7 +643,7 @@ const S = {
   trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
   trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
   tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [], vocab: {}, vocabOpen: false, vrange: null, qa: [], qaIx: {}, qq: "",
-  cm: [], cmIx: {}, cmq: "", kw: [], kwIx: {}, research: [], rsIx: {}, rq: "", rstatus: "", rtag: null, rgroup: true,
+  cm: [], cmIx: {}, cmq: "", morph: [], morphIx: {}, morphAy: {}, flags: [], kw: [], kwIx: {}, research: [], rsIx: {}, rq: "", rstatus: "", rtag: null, rgroup: true,
   admin: false, db: null, dbState: "loading", sample: null, downloads: null,
   open: new Set(), compare: new Set(), onlyMarked: false, pages: store.get("aba.pg") !== "0",
   words: [], wq: "", wroot: "", cats: [], ncat: "", focus: false, readScale: Math.min(1.5, Math.max(0.85, parseFloat(store.get("aba.readscale")) || 1)), sq: "", nq: "", nkind: "all", ntag: null, lq: "", ltag: null, openLesson: new Set(), openNote: new Set()
@@ -789,6 +789,7 @@ function reindex(){
   const notes = {}, lessons = {}, words = {}, counts = {};
   const bump = (s, k) => { (counts[s] ||= {rev:0,exp:0,les:0,wa:0,cm:0})[k]++; };
   S.cmIx = {}; for (const c of S.cm) { S.cmIx[key(c.s, c.a)] = c; bump(c.s, "cm"); }
+  S.morphIx = {}; S.morphAy = {}; for (const m of S.morph) { S.morphIx[mpKey(m.s, m.a, m.w)] = m; S.morphAy[key(m.s, m.a)] = (S.morphAy[key(m.s, m.a)] || 0) + 1; }
   S.kwIx = {}; for (const x of S.kw) S.kwIx[key(x.s, x.a)] = x;
   S.rsIx = {};
   for (const r of S.research) for (const k of rsKeys(r)) (S.rsIx[k] ||= []).push(r);
@@ -1831,6 +1832,224 @@ async function cmAct(act, d){
   }
 }
 
+/* ---------- Morphology (public, one write-up per word) and Flags (private error reports) ---------- */
+/* doc morph/<s>-<a>-<w>: {s, a, w (1-based), word, root, lemma, pos, src, text:{en,bn,ar,ur}, ai:{lang:true}, createdAt, updatedAt}
+   doc flags/<id>: {s, a, w, word, kinds:[string], note, status:"open"|"done", createdAt}  (editor only; never exported)
+   doc qa_moved/<qa id>: a copy of a Q&A that was moved to Morphology (editor only; never exported) */
+const mpKey = (s, a, w) => `${s}:${a}:${w}`;
+function mpNorm(x){
+  const src = LANGS.includes(x.src) ? x.src : "en";
+  return Object.assign({}, x, {src, text: Object.assign(blankLang(), x.text || {}), ai: (x.ai && typeof x.ai === "object") ? x.ai : {}});
+}
+function mpCount(s, a){ return (S.morphAy && S.morphAy[key(s, a)]) || 0; }
+const mpSnap = () => JSON.stringify([M.src, M.text]);
+function mpWordsOf(s, a){ return FW[s] && FW[s][a - 1] ? FW[s][a - 1] : null; }
+function mpSelect(j){
+  M.j = j;
+  const ex = j == null ? null : S.morphIx[mpKey(M.s, M.a, j + 1)];
+  M.text = Object.assign(blankLang(), ex && ex.text); M.ai = Object.assign({}, ex && ex.ai);
+  M.src = ex ? ex.src : S.lang; M.tab = (ex && (ex.text[S.lang] || "").trim()) ? S.lang : M.src;
+  M.exists = !!ex; M.created = (ex && ex.createdAt) || 0; M.err = ""; M.status = ""; M.saved = mpSnap();
+}
+function openMorph(k, j){
+  if (blockedByMin()) return;
+  const [s, a] = k.split(":").map(Number);
+  M = {type: "mp", s, a, j: null, busy: false, ctl: [], err: "", status: ""};
+  mpSelect(j == null || isNaN(j) ? null : j);
+  if (!FW[s]) loadGrammar(s).then(d => { FW[s] = d; if (M && M.type === "mp" && M.s === s) drawMP(); }).catch(() => { if (M && M.type === "mp") { M.loadErr = true; drawMP(); } });
+  if (!FORMS) loadForms().then(() => { if (M && M.type === "mp") drawMP(); }).catch(() => {});
+  drawMP();
+}
+function captureMP(){
+  if (!M || M.type !== "mp") return;
+  const g = i => document.getElementById(i);
+  if (g("mp-text")) M.text[M.tab] = g("mp-text").value;
+  if (g("mp-src")) M.src = g("mp-src").value;
+}
+function mpAuto(w){
+  /* the automatic corpus analysis of one word: each segment, root, lemma, forms */
+  const ds = w[2].map(decodeSeg);
+  const forms = FORMS ? formsCard(ds) : "";
+  return `<div class="gsegs">${ds.map(o => `<div class="gseg">
+      <div class="gseg-h"><span class="gseg-t g-${o.cls}" lang="ar" dir="rtl">${esc(o.text)}</span><b class="g-${o.cls}">${esc(o.en)}</b><span class="gar" lang="ar" dir="rtl">${esc(o.ar)}</span>${o.role !== "stem" ? `<span class="gtag">${o.role}</span>` : ""}</div>
+      ${o.enDesc ? `<div class="gseg-d">${esc(o.enDesc)}</div>` : ""}
+      ${(o.root || o.lem) ? `<div class="gseg-d">${o.root ? `Root <span class="gar" lang="ar" dir="rtl">${esc(spaced(o.root))}</span>` : ""}${o.root && o.lem ? " · " : ""}${o.lem ? `Lemma <span class="gar" lang="ar" dir="rtl">${esc(o.lem)}</span>` : ""}</div>` : ""}
+    </div>`).join("")}</div>${forms}`;
+}
+function drawMP(){
+  const {s, a} = M, su = surahOf(s), ws = mpWordsOf(s, a), admin = S.admin && S.db, T = M.tab, dir = RTL[T] ? "rtl" : "ltr";
+  let words;
+  if (M.loadErr) words = `<p class="small muted">The word list didn't load. Close this and try again.</p>`;
+  else if (!ws) words = `<p class="small muted">Loading the words…</p>`;
+  else words = `<div class="gstrip" lang="ar" dir="rtl">${ws.map((w, i) => `<button type="button" class="gchip" data-m="mp-pick" data-v="${i}" aria-pressed="${M.j === i}">${w[2].map(sg => segHTML(decodeSeg(sg))).join("")}${S.morphIx[mpKey(s, a, i + 1)] ? " ●" : ""}</button>`).join("")}</div>
+    <p class="small muted" style="margin:4px 0 0">Choose any word. ● = a written morphological analysis exists.</p>`;
+  let body = "";
+  if (ws && M.j != null && ws[M.j]) {
+    const w = ws[M.j], ex = S.morphIx[mpKey(s, a, M.j + 1)];
+    body += `<div class="gw-mean" style="text-align:center"><i>${esc(w[0])}</i> · <b>${esc(w[1])}</b></div>${mpAuto(w)}`;
+    if (admin) {
+      body += `<div class="row small"><label class="flabel" for="mp-src">Written in</label>
+        <select id="mp-src" style="width:auto">${LANGS.map(l => `<option value="${l}" ${l === M.src ? "selected" : ""}>${LNAME_EN[l]}</option>`).join("")}</select></div>
+        <div class="ltabs" role="tablist">${LANGS.map(l => `<button type="button" role="tab" data-m="mp-tab" data-v="${l}" aria-selected="${T === l}" class="${(M.text[l] || "").trim() ? "filled" : ""}">${LNAME[l]}${M.ai[l] ? '<span class="flag">UNREVIEWED</span>' : ""}</button>`).join("")}</div>
+        <div class="field"><label for="mp-text">Morphological analysis · ${LNAME_EN[T]}</label>
+          <textarea id="mp-text" rows="10" lang="${T}" dir="${dir}" placeholder="Pattern, root, form, why the word takes this shape. Blank lines make paragraphs; **bold**, *italic* and references such as 4:82 work.">${esc(M.text[T])}</textarea>
+          ${M.ai[T] ? `<div class="row small"><span class="notice">Unreviewed draft. Read it, then mark it reviewed.</span><button type="button" class="btn small" data-m="mp-reviewed">Mark as reviewed</button></div>` : ""}</div>`;
+    } else {
+      const p = ex ? pick(ex.text, S.lang, ex.src) : null;
+      body += p && p.text.trim()
+        ? `<div class="cmbox"><div class="cmlab">Morphological analysis${p.fallback ? ` <span class="chip">Shown in ${LNAME_EN[p.lang]}</span>` : (ex.ai[p.lang] ? ` <span class="chip rev">Unreviewed draft</span>` : "")}</div><div class="cmtx prose" lang="${p.lang}" dir="${RTL[p.lang] ? "rtl" : "ltr"}">${mdLite(p.text, p.lang)}</div></div>`
+        : `<p class="small muted">No written analysis for this word yet. The automatic analysis above is from the Quranic Arabic Corpus.</p>`;
+    }
+  } else if (ws) body = `<p class="small muted">Tap a word above to see its morphology.</p>`;
+  modal(`<div class="row"><h2>Morphology · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span>${admin ? winBtns(M.j != null ? "mp-save" : "") : `<button type="button" class="btn primary" data-m="close">Close</button>`}</div>
+    <p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
+    ${words}${body}
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot row"><span class="small muted">${admin ? "Shown to readers once you publish the site." : "Automatic analysis: Quranic Arabic Corpus. Written analyses are by the author."}</span><span class="spacer"></span>
+      ${admin && M.j != null ? `<button type="button" class="btn ghost" data-m="mp-flag">⚑ Flag an error</button>` : ""}
+      ${admin && M.exists ? `<button type="button" class="btn danger" data-m="mp-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}</div>`, "qa");
+}
+async function mpAct(act, d){
+  const conf = (msg, yes, yesLabel, noLabel, danger) => { $("#m-confirm").innerHTML = `<div class="confirm"><span>${msg}</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">${noLabel}</button><button type="button" class="btn ${danger ? "danger" : "primary"}" data-m="${yes}">${yesLabel}</button></div>`; };
+  const any = () => LANGS.some(l => (M.text[l] || "").trim());
+  if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+  if (act === "close-yes") { closeModal(); return; }
+  if (act === "close") {
+    captureMP();
+    if (M.busy) { closeModal(); return; }
+    if (M.j != null && mpSnap() !== M.saved && any()) { conf("Close without saving?", "close-yes", "Close", "Keep writing", true); return; }
+    closeModal(); return;
+  }
+  if (act === "mp-pick") {
+    captureMP();
+    if (M.j != null && mpSnap() !== M.saved && any()) { M.pendingPick = +d.v; conf("This word has unsaved writing. Switch word and discard it?", "mp-pick-yes", "Switch", "Keep writing", true); return; }
+    mpSelect(M.j === +d.v ? null : +d.v); drawMP(); return;
+  }
+  if (act === "mp-pick-yes") { mpSelect(M.pendingPick); drawMP(); return; }
+  if (act === "mp-tab") { captureMP(); M.tab = d.v; M.err = ""; drawMP(); return; }
+  if (act === "mp-reviewed") { captureMP(); delete M.ai[M.tab]; drawMP(); return; }
+  if (act === "mp-flag") { const {s, a, j} = M; closeModal(); openFlag(s, a, j); return; }
+  if (act === "mp-save") {
+    captureMP();
+    const ws = mpWordsOf(M.s, M.a), w = ws && ws[M.j];
+    if (!w) return;
+    if (!M.text[M.src].trim()) { M.tab = M.src; M.err = `Write the analysis in ${LNAME_EN[M.src]} first (it is the language you wrote in).`; drawMP(); return; }
+    const ds = w[2].map(decodeSeg), stem = ds.find(o => o.role === "stem" && o.cls !== "p") || ds.find(o => o.role === "stem") || ds[0];
+    const id = `${M.s}-${M.a}-${M.j + 1}`, now = Date.now();
+    const text = Object.fromEntries(LANGS.map(l => [l, (M.text[l] || "").trim()]));
+    const doc = {s: M.s, a: M.a, w: M.j + 1, word: w[2].map(x => x[0]).join(""), root: (stem && stem.root) || "", lemma: (stem && stem.lem) || "", pos: stem ? stem.en : "", src: M.src, text,
+      ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && text[l])), createdAt: M.created || now, updatedAt: now};
+    M.busy = true; M.err = ""; drawMP();
+    try { await S.db.collection("morph").doc(id).set(doc); M.exists = true; M.created = doc.createdAt; M.text = Object.assign(blankLang(), text); M.ai = Object.assign({}, doc.ai); M.saved = mpSnap(); toast("Morphology saved"); }
+    catch (e) { M.err = dbErr(e); }
+    M.busy = false; drawMP(); return;
+  }
+  if (act === "mp-delete") { conf("Delete this word's analysis in all languages?", "mp-delete-yes", "Delete", "Keep it", true); return; }
+  if (act === "mp-delete-yes") {
+    M.busy = true; drawMP();
+    try { await S.db.collection("morph").doc(`${M.s}-${M.a}-${M.j + 1}`).delete(); toast("Deleted"); mpSelect(M.j); }
+    catch (e) { M.err = dbErr(e); }
+    M.busy = false; drawMP(); return;
+  }
+}
+
+/* ----- Flags: report a wrong meaning, root or sarf form on a word (editor only, private) ----- */
+const FLAG_KINDS = ["Wrong meaning (gloss)", "Wrong root or lemma", "Wrong sarf / forms table", "Wrong part of speech or grammar", "Other"];
+function openFlag(s, a, j){
+  if (!S.admin || !S.db) { toast("Flagging is for the editor."); return; }
+  if (blockedByMin()) return;
+  const ws = mpWordsOf(s, a), w = ws && ws[j]; if (!w) return;
+  M = {type: "flag", s, a, j, word: w[2].map(x => x[0]).join(""), gloss: w[1], kinds: new Set(), busy: false, err: ""};
+  drawFlag();
+}
+function drawFlag(){
+  const {s, a, j} = M;
+  modal(`<div class="row"><h2>⚑ Flag an error · ${s}:${a} word ${j + 1}</h2></div>
+    <p class="ar" lang="ar" dir="rtl" style="font-size:1.5em;margin:0">${esc(M.word)}</p>
+    <p class="small muted" style="margin:0">Shown meaning: <b>${esc(M.gloss)}</b></p>
+    <div class="field"><label>What looks wrong?</label><div class="row" style="flex-wrap:wrap;gap:6px">${FLAG_KINDS.map((k, i) => `<button type="button" class="btn small ${M.kinds.has(i) ? "primary" : "ghost"}" data-m="flag-k" data-v="${i}" aria-pressed="${M.kinds.has(i)}">${k}</button>`).join("")}</div></div>
+    <div class="field"><label for="fl-note">What should it be? (optional)</label><textarea id="fl-note" rows="3" style="min-height:70px">${esc(M.note || "")}</textarea></div>
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot"><span class="spacer"></span><button type="button" class="btn" data-m="close">Cancel</button><button type="button" class="btn primary" data-m="flag-save" ${M.busy ? "disabled" : ""}>Save flag</button></div>`);
+}
+async function flagAct(act, d){
+  if (act === "close") { closeModal(); return; }
+  if (act === "flag-k") { M.note = ($("#fl-note") || {}).value || ""; const i = +d.v; M.kinds.has(i) ? M.kinds.delete(i) : M.kinds.add(i); drawFlag(); return; }
+  if (act === "flag-save") {
+    M.note = ($("#fl-note") || {}).value || "";
+    if (!M.kinds.size && !M.note.trim()) { M.err = "Tick what looks wrong or write a note."; drawFlag(); return; }
+    const now = Date.now(), id = `${M.s}-${M.a}-${M.j + 1}-${now}`;
+    const doc = {s: M.s, a: M.a, w: M.j + 1, word: M.word, gloss: M.gloss, kinds: [...M.kinds].sort().map(i => FLAG_KINDS[i]), note: M.note.trim(), status: "open", createdAt: now};
+    M.busy = true; M.err = ""; drawFlag();
+    try { await S.db.collection("flags").doc(id).set(doc); closeModal(); toast("Flag saved"); }
+    catch (e) { M.busy = false; M.err = dbErr(e); drawFlag(); }
+  }
+}
+const flagBtnText = () => `⚑ Flags (${(S.flags || []).filter(f => f.status !== "done").length})`;
+function openFlagList(){
+  if (blockedByMin()) return;
+  M = {type: "flags", show: "open"}; drawFlagList();
+}
+function drawFlagList(){
+  const all = (S.flags || []).slice().sort((x, y) => y.createdAt - x.createdAt), list = all.filter(f => M.show === "all" || f.status !== "done");
+  modal(`<div class="row"><h2>⚑ Flags (${all.filter(f => f.status !== "done").length} open)</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <div class="row small"><button type="button" class="btn ghost small" data-m="flag-all">${M.show === "all" ? "Hide finished ones" : "Show finished ones"}</button></div>
+    ${list.map(f => `<article class="wcard"><div class="whead"><span lang="ar" dir="rtl" class="wa-ar">${esc(f.word)}</span><button type="button" class="reflink" data-go="${f.s}:${f.a}">${f.s}:${f.a} · word ${f.w}</button><span class="spacer"></span>
+        <button type="button" class="btn ghost small" data-m="flag-done" data-v="${esc(f.id)}">${f.status === "done" ? "Reopen" : "Done"}</button><button type="button" class="btn ghost small" data-m="flag-del" data-v="${esc(f.id)}">Delete</button></div>
+      <p class="small" style="margin:0">${esc(f.gloss || "")}${f.kinds && f.kinds.length ? " · " + esc(f.kinds.join("; ")) : ""}</p>${f.note ? `<p class="small" style="margin:4px 0 0">${esc(f.note)}</p>` : ""}</article>`).join("") || `<div class="empty"><b>No flags</b>Use “Flag an error” on a word card.</div>`}`);
+}
+async function flagsAct(act, d){
+  if (act === "close") { closeModal(); return; }
+  if (act === "flag-all") { M.show = M.show === "all" ? "open" : "all"; drawFlagList(); return; }
+  if (act === "flag-done") {
+    const f = (S.flags || []).find(x => x.id === d.v); if (!f) return;
+    try { await S.db.collection("flags").doc(f.id).update({status: f.status === "done" ? "open" : "done"}); } catch (e) { toast("Couldn't save. Try again."); }
+    return;
+  }
+  if (act === "flag-del") { try { await S.db.collection("flags").doc(d.v).delete(); } catch (e) { toast("Couldn't delete. Try again."); } return; }
+}
+
+/* ----- Move word-tied Q&As into Morphology ----- */
+function stripVerify(md){
+  if (!md) return "";
+  const parts = md.split(/\n(?=## )/);
+  return parts.filter(p => !(/^## /.test(p) && /verify|যাচাই|التحقق|تصدیق|تحقیق|تحقق/i.test(p.split("\n")[0]))).join("\n").trim();
+}
+const pickQ = o => (typeof o === "string" ? o : o && (o.en || o.ar || o.bn || o.ur)) || "";
+function mpCandidates(){ return (S.qa || []).filter(x => x.fit && x.fit.w && !(x.fu && x.fu.length) && !S.morphIx[mpKey(x.s, x.a, x.fit.w)]); }
+function openMpMove(){
+  if (blockedByMin()) return;
+  M = {type: "mpmove", busy: false, err: "", done: 0}; drawMpMove();
+}
+function drawMpMove(){
+  const c = mpCandidates();
+  modal(`<div class="row"><h2>Move word Q&amp;As to Morphology</h2></div>
+    <p class="small">These Q&amp;As were asked about one picked word and have no follow-up questions. Each becomes that word's public morphology write-up (unreviewed), the “To verify before saving” list is left out, and a copy of the original Q&amp;A is kept in a private archive, then removed from Q&amp;A.</p>
+    ${c.map(x => `<div class="small" style="padding:4px 0"><b>${x.s}:${x.a}</b> <span lang="ar" dir="rtl" class="wa-ar">${esc(x.fit.word)}</span> · ${esc(pickQ(x.q))}</div>`).join("") || `<div class="empty"><b>Nothing to move</b>No Q&amp;A with a picked word is left.</div>`}
+    <div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot"><span class="spacer"></span><button type="button" class="btn" data-m="close">${M.done ? "Close" : "Cancel"}</button>${c.length ? `<button type="button" class="btn primary" data-m="mpmove-go" ${M.busy ? "disabled" : ""}>Move ${c.length}</button>` : ""}</div>`);
+}
+async function mpMoveAct(act){
+  if (act === "close") { if (M.busy) return; closeModal(); return; }
+  if (act !== "mpmove-go" || M.busy) return;
+  M.busy = true; M.err = ""; M.done = 0; drawMpMove();
+  const now = Date.now();
+  try {
+    for (const x of mpCandidates()) {
+      const text = Object.fromEntries(LANGS.map(l => [l, stripVerify(x.ans[l] || "")]));
+      const src = text[x.src] ? x.src : (LANGS.find(l => text[l]) || "en");
+      const doc = {s: x.s, a: x.a, w: x.fit.w, word: x.fit.word, root: x.fit.root || "", lemma: x.fit.lemma || "", pos: x.fit.pos || "", src, text,
+        ai: Object.fromEntries(LANGS.filter(l => text[l]).map(l => [l, true])), createdAt: x.createdAt || now, updatedAt: now, fromQa: x.id};
+      await S.db.collection("qa_moved").doc(x.id).set(Object.assign({}, x, {movedAt: now}));
+      await S.db.collection("morph").doc(`${x.s}-${x.a}-${x.fit.w}`).set(doc);
+      await S.db.collection("qa").doc(x.id).delete();
+      M.done++;
+    }
+    toast(`Moved ${M.done} to Morphology`);
+  } catch (e) { M.err = dbErr(e); }
+  M.busy = false; drawMpMove();
+}
+
 /* ---------- Categories (private search words per ayah; editor only, never part of the public export) ---------- */
 /* doc keywords/<s>-<a>: {s, a, terms:[string], ai:[the terms that the AI suggested], updatedAt}
    make_content.py does not read this collection and loadStatic never sets S.kw: keep it that way, like qa and research. */
@@ -2320,6 +2539,7 @@ function ayahHTML(s, x){
       </div>` : ""}
       ${open && notes.length ? `<div class="wlist">${notes.map(n => noteCard(n, false)).join("")}</div>` : ""}
       <div class="admin-bar">
+        <button type="button" class="btn ghost gbtn" data-morph="${k}">Morphology${mpCount(s, x.a) ? ` (${mpCount(s, x.a)})` : ""}</button>
         <button type="button" class="btn ghost gbtn" data-grammar="${k}">Grammar${irabOf(s,x.a)?' <span class="gdot" title="Iʿrāb written">· iʿrāb</span>':""}</button>
       ${S.admin ? `
         <button type="button" class="btn ghost" data-edit-tr="${k}">${rev?"Edit revised translation":"Revise translation"}</button>
@@ -2784,7 +3004,7 @@ function drawWordCard(){
     ${stem ? `<div class="gseg-d" style="text-align:center">${esc(bnG(stem.en))}${stem.enDesc ? " · " + esc(bnG(stem.enDesc)) : ""}${stem.root ? ` · ${lb("Root")} <span class="gar" lang="ar" dir="rtl">${esc(spaced(stem.root))}</span>` : ""}${stem.lem ? ` · ${lb("Lemma")} <span class="gar" lang="ar" dir="rtl">${esc(stem.lem)}</span>` : ""}</div>` : ""}
     ${forms || (FORMS ? `<p class="small muted" style="margin:0;text-align:center">${S.trLang === "bn" ? "এই শব্দের জন্য রূপের সারণি নেই (অব্যয়, সর্বনাম ও নামের থাকে না)।" : "No forms table for this word (particles, pronouns and names have none)."}</p>` : `<p class="small muted" style="margin:0;text-align:center">${lb("Loading…")}</p>`)}
     ${FORMS ? `<p class="small muted" style="margin:0">${S.trLang === "bn" ? "● = কুরআনে আছে। রূপ: আররামুজ অভিধান (GPL-3) ও করপাস; ফাঁকগুলো এআই দিয়ে পূরণ করা, এখনো পর্যালোচিত নয়।" : "● = occurs in the Qur’an. Forms: Arramooz dictionary (GPL-3) and the corpus; gaps filled by AI, not yet reviewed."}</p>` : ""}
-    <div class="foot"><button type="button" class="btn" data-grammar="${s}:${a}">${lb("Full grammar")}</button><span class="spacer"></span><button type="button" class="btn primary" data-m="close">${lb("Back to the ayah")}</button></div>`);
+    <div class="foot"><button type="button" class="btn" data-grammar="${s}:${a}">${lb("Full grammar")}</button><button type="button" class="btn" data-morph="${s}:${a}:${j}">Morphology${S.morphIx[mpKey(s, a, j + 1)] ? " ●" : ""}</button>${S.admin && S.db ? `<button type="button" class="btn ghost" data-flag="${s}:${a}:${j}" title="Report a wrong meaning or form">⚑ Flag</button>` : ""}<span class="spacer"></span><button type="button" class="btn primary" data-m="close">${lb("Back to the ayah")}</button></div>`);
 }
 function openGrammar(k){
   if (blockedByMin()) return;
@@ -4805,6 +5025,10 @@ document.addEventListener("click", async (ev) => {
   }
   if (d.compare) { S.compare.has(d.compare) ? S.compare.delete(d.compare) : S.compare.add(d.compare); return render(); }
   if (d.toggle) { S.open.has(d.toggle) ? S.open.delete(d.toggle) : S.open.add(d.toggle); return render(); }
+  if (d.morph) { const [ms, ma, mj] = d.morph.split(":").map(Number); if (FL) closeFlash(); return openMorph(ms + ":" + ma, mj === undefined || isNaN(mj) ? null : mj); }
+  if (d.flag) { const [fs, fa, fj] = d.flag.split(":").map(Number); if (FL) closeFlash(); return openFlag(fs, fa, fj); }
+  if (d.flaglist !== undefined) return openFlagList();
+  if (d.mpmove !== undefined) return openMpMove();
   if (d.grammar) return openGrammar(d.grammar);
   if (d.gword !== undefined && M?.type === "gram") { M.sel = +d.gword; drawGrammar(); requestAnimationFrame(()=> document.getElementById("gw-"+d.gword)?.scrollIntoView({block:"center", behavior:"smooth"})); return; }
   if (d.focus !== undefined) return enterFocus();
@@ -4847,6 +5071,10 @@ document.addEventListener("click", async (ev) => {
   const act = d.m;
   if (M.type === "qa") return qaAct(act, d);
   if (M.type === "cm") return cmAct(act, d);
+  if (M.type === "mp") return mpAct(act, d);
+  if (M.type === "flag") return flagAct(act, d);
+  if (M.type === "flags") return flagsAct(act, d);
+  if (M.type === "mpmove") return mpMoveAct(act);
   if (M.type === "kw") return kwAct(act, d);
   if (M.type === "rs") return rsAct(act, d);
   if (M.type === "mv") return mvAct(act, d);
@@ -5074,7 +5302,7 @@ function rerenderKeepingInput(id){
 
 async function exportData(){
   if (!S.downloads) return;
-  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, keywords: S.kw, research: S.research, ruku: Object.values(S.ruku || {})}, null, 2);
+  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, morph: S.morph, keywords: S.kw, research: S.research, ruku: Object.values(S.ruku || {})}, null, 2);
   try { await S.downloads.save({filename: `ayah-by-ayah-backup-${new Date().toISOString().slice(0,10)}.json`, data}); }
   catch (e) { if (e?.code !== "declined") toast("The backup couldn't be saved here."); }
 }
@@ -5097,7 +5325,7 @@ function hashDocJ(d){
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 }
 const SYNC_FORMAT = "ayah-by-ayah-offline-sync";
-const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","keywords","research","ruku","settings"];
+const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","qa_moved","morph","flags","commentary","keywords","research","ruku","settings"];
 function syncLabel(path, doc){
   const col = path.split("/")[0], id = path.slice(col.length + 1);
   let t = "";
@@ -5206,6 +5434,8 @@ function addSyncControls(){
     window.addEventListener("offline-pending", refreshOfflineBtn); refreshOfflineBtn();
   } else if (S.admin && S.db && !S.static) {
     const b = document.createElement("button"); b.type = "button"; b.className = "btn ghost small"; b.dataset.syncImport = ""; b.textContent = "Import offline changes"; bar.appendChild(b);
+    const fb = document.createElement("button"); fb.type = "button"; fb.id = "flag-btn"; fb.className = "btn ghost small"; fb.dataset.flaglist = ""; fb.textContent = flagBtnText(); bar.appendChild(fb);
+    const mb = document.createElement("button"); mb.type = "button"; mb.className = "btn ghost small"; mb.dataset.mpmove = ""; mb.textContent = "Move word Q&As to Morphology"; bar.appendChild(mb);
     const inp = document.createElement("input"); inp.type = "file"; inp.id = "sync-file"; inp.accept = ".json,application/json"; inp.hidden = true;
     inp.addEventListener("change", () => { const f = inp.files && inp.files[0]; inp.value = ""; syncPicked(f); });
     document.body.appendChild(inp);
@@ -5260,6 +5490,16 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     S.cm = snap.docs.map(d => cmNorm(Object.assign({id: d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a));
     reindex(); render();
   }, () => {});
+  db.collection("morph").onSnapshot(snap => {
+    S.morph = snap.docs.map(d => mpNorm(Object.assign({id: d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a) && x.w > 0);
+    reindex(); render();
+    if (M && M.type === "mp" && !M.busy && M.j == null) drawMP();
+  }, () => {});
+  if (S.admin) db.collection("flags").onSnapshot(snap => {
+    S.flags = snap.docs.map(d => Object.assign({id: d.id}, d.data()));
+    if (M && M.type === "flags") drawFlagList();
+    const b = document.getElementById("flag-btn"); if (b) b.textContent = flagBtnText();
+  }, () => {});
   if (S.admin) db.collection("ruku").onSnapshot(snap => {
     S.ruku = {}; for (const d of snap.docs) { const x = d.data(); if (x && x.s) S.ruku[x.s] = x; }
     render();
@@ -5299,6 +5539,7 @@ async function loadStatic(){
     S.lessons = d.lessons || [];
     S.words = (d.words || []).filter(w => validRefSafe(w.s, w.a));
     S.cm = (d.commentary || []).filter(c => validRefSafe(c.s, c.a)).map(cmNorm);
+    S.morph = (d.morph || []).filter(m => validRefSafe(m.s, m.a) && m.w > 0).map(mpNorm);
     S.cats = (d.categories || []).slice().sort((a, b) => (a.order||0) - (b.order||0));
     S.irabAll = d.irab || {};
     S.vocab = d.vocab || {};
