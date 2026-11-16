@@ -2954,8 +2954,9 @@ function formsCard(ds){
     } else if (o.coarse === "N" && FORMS.n[o.lem]) {
       seen.add(o.lem); const f = FORMS.n[o.lem];
       const pls = f[1].map(([p, q]) => `<span class="gf-p${q ? " q" : ""}" title="${q ? "occurs in the Qur’an" : "listed in the dictionary; not found in the Qur’an"}">${ar(p)}</span>`).join(" ");
-      out.push(row(lb("Singular") + " · المفرد", ar(f[0])) + (f[2] ? row(lb("Plural of") + " · جمع", ar(f[2])) : row(lb(f[1].length > 1 ? "Plurals" : "Plural") + (f[1].length > 1 ? " · الجموع" : " · الجمع"), pls || `<span class="muted">${bn ? "নেই (হয়তো বহুবচন নেই)" : "not available (may have none)"}</span>`))
-        + (f[3][0] || f[3][1] ? `<div class="gf-n">${f[3][0] ? "also a sound masculine plural (-ūn/-īn)" : ""}${f[3][0] && f[3][1] ? "; " : ""}${f[3][1] ? "also a sound feminine plural (-āt)" : ""}</div>` : ""));
+      const plOf = !!f[2], plHtml = pls || (plOf && f[0] !== f[2] ? ar(f[0]) : "");   /* entry is itself a plural: show its singular, then the plural */
+      out.push(row(lb("Singular") + " · المفرد", ar(plOf ? f[2] : f[0])) + row(lb(f[1].length > 1 ? "Plurals" : "Plural") + (f[1].length > 1 ? " · الجموع" : " · الجمع"), plHtml || `<span class="muted">${bn ? "নেই (হয়তো বহুবচন নেই)" : "not available (may have none)"}</span>`)
+        + (f[3][0] || f[3][1] ? `<div class="gf-n">${f[3][0] ? "also a sound masculine plural (-ūn/-īn)" : ""}${f[3][0] && f[3][1] ? "; " : ""}${f[3][1] ? "also a sound feminine plural (-āt)" : ""}</div>` : "") + (f[4] ? `<div class="gf-n">${esc(f[4])}</div>` : ""));
     }
   }
   return out.length ? `<div class="gforms"><div class="gf-h">${lb("Forms")}</div>${out.join("")}</div>` : "";
