@@ -599,6 +599,16 @@ const RTL = {ar:true, ur:true};
 const TR_LANGS = ["en","bn","ur"];
 const TR_NAME = {en:"Saheeh International", bn:"Taisirul Quran", ur:"Maududi (Tafheem-ul-Quran)"};
 const $ = (s, r=document) => r.querySelector(s);
+/* Plain-language style for AI translation/drafting (default on; browser setting aba.plain). */
+const PLAIN_ON = () => store.get("aba.plain") !== "0";
+const PLAIN_RULE = {
+  en: "Style: write plain, easy English that any ordinary reader can read comfortably, like good popular literature. Use short sentences, everyday words and a natural flow. Explain a technical or scholarly term in simple words the first time it appears. This style overrides any \"scholarly register\" mentioned elsewhere, but it never changes the meaning.",
+  bn: "Style: do not translate word for word. Write natural, flowing, simple Bangla, like good popular literature that any ordinary reader can read comfortably and understand easily: short sentences, everyday words, nothing stiff, bookish or Sanskritised. For a word that people do not normally use in everyday Bangla conversation (a technical, scholarly or rare word), do not use a heavy Bangla equivalent: keep the English word, written in English letters (for example abrogation, context, evidence), and let the sentence around it make the meaning clear. Islamic terms that ordinary Bangla readers already use (such as আল্লাহ, সালাত, রোযা, ফিদইয়া) stay in Bangla. This style overrides any \"register\" mentioned elsewhere, but it never changes the meaning.",
+  ur: "Style: do not translate word for word. Write natural, flowing, simple Urdu, like good popular literature that any ordinary reader can read comfortably and understand easily: short sentences, everyday words, nothing heavy or bookish. For a word that people do not normally use in everyday Urdu conversation (a technical, scholarly or rare word), keep the English word, written in English letters (for example abrogation, context, evidence), and let the sentence around it make the meaning clear. Islamic terms that ordinary Urdu readers already use stay in Urdu. This style overrides any \"register\" mentioned elsewhere, but it never changes the meaning.",
+  ar: "Style: write simple, clear Modern Standard Arabic that an ordinary educated reader understands easily, like good popular writing: short sentences, common words, no rare or archaic vocabulary and no heavy rhetorical constructions. Keep full vowelling (all harakat) on every word. Do not use English words. This style overrides any \"classical scholarly register\" mentioned elsewhere, but it never changes the meaning."
+};
+const plainRule = l => PLAIN_ON() && PLAIN_RULE[l] ? "\n- " + PLAIN_RULE[l] : "";
+const KEEP_AR_RULE = "Where the source discusses an Arabic word or phrase (shown in Arabic script anywhere in the source, for instance inside the quotations, or only as a transliteration in the title), write that word in Arabic script, fully vowelled, in the title and the text, copied from the source. Never replace it by a transliteration; a transliteration may follow it in brackets only if the source has one.";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const arDigits = n => String(n).replace(/\d/g, d => "٠١٢٣٤٥٦٧٨٩"[d]);
 const store = {
@@ -652,7 +662,7 @@ const S = {
   trLang: TR_LANGS.includes(store.get("aba.trlang")) ? store.get("aba.trlang") : "en",
   trAll: {en:{}, bn:{}, ur:{}}, TRX: {bn:null, ur:null}, trxState: {},
   tr: {}, notes: [], lessons: [], rawNotes: [], rawLessons: [], rawWords: [], chunkIx: {}, chunkDocs: [], vocab: {}, vocabOpen: false, vrange: null, qa: [], qaIx: {}, qq: "",
-  cm: [], cmIx: {}, cmq: "", kw: [], kwIx: {}, research: [], rsIx: {}, rq: "", rstatus: "", rtag: null, rgroup: true,
+  cm: [], cmIx: {}, cmq: "", morph: [], morphIx: {}, morphAy: {}, flags: [], kw: [], kwIx: {}, research: [], rsIx: {}, rq: "", rstatus: "", rtag: null, rgroup: true,
   admin: false, db: null, dbState: "loading", sample: null, downloads: null,
   open: new Set(), compare: new Set(), onlyMarked: false, pages: store.get("aba.pg") !== "0",
   words: [], wq: "", wroot: "", cats: [], ncat: "", focus: false, readScale: Math.min(1.5, Math.max(0.85, parseFloat(store.get("aba.readscale")) || 1)), sq: "", nq: "", nkind: "all", ntag: null, lq: "", ltag: null, openLesson: new Set(), openNote: new Set()
@@ -798,6 +808,7 @@ function reindex(){
   const notes = {}, lessons = {}, words = {}, counts = {};
   const bump = (s, k) => { (counts[s] ||= {rev:0,exp:0,les:0,wa:0,cm:0})[k]++; };
   S.cmIx = {}; for (const c of S.cm) { S.cmIx[key(c.s, c.a)] = c; bump(c.s, "cm"); }
+  S.morphIx = {}; S.morphAy = {}; for (const m of S.morph) { S.morphIx[mpKey(m.s, m.a, m.w)] = m; S.morphAy[key(m.s, m.a)] = (S.morphAy[key(m.s, m.a)] || 0) + 1; }
   S.kwIx = {}; for (const x of S.kw) S.kwIx[key(x.s, x.a)] = x;
   S.rsIx = {};
   for (const r of S.research) for (const k of rsKeys(r)) (S.rsIx[k] ||= []).push(r);
@@ -1840,6 +1851,267 @@ async function cmAct(act, d){
   }
 }
 
+/* ---------- Morphology (public, one write-up per word) and Flags (private error reports) ---------- */
+/* doc morph/<s>-<a>-<w>: {s, a, w (1-based), word, root, lemma, pos, src, text:{en,bn,ar,ur}, ai:{lang:true}, createdAt, updatedAt}
+   doc flags/<id>: {s, a, w, word, kinds:[string], note, status:"open"|"done", createdAt}  (editor only; never exported)
+   doc qa_moved/<qa id>: a copy of a Q&A that was moved to Morphology (editor only; never exported) */
+const mpKey = (s, a, w) => `${s}:${a}:${w}`;
+function mpNorm(x){
+  const src = LANGS.includes(x.src) ? x.src : "en";
+  return Object.assign({}, x, {src, text: Object.assign(blankLang(), x.text || {}), ai: (x.ai && typeof x.ai === "object") ? x.ai : {}});
+}
+function mpCount(s, a){ return (S.morphAy && S.morphAy[key(s, a)]) || 0; }
+const mpSnap = () => JSON.stringify([M.src, M.text]);
+function mpWordsOf(s, a){ return FW[s] && FW[s][a - 1] ? FW[s][a - 1] : null; }
+function mpSelect(j){
+  M.j = j;
+  const ex = j == null ? null : S.morphIx[mpKey(M.s, M.a, j + 1)];
+  M.text = Object.assign(blankLang(), ex && ex.text); M.ai = Object.assign({}, ex && ex.ai);
+  M.src = ex ? ex.src : S.lang; M.tab = (ex && (ex.text[S.lang] || "").trim()) ? S.lang : M.src;
+  M.exists = !!ex; M.created = (ex && ex.createdAt) || 0; M.err = ""; M.status = ""; M.saved = mpSnap();
+}
+function openMorph(k, j){
+  if (blockedByMin()) return;
+  const [s, a] = k.split(":").map(Number);
+  M = {type: "mp", s, a, j: null, busy: false, ctl: [], err: "", status: ""};
+  mpSelect(j == null || isNaN(j) ? null : j);
+  if (!FW[s]) loadGrammar(s).then(d => { FW[s] = d; if (M && M.type === "mp" && M.s === s) drawMP(); }).catch(() => { if (M && M.type === "mp") { M.loadErr = true; drawMP(); } });
+  if (!FORMS) loadForms().then(() => { if (M && M.type === "mp") drawMP(); }).catch(() => {});
+  drawMP();
+}
+function captureMP(){
+  if (!M || M.type !== "mp") return;
+  const g = i => document.getElementById(i);
+  if (g("mp-text")) M.text[M.tab] = g("mp-text").value;
+  if (g("mp-src")) M.src = g("mp-src").value;
+}
+function mpAuto(w){
+  /* the automatic corpus analysis of one word: each segment, root, lemma, forms */
+  const ds = w[2].map(decodeSeg);
+  const forms = FORMS ? formsCard(ds) : "";
+  return `<div class="gsegs">${ds.map(o => `<div class="gseg">
+      <div class="gseg-h"><span class="gseg-t g-${o.cls}" lang="ar" dir="rtl">${esc(o.text)}</span><b class="g-${o.cls}">${esc(o.en)}</b><span class="gar" lang="ar" dir="rtl">${esc(o.ar)}</span>${o.role !== "stem" ? `<span class="gtag">${o.role}</span>` : ""}</div>
+      ${o.enDesc ? `<div class="gseg-d">${esc(o.enDesc)}</div>` : ""}
+      ${(o.root || o.lem) ? `<div class="gseg-d">${o.root ? `Root <span class="gar" lang="ar" dir="rtl">${esc(spaced(o.root))}</span>` : ""}${o.root && o.lem ? " · " : ""}${o.lem ? `Lemma <span class="gar" lang="ar" dir="rtl">${esc(o.lem)}</span>` : ""}</div>` : ""}
+    </div>`).join("")}</div>${forms}`;
+}
+function drawMP(){
+  const {s, a} = M, su = surahOf(s), ws = mpWordsOf(s, a), admin = S.admin && S.db, T = M.tab, dir = RTL[T] ? "rtl" : "ltr";
+  let words;
+  if (M.loadErr) words = `<p class="small muted">The word list didn't load. Close this and try again.</p>`;
+  else if (!ws) words = `<p class="small muted">Loading the words…</p>`;
+  else words = `<div class="gstrip" lang="ar" dir="rtl">${ws.map((w, i) => `<button type="button" class="gchip" data-m="mp-pick" data-v="${i}" aria-pressed="${M.j === i}">${w[2].map(sg => segHTML(decodeSeg(sg))).join("")}${S.morphIx[mpKey(s, a, i + 1)] ? " ●" : ""}</button>`).join("")}</div>
+    <p class="small muted" style="margin:4px 0 0">Choose any word. ● = a written morphological analysis exists.</p>`;
+  let body = "";
+  if (ws && M.j != null && ws[M.j]) {
+    const w = ws[M.j], ex = S.morphIx[mpKey(s, a, M.j + 1)];
+    body += `<div class="gw-mean" style="text-align:center"><i>${esc(w[0])}</i> · <b>${esc(w[1])}</b></div>${mpAuto(w)}`;
+    if (admin) {
+      body += `<div class="row small"><label class="flabel" for="mp-src">Written in</label>
+        <select id="mp-src" style="width:auto">${LANGS.map(l => `<option value="${l}" ${l === M.src ? "selected" : ""}>${LNAME_EN[l]}</option>`).join("")}</select></div>
+        <div class="ltabs" role="tablist">${LANGS.map(l => `<button type="button" role="tab" data-m="mp-tab" data-v="${l}" aria-selected="${T === l}" class="${(M.text[l] || "").trim() ? "filled" : ""}">${LNAME[l]}${M.ai[l] ? '<span class="flag">UNREVIEWED</span>' : ""}</button>`).join("")}</div>
+        <div class="field"><label for="mp-text">Morphological analysis · ${LNAME_EN[T]}</label>
+          <textarea id="mp-text" rows="10" lang="${T}" dir="${dir}" placeholder="Pattern, root, form, why the word takes this shape. Blank lines make paragraphs; **bold**, *italic* and references such as 4:82 work.">${esc(M.text[T])}</textarea>
+          ${M.ai[T] ? `<div class="row small"><span class="notice">Unreviewed draft. Read it, then mark it reviewed.</span><button type="button" class="btn small" data-m="mp-reviewed">Mark as reviewed</button></div>` : ""}</div>`;
+    } else {
+      const p = ex ? pick(ex.text, S.lang, ex.src) : null;
+      body += p && p.text.trim()
+        ? `<div class="cmbox"><div class="cmlab">Morphological analysis${p.fallback ? ` <span class="chip">Shown in ${LNAME_EN[p.lang]}</span>` : (ex.ai[p.lang] ? ` <span class="chip rev">Unreviewed draft</span>` : "")}</div><div class="cmtx prose" lang="${p.lang}" dir="${RTL[p.lang] ? "rtl" : "ltr"}">${mdLite(p.text, p.lang)}</div></div>`
+        : `<p class="small muted">No written analysis for this word yet. The automatic analysis above is from the Quranic Arabic Corpus.</p>`;
+    }
+  } else if (ws) body = `<p class="small muted">Tap a word above to see its morphology.</p>`;
+  modal(`<div class="row"><h2>Morphology · ${s}:${a} <span class="muted" style="font-weight:400">${esc(su.tl)}</span></h2><span class="spacer"></span>${admin ? winBtns(M.j != null ? "mp-save" : "") : `<button type="button" class="btn primary" data-m="close">Close</button>`}</div>
+    <p class="ar" lang="ar" dir="rtl" style="margin:0 0 6px">${esc(arText(s, a))} <span class="end">﴿${arDigits(a)}﴾</span></p>
+    ${words}${body}
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot row"><span class="small muted">${admin ? "Shown to readers once you publish the site." : "Automatic analysis: Quranic Arabic Corpus. Written analyses are by the author."}</span><span class="spacer"></span>
+      ${admin && M.j != null ? `<button type="button" class="btn ghost" data-m="mp-flag">⚑ Flag an error</button>` : ""}
+      ${admin && M.exists ? `<button type="button" class="btn danger" data-m="mp-delete" ${M.busy ? "disabled" : ""}>Delete</button>` : ""}</div>`, "qa");
+}
+async function mpAct(act, d){
+  const conf = (msg, yes, yesLabel, noLabel, danger) => { $("#m-confirm").innerHTML = `<div class="confirm"><span>${msg}</span><span class="spacer"></span><button type="button" class="btn" data-m="confirm-no">${noLabel}</button><button type="button" class="btn ${danger ? "danger" : "primary"}" data-m="${yes}">${yesLabel}</button></div>`; };
+  const any = () => LANGS.some(l => (M.text[l] || "").trim());
+  if (act === "confirm-no") { $("#m-confirm").innerHTML = ""; return; }
+  if (act === "close-yes") { closeModal(); return; }
+  if (act === "close") {
+    captureMP();
+    if (M.busy) { closeModal(); return; }
+    if (M.j != null && mpSnap() !== M.saved && any()) { conf("Close without saving?", "close-yes", "Close", "Keep writing", true); return; }
+    closeModal(); return;
+  }
+  if (act === "mp-pick") {
+    captureMP();
+    if (M.j != null && mpSnap() !== M.saved && any()) { M.pendingPick = +d.v; conf("This word has unsaved writing. Switch word and discard it?", "mp-pick-yes", "Switch", "Keep writing", true); return; }
+    mpSelect(M.j === +d.v ? null : +d.v); drawMP(); return;
+  }
+  if (act === "mp-pick-yes") { mpSelect(M.pendingPick); drawMP(); return; }
+  if (act === "mp-tab") { captureMP(); M.tab = d.v; M.err = ""; drawMP(); return; }
+  if (act === "mp-reviewed") { captureMP(); delete M.ai[M.tab]; drawMP(); return; }
+  if (act === "mp-flag") { const {s, a, j} = M; closeModal(); openFlag(s, a, j); return; }
+  if (act === "mp-save") {
+    captureMP();
+    const ws = mpWordsOf(M.s, M.a), w = ws && ws[M.j];
+    if (!w) return;
+    if (!M.text[M.src].trim()) { M.tab = M.src; M.err = `Write the analysis in ${LNAME_EN[M.src]} first (it is the language you wrote in).`; drawMP(); return; }
+    const ds = w[2].map(decodeSeg), stem = ds.find(o => o.role === "stem" && o.cls !== "p") || ds.find(o => o.role === "stem") || ds[0];
+    const id = `${M.s}-${M.a}-${M.j + 1}`, now = Date.now();
+    const text = Object.fromEntries(LANGS.map(l => [l, (M.text[l] || "").trim()]));
+    const doc = {s: M.s, a: M.a, w: M.j + 1, word: w[2].map(x => x[0]).join(""), root: (stem && stem.root) || "", lemma: (stem && stem.lem) || "", pos: stem ? stem.en : "", src: M.src, text,
+      ai: Object.fromEntries(Object.entries(M.ai).filter(([l, v]) => v && text[l])), createdAt: M.created || now, updatedAt: now};
+    M.busy = true; M.err = ""; drawMP();
+    try { await S.db.collection("morph").doc(id).set(doc); M.exists = true; M.created = doc.createdAt; M.text = Object.assign(blankLang(), text); M.ai = Object.assign({}, doc.ai); M.saved = mpSnap(); toast("Morphology saved"); }
+    catch (e) { M.err = dbErr(e); }
+    M.busy = false; drawMP(); return;
+  }
+  if (act === "mp-delete") { conf("Delete this word's analysis in all languages?", "mp-delete-yes", "Delete", "Keep it", true); return; }
+  if (act === "mp-delete-yes") {
+    M.busy = true; drawMP();
+    try { await S.db.collection("morph").doc(`${M.s}-${M.a}-${M.j + 1}`).delete(); toast("Deleted"); mpSelect(M.j); }
+    catch (e) { M.err = dbErr(e); }
+    M.busy = false; drawMP(); return;
+  }
+}
+
+/* ----- Flags: report a wrong meaning, root or sarf form on a word (editor only, private) ----- */
+const FLAG_KINDS = ["Wrong meaning (gloss)", "Wrong root or lemma", "Wrong sarf / forms table", "Wrong part of speech or grammar", "Other"];
+function openFlag(s, a, j){
+  if (!S.admin || !S.db) { toast("Flagging is for the editor."); return; }
+  if (blockedByMin()) return;
+  const ws = mpWordsOf(s, a), w = ws && ws[j]; if (!w) return;
+  M = {type: "flag", s, a, j, word: w[2].map(x => x[0]).join(""), gloss: w[1], kinds: new Set(), busy: false, err: ""};
+  drawFlag();
+}
+function drawFlag(){
+  const {s, a, j} = M;
+  modal(`<div class="row"><h2>⚑ Flag an error · ${s}:${a} word ${j + 1}</h2></div>
+    <p class="ar" lang="ar" dir="rtl" style="font-size:1.5em;margin:0">${esc(M.word)}</p>
+    <p class="small muted" style="margin:0">Shown meaning: <b>${esc(M.gloss)}</b></p>
+    <div class="field"><label>What looks wrong?</label><div class="row" style="flex-wrap:wrap;gap:6px">${FLAG_KINDS.map((k, i) => `<button type="button" class="btn small ${M.kinds.has(i) ? "primary" : "ghost"}" data-m="flag-k" data-v="${i}" aria-pressed="${M.kinds.has(i)}">${k}</button>`).join("")}</div></div>
+    <div class="field"><label for="fl-note">What should it be? (optional)</label><textarea id="fl-note" rows="3" style="min-height:70px">${esc(M.note || "")}</textarea></div>
+    <div id="m-confirm"></div><div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot"><span class="spacer"></span><button type="button" class="btn" data-m="close">Cancel</button><button type="button" class="btn primary" data-m="flag-save" ${M.busy ? "disabled" : ""}>Save flag</button></div>`);
+}
+async function flagAct(act, d){
+  if (act === "close") { closeModal(); return; }
+  if (act === "flag-k") { M.note = ($("#fl-note") || {}).value || ""; const i = +d.v; M.kinds.has(i) ? M.kinds.delete(i) : M.kinds.add(i); drawFlag(); return; }
+  if (act === "flag-save") {
+    M.note = ($("#fl-note") || {}).value || "";
+    if (!M.kinds.size && !M.note.trim()) { M.err = "Tick what looks wrong or write a note."; drawFlag(); return; }
+    const now = Date.now(), id = `${M.s}-${M.a}-${M.j + 1}-${now}`;
+    const doc = {s: M.s, a: M.a, w: M.j + 1, word: M.word, gloss: M.gloss, kinds: [...M.kinds].sort().map(i => FLAG_KINDS[i]), note: M.note.trim(), status: "open", createdAt: now};
+    M.busy = true; M.err = ""; drawFlag();
+    try { await S.db.collection("flags").doc(id).set(doc); closeModal(); toast("Flag saved"); }
+    catch (e) { M.busy = false; M.err = dbErr(e); drawFlag(); }
+  }
+}
+const flagBtnText = () => `⚑ Flags (${(S.flags || []).filter(f => f.status !== "done").length})`;
+function openFlagList(){
+  if (blockedByMin()) return;
+  M = {type: "flags", show: "open"}; drawFlagList();
+}
+function drawFlagList(){
+  const all = (S.flags || []).slice().sort((x, y) => y.createdAt - x.createdAt), list = all.filter(f => M.show === "all" || f.status !== "done");
+  modal(`<div class="row"><h2>⚑ Flags (${all.filter(f => f.status !== "done").length} open)</h2><span class="spacer"></span><button type="button" class="btn" data-m="close">Close</button></div>
+    <div class="row small"><button type="button" class="btn ghost small" data-m="flag-all">${M.show === "all" ? "Hide finished ones" : "Show finished ones"}</button></div>
+    ${list.map(f => `<article class="wcard"><div class="whead"><span lang="ar" dir="rtl" class="wa-ar">${esc(f.word)}</span><button type="button" class="reflink" data-go="${f.s}:${f.a}">${f.s}:${f.a} · word ${f.w}</button><span class="spacer"></span>
+        <button type="button" class="btn ghost small" data-m="flag-done" data-v="${esc(f.id)}">${f.status === "done" ? "Reopen" : "Done"}</button><button type="button" class="btn ghost small" data-m="flag-del" data-v="${esc(f.id)}">Delete</button></div>
+      <p class="small" style="margin:0">${esc(f.gloss || "")}${f.kinds && f.kinds.length ? " · " + esc(f.kinds.join("; ")) : ""}</p>${f.note ? `<p class="small" style="margin:4px 0 0">${esc(f.note)}</p>` : ""}</article>`).join("") || `<div class="empty"><b>No flags</b>Use “Flag an error” on a word card.</div>`}`);
+}
+async function flagsAct(act, d){
+  if (act === "close") { closeModal(); return; }
+  if (act === "flag-all") { M.show = M.show === "all" ? "open" : "all"; drawFlagList(); return; }
+  if (act === "flag-done") {
+    const f = (S.flags || []).find(x => x.id === d.v); if (!f) return;
+    try { await S.db.collection("flags").doc(f.id).update({status: f.status === "done" ? "open" : "done"}); } catch (e) { toast("Couldn't save. Try again."); }
+    return;
+  }
+  if (act === "flag-del") { try { await S.db.collection("flags").doc(d.v).delete(); } catch (e) { toast("Couldn't delete. Try again."); } return; }
+}
+
+/* ----- Move word-tied Q&As into Morphology ----- */
+function stripVerify(md){
+  if (!md) return "";
+  const parts = md.split(/\n(?=## )/);
+  return parts.filter(p => !(/^## /.test(p) && /verify|যাচাই|التحقق|تصدیق|تحقیق|تحقق/i.test(p.split("\n")[0]))).join("\n").trim();
+}
+const pickQ = o => (typeof o === "string" ? o : o && (o.en || o.ar || o.bn || o.ur)) || "";
+const MP_Q = /morpholog|ṣarf|sarf|tasrif|taṣrīf|inflect|derivation|صرف|تصريف|اشتقاق|শব্দরূপ|সরফ|সর্ফ|ধাতু|صرفی|تصریف/i;
+const qaText = x => typeof x.q === "string" ? x.q : LANGS.map(l => (x.q && x.q[l]) || "").join(" \n ");
+/* find the one word of the ayah that the question names (Arabic word in the question) */
+function mpWordFromQ(x){
+  const ws = FW[x.s] && FW[x.s][x.a - 1]; if (!ws) return null;
+  const toks = [...new Set((qaText(x).match(/[\u0600-\u06FF\u0750-\u077F]+/g) || []).map(skel).filter(k => k.length >= 2))];
+  const sk = ws.map(w => skel(w[2].map(g => g[0]).join("")));
+  const hit = new Set();
+  for (const k of toks) {
+    let m = sk.map((v, i) => v === k ? i : -1).filter(i => i >= 0);
+    if (!m.length) m = sk.map((v, i) => (v.includes(k) || k.includes(v)) && v.length >= 2 ? i : -1).filter(i => i >= 0);
+    if (m.length === 1) hit.add(m[0]);
+  }
+  return hit.size === 1 ? [...hit][0] + 1 : null;
+}
+function mpEntry(x, w){
+  const ws = FW[x.s] && FW[x.s][x.a - 1], g = ws && ws[w - 1]; if (!g) return null;
+  const ds = g[2].map(decodeSeg), stem = ds.find(o => o.role === "stem" && o.cls !== "p") || ds.find(o => o.role === "stem") || ds[0];
+  return {x, w, word: g[2].map(o => o[0]).join(""), root: (stem && stem.root) || "", lemma: (stem && stem.lem) || "", pos: stem ? stem.en : ""};
+}
+function mpPlan(){
+  const cands = [], skip = [];
+  for (const x of (S.qa || [])) {
+    if (x.fu && x.fu.length) continue;
+    let w = x.fit && x.fit.w ? x.fit.w : (MP_Q.test(qaText(x)) ? mpWordFromQ(x) : null);
+    const asked = (x.fit && x.fit.w) || MP_Q.test(qaText(x));
+    if (!asked) continue;
+    if (!w) { skip.push(x); continue; }
+    if (S.morphIx[mpKey(x.s, x.a, w)]) { skip.push(x); continue; }
+    const e = (x.fit && x.fit.w) ? {x, w, word: x.fit.word, root: x.fit.root || "", lemma: x.fit.lemma || "", pos: x.fit.pos || ""} : mpEntry(x, w);
+    e ? cands.push(e) : skip.push(x);
+  }
+  return {cands, skip};
+}
+async function openMpMove(){
+  if (blockedByMin()) return;
+  M = {type: "mpmove", busy: true, err: "", done: 0, plan: {cands: [], skip: []}}; drawMpMove();
+  try {
+    const ss = [...new Set((S.qa || []).filter(x => !(x.fu && x.fu.length) && !(x.fit && x.fit.w) && MP_Q.test(qaText(x))).map(x => x.s))];
+    await Promise.all(ss.map(s => FW[s] ? 0 : loadGrammar(s).then(d => { FW[s] = d; })));
+  } catch (e) { M.err = "Some surah word lists didn't load; try again."; }
+  if (!M || M.type !== "mpmove") return;
+  M.plan = mpPlan(); M.busy = false; drawMpMove();
+}
+function drawMpMove(){
+  const {cands, skip} = M.plan;
+  modal(`<div class="row"><h2>Move morphology Q&amp;As to Morphology</h2></div>
+    <p class="small">Q&amp;As that ask about the morphology (or a picked word) with no follow-up questions. Each becomes that word's public morphology write-up (unreviewed), the “To verify before saving” list is left out, and a copy of the original is kept in a private archive, then removed from Q&amp;A.</p>
+    ${M.busy && !M.done ? `<p class="small muted">Checking…</p>` : ""}
+    ${cands.map(e => `<div class="small" style="padding:4px 0"><b>${e.x.s}:${e.x.a}</b> word ${e.w} <span lang="ar" dir="rtl" class="wa-ar">${esc(e.word)}</span> · ${esc(pickQ(e.x.q))}</div>`).join("") || (M.busy ? "" : `<div class="empty"><b>Nothing to move</b></div>`)}
+    ${skip.length ? `<p class="small muted" style="margin-top:10px">Not moved (no single word found in the question, or that word already has an analysis):</p>${skip.map(x => `<div class="small muted">${x.s}:${x.a} · ${esc(pickQ(x.q))}</div>`).join("")}` : ""}
+    <div class="err" id="m-err">${esc(M.err || "")}</div>
+    <div class="foot"><span class="spacer"></span><button type="button" class="btn" data-m="close">${M.done ? "Close" : "Cancel"}</button>${cands.length && !M.done ? `<button type="button" class="btn primary" data-m="mpmove-go" ${M.busy ? "disabled" : ""}>Move ${cands.length}</button>` : ""}</div>`);
+}
+async function mpMoveAct(act){
+  if (act === "close") { if (M.busy && M.done) return; closeModal(); return; }
+  if (act !== "mpmove-go" || M.busy) return;
+  M.busy = true; M.err = ""; M.done = 0; drawMpMove();
+  const now = Date.now(), list = M.plan.cands.slice();
+  try {
+    for (const e of list) {
+      const x = e.x;
+      const text = Object.fromEntries(LANGS.map(l => [l, stripVerify((x.ans && x.ans[l]) || "")]));
+      const src = text[x.src] ? x.src : (LANGS.find(l => text[l]) || "en");
+      const doc = {s: x.s, a: x.a, w: e.w, word: e.word, root: e.root, lemma: e.lemma, pos: e.pos, src, text,
+        ai: Object.fromEntries(LANGS.filter(l => text[l]).map(l => [l, true])), createdAt: x.createdAt || now, updatedAt: now, fromQa: x.id};
+      await S.db.collection("qa_moved").doc(x.id).set(Object.assign({}, x, {movedAt: now}));
+      await S.db.collection("morph").doc(`${x.s}-${x.a}-${e.w}`).set(doc);
+      await S.db.collection("qa").doc(x.id).delete();
+      M.done++;
+    }
+    toast(`Moved ${M.done} to Morphology`);
+    M.plan = {cands: [], skip: M.plan.skip};
+  } catch (e) { M.err = dbErr(e); }
+  M.busy = false; drawMpMove();
+}
+
 /* ---------- Categories (private search words per ayah; editor only, never part of the public export) ---------- */
 /* doc keywords/<s>-<a>: {s, a, terms:[string], ai:[the terms that the AI suggested], updatedAt}
    make_content.py does not read this collection and loadStatic never sets S.kw: keep it that way, like qa and research. */
@@ -2329,6 +2601,7 @@ function ayahHTML(s, x){
       </div>` : ""}
       ${open && notes.length ? `<div class="wlist">${notes.map(n => noteCard(n, false)).join("")}</div>` : ""}
       <div class="admin-bar">
+        <button type="button" class="btn ghost gbtn" data-morph="${k}">Morphology${mpCount(s, x.a) ? ` (${mpCount(s, x.a)})` : ""}</button>
         <button type="button" class="btn ghost gbtn" data-grammar="${k}">Grammar${irabOf(s,x.a)?' <span class="gdot" title="Iʿrāb written">· iʿrāb</span>':""}</button>
       ${S.admin ? `
         <button type="button" class="btn ghost" data-edit-tr="${k}">${rev?"Edit revised translation":"Revise translation"}</button>
@@ -2700,8 +2973,9 @@ function formsCard(ds){
     } else if (o.coarse === "N" && FORMS.n[o.lem]) {
       seen.add(o.lem); const f = FORMS.n[o.lem];
       const pls = f[1].map(([p, q]) => `<span class="gf-p${q ? " q" : ""}" title="${q ? "occurs in the Qur’an" : "listed in the dictionary; not found in the Qur’an"}">${ar(p)}</span>`).join(" ");
-      out.push(row(lb("Singular") + " · المفرد", ar(f[0])) + (f[2] ? row(lb("Plural of") + " · جمع", ar(f[2])) : row(lb(f[1].length > 1 ? "Plurals" : "Plural") + (f[1].length > 1 ? " · الجموع" : " · الجمع"), pls || `<span class="muted">${bn ? "নেই (হয়তো বহুবচন নেই)" : "not available (may have none)"}</span>`))
-        + (f[3][0] || f[3][1] ? `<div class="gf-n">${f[3][0] ? "also a sound masculine plural (-ūn/-īn)" : ""}${f[3][0] && f[3][1] ? "; " : ""}${f[3][1] ? "also a sound feminine plural (-āt)" : ""}</div>` : ""));
+      const plOf = !!f[2], plHtml = pls || (plOf && f[0] !== f[2] ? ar(f[0]) : "");   /* entry is itself a plural: show its singular, then the plural */
+      out.push(row(lb("Singular") + " · المفرد", ar(plOf ? f[2] : f[0])) + row(lb(f[1].length > 1 ? "Plurals" : "Plural") + (f[1].length > 1 ? " · الجموع" : " · الجمع"), plHtml || `<span class="muted">${bn ? "নেই (হয়তো বহুবচন নেই)" : "not available (may have none)"}</span>`)
+        + (f[3][0] || f[3][1] ? `<div class="gf-n">${f[3][0] ? "also a sound masculine plural (-ūn/-īn)" : ""}${f[3][0] && f[3][1] ? "; " : ""}${f[3][1] ? "also a sound feminine plural (-āt)" : ""}</div>` : "") + (f[4] ? `<div class="gf-n">${esc(f[4])}</div>` : ""));
     }
   }
   return out.length ? `<div class="gforms"><div class="gf-h">${lb("Forms")}</div>${out.join("")}</div>` : "";
@@ -2793,7 +3067,7 @@ function drawWordCard(){
     ${stem ? `<div class="gseg-d" style="text-align:center">${esc(bnG(stem.en))}${stem.enDesc ? " · " + esc(bnG(stem.enDesc)) : ""}${stem.root ? ` · ${lb("Root")} <span class="gar" lang="ar" dir="rtl">${esc(spaced(stem.root))}</span>` : ""}${stem.lem ? ` · ${lb("Lemma")} <span class="gar" lang="ar" dir="rtl">${esc(stem.lem)}</span>` : ""}</div>` : ""}
     ${forms || (FORMS ? `<p class="small muted" style="margin:0;text-align:center">${S.trLang === "bn" ? "এই শব্দের জন্য রূপের সারণি নেই (অব্যয়, সর্বনাম ও নামের থাকে না)।" : "No forms table for this word (particles, pronouns and names have none)."}</p>` : `<p class="small muted" style="margin:0;text-align:center">${lb("Loading…")}</p>`)}
     ${FORMS ? `<p class="small muted" style="margin:0">${S.trLang === "bn" ? "● = কুরআনে আছে। রূপ: আররামুজ অভিধান (GPL-3) ও করপাস; ফাঁকগুলো এআই দিয়ে পূরণ করা, এখনো পর্যালোচিত নয়।" : "● = occurs in the Qur’an. Forms: Arramooz dictionary (GPL-3) and the corpus; gaps filled by AI, not yet reviewed."}</p>` : ""}
-    <div class="foot"><button type="button" class="btn" data-grammar="${s}:${a}">${lb("Full grammar")}</button><span class="spacer"></span><button type="button" class="btn primary" data-m="close">${lb("Back to the ayah")}</button></div>`);
+    <div class="foot"><button type="button" class="btn" data-grammar="${s}:${a}">${lb("Full grammar")}</button><button type="button" class="btn" data-morph="${s}:${a}:${j}">Morphology${S.morphIx[mpKey(s, a, j + 1)] ? " ●" : ""}</button>${S.admin && S.db ? `<button type="button" class="btn ghost" data-flag="${s}:${a}:${j}" title="Report a wrong meaning or form">⚑ Flag</button>` : ""}<span class="spacer"></span><button type="button" class="btn primary" data-m="close">${lb("Back to the ayah")}</button></div>`);
 }
 function openGrammar(k){
   if (blockedByMin()) return;
@@ -3760,6 +4034,8 @@ function drawWriteEditor(){
         <label class="small muted" for="ai-scope">Applies to</label>
         <select id="ai-scope" style="width:auto"><option value="all" ${SC==="all"?"selected":""}>All languages together</option>${LANGS.map(l=>`<option value="${l}" ${SC===l?"selected":""}>${LNAME_EN[l]} only</option>`).join("")}</select></div>
       <textarea id="ai-notes" rows="3" class="w" style="min-height:64px" placeholder="${esc(SC==="all" ? "For example: use a more formal tone; keep technical terms in transliteration; do not shorten anything." : "For example: use a particular word for a term; change a sentence; simplify the style in this language only.")}">${esc(AN[SC]||"")}</textarea>
+      <div class="row"><label class="small" style="display:flex;gap:6px;align-items:center"><input type="checkbox" id="plain-on" ${PLAIN_ON()?"checked":""}> Plain, easy style for AI translations (simple everyday words; English words for terms ordinary readers do not use)</label></div>
+      <div class="row"><button type="button" class="btn" data-m="ai-plain" ${M.busy?"disabled":""} title="Rewrites the text already written in plain, easy language. The meaning, Arabic quotations and formatting stay the same.">✎ Make ${SC==="all"?"the drafted languages":LNAME_EN[SC]} easy to read</button></div>
       <div class="row"><button type="button" class="btn primary" data-m="ai-revise" ${M.busy?"disabled":""}>▶ Run my instructions on ${scName}</button>
         <button type="button" class="btn" data-m="ai-continue" ${M.busy?"disabled":""} title="Use when a drafted text stops in the middle">Complete the cut-off ${SC==="all"?"drafts":LNAME_EN[SC]+" draft"}</button>
         ${M.undo && !M.busy ? `<button type="button" class="btn" data-m="ai-undo">Undo last AI change</button>` : ""}
@@ -3934,7 +4210,7 @@ function saveLocalDraft(){
   captureFields();
   const cur = JSON.stringify([M.ref, M.it]);
   M.dirty = cur !== M.initial;
-  if (M.dirty) store.set(draftKey(), JSON.stringify({ref:M.ref, it:M.it, savedAt:Date.now()}));
+  if (M.dirty) store.set(draftKey(), JSON.stringify({ref:M.ref, it:Object.assign({}, M.it, {_partial: undefined}), savedAt:Date.now()}));   // _partial describes the loaded note, never the draft
 }
 function clearLocalDraft(){ try { localStorage.removeItem(draftKey()); } catch {} }
 function applyFmt(k){
@@ -4021,7 +4297,8 @@ Rules:
 - Keep ayah references such as 2:255 exactly as written.
 - Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links.
 - Keep footnote markers such as [^1] exactly where they are, and translate the footnote lines that start with "[^1]: " while keeping that marker at the start.
-- Transliterated Arabic terms may be kept where a writer in that language would keep them.${trBlock(l)}${instrBlock(l)}
+- Transliterated Arabic terms may be kept where a writer in that language would keep them.
+- ${KEEP_AR_RULE}${trBlock(l)}${plainRule(l)}${instrBlock(l)}
 
 - If the source title is "(none)", leave the title empty: write "TITLE:" with nothing after it. Never make up a title.
 
@@ -4132,6 +4409,67 @@ ${it.body[l] || "(none)"}`;
   M.aiStatus = done.length ? `Revised ${done.map(l=>LNAME_EN[l]).join(", ")}. Review each tab, then save. Undo is available.` : "";
   drawWriteEditor();
 }
+async function aiPlain(){
+  captureFields();
+  const it = M.it, src = it.src, scope = M.aiScope || "all";
+  const has = l => (it.body[l] || "").trim() || (it.title[l] || "").trim() || (it.summary[l] || "").trim();
+  const langs = (scope === "all" ? LANGS.filter(l => l !== src) : [scope]).filter(has);
+  if (!langs.length) { M.err = scope === "all" ? "There is no drafted text to convert yet. Draft the other languages first, or choose one language under “Applies to”." : `There is no ${LNAME_EN[scope]} text yet.`; drawWriteEditor(); return; }
+  M.undo = {}; langs.forEach(l => { M.undo[l] = {title: it.title[l], summary: it.summary[l], body: it.body[l], ai: !!it.ai[l]}; });
+  if (!langs.includes(M.tab)) { M.tab = langs[0]; M.preview = false; }
+  M.err = ""; M.busy = true; M.ctl = []; M.aiStatus = "Rewriting in plain language… long articles take a few minutes."; drawWriteEditor();
+  const names = {en:"English", bn:"Bangla (Bengali script)", ar:"Modern Standard Arabic (fully vowelled)", ur:"Urdu (Arabic script)"};
+  const rules = l => `Rules:
+- Keep the meaning exactly. Do not add, remove or comment on any claim, argument, reference or footnote. Only the wording changes: it should read easily and naturally.
+- Keep every quotation of the Qur'an in Arabic exactly as written, character for character, and keep ayah references such as 2:255 exactly as written. Keep the rendering of each ayah as it is.
+- Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, tables, **bold**, *italic*, [text](url) links, and footnote markers such as [^1] with their "[^1]: " lines (rewrite those lines too).
+- ${KEEP_AR_RULE}
+- ${PLAIN_RULE[l]}`;
+  const done = [], notes = [];
+  await Promise.all(langs.map(async l => {
+    const ctl = new AbortController(); M.ctl.push(ctl);
+    const run = async prompt => (await S.sample(prompt, {signal: ctl.signal, cache: false}));
+    try {
+      const t0 = (it.title[l] || "").trim(), s0 = (it.summary[l] || "").trim();
+      let nt = it.title[l], ns = it.summary[l];
+      if (t0 || s0) {
+        const r = await run(`Rewrite the title and summary below, written in ${names[l]}, so they read in plain, easy language.\n\n${rules(l)}\n- If the title or summary is "(none)", leave it empty. Never make one up.\n\nReply in exactly this form and nothing else:\nTITLE: <title on one line, or nothing>\nSUMMARY: <summary on one line, or nothing>\nBODY:\n\nTitle:\n${t0 || "(none)"}\n\nSummary:\n${s0 || "(none)"}`);
+        const p = parseDraft(r.text);
+        if (t0 && p.title) nt = p.title;
+        if (s0 && p.summary) ns = p.summary;
+      }
+      const paras = (it.body[l] || "").replace(/\r/g, "").split(/\n{2,}/).filter(x => x.trim());
+      const CH = 5000, out = [];
+      const cnt = (arr, re) => arr.filter(x => re.test(x)).length;
+      for (let from = 0; from < paras.length;) {
+        if (!M || !M.busy) return;
+        let to = from, n = 0;
+        while (to < paras.length && (n === 0 || n + paras[to].length <= CH)) { n += paras[to].length; to++; }
+        const piece = paras.slice(from, to), chunk = piece.join("\n\n");
+        const prev = out.slice(-2).join("\n\n");
+        M.aiStatus = `Rewriting ${LNAME_EN[l]} in plain language… ${Math.round(100 * from / paras.length)}%`;
+        const st = $("#ai-status"); if (st) st.textContent = M.aiStatus;
+        const r = await run(`Rewrite the passage below, written in ${names[l]}, so it reads in plain, easy language. It is one part of a longer article that is being rewritten part by part; the parts before it are already done.\n\n${rules(l)}\n- Reply with the rewritten passage only, with the same number of paragraphs, headings and list items.\n${prev ? `\nFor context only, the end of the part already rewritten (do not repeat it):\n"""\n${prev}\n"""\n` : ""}\nPassage:\n"""\n${chunk}\n"""`);
+        const txt = r.text.trim().replace(/^"""\s*|\s*"""$/g, "").trim();
+        const outParas = txt.split(/\n{2,}/).filter(x => x.trim());
+        const ok = !r.truncated && txt && cnt(outParas, /^#{2,4} /) === cnt(piece, /^#{2,4} /) && cnt(outParas, /^>> /) === cnt(piece, /^>> /) && txt.length > chunk.length * 0.3;
+        if (ok) out.push(txt); else { out.push(chunk); notes.push(`${LNAME_EN[l]} ${Math.round(100 * from / paras.length)}%`); }
+        from = to;
+      }
+      if (!M) return;
+      it.title[l] = nt; it.summary[l] = ns; it.body[l] = out.join("\n\n"); it.ai[l] = true; done.push(l);
+    } catch (e) {
+      if (!M || e?.code === "cancelled") return;
+      M.err = aiErr(e?.code, l).replace(/ draft/g, " rewrite");
+      if (["not_granted","sampling_disabled","not_declared","capability_disabled","capability_removed"].includes(e?.code)) S.sample = null;
+    }
+  }));
+  if (!M) return;
+  M.busy = false; M.ctl = [];
+  if (notes.length) M.err = `Some parts could not be rewritten safely and were left as they were (${notes.join(", ")}). Press the button again to retry them, or use Undo.`;
+  M.aiStatus = done.length ? `Plain-language rewrite done for ${done.map(l=>LNAME_EN[l]).join(", ")}. Review each tab, then save. Undo is available.` : "";
+  drawWriteEditor();
+}
 async function aiContinue(){
   captureFields();
   const it = M.it, src = it.src, scope = M.aiScope || "all";
@@ -4170,6 +4508,7 @@ Rules:
 - Translate faithfully and completely, to the very last word of the passage. Do not add, remove, summarise or comment.
 - Keep every quotation of the Qur'an in Arabic exactly as written, character for character, and keep ayah references such as 2:255 exactly as written. Where the passage gives the meaning of an ayah, render it the way the earlier part does.
 - Keep the formatting marks exactly: blank lines between paragraphs, "## " and "### " headings, "- " and "1. " list items, "> " quotes, ">> " Arabic quotation lines, "---" dividers, **bold**, *italic*, [text](url) links, footnote markers such as [^1] and their "[^1]: " lines (translate those lines).
+- ${KEEP_AR_RULE}${plainRule(l)}
 - Reply with the translation of the passage only.${extra ? `\n- Extra instructions from the editor (they never override the rules above):\n"""\n${extra}\n"""` : ""}
 ${ctxSrc ? `\nFor context only, the end of the previous part in ${guide[src]} and its ${guide[l]} translation (do not translate these again):\n"""\n${ctxSrc}\n"""\n"""\n${ctxTr}\n"""\n` : ""}
 Passage to translate:
@@ -4749,6 +5088,10 @@ document.addEventListener("click", async (ev) => {
   }
   if (d.compare) { S.compare.has(d.compare) ? S.compare.delete(d.compare) : S.compare.add(d.compare); return render(); }
   if (d.toggle) { S.open.has(d.toggle) ? S.open.delete(d.toggle) : S.open.add(d.toggle); return render(); }
+  if (d.morph) { const [ms, ma, mj] = d.morph.split(":").map(Number); if (FL) closeFlash(); return openMorph(ms + ":" + ma, mj === undefined || isNaN(mj) ? null : mj); }
+  if (d.flag) { const [fs, fa, fj] = d.flag.split(":").map(Number); if (FL) closeFlash(); return openFlag(fs, fa, fj); }
+  if (d.flaglist !== undefined) return openFlagList();
+  if (d.mpmove !== undefined) return openMpMove();
   if (d.grammar) return openGrammar(d.grammar);
   if (d.gword !== undefined && M?.type === "gram") { M.sel = +d.gword; drawGrammar(); requestAnimationFrame(()=> document.getElementById("gw-"+d.gword)?.scrollIntoView({block:"center", behavior:"smooth"})); return; }
   if (d.focus !== undefined) return enterFocus();
@@ -4791,6 +5134,10 @@ document.addEventListener("click", async (ev) => {
   const act = d.m;
   if (M.type === "qa") return qaAct(act, d);
   if (M.type === "cm") return cmAct(act, d);
+  if (M.type === "mp") return mpAct(act, d);
+  if (M.type === "flag") return flagAct(act, d);
+  if (M.type === "flags") return flagsAct(act, d);
+  if (M.type === "mpmove") return mpMoveAct(act);
   if (M.type === "kw") return kwAct(act, d);
   if (M.type === "rs") return rsAct(act, d);
   if (M.type === "mv") return mvAct(act, d);
@@ -4893,7 +5240,7 @@ document.addEventListener("click", async (ev) => {
   if (act === "tab") { captureFields(); M.tab = d.v; M.err=""; drawWriteEditor(); ($("#w-body")||$("#w-title")).focus(); return; }
   if (act === "view") { captureFields(); M.preview = d.v === "preview"; drawWriteEditor(); return; }
   if (act === "fmt") { applyFmt(d.v); saveLocalDraft(); return; }
-  if (act === "draft-restore") { M.ref = M.draft.ref; M.it = Object.assign(M.it, M.draft.it); M.draft = null; drawWriteEditor(); return; }
+  if (act === "draft-restore") { M.ref = M.draft.ref; const wasPartial = !!M.it._partial; M.it = Object.assign(M.it, M.draft.it); if (wasPartial) M.it._partial = true; else delete M.it._partial; M.draft = null; drawWriteEditor(); return; }
   if (act === "draft-discard") { M.draft = null; clearLocalDraft(); drawWriteEditor(); return; }
   if (act === "kind") { captureFields(); M.it.kind = d.v; drawWriteEditor(); return; }
   if (act === "reviewed") { captureFields(); delete M.it.ai[M.tab]; drawWriteEditor(); return; }
@@ -4901,6 +5248,7 @@ document.addEventListener("click", async (ev) => {
   if (act === "ai-one") return aiDraft(false, d.v);
   if (act === "ai-force") return aiDraft(true, M.aiOnly || undefined);
   if (act === "ai-revise") return aiRevise();
+  if (act === "ai-plain") return aiPlain();
   if (act === "ai-continue") return aiContinue();
   if (act === "ai-undo") return aiUndo();
   if (act === "ai-stop") { M.ctl.forEach(c=>c.abort()); return; }
@@ -4934,6 +5282,7 @@ document.addEventListener("change", (ev) => {
   if (t.id === "wroot") { S.wroot = t.value; render(); return; }
   if (t.id === "ncat") { S.ncat = t.value; if (S.nkind === "revised") S.nkind = "all"; render(); return; }
   if (t.id === "onlymarked") { S.onlyMarked = t.checked; render(); }
+  if (t.id === "plain-on") { store.set("aba.plain", t.checked ? "1" : "0"); return; }
   if (t.id === "showpages") { S.pages = t.checked; store.set("aba.pg", t.checked ? "1" : "0"); render(); }
   if (t.id === "rgroup") { S.rgroup = t.checked; render(); return; }
   if (t.id === "qfont") { S.qfont = t.value; store.set("aba.qfont", t.value); applyQFont(); }
@@ -5016,7 +5365,7 @@ function rerenderKeepingInput(id){
 
 async function exportData(){
   if (!S.downloads) return;
-  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, keywords: S.kw, research: S.research, ruku: Object.values(S.ruku || {})}, null, 2);
+  const data = JSON.stringify({exportedAt: new Date().toISOString(), translations: Object.values(S.tr), notes: S.notes, lessons: S.lessons, commentary: S.cm, morph: S.morph, keywords: S.kw, research: S.research, ruku: Object.values(S.ruku || {})}, null, 2);
   try { await S.downloads.save({filename: `ayah-by-ayah-backup-${new Date().toISOString().slice(0,10)}.json`, data}); }
   catch (e) { if (e?.code !== "declined") toast("The backup couldn't be saved here."); }
 }
@@ -5039,7 +5388,7 @@ function hashDocJ(d){
   return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
 }
 const SYNC_FORMAT = "ayah-by-ayah-offline-sync";
-const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","commentary","keywords","research","ruku","settings"];
+const SYNC_COLS = ["translations","notes","words","lessons","irab","chunks","vocab","qa","qa_moved","morph","flags","commentary","keywords","research","ruku","settings"];
 function syncLabel(path, doc){
   const col = path.split("/")[0], id = path.slice(col.length + 1);
   let t = "";
@@ -5148,6 +5497,8 @@ function addSyncControls(){
     window.addEventListener("offline-pending", refreshOfflineBtn); refreshOfflineBtn();
   } else if (S.admin && S.db && !S.static) {
     const b = document.createElement("button"); b.type = "button"; b.className = "btn ghost small"; b.dataset.syncImport = ""; b.textContent = "Import offline changes"; bar.appendChild(b);
+    const fb = document.createElement("button"); fb.type = "button"; fb.id = "flag-btn"; fb.className = "btn ghost small"; fb.dataset.flaglist = ""; fb.textContent = flagBtnText(); bar.appendChild(fb);
+    const mb = document.createElement("button"); mb.type = "button"; mb.className = "btn ghost small"; mb.dataset.mpmove = ""; mb.textContent = "Move morphology Q&As to Morphology"; bar.appendChild(mb);
     const inp = document.createElement("input"); inp.type = "file"; inp.id = "sync-file"; inp.accept = ".json,application/json"; inp.hidden = true;
     inp.addEventListener("change", () => { const f = inp.files && inp.files[0]; inp.value = ""; syncPicked(f); });
     document.body.appendChild(inp);
@@ -5202,6 +5553,16 @@ fetch("quran.json").then(r => { if (!r.ok) throw 0; return r.json(); }).then(q =
     S.cm = snap.docs.map(d => cmNorm(Object.assign({id: d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a));
     reindex(); render();
   }, () => {});
+  db.collection("morph").onSnapshot(snap => {
+    S.morph = snap.docs.map(d => mpNorm(Object.assign({id: d.id}, d.data()))).filter(x => validRefSafe(x.s, x.a) && x.w > 0);
+    reindex(); render();
+    if (M && M.type === "mp" && !M.busy && M.j == null) drawMP();
+  }, () => {});
+  if (S.admin) db.collection("flags").onSnapshot(snap => {
+    S.flags = snap.docs.map(d => Object.assign({id: d.id}, d.data()));
+    if (M && M.type === "flags") drawFlagList();
+    const b = document.getElementById("flag-btn"); if (b) b.textContent = flagBtnText();
+  }, () => {});
   if (S.admin) db.collection("ruku").onSnapshot(snap => {
     S.ruku = {}; for (const d of snap.docs) { const x = d.data(); if (x && x.s) S.ruku[x.s] = x; }
     render();
@@ -5241,6 +5602,7 @@ async function loadStatic(){
     S.lessons = d.lessons || [];
     S.words = (d.words || []).filter(w => validRefSafe(w.s, w.a));
     S.cm = (d.commentary || []).filter(c => validRefSafe(c.s, c.a)).map(cmNorm);
+    S.morph = (d.morph || []).filter(m => validRefSafe(m.s, m.a) && m.w > 0).map(mpNorm);
     S.cats = (d.categories || []).slice().sort((a, b) => (a.order||0) - (b.order||0));
     S.irabAll = d.irab || {};
     S.vocab = d.vocab || {};
